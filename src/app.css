@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap');
+
+:root {
+  --bg: #000000;
+  --panel-bg: rgba(5, 10, 15, 0.85);
+  --grid-red: #ff5555;
+  --text-cyan: #7fd6ff;
+  --text-cyan-bright: #b6f0ff;
+  --text-amber: #ffcc55;
+  --border-cyan: #4dd2ff;
+  --border-red: #ff5555;
+  --sw-base: #33cc55;
+  --sw-jump: #4dc8ff;
+  --sw-point: #e0d060;
+  --sw-unknown: #6a7a85;
+  --font-display: 'Press Start 2P', monospace;
+  --font-body: 'VT323', monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text-cyan-bright);
+  font-family: var(--font-body);
+  overflow: hidden;
+}
+
+#app {
+  width: 100vw;
+  height: 100vh;
+}
+
+button {
+  font-family: var(--font-display);
+  background: rgba(5, 10, 15, 0.85);
+  border: 1px solid var(--border-red);
+  color: #ff9999;
+  font-size: 11px;
+  padding: 10px 14px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  box-shadow: 0 0 8px rgba(255, 60, 60, 0.3);
+}
+button:hover { background: rgba(255, 60, 60, 0.15); color: #fff; }
+button:disabled { opacity: 0.5; cursor: default; }
+button.active { background: rgba(77, 200, 255, 0.15); border-color: var(--border-cyan); color: var(--text-cyan-bright); }

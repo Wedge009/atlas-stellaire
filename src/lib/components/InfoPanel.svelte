@@ -1,0 +1,51 @@
+<script>
+  import { selectedNode } from '../stores/selection.js';
+</script>
+
+{#if $selectedNode}
+  {@const d = $selectedNode}
+  <div class="info">
+    <div class="name">{d.label}{#if d.dest} &rarr; {d.dest}{/if}</div>
+    <div class="row">{d.baseName ? d.baseName + ' — ' : ''}{d.description}</div>
+    <div class="row coords">X {d.x}&nbsp; Y {d.y}&nbsp; Z {d.z}</div>
+    <div class="row muted">coordSource: {d.coordSource}</div>
+    {#if d.baseName}
+      <div class="row muted">{d.rawType}</div>
+      {#if d.facilities}
+        <div class="row muted">
+          {d.facilities.merchantsGuild ? 'Merchants Guild · ' : ''}{d.facilities.mercenariesGuild ? 'Mercenaries Guild · ' : ''}{d.facilities.shipDealer ? 'Ship Dealer' : ''}
+        </div>
+      {/if}
+    {/if}
+    {#if d.xyzCorrected}
+      <div class="fixnote">&#9888; {d.correctionNote}</div>
+    {/if}
+    {#if d.destCorrected}
+      <div class="fixnote">&#9888; {d.destCorrectionNote}</div>
+    {/if}
+  </div>
+{/if}
+
+<style>
+  .info {
+    min-width: 240px;
+    max-width: 340px;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-cyan);
+    box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
+    color: var(--text-cyan-bright);
+    padding: 10px 14px;
+    font-size: 18px;
+  }
+  .name {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: #fff;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .row { color: var(--text-cyan); }
+  .row.coords { margin-top: 6px; color: #557; }
+  .row.muted { color: #6a8a99; font-size: 15px; }
+  .fixnote { color: var(--text-amber); margin-top: 6px; font-size: 15px; }
+</style>
