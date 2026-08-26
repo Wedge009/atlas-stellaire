@@ -156,7 +156,7 @@
               "asteroids": false,
               "matchMethod": "positional",
               "type": "unknown",
-              "description": "",
+              "description": "Ambush Point",
               "dest": null
             }
           ]
@@ -179,9 +179,7 @@
               "matchMethod": "id",
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Nitir",
-              "destCorrected": true,
-              "destCorrectionNote": "WCPedia said 'Lisacc'; swapped with Nav 3 based on WCRPG, whose Nav-position data was independently confirmed pixel-accurate against the real screenshot for all 5 of this system's points."
+              "dest": "Lisacc"
             },
             {
               "id": "nav-2",
@@ -213,9 +211,7 @@
               "matchMethod": "id",
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Lisacc",
-              "destCorrected": true,
-              "destCorrectionNote": "WCPedia said 'Nitir'; swapped with Nav 1 based on WCRPG, whose Nav-position data was independently confirmed pixel-accurate against the real screenshot for all 5 of this system's points."
+              "dest": "Nitir"
             },
             {
               "id": "nav-4",
