@@ -17,12 +17,6 @@
         </div>
       {/if}
     {/if}
-    {#if d.xyzCorrected}
-      <div class="fixnote">&#9888; {d.correctionNote}</div>
-    {/if}
-    {#if d.destCorrected}
-      <div class="fixnote">&#9888; {d.destCorrectionNote}</div>
-    {/if}
   </div>
 {/if}
 
@@ -47,5 +41,4 @@
   .row { color: var(--text-cyan); }
   .row.coords { margin-top: 6px; color: #557; }
   .row.muted { color: #6a8a99; font-size: 15px; }
-  .fixnote { color: var(--text-amber); margin-top: 6px; font-size: 15px; }
 </style>

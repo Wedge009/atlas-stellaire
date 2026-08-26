@@ -124,8 +124,8 @@ export function createNavScene({ canvas, onSelect }) {
       const spoke = new THREE.Line(spokeGeo, spokeMat);
       nodeGroup.add(spoke);
 
-      const labelText = (style.corrected ? '★ ' : '') + (flat.estimated ? '(est.) ' : '') + np.label + (np.dest ? ` → ${np.dest}` : '');
-      const label = makeLabel(labelText, style.corrected ? '#ffdd66' : '#a8e8ff');
+      const labelText = (flat.estimated ? '(est.) ' : '') + np.label + (np.dest ? ` → ${np.dest}` : '');
+      const label = makeLabel(labelText, '#a8e8ff');
       label.position.copy(pos3d).add(new THREE.Vector3(0, 2.8, 0));
       nodeGroup.add(label);
 

@@ -52,25 +52,16 @@ const TYPE_COLORS = {
   unknown: { color: '#6a7a85', emissive: '#1a2226' },
 };
 
-const CORRECTED_COLORS = {
-  base: { color: '#ffbb33', emissive: '#553300' },
-  default: { color: '#ffdd66', emissive: '#553300' },
-};
-
 // Returns the visual treatment for a nav point: shape, color, and whether it
 // should render with the "estimated position" (dashed) treatment.
 export function styleForNavPoint(navPoint) {
   const type = navPoint.type || 'unknown';
   const shape = type === 'base' ? 'box' : type === 'point' ? 'dot' : type === 'jump' ? 'sphere' : 'ghost';
-  const corrected = Boolean(navPoint.xyzCorrected || navPoint.destCorrected);
-  const palette = corrected
-    ? (type === 'base' ? CORRECTED_COLORS.base : CORRECTED_COLORS.default)
-    : TYPE_COLORS[type] || TYPE_COLORS.unknown;
+  const palette = TYPE_COLORS[type] || TYPE_COLORS.unknown;
   return {
     shape,
     color: palette.color,
     emissive: palette.emissive,
-    corrected,
     dimmed: type === 'unknown',
   };
 }

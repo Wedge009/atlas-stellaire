@@ -49,7 +49,7 @@
       {#if isSelected}
         <circle r="3.2" class="select-ring" />
       {/if}
-      <text x="2.4" y="0.5" class="label" class:corrected={d.style.corrected}>{navPointLabel(d.np)}</text>
+      <text x="2.4" y="0.5" class="label">{navPointLabel(d.np)}</text>
     </g>
   {/each}
 </svg>
@@ -72,7 +72,6 @@
     stroke: #000;
     stroke-width: 0.4px;
   }
-  .label.corrected { fill: #ffdd66; }
   .select-ring {
     fill: none;
     stroke: #fff;

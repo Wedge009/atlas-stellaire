@@ -4139,8 +4139,6 @@
               "type": "base",
               "description": "Hector Mining Base",
               "dest": null,
-              "xyzCorrected": true,
-              "correctionNote": "X sign corrected from wiki's +50000; confirmed via direct pixel measurement against the real screenshot.",
               "baseName": "Hector",
               "rawType": "Mining Base",
               "category": "mining",
@@ -4164,9 +4162,7 @@
               "matchMethod": "id",
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Regallis",
-              "xyzCorrected": true,
-              "correctionNote": "X sign corrected from wiki's +45000; confirmed via direct pixel measurement against the real screenshot."
+              "dest": "Regallis"
             },
             {
               "id": "nav-6",
@@ -4183,8 +4179,6 @@
               "type": "base",
               "description": "Helen Agricultural Planet",
               "dest": null,
-              "xyzCorrected": true,
-              "correctionNote": "X sign corrected from wiki's +50000; confirmed via direct pixel measurement against the real screenshot.",
               "baseName": "Helen",
               "rawType": "Agricultural World",
               "category": "agricultural",
