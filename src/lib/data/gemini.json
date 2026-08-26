@@ -1012,9 +1012,9 @@
             {
               "id": "hidden-1",
               "label": "Hidden 1",
-              "x": -40000,
-              "y": -30000,
-              "z": 10000,
+              "x": -50000,
+              "y": 40000,
+              "z": 0,
               "sx": 14,
               "sy": 22,
               "coordSource": "unverified",
