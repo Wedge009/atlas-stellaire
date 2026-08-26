@@ -171,6 +171,7 @@ export function createNavScene({ canvas, onSelect }) {
   let dragging = false, lastX = 0, lastY = 0, lastTouchDist = null;
 
   function onMouseDown(e) {
+    canvas.style.cursor = '';
     if (!interactionLocked && !aligned) { dragging = true; lastX = e.clientX; lastY = e.clientY; }
   }
   function onMouseUp() { dragging = false; }
@@ -214,18 +215,32 @@ export function createNavScene({ canvas, onSelect }) {
 
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
-  function onClick(e) {
+  function pointerNodeTargets() {
+    return nodes.flatMap((n) => [n.mesh, n.label]);
+  }
+  function setMouseFromEvent(e) {
     const rect = canvas.getBoundingClientRect();
     mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
     mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+  }
+  function onClick(e) {
+    setMouseFromEvent(e);
     raycaster.setFromCamera(mouse, camera);
     const hits = raycaster.intersectObjects(nodes.map((n) => n.mesh));
     onSelect(hits.length ? hits[0].object.userData : null);
+  }
+  function onHoverMove(e) {
+    if (dragging || animating) return;
+    setMouseFromEvent(e);
+    raycaster.setFromCamera(mouse, camera);
+    const hits = raycaster.intersectObjects(pointerNodeTargets());
+    canvas.style.cursor = hits.length ? 'pointer' : '';
   }
 
   canvas.addEventListener('mousedown', onMouseDown);
   window.addEventListener('mouseup', onMouseUp);
   window.addEventListener('mousemove', onMouseMove);
+  canvas.addEventListener('mousemove', onHoverMove);
   canvas.addEventListener('wheel', onWheel, { passive: false });
   canvas.addEventListener('touchstart', onTouchStart);
   canvas.addEventListener('touchend', onTouchEnd);
@@ -314,6 +329,7 @@ export function createNavScene({ canvas, onSelect }) {
     canvas.removeEventListener('mousedown', onMouseDown);
     window.removeEventListener('mouseup', onMouseUp);
     window.removeEventListener('mousemove', onMouseMove);
+    canvas.removeEventListener('mousemove', onHoverMove);
     canvas.removeEventListener('wheel', onWheel);
     canvas.removeEventListener('touchstart', onTouchStart);
     canvas.removeEventListener('touchend', onTouchEnd);
