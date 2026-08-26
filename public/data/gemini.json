@@ -51,9 +51,9 @@
               "sy": 50,
               "visibleOnMap": true,
               "asteroids": false,
-              "type": "jump",
-              "description": "Jump Point",
-              "dest": "tr-pakh"
+              "type": "point",
+              "description": "Nav Point",
+              "dest": null
             },
             {
               "id": "nav-4",
