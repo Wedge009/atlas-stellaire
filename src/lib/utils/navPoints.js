@@ -1,30 +1,8 @@
 // Shared helpers for working with the gemini.json sector data.
 
-// Universal screen-projection formula, derived from pixel-measurement of
-// real screenshots across 4 systems / 18 points (see project briefing).
-// Used as a fallback flat position for nav points with no sx/sy in the data.
-const PROJECTION = {
-  xScale: 0.0007019,
-  xOffset: 49.22,
-  yScale: -0.0007092,
-  yOffset: 49.49,
-};
-
-export function projectFallback(x, y) {
-  return {
-    sx: PROJECTION.xScale * x + PROJECTION.xOffset,
-    sy: PROJECTION.yScale * y + PROJECTION.yOffset,
-  };
-}
-
-// Resolves the flat (sx, sy) position to actually render, filling in a
-// projected fallback when the data has none, and flagging that it's estimated.
+// Resolves the flat (sx, sy) position to actually render.
 export function resolveFlatPosition(navPoint) {
-  if (navPoint.sx != null && navPoint.sy != null) {
-    return { sx: navPoint.sx, sy: navPoint.sy, estimated: false };
-  }
-  const { sx, sy } = projectFallback(navPoint.x, navPoint.y);
-  return { sx, sy, estimated: true };
+  return { sx: navPoint.sx, sy: navPoint.sy };
 }
 
 export function flattenSystems(data) {
@@ -52,8 +30,7 @@ const TYPE_COLORS = {
   unknown: { color: '#6a7a85', emissive: '#1a2226' },
 };
 
-// Returns the visual treatment for a nav point: shape, color, and whether it
-// should render with the "estimated position" (dashed) treatment.
+// Returns the visual treatment for a nav point: shape and color.
 export function styleForNavPoint(navPoint) {
   const type = navPoint.type || 'unknown';
   const shape = type === 'base' ? 'box' : type === 'point' ? 'dot' : type === 'jump' ? 'sphere' : 'ghost';

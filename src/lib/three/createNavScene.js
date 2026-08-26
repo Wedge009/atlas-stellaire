@@ -78,10 +78,6 @@ export function createNavScene({ canvas, onSelect }) {
       n.spokeMat.dispose();
       n.label.material.map.dispose();
       n.label.material.dispose();
-      if (n.estRing) {
-        n.estRing.geometry.dispose();
-        n.estRing.material.dispose();
-      }
     }
     nodeGroup.clear();
     nodes = [];
@@ -124,22 +120,12 @@ export function createNavScene({ canvas, onSelect }) {
       const spoke = new THREE.Line(spokeGeo, spokeMat);
       nodeGroup.add(spoke);
 
-      const labelText = (flat.estimated ? '(est.) ' : '') + np.label + (np.dest ? ` → ${np.dest}` : '');
+      const labelText = np.label + (np.dest ? ` → ${np.dest}` : '');
       const label = makeLabel(labelText, '#a8e8ff');
       label.position.copy(pos3d).add(new THREE.Vector3(0, 2.8, 0));
       nodeGroup.add(label);
 
-      let estRing = null;
-      if (flat.estimated) {
-        const ringGeo = new THREE.RingGeometry(1.4, 1.7, 24);
-        const ringMat = new THREE.MeshBasicMaterial({ color: 0xcc88ff, transparent: true, opacity: 0.6, side: THREE.DoubleSide });
-        estRing = new THREE.Mesh(ringGeo, ringMat);
-        estRing.rotation.x = -Math.PI / 2;
-        estRing.position.copy(pos3d);
-        nodeGroup.add(estRing);
-      }
-
-      nodes.push({ np, mesh, dropLine, dropMat, spoke, spokeMat, label, estRing, pos3d, pos2d });
+      nodes.push({ np, mesh, dropLine, dropMat, spoke, spokeMat, label, pos3d, pos2d });
     }
   }
 
@@ -149,7 +135,6 @@ export function createNavScene({ canvas, onSelect }) {
     n.dropLine.computeLineDistances();
     n.spoke.geometry.setFromPoints([new THREE.Vector3(0, 0, 0), p.clone()]);
     n.label.position.copy(p).add(new THREE.Vector3(0, 2.8, 0));
-    if (n.estRing) n.estRing.position.copy(p);
   }
 
   // --- orbit camera ---

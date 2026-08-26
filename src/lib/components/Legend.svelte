@@ -9,7 +9,6 @@
   {#if showHidden}
     <div><span class="sw sw-unknown"></span>Hidden / Unknown</div>
   {/if}
-  <div><span class="sw sw-est"></span>Estimated position</div>
 </div>
 
 <style>
@@ -32,5 +31,4 @@
   .sw-jump { background: var(--sw-jump); border-radius: 50%; }
   .sw-point { background: var(--sw-point); border-radius: 50%; }
   .sw-unknown { background: var(--sw-unknown); border-radius: 50%; opacity: 0.6; }
-  .sw-est { border: 1px dashed #cc88ff; border-radius: 50%; }
 </style>

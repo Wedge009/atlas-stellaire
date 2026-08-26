@@ -38,9 +38,6 @@
       tabindex="0"
       onkeydown={(e) => e.key === 'Enter' && select(d.np)}
     >
-      {#if d.flat.estimated}
-        <circle r="2.6" class="est-ring" />
-      {/if}
       {#if d.style.shape === 'box'}
         <rect x="-1.6" y="-1.6" width="3.2" height="3.2" fill={d.style.color} opacity={d.style.dimmed ? 0.5 : 1} />
       {:else}
@@ -76,11 +73,5 @@
     fill: none;
     stroke: #fff;
     stroke-width: 0.3;
-  }
-  .est-ring {
-    fill: none;
-    stroke: #cc88ff;
-    stroke-width: 0.25;
-    stroke-dasharray: 0.6 0.5;
   }
 </style>
