@@ -241,7 +241,7 @@ export function createNavScene({ canvas, onSelect }) {
     const startPositions = nodes.map((n) => n.mesh.position.clone());
     const endPositions = nodes.map((n) => n.pos2d.clone());
     const camStart = camera.position.clone(), upStart = camera.up.clone();
-    const camEnd = new THREE.Vector3(0, 105, 0.001), upEnd = new THREE.Vector3(0, 0, -1);
+    const camEnd = new THREE.Vector3(0, 120, 0.001), upEnd = new THREE.Vector3(0, 0, -1);
     const duration = 1400, t0 = performance.now();
     function step(now) {
       const t = Math.min((now - t0) / duration, 1);
