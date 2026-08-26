@@ -201,10 +201,7 @@
               "asteroids": true,
               "type": "point",
               "description": "Asteroid Field",
-              "dest": null,
-              "tags": [
-                "Asteroid Field"
-              ]
+              "dest": null
             },
             {
               "id": "nav-5",
@@ -362,10 +359,7 @@
                 "merchantsGuild": false,
                 "mercenariesGuild": true,
                 "shipDealer": true
-              },
-              "tags": [
-                "Asteroid Field"
-              ]
+              }
             },
             {
               "id": "nav-2",
@@ -379,10 +373,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Blockade Point Tango",
-              "tags": [
-                "Asteroid Field"
-              ]
+              "dest": "Blockade Point Tango"
             },
             {
               "id": "hidden",
@@ -416,10 +407,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Blockade Point Tango",
-              "tags": [
-                "Asteroid Field"
-              ]
+              "dest": "Blockade Point Tango"
             }
           ]
         },
@@ -737,10 +725,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Blockade Point Alpha",
-              "tags": [
-                "Asteroid Field"
-              ]
+              "dest": "Blockade Point Alpha"
             },
             {
               "id": "nav-2",
@@ -775,10 +760,7 @@
                 "merchantsGuild": false,
                 "mercenariesGuild": false,
                 "shipDealer": false
-              },
-              "tags": [
-                "Asteroid Field"
-              ]
+              }
             },
             {
               "id": "hidden",
@@ -812,10 +794,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Detroit",
-              "tags": [
-                "Asteroid Field"
-              ]
+              "dest": "New Detroit"
             },
             {
               "id": "nav-2",
@@ -829,10 +808,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Midgard",
-              "tags": [
-                "Asteroid Field"
-              ]
+              "dest": "Midgard"
             },
             {
               "id": "nav-3",
@@ -874,10 +850,7 @@
                 "merchantsGuild": false,
                 "mercenariesGuild": true,
                 "shipDealer": true
-              },
-              "tags": [
-                "Asteroid Field"
-              ]
+              }
             },
             {
               "id": "nav-5",
@@ -891,10 +864,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "44-P-1M",
-              "tags": [
-                "Asteroid Field"
-              ]
+              "dest": "44-P-1M"
             },
             {
               "id": "hidden-1",
@@ -1377,10 +1347,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Gamma",
-              "tags": [
-                "Asteroid Field"
-              ]
+              "dest": "Gamma"
             }
           ]
         },
@@ -1421,10 +1388,7 @@
                 "merchantsGuild": false,
                 "mercenariesGuild": false,
                 "shipDealer": false
-              },
-              "tags": [
-                "Asteroid Field"
-              ]
+              }
             },
             {
               "id": "nav-3",
@@ -1899,10 +1863,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Beta",
-              "tags": [
-                "Asteroid Field"
-              ]
+              "dest": "Beta"
             },
             {
               "id": "nav-2",
@@ -1958,10 +1919,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Delta Prime",
-              "tags": [
-                "Asteroid Field"
-              ]
+              "dest": "Delta Prime"
             },
             {
               "id": "hidden",
@@ -2223,10 +2181,7 @@
                 "merchantsGuild": true,
                 "mercenariesGuild": true,
                 "shipDealer": false
-              },
-              "tags": [
-                "Asteroid Field"
-              ]
+              }
             },
             {
               "id": "nav-4",
@@ -2475,10 +2430,7 @@
                 "merchantsGuild": true,
                 "mercenariesGuild": true,
                 "shipDealer": false
-              },
-              "tags": [
-                "Asteroid Field"
-              ]
+              }
             }
           ]
         },
@@ -2533,10 +2485,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Delta",
-              "tags": [
-                "Asteroid Field"
-              ]
+              "dest": "Delta"
             }
           ]
         },
@@ -2591,10 +2540,7 @@
                 "merchantsGuild": false,
                 "mercenariesGuild": false,
                 "shipDealer": false
-              },
-              "tags": [
-                "Asteroid Field"
-              ]
+              }
             },
             {
               "id": "nav-4",
@@ -2705,10 +2651,7 @@
                 "merchantsGuild": false,
                 "mercenariesGuild": false,
                 "shipDealer": false
-              },
-              "tags": [
-                "Asteroid Field"
-              ]
+              }
             },
             {
               "id": "nav-3",
@@ -2763,10 +2706,7 @@
                 "merchantsGuild": true,
                 "mercenariesGuild": true,
                 "shipDealer": false
-              },
-              "tags": [
-                "Asteroid Field"
-              ]
+              }
             },
             {
               "id": "nav-2",
@@ -2828,10 +2768,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Pestilence",
-              "tags": [
-                "Asteroid Field"
-              ]
+              "dest": "Pestilence"
             },
             {
               "id": "nav-2",
@@ -2859,10 +2796,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Troy",
-              "tags": [
-                "Asteroid Field"
-              ]
+              "dest": "Troy"
             }
           ]
         },
@@ -3012,10 +2946,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Pyrenees",
-              "tags": [
-                "Asteroid Field"
-              ]
+              "dest": "Pyrenees"
             }
           ]
         },
@@ -3498,10 +3429,7 @@
                 "merchantsGuild": true,
                 "mercenariesGuild": false,
                 "shipDealer": false
-              },
-              "tags": [
-                "Asteroid Field"
-              ]
+              }
             }
           ]
         },
@@ -3605,10 +3533,7 @@
                 "merchantsGuild": true,
                 "mercenariesGuild": true,
                 "shipDealer": true
-              },
-              "tags": [
-                "Asteroid Field"
-              ]
+              }
             }
           ]
         },
