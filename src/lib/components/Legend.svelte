@@ -9,6 +9,7 @@
   {#if showHidden}
     <div><span class="sw sw-unknown"></span>Hidden / Unknown</div>
   {/if}
+  <div><span class="sw sw-asteroid"></span>Asteroids Present</div>
 </div>
 
 <style>
@@ -31,4 +32,5 @@
   .sw-jump { background: var(--sw-jump); border-radius: 50%; }
   .sw-point { background: var(--sw-point); border-radius: 50%; }
   .sw-unknown { background: var(--sw-unknown); border-radius: 50%; opacity: 0.6; }
+  .sw-asteroid { background: transparent; border: 1px dashed #a0522d; border-radius: 50%; }
 </style>

@@ -43,6 +43,9 @@
       {:else}
         <circle r={d.style.shape === 'dot' ? 1.1 : 1.6} fill={d.style.color} opacity={d.style.dimmed ? 0.5 : 1} />
       {/if}
+      {#if d.np.asteroids}
+        <circle r="2.6" class="asteroid-ring" />
+      {/if}
       {#if isSelected}
         <circle r="3.2" class="select-ring" />
       {/if}
@@ -73,5 +76,11 @@
     fill: none;
     stroke: #fff;
     stroke-width: 0.3;
+  }
+  .asteroid-ring {
+    fill: none;
+    stroke: #a0522d;
+    stroke-width: 0.25;
+    stroke-dasharray: 0.6 0.5;
   }
 </style>

@@ -78,6 +78,10 @@ export function createNavScene({ canvas, onSelect }) {
       n.spokeMat.dispose();
       n.label.material.map.dispose();
       n.label.material.dispose();
+      if (n.asteroidRing) {
+        n.asteroidRing.geometry.dispose();
+        n.asteroidRing.material.dispose();
+      }
     }
     nodeGroup.clear();
     nodes = [];
@@ -125,7 +129,17 @@ export function createNavScene({ canvas, onSelect }) {
       label.position.copy(pos3d).add(new THREE.Vector3(0, 2.8, 0));
       nodeGroup.add(label);
 
-      nodes.push({ np, mesh, dropLine, dropMat, spoke, spokeMat, label, pos3d, pos2d });
+      let asteroidRing = null;
+      if (np.asteroids) {
+        const ringGeo = new THREE.RingGeometry(1.4, 1.7, 24);
+        const ringMat = new THREE.MeshBasicMaterial({ color: 0xa0522d, transparent: true, opacity: 0.6, side: THREE.DoubleSide });
+        asteroidRing = new THREE.Mesh(ringGeo, ringMat);
+        asteroidRing.rotation.x = -Math.PI / 2;
+        asteroidRing.position.copy(pos3d);
+        nodeGroup.add(asteroidRing);
+      }
+
+      nodes.push({ np, mesh, dropLine, dropMat, spoke, spokeMat, label, asteroidRing, pos3d, pos2d });
     }
   }
 
@@ -135,6 +149,7 @@ export function createNavScene({ canvas, onSelect }) {
     n.dropLine.computeLineDistances();
     n.spoke.geometry.setFromPoints([new THREE.Vector3(0, 0, 0), p.clone()]);
     n.label.position.copy(p).add(new THREE.Vector3(0, 2.8, 0));
+    if (n.asteroidRing) n.asteroidRing.position.copy(p);
   }
 
   // --- orbit camera ---
