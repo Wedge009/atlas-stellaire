@@ -9,7 +9,7 @@
     <div class="row">{d.baseName ? d.baseName + ' — ' : ''}{d.description}</div>
     <div class="row coords">X {d.x}&nbsp; Y {d.y}&nbsp; Z {d.z}</div>
     {#if d.baseName}
-      <div class="row muted">{d.rawType}</div>
+      <div class="row muted">{d.baseType}</div>
       {#if d.facilities}
         <div class="row muted">
           {d.facilities.merchantsGuild ? 'Merchants Guild · ' : ''}{d.facilities.mercenariesGuild ? 'Mercenaries Guild · ' : ''}{d.facilities.shipDealer ? 'Ship Dealer' : ''}
