@@ -8,7 +8,6 @@
     <div class="name">{d.label}{#if d.dest} &rarr; {d.dest}{/if}</div>
     <div class="row">{d.baseName ? d.baseName + ' — ' : ''}{d.description}</div>
     <div class="row coords">X {d.x}&nbsp; Y {d.y}&nbsp; Z {d.z}</div>
-    <div class="row muted">coordSource: {d.coordSource}</div>
     {#if d.baseName}
       <div class="row muted">{d.rawType}</div>
       {#if d.facilities}
