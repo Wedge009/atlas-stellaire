@@ -117,7 +117,7 @@
   }
   .overlay-legend {
     position: absolute;
-    bottom: 18px;
+    bottom: 36px;
     right: 18px;
     z-index: 15;
   }
