@@ -61,7 +61,9 @@ export function createNavScene({ canvas, onSelect }) {
   grid.material.transparent = true;
   scene.add(grid);
 
-  scene.add(new THREE.PointLight(0xffcc66, 1.4, 200));
+  const cameraLight = new THREE.PointLight(0xffffff, 5, 1000, 0);
+  camera.add(cameraLight);
+  scene.add(camera);
   scene.add(new THREE.AmbientLight(0x223344, 1.2));
 
   let nodes = [];
