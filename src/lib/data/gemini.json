@@ -2161,7 +2161,7 @@
               "y": 30000,
               "z": -20000,
               "sx": 50,
-              "sy": 29,
+              "sy": 28,
               "coordSource": "unverified",
               "visibleOnMap": true,
               "asteroids": true,
@@ -2255,9 +2255,9 @@
               "visibleOnMap": true,
               "asteroids": false,
               "matchMethod": "id",
-              "type": "jump",
-              "description": "Jump Point",
-              "dest": "Haven"
+              "type": "point",
+              "description": "Nav Point",
+              "dest": null
             },
             {
               "id": "nav-3",
@@ -2798,7 +2798,7 @@
             {
               "id": "nav-1",
               "label": "Nav 1",
-              "x": -60000,
+              "x": 60000,
               "y": -30000,
               "z": 20000,
               "sx": 92,
@@ -3412,9 +3412,7 @@
               "matchMethod": "id",
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Regallis",
-              "destCorrected": true,
-              "destCorrectionNote": "WCPedia said 'Pyrenees'; swapped with Nav 2 based on WCRPG, whose Nav-position data was independently confirmed pixel-accurate against the real screenshot for both of this system's points."
+              "dest": "Regallis"
             },
             {
               "id": "nav-2",
@@ -3430,9 +3428,7 @@
               "matchMethod": "id",
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Pyrenees",
-              "destCorrected": true,
-              "destCorrectionNote": "WCPedia said 'Regallis'; swapped with Nav 1 based on WCRPG, whose Nav-position data was independently confirmed pixel-accurate against the real screenshot for both of this system's points."
+              "dest": "Pyrenees"
             },
             {
               "id": "hidden",
@@ -3711,9 +3707,9 @@
             {
               "id": "nav-2",
               "label": "Nav 2",
-              "x": -7500,
-              "y": -12000,
-              "z": -10000,
+              "x": 0,
+              "y": 7500,
+              "z": -5000,
               "sx": 50,
               "sy": 47,
               "coordSource": "unverified",
@@ -3792,8 +3788,8 @@
               "x": 0,
               "y": 0,
               "z": 0,
-              "sx": 48,
-              "sy": 52,
+              "sx": 50,
+              "sy": 50,
               "coordSource": "unverified",
               "visibleOnMap": false,
               "asteroids": false,
@@ -3870,8 +3866,8 @@
               "x": 0,
               "y": 0,
               "z": 0,
-              "sx": 46,
-              "sy": 52,
+              "sx": 50,
+              "sy": 50,
               "coordSource": "unverified",
               "visibleOnMap": false,
               "asteroids": true,
