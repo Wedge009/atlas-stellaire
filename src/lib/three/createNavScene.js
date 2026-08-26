@@ -61,8 +61,6 @@ export function createNavScene({ canvas, onSelect }) {
   grid.material.transparent = true;
   scene.add(grid);
 
-  const star = new THREE.Mesh(new THREE.SphereGeometry(2.2, 24, 24), new THREE.MeshBasicMaterial({ color: 0xffcc44 }));
-  scene.add(star);
   scene.add(new THREE.PointLight(0xffcc66, 1.4, 200));
   scene.add(new THREE.AmbientLight(0x223344, 1.2));
 
@@ -304,7 +302,6 @@ export function createNavScene({ canvas, onSelect }) {
   let rafId = null;
   function tick() {
     rafId = requestAnimationFrame(tick);
-    star.rotation.y += 0.004;
     if (!aligned && !animating) nodeGroup.children.forEach((c) => { if (c.isMesh) c.rotation.y += 0.01; });
     renderer.render(scene, camera);
   }
