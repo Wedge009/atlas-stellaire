@@ -182,7 +182,7 @@ export function createNavScene({ canvas, onSelect }) {
     updateCameraFromOrbit();
   }
   function onWheel(e) {
-    if (interactionLocked) return;
+    if (interactionLocked || aligned) return;
     e.preventDefault();
     radius = Math.min(Math.max(radius + e.deltaY * 0.05, 20), 220);
     updateCameraFromOrbit();
@@ -201,7 +201,7 @@ export function createNavScene({ canvas, onSelect }) {
       theta -= dx * 0.006;
       phi = Math.min(Math.max(phi - dy * 0.006, 0.2), Math.PI - 0.2);
       updateCameraFromOrbit();
-    } else if (e.touches.length === 2) {
+    } else if (e.touches.length === 2 && !aligned) {
       const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
       if (lastTouchDist !== null) {
         radius = Math.min(Math.max(radius - (dist - lastTouchDist) * 0.15, 20), 220);

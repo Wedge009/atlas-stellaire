@@ -56,7 +56,9 @@
   <button type="button" class="align-btn" onclick={toggleAlign} disabled={animating}>
     {aligned ? 'RETURN TO 3D VIEW' : 'ALIGN TO 2D VIEW'}
   </button>
-  <div class="hint">drag to orbit &middot; scroll to zoom &middot; click a node</div>
+  <div class="hint">
+    {aligned ? 'drag to orbit · click a node' : 'drag to orbit · scroll to zoom · click a node'}
+  </div>
 </div>
 
 <style>
