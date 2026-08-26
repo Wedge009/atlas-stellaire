@@ -4,17 +4,16 @@
   import InfoPanel from './InfoPanel.svelte';
   import Legend from './Legend.svelte';
   import { selectedNode, showHidden } from '../stores/selection.js';
+  import { viewMode, viewAligned } from '../stores/view.js';
 
   let { system, data, onJump } = $props();
 
-  let mode = $state('3d');
-  let mapAligned = $state(false);
   let mapAnimating = $state(false);
   // While the 3D view is aligned (or animating to/from aligned) to the 2D projection,
   // switching mode or toggling hidden points would unmount/redraw NavMap3D mid-transition
   // and mangle the projection. Lock from the moment the transition starts, not just once
   // it settles, so there's no window to click through mid-animation.
-  let alignLocked = $derived(mode === '3d' && (mapAligned || mapAnimating));
+  let alignLocked = $derived($viewMode === '3d' && ($viewAligned || mapAnimating));
 
   $effect(() => {
     // reset selection whenever the system changes so no stale node leaks in
@@ -36,14 +35,14 @@
     <div class="hud-controls">
       <button
         type="button"
-        class:active={mode === '2d'}
+        class:active={$viewMode === '2d'}
         disabled={alignLocked}
         title={alignLocked ? 'Return to 3D view before switching to 2D view' : undefined}
-        onclick={() => (mode = '2d')}
+        onclick={() => ($viewMode = '2d')}
       >
         2D VIEW
       </button>
-      <button type="button" class:active={mode === '3d'} onclick={() => (mode = '3d')}>3D VIEW</button>
+      <button type="button" class:active={$viewMode === '3d'} onclick={() => ($viewMode = '3d')}>3D VIEW</button>
       <button
         type="button"
         class:active={$showHidden}
@@ -57,10 +56,10 @@
   </div>
 
   <div class="viewport">
-    {#if mode === '2d'}
+    {#if $viewMode === '2d'}
       <NavMap2D points={visiblePoints} {data} {onJump} />
     {:else}
-      <NavMap3D points={visiblePoints} bind:aligned={mapAligned} bind:animating={mapAnimating} {data} {onJump} />
+      <NavMap3D points={visiblePoints} bind:aligned={$viewAligned} bind:animating={mapAnimating} {data} {onJump} />
     {/if}
   </div>
 

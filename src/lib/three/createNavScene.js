@@ -91,11 +91,17 @@ export function createNavScene({ canvas, onSelect, onJump, data }) {
 
   function setPoints(navPoints) {
     clearNodes();
+    // Nodes must be built in whatever layout (orbit vs flat-aligned) is
+    // currently active, since `setPoints` can be re-invoked (eg the
+    // hidden-points toggle, or a redundant re-run right after mount) while
+    // already aligned - it must not silently snap back to the 3D layout.
+    const initialOpacity = aligned ? 0.12 : 1;
     for (const np of navPoints) {
       const flat = resolveFlatPosition(np);
       const style = styleForNavPoint(np);
       const pos3d = new THREE.Vector3(np.x * SCALE, np.y * SCALE, np.z * SCALE);
       const pos2d = new THREE.Vector3(((flat.sx - 50) / 50) * FLAT_SPAN, 0, ((flat.sy - 50) / 50) * FLAT_SPAN);
+      const initialPos = aligned ? pos2d : pos3d;
 
       let geometry;
       if (style.shape === 'box') geometry = new THREE.BoxGeometry(2.6, 2.6, 2.6);
@@ -110,24 +116,24 @@ export function createNavScene({ canvas, onSelect, onJump, data }) {
         opacity: style.dimmed ? 0.5 : 1,
       });
       const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.copy(pos3d);
+      mesh.position.copy(initialPos);
       mesh.userData = np;
       nodeGroup.add(mesh);
 
-      const dropGeo = new THREE.BufferGeometry().setFromPoints([pos3d.clone(), new THREE.Vector3(pos3d.x, 0, pos3d.z)]);
-      const dropMat = new THREE.LineDashedMaterial({ color: 0x335566, dashSize: 0.8, gapSize: 0.6, transparent: true, opacity: 1 });
+      const dropGeo = new THREE.BufferGeometry().setFromPoints([initialPos.clone(), new THREE.Vector3(initialPos.x, 0, initialPos.z)]);
+      const dropMat = new THREE.LineDashedMaterial({ color: 0x335566, dashSize: 0.8, gapSize: 0.6, transparent: true, opacity: initialOpacity });
       const dropLine = new THREE.Line(dropGeo, dropMat);
       dropLine.computeLineDistances();
       nodeGroup.add(dropLine);
 
-      const spokeGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), pos3d.clone()]);
-      const spokeMat = new THREE.LineBasicMaterial({ color: 0x2266aa, transparent: true, opacity: 0.5 });
+      const spokeGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), initialPos.clone()]);
+      const spokeMat = new THREE.LineBasicMaterial({ color: 0x2266aa, transparent: true, opacity: initialOpacity * 0.5 });
       const spoke = new THREE.Line(spokeGeo, spokeMat);
       nodeGroup.add(spoke);
 
       const labelText = np.label + (np.dest ? `: Jump to ${systemName(data, np.dest)}` : (np.baseName ? `: ${np.baseName}` : ''));
       const label = makeLabel(labelText, '#a8e8ff');
-      label.position.copy(pos3d).add(new THREE.Vector3(0, 2.8, 0));
+      label.position.copy(initialPos).add(new THREE.Vector3(0, 2.8, 0));
       label.userData = np;
       nodeGroup.add(label);
 
@@ -137,7 +143,7 @@ export function createNavScene({ canvas, onSelect, onJump, data }) {
         const ringMat = new THREE.MeshBasicMaterial({ color: 0xa0522d, transparent: true, opacity: 0.6, side: THREE.DoubleSide });
         asteroidRing = new THREE.Mesh(ringGeo, ringMat);
         asteroidRing.rotation.x = -Math.PI / 2;
-        asteroidRing.position.copy(pos3d);
+        asteroidRing.position.copy(initialPos);
         nodeGroup.add(asteroidRing);
       }
 
@@ -281,9 +287,29 @@ export function createNavScene({ canvas, onSelect, onJump, data }) {
       camera.up.lerpVectors(upStart, upEnd, e).normalize();
       camera.lookAt(0, 0, 0);
       if (t < 1) requestAnimationFrame(step);
-      else { animating = false; interactionLocked = false; aligned = true; onDone && onDone(); }
+      else {
+        // Reset the idle spin so a box-shaped node's on-screen orientation
+        // is always the same in the aligned view, however long it spun for.
+        nodes.forEach((n) => n.mesh.rotation.set(0, 0, 0));
+        animating = false; interactionLocked = false; aligned = true; onDone && onDone();
+      }
     }
     requestAnimationFrame(step);
+  }
+
+  // Snaps directly to the aligned/flat layout with no animation, for mounting
+  // a fresh system already in the aligned view (no orbit-to-flat flight).
+  function setAlignedInstant() {
+    nodes.forEach((n) => {
+      n.mesh.position.copy(n.pos2d);
+      n.dropMat.opacity = 0.12;
+      n.spokeMat.opacity = 0.06;
+      updateAuxLines(n);
+    });
+    camera.position.set(0, 120, 0.001);
+    camera.up.set(0, 0, -1);
+    camera.lookAt(0, 0, 0);
+    aligned = true;
   }
 
   function animateToOrbit(onDone) {
@@ -352,6 +378,7 @@ export function createNavScene({ canvas, onSelect, onJump, data }) {
     setPoints,
     animateToAligned,
     animateToOrbit,
+    setAlignedInstant,
     resize,
     dispose,
     isAligned: () => aligned,

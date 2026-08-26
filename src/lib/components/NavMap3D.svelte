@@ -21,6 +21,10 @@
     resize();
     resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
+
+    // If the caller remembers an aligned view (eg from before a system
+    // switch), snap straight to it with no flight animation.
+    if (aligned) scene.setAlignedInstant();
   });
 
   onDestroy(() => {
