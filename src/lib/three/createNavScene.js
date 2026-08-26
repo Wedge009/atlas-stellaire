@@ -170,11 +170,11 @@ export function createNavScene({ canvas, onSelect }) {
   let dragging = false, lastX = 0, lastY = 0, lastTouchDist = null;
 
   function onMouseDown(e) {
-    if (!interactionLocked) { dragging = true; lastX = e.clientX; lastY = e.clientY; }
+    if (!interactionLocked && !aligned) { dragging = true; lastX = e.clientX; lastY = e.clientY; }
   }
   function onMouseUp() { dragging = false; }
   function onMouseMove(e) {
-    if (!dragging || interactionLocked) return;
+    if (!dragging || interactionLocked || aligned) return;
     const dx = e.clientX - lastX, dy = e.clientY - lastY;
     lastX = e.clientX; lastY = e.clientY;
     theta -= dx * 0.005;
@@ -188,14 +188,14 @@ export function createNavScene({ canvas, onSelect }) {
     updateCameraFromOrbit();
   }
   function onTouchStart(e) {
-    if (interactionLocked) return;
+    if (interactionLocked || aligned) return;
     if (e.touches.length === 1) { dragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; }
   }
   function onTouchEnd() { dragging = false; lastTouchDist = null; }
   function onTouchMove(e) {
     if (interactionLocked) return;
     e.preventDefault();
-    if (e.touches.length === 1 && dragging) {
+    if (e.touches.length === 1 && dragging && !aligned) {
       const dx = e.touches[0].clientX - lastX, dy = e.touches[0].clientY - lastY;
       lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
       theta -= dx * 0.006;

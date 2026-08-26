@@ -55,7 +55,7 @@
     {aligned ? 'RETURN TO 3D VIEW' : 'ALIGN TO 2D VIEW'}
   </button>
   <div class="hint">
-    {aligned ? 'drag to orbit · click a node' : 'drag to orbit · scroll to zoom · click a node'}
+    {aligned ? 'click a node' : 'drag to orbit · scroll to zoom · click a node'}
   </div>
 </div>
 
