@@ -6,6 +6,10 @@
 
   let selectedSystemId = $state('troy');
   let system = $derived(findSystem(geminiData, selectedSystemId));
+
+  function goToSystem(id) {
+    if (findSystem(geminiData, id)) selectedSystemId = id;
+  }
 </script>
 
 <main>
@@ -13,7 +17,7 @@
   <div class="main-view">
     {#if system}
       {#key system.id}
-        <SystemView {system} />
+        <SystemView {system} data={geminiData} onJump={goToSystem} />
       {/key}
     {/if}
   </div>

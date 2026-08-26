@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { resolveFlatPosition, styleForNavPoint } from '../utils/navPoints.js';
+import { resolveFlatPosition, styleForNavPoint, systemName } from '../utils/navPoints.js';
 
 const SCALE = 1 / 1000;
 const FLAT_SPAN = 55;
@@ -45,7 +45,7 @@ function makeStars(count, spread) {
 // align/unalign animation between real 3D position and flat sx/sy layout,
 // click-to-select. Generalised from the proof-of-concept to take any
 // system's navPoints array.
-export function createNavScene({ canvas, onSelect }) {
+export function createNavScene({ canvas, onSelect, onJump, data }) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
@@ -125,9 +125,10 @@ export function createNavScene({ canvas, onSelect }) {
       const spoke = new THREE.Line(spokeGeo, spokeMat);
       nodeGroup.add(spoke);
 
-      const labelText = np.label + (np.dest ? `: Jump to ${np.dest}` : (np.baseName ? `: ${np.baseName}` : ''));
+      const labelText = np.label + (np.dest ? `: Jump to ${systemName(data, np.dest)}` : (np.baseName ? `: ${np.baseName}` : ''));
       const label = makeLabel(labelText, '#a8e8ff');
       label.position.copy(pos3d).add(new THREE.Vector3(0, 2.8, 0));
+      label.userData = np;
       nodeGroup.add(label);
 
       let asteroidRing = null;
@@ -226,8 +227,15 @@ export function createNavScene({ canvas, onSelect }) {
   function onClick(e) {
     setMouseFromEvent(e);
     raycaster.setFromCamera(mouse, camera);
-    const hits = raycaster.intersectObjects(nodes.map((n) => n.mesh));
+    const hits = raycaster.intersectObjects(pointerNodeTargets());
     onSelect(hits.length ? hits[0].object.userData : null);
+  }
+  function onDblClick(e) {
+    setMouseFromEvent(e);
+    raycaster.setFromCamera(mouse, camera);
+    const hits = raycaster.intersectObjects(pointerNodeTargets());
+    const np = hits.length ? hits[0].object.userData : null;
+    if (np?.dest) onJump?.(np.dest);
   }
   function onHoverMove(e) {
     if (dragging || animating) return;
@@ -246,6 +254,7 @@ export function createNavScene({ canvas, onSelect }) {
   canvas.addEventListener('touchend', onTouchEnd);
   canvas.addEventListener('touchmove', onTouchMove, { passive: false });
   canvas.addEventListener('click', onClick);
+  canvas.addEventListener('dblclick', onDblClick);
 
   let aligned = false, animating = false;
 
@@ -335,6 +344,7 @@ export function createNavScene({ canvas, onSelect }) {
     canvas.removeEventListener('touchend', onTouchEnd);
     canvas.removeEventListener('touchmove', onTouchMove);
     canvas.removeEventListener('click', onClick);
+    canvas.removeEventListener('dblclick', onDblClick);
     renderer.dispose();
   }
 

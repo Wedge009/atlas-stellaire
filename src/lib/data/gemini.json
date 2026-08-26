@@ -21,7 +21,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Ragnarok"
+              "dest": "ragnarok"
             },
             {
               "id": "nav-2",
@@ -49,7 +49,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Tr'Pakh"
+              "dest": "tr-pakh"
             },
             {
               "id": "nav-4",
@@ -77,7 +77,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Tr'Pakh"
+              "dest": "tr-pakh"
             }
           ]
         },
@@ -97,7 +97,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Surtur"
+              "dest": "surtur"
             },
             {
               "id": "nav-2",
@@ -125,7 +125,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Hyades"
+              "dest": "hyades"
             },
             {
               "id": "hidden",
@@ -159,7 +159,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Lisacc"
+              "dest": "lisacc"
             },
             {
               "id": "nav-2",
@@ -187,7 +187,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Nitir"
+              "dest": "nitir"
             },
             {
               "id": "nav-4",
@@ -215,7 +215,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Mah'Rahn"
+              "dest": "mah-rahn"
             }
           ]
         },
@@ -235,7 +235,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Tingerhoff"
+              "dest": "tingerhoff"
             },
             {
               "id": "nav-2",
@@ -263,7 +263,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Nitir"
+              "dest": "nitir"
             }
           ]
         },
@@ -283,7 +283,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Blockade Point Charlie"
+              "dest": "blockade-point-charlie"
             },
             {
               "id": "nav-2",
@@ -311,7 +311,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Sumn-Kp'ta"
+              "dest": "sumn-kp-ta"
             },
             {
               "id": "nav-4",
@@ -373,7 +373,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Blockade Point Tango"
+              "dest": "blockade-point-tango"
             },
             {
               "id": "hidden",
@@ -407,7 +407,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Blockade Point Tango"
+              "dest": "blockade-point-tango"
             }
           ]
         },
@@ -427,7 +427,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Perry"
+              "dest": "perry"
             },
             {
               "id": "nav-2",
@@ -455,7 +455,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Rikel"
+              "dest": "rikel"
             },
             {
               "id": "nav-4",
@@ -496,7 +496,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Perry"
+              "dest": "perry"
             },
             {
               "id": "nav-2",
@@ -510,7 +510,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Blockade Point Tango"
+              "dest": "blockade-point-tango"
             },
             {
               "id": "nav-3",
@@ -538,7 +538,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "CMF-A"
+              "dest": "cmf-a"
             },
             {
               "id": "nav-5",
@@ -579,7 +579,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Ragnarok"
+              "dest": "ragnarok"
             },
             {
               "id": "nav-2",
@@ -593,7 +593,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Nitir"
+              "dest": "nitir"
             },
             {
               "id": "nav-3",
@@ -607,7 +607,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Midgard"
+              "dest": "midgard"
             },
             {
               "id": "nav-4",
@@ -642,7 +642,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Detroit"
+              "dest": "new-detroit"
             },
             {
               "id": "nav-6",
@@ -656,7 +656,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Newcastle"
+              "dest": "newcastle"
             },
             {
               "id": "nav-7",
@@ -670,7 +670,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Surtur"
+              "dest": "surtur"
             },
             {
               "id": "nav-8",
@@ -684,7 +684,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Tingerhoff"
+              "dest": "tingerhoff"
             },
             {
               "id": "nav-9",
@@ -725,7 +725,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Blockade Point Alpha"
+              "dest": "blockade-point-alpha"
             },
             {
               "id": "nav-2",
@@ -739,7 +739,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Perry"
+              "dest": "perry"
             },
             {
               "id": "nav-3",
@@ -794,7 +794,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Detroit"
+              "dest": "new-detroit"
             },
             {
               "id": "nav-2",
@@ -808,7 +808,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Midgard"
+              "dest": "midgard"
             },
             {
               "id": "nav-3",
@@ -864,7 +864,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "44-P-1M"
+              "dest": "44-p-1m"
             },
             {
               "id": "hidden-1",
@@ -920,7 +920,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Eden"
+              "dest": "eden"
             }
           ]
         },
@@ -940,7 +940,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Tr'Pakh"
+              "dest": "tr-pakh"
             },
             {
               "id": "nav-2",
@@ -954,7 +954,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Hyades"
+              "dest": "hyades"
             },
             {
               "id": "hidden",
@@ -988,7 +988,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Blockade Point Charlie"
+              "dest": "blockade-point-charlie"
             },
             {
               "id": "nav-2",
@@ -1023,7 +1023,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Perry"
+              "dest": "perry"
             },
             {
               "id": "nav-4",
@@ -1037,7 +1037,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "41-GS"
+              "dest": "41-gs"
             }
           ]
         },
@@ -1057,7 +1057,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "CMF-A"
+              "dest": "cmf-a"
             },
             {
               "id": "nav-2",
@@ -1071,7 +1071,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Palan"
+              "dest": "palan"
             },
             {
               "id": "nav-3",
@@ -1106,7 +1106,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Perry"
+              "dest": "perry"
             },
             {
               "id": "nav-5",
@@ -1141,7 +1141,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Nexus"
+              "dest": "nexus"
             }
           ]
         },
@@ -1161,7 +1161,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Sumn-Kp'ta"
+              "dest": "sumn-kp-ta"
             },
             {
               "id": "nav-2",
@@ -1175,7 +1175,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Blockade Point Alpha"
+              "dest": "blockade-point-alpha"
             },
             {
               "id": "hidden",
@@ -1215,7 +1215,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Caledonia"
+              "dest": "new-caledonia"
             },
             {
               "id": "nav-2",
@@ -1243,7 +1243,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Telar"
+              "dest": "telar"
             },
             {
               "id": "hidden-1",
@@ -1291,7 +1291,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Delta"
+              "dest": "delta"
             },
             {
               "id": "nav-2",
@@ -1347,7 +1347,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Gamma"
+              "dest": "gamma"
             }
           ]
         },
@@ -1367,7 +1367,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Crab-12"
+              "dest": "crab-12"
             },
             {
               "id": "nav-2",
@@ -1402,7 +1402,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Sherwood"
+              "dest": "sherwood"
             },
             {
               "id": "nav-4",
@@ -1416,7 +1416,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Famine"
+              "dest": "famine"
             },
             {
               "id": "nav-5",
@@ -1430,7 +1430,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Nexus"
+              "dest": "nexus"
             }
           ]
         },
@@ -1471,7 +1471,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Junction"
+              "dest": "junction"
             },
             {
               "id": "hidden",
@@ -1505,7 +1505,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Caledonia"
+              "dest": "new-caledonia"
             },
             {
               "id": "nav-2",
@@ -1533,7 +1533,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Capella"
+              "dest": "capella"
             },
             {
               "id": "hidden",
@@ -1567,7 +1567,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Pestilence"
+              "dest": "pestilence"
             },
             {
               "id": "nav-2",
@@ -1595,7 +1595,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Famine"
+              "dest": "famine"
             }
           ]
         },
@@ -1615,7 +1615,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Rygannon"
+              "dest": "rygannon"
             },
             {
               "id": "nav-2",
@@ -1671,7 +1671,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Beta"
+              "dest": "beta"
             }
           ]
         },
@@ -1691,7 +1691,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Gamma"
+              "dest": "gamma"
             },
             {
               "id": "hidden",
@@ -1732,7 +1732,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Valhalla"
+              "dest": "valhalla"
             },
             {
               "id": "nav-2",
@@ -1781,7 +1781,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Rikel"
+              "dest": "rikel"
             }
           ]
         },
@@ -1801,7 +1801,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Death"
+              "dest": "death"
             },
             {
               "id": "nav-2",
@@ -1815,7 +1815,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Sherwood"
+              "dest": "sherwood"
             },
             {
               "id": "nav-3",
@@ -1829,7 +1829,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Capella"
+              "dest": "capella"
             },
             {
               "id": "nav-4",
@@ -1863,7 +1863,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Beta"
+              "dest": "beta"
             },
             {
               "id": "nav-2",
@@ -1919,7 +1919,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Delta Prime"
+              "dest": "delta-prime"
             },
             {
               "id": "hidden",
@@ -1953,7 +1953,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Junction"
+              "dest": "junction"
             },
             {
               "id": "nav-2",
@@ -1981,7 +1981,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Telar"
+              "dest": "telar"
             }
           ]
         },
@@ -2022,7 +2022,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Nexus"
+              "dest": "nexus"
             }
           ]
         },
@@ -2042,7 +2042,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Prasepe"
+              "dest": "prasepe"
             },
             {
               "id": "nav-2",
@@ -2077,7 +2077,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "17-AR"
+              "dest": "17-ar"
             },
             {
               "id": "nav-4",
@@ -2091,7 +2091,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Crab-12"
+              "dest": "crab-12"
             },
             {
               "id": "nav-5",
@@ -2105,7 +2105,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Sherwood"
+              "dest": "sherwood"
             },
             {
               "id": "nav-6",
@@ -2146,7 +2146,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Junction"
+              "dest": "junction"
             },
             {
               "id": "nav-2",
@@ -2160,7 +2160,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Tingerhoff"
+              "dest": "tingerhoff"
             },
             {
               "id": "nav-3",
@@ -2195,7 +2195,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Capella"
+              "dest": "capella"
             },
             {
               "id": "nav-5",
@@ -2209,7 +2209,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "KM-252"
+              "dest": "km-252"
             }
           ]
         },
@@ -2229,7 +2229,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Tingerhoff"
+              "dest": "tingerhoff"
             },
             {
               "id": "nav-2",
@@ -2257,7 +2257,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Xytani"
+              "dest": "xytani"
             },
             {
               "id": "nav-4",
@@ -2319,7 +2319,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Death"
+              "dest": "death"
             },
             {
               "id": "nav-2",
@@ -2347,7 +2347,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "War"
+              "dest": "war"
             }
           ]
         },
@@ -2367,7 +2367,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Freyja"
+              "dest": "freyja"
             },
             {
               "id": "nav-2",
@@ -2395,7 +2395,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Troy"
+              "dest": "troy"
             },
             {
               "id": "nav-4",
@@ -2409,7 +2409,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Sherwood"
+              "dest": "sherwood"
             },
             {
               "id": "nav-5",
@@ -2450,7 +2450,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Xytani"
+              "dest": "xytani"
             },
             {
               "id": "nav-2",
@@ -2485,7 +2485,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Delta"
+              "dest": "delta"
             }
           ]
         },
@@ -2505,7 +2505,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Caledonia"
+              "dest": "new-caledonia"
             },
             {
               "id": "nav-2",
@@ -2519,7 +2519,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Regallis"
+              "dest": "regallis"
             },
             {
               "id": "nav-3",
@@ -2582,7 +2582,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Pollux"
+              "dest": "pollux"
             },
             {
               "id": "nav-7",
@@ -2596,7 +2596,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Famine"
+              "dest": "famine"
             },
             {
               "id": "nav-8",
@@ -2610,7 +2610,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Capella"
+              "dest": "capella"
             }
           ]
         },
@@ -2630,7 +2630,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "17-AR"
+              "dest": "17-ar"
             },
             {
               "id": "nav-2",
@@ -2665,7 +2665,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Valhalla"
+              "dest": "valhalla"
             },
             {
               "id": "nav-4",
@@ -2679,7 +2679,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "J900"
+              "dest": "j900"
             }
           ]
         },
@@ -2734,7 +2734,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Telar"
+              "dest": "telar"
             },
             {
               "id": "nav-4",
@@ -2748,7 +2748,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Eden"
+              "dest": "eden"
             }
           ]
         },
@@ -2768,7 +2768,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Pestilence"
+              "dest": "pestilence"
             },
             {
               "id": "nav-2",
@@ -2796,7 +2796,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Troy"
+              "dest": "troy"
             }
           ]
         },
@@ -2816,7 +2816,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Rygannon"
+              "dest": "rygannon"
             },
             {
               "id": "nav-2",
@@ -2844,7 +2844,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Palan"
+              "dest": "palan"
             },
             {
               "id": "hidden",
@@ -2884,7 +2884,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Junction"
+              "dest": "junction"
             },
             {
               "id": "nav-2",
@@ -2898,7 +2898,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Padre"
+              "dest": "padre"
             },
             {
               "id": "nav-3",
@@ -2912,7 +2912,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "XXN-1927"
+              "dest": "xxn-1927"
             },
             {
               "id": "nav-4",
@@ -2926,7 +2926,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Pentonville"
+              "dest": "pentonville"
             }
           ]
         },
@@ -2946,7 +2946,7 @@
               "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Pyrenees"
+              "dest": "pyrenees"
             }
           ]
         },
@@ -2966,7 +2966,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Regallis"
+              "dest": "regallis"
             },
             {
               "id": "nav-2",
@@ -2980,7 +2980,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Pyrenees"
+              "dest": "pyrenees"
             },
             {
               "id": "hidden",
@@ -3014,7 +3014,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "J900"
+              "dest": "j900"
             },
             {
               "id": "nav-2",
@@ -3028,7 +3028,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Nexus"
+              "dest": "nexus"
             },
             {
               "id": "nav-3",
@@ -3063,7 +3063,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Castor"
+              "dest": "castor"
             },
             {
               "id": "nav-5",
@@ -3077,7 +3077,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Constantinople"
+              "dest": "new-constantinople"
             },
             {
               "id": "nav-6",
@@ -3091,7 +3091,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "119CE"
+              "dest": "119ce"
             },
             {
               "id": "nav-7",
@@ -3126,7 +3126,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Pender's Star"
+              "dest": "pender-s-star"
             },
             {
               "id": "nav-9",
@@ -3188,7 +3188,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "119CE"
+              "dest": "119ce"
             },
             {
               "id": "hidden",
@@ -3222,7 +3222,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Junction"
+              "dest": "junction"
             },
             {
               "id": "nav-2",
@@ -3250,7 +3250,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Troy"
+              "dest": "troy"
             }
           ]
         },
@@ -3291,7 +3291,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "119CE"
+              "dest": "119ce"
             },
             {
               "id": "hidden",
@@ -3325,7 +3325,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Sherwood"
+              "dest": "sherwood"
             },
             {
               "id": "nav-2",
@@ -3394,7 +3394,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Caledonia"
+              "dest": "new-caledonia"
             },
             {
               "id": "nav-2",
@@ -3449,7 +3449,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Freyja"
+              "dest": "freyja"
             },
             {
               "id": "nav-2",
@@ -3463,7 +3463,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Troy"
+              "dest": "troy"
             },
             {
               "id": "nav-3",
@@ -3498,7 +3498,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "CM-N1054"
+              "dest": "cm-n1054"
             },
             {
               "id": "nav-5",
@@ -3510,9 +3510,9 @@
               "sy": 50,
               "visibleOnMap": true,
               "asteroids": false,
-              "type": "jump",
-              "description": "Jump Point",
-              "dest": "Callisto"
+              "type": "point",
+              "description": "Nav Point",
+              "dest": null
             },
             {
               "id": "nav-6",
@@ -3553,7 +3553,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Pyrenees"
+              "dest": "pyrenees"
             },
             {
               "id": "nav-2",
@@ -3588,7 +3588,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Pender's Star"
+              "dest": "pender-s-star"
             },
             {
               "id": "nav-4",
@@ -3623,7 +3623,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Regallis"
+              "dest": "regallis"
             },
             {
               "id": "nav-6",
@@ -3658,7 +3658,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "War"
+              "dest": "war"
             },
             {
               "id": "nav-8",
@@ -3670,9 +3670,9 @@
               "sy": 43,
               "visibleOnMap": true,
               "asteroids": false,
-              "type": "jump",
-              "description": "Jump Point",
-              "dest": "Gemini"
+              "type": "point",
+              "description": "Nav Point",
+              "dest": null
             }
           ]
         },
@@ -3713,7 +3713,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Constantinople"
+              "dest": "new-constantinople"
             },
             {
               "id": "nav-3",
@@ -3774,7 +3774,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Surtur"
+              "dest": "surtur"
             }
           ]
         },
@@ -3794,7 +3794,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Rikel"
+              "dest": "rikel"
             },
             {
               "id": "nav-2",
@@ -3822,7 +3822,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Constantinople"
+              "dest": "new-constantinople"
             }
           ]
         },
@@ -3842,7 +3842,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Constantinople"
+              "dest": "new-constantinople"
             },
             {
               "id": "nav-2",
@@ -3877,7 +3877,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Hind's Variable North"
+              "dest": "hind-s-variable-north"
             },
             {
               "id": "hidden",
@@ -3932,7 +3932,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Newcastle"
+              "dest": "newcastle"
             },
             {
               "id": "nav-3",
@@ -4022,7 +4022,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Hind's Variable North"
+              "dest": "hind-s-variable-north"
             },
             {
               "id": "hidden",
@@ -4056,7 +4056,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "DN-N1912"
+              "dest": "dn-n1912"
             },
             {
               "id": "nav-2",
@@ -4126,7 +4126,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Aldebran"
+              "dest": "aldebran"
             }
           ]
         },
@@ -4167,7 +4167,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Detroit"
+              "dest": "new-detroit"
             },
             {
               "id": "nav-3",
@@ -4222,7 +4222,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "XXN-1927"
+              "dest": "xxn-1927"
             },
             {
               "id": "nav-2",
@@ -4236,7 +4236,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Newcastle"
+              "dest": "newcastle"
             },
             {
               "id": "hidden",
@@ -4270,7 +4270,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Detroit"
+              "dest": "new-detroit"
             },
             {
               "id": "nav-2",
@@ -4339,7 +4339,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Metsor"
+              "dest": "metsor"
             },
             {
               "id": "nav-2",
@@ -4353,7 +4353,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Auriga"
+              "dest": "auriga"
             },
             {
               "id": "nav-3",
@@ -4388,7 +4388,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Constantinople"
+              "dest": "new-constantinople"
             },
             {
               "id": "nav-5",
@@ -4402,7 +4402,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Perry"
+              "dest": "perry"
             }
           ]
         },
@@ -4422,7 +4422,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Varnus"
+              "dest": "varnus"
             },
             {
               "id": "nav-2",
@@ -4436,7 +4436,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Detroit"
+              "dest": "new-detroit"
             },
             {
               "id": "nav-3",
@@ -4450,7 +4450,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "44-P-1M"
+              "dest": "44-p-1m"
             },
             {
               "id": "nav-4",
@@ -4464,7 +4464,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Junction"
+              "dest": "junction"
             },
             {
               "id": "nav-5",
@@ -4520,7 +4520,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Newcastle"
+              "dest": "newcastle"
             },
             {
               "id": "nav-8",
@@ -4534,7 +4534,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Aldebran"
+              "dest": "aldebran"
             },
             {
               "id": "nav-9",
@@ -4548,7 +4548,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "XXN-1927"
+              "dest": "xxn-1927"
             }
           ]
         },
@@ -4568,7 +4568,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Saxtogue"
+              "dest": "saxtogue"
             },
             {
               "id": "nav-2",
@@ -4582,7 +4582,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Raxis"
+              "dest": "raxis"
             },
             {
               "id": "nav-3",
@@ -4596,7 +4596,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "XXN-1927"
+              "dest": "xxn-1927"
             },
             {
               "id": "nav-4",
@@ -4610,7 +4610,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Manchester"
+              "dest": "manchester"
             },
             {
               "id": "nav-5",
@@ -4645,7 +4645,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Rikel"
+              "dest": "rikel"
             },
             {
               "id": "nav-7",
@@ -4659,7 +4659,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "ND-57"
+              "dest": "nd-57"
             },
             {
               "id": "nav-8",
@@ -4673,7 +4673,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Perry"
+              "dest": "perry"
             },
             {
               "id": "nav-9",
@@ -4687,7 +4687,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Constantinople"
+              "dest": "new-constantinople"
             }
           ]
         },
@@ -4707,7 +4707,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Saxtogue"
+              "dest": "saxtogue"
             },
             {
               "id": "nav-2",
@@ -4721,7 +4721,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Shangri La"
+              "dest": "shangri-la"
             },
             {
               "id": "nav-3",
@@ -4735,7 +4735,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "XXN-1927"
+              "dest": "xxn-1927"
             },
             {
               "id": "nav-4",
@@ -4776,7 +4776,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Detroit"
+              "dest": "new-detroit"
             },
             {
               "id": "nav-2",
@@ -4852,7 +4852,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Detroit"
+              "dest": "new-detroit"
             },
             {
               "id": "nav-2",
@@ -4887,7 +4887,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Oxford"
+              "dest": "oxford"
             },
             {
               "id": "hidden",
@@ -4921,7 +4921,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Oxford"
+              "dest": "oxford"
             },
             {
               "id": "nav-2",
@@ -4976,7 +4976,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Oxford"
+              "dest": "oxford"
             },
             {
               "id": "nav-2",
@@ -4990,7 +4990,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Detroit"
+              "dest": "new-detroit"
             },
             {
               "id": "nav-3",
@@ -5004,7 +5004,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "New Constantinople"
+              "dest": "new-constantinople"
             },
             {
               "id": "nav-4",
@@ -5018,7 +5018,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "Metsor"
+              "dest": "metsor"
             },
             {
               "id": "nav-5",
@@ -5053,7 +5053,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "119CE"
+              "dest": "119ce"
             },
             {
               "id": "nav-7",

@@ -23,6 +23,11 @@ export function findSystem(data, systemId) {
   return null;
 }
 
+// Resolves a nav point's `dest` (a system id) to its display name.
+export function systemName(data, systemId) {
+  return findSystem(data, systemId)?.name ?? systemId;
+}
+
 const TYPE_STYLES = {
   jump: { shape: 'sphere', color: '#4dc8ff', emissive: '#0a3a55' },
   base: { shape: 'box', color: '#33cc55', emissive: '#114411' },
@@ -44,8 +49,8 @@ export function styleForNavPoint(navPoint) {
   };
 }
 
-export function navPointLabel(navPoint) {
-  if (navPoint.dest) return `${navPoint.label}: Jump to ${navPoint.dest}`;
+export function navPointLabel(navPoint, /** @type {any} */ data) {
+  if (navPoint.dest) return `${navPoint.label}: Jump to ${systemName(data, navPoint.dest)}`;
   if (navPoint.baseName) return `${navPoint.label}: ${navPoint.baseName}`;
   return navPoint.label;
 }

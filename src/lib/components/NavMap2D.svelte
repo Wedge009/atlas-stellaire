@@ -2,7 +2,7 @@
   import { resolveFlatPosition, styleForNavPoint, navPointLabel } from '../utils/navPoints.js';
   import { selectedNode } from '../stores/selection.js';
 
-  let { points } = $props();
+  let { points, data, onJump } = $props();
 
   let display = $derived(
     points.map((np) => ({
@@ -16,6 +16,10 @@
 
   function select(np) {
     selectedNode.set(np);
+  }
+
+  function jump(np) {
+    if (np.dest) onJump?.(np.dest);
   }
 </script>
 
@@ -34,6 +38,7 @@
       class="node"
       transform="translate({d.flat.sx}, {d.flat.sy})"
       onclick={() => select(d.np)}
+      ondblclick={() => jump(d.np)}
       role="button"
       tabindex="0"
       onkeydown={(e) => e.key === 'Enter' && select(d.np)}
@@ -49,7 +54,7 @@
       {#if isSelected}
         <circle r="3.2" class="select-ring" />
       {/if}
-      <text x="2.4" y="0.5" class="label">{navPointLabel(d.np)}</text>
+      <text x="2.4" y="0.5" class="label">{navPointLabel(d.np, data)}</text>
     </g>
   {/each}
 </svg>

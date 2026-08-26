@@ -1,6 +1,9 @@
 <script>
   import { selectedNode } from '../stores/selection.js';
   import { baseTypeIcon } from '../utils/baseTypes.js';
+  import { systemName } from '../utils/navPoints.js';
+
+  let { data } = $props();
 </script>
 
 {#if $selectedNode}
@@ -12,7 +15,7 @@
         <img class="base-icon" src={icon} alt={d.baseType} />
       {/if}
       <div class="info-text">
-        <div class="name">{d.label}{#if d.dest}: Jump to {d.dest}{/if}</div>
+        <div class="name">{d.label}{#if d.dest}: Jump to {systemName(data, d.dest)}{/if}</div>
         <div class="row">{d.description}</div>
         <div class="row coords">X {d.x}&nbsp; Y {d.y}&nbsp; Z {d.z}</div>
         {#if d.baseName && d.facilities}

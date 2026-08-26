@@ -3,7 +3,7 @@
   import { createNavScene } from '../three/createNavScene.js';
   import { selectedNode } from '../stores/selection.js';
 
-  let { points, aligned = $bindable(false), animating = $bindable(false) } = $props();
+  let { points, aligned = $bindable(false), animating = $bindable(false), data, onJump } = $props();
 
   let canvas;
   let container;
@@ -14,6 +14,8 @@
     scene = createNavScene({
       canvas,
       onSelect: (np) => selectedNode.set(np),
+      onJump,
+      data,
     });
     scene.setPoints(points);
     resize();
@@ -55,7 +57,9 @@
     {aligned ? 'RETURN TO 3D VIEW' : 'ALIGN TO 2D VIEW'}
   </button>
   <div class="hint">
-    {aligned ? 'click a node' : 'drag to orbit · scroll to zoom · click a node'}
+    {aligned
+      ? 'click a node · double-click a jump point to travel'
+      : 'drag to orbit · scroll to zoom · click a node · double-click a jump point to travel'}
   </div>
 </div>
 

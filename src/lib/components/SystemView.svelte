@@ -5,7 +5,7 @@
   import Legend from './Legend.svelte';
   import { selectedNode, showHidden } from '../stores/selection.js';
 
-  let { system } = $props();
+  let { system, data, onJump } = $props();
 
   let mode = $state('3d');
   let mapAligned = $state(false);
@@ -58,13 +58,13 @@
 
   <div class="viewport">
     {#if mode === '2d'}
-      <NavMap2D points={visiblePoints} />
+      <NavMap2D points={visiblePoints} {data} {onJump} />
     {:else}
-      <NavMap3D points={visiblePoints} bind:aligned={mapAligned} bind:animating={mapAnimating} />
+      <NavMap3D points={visiblePoints} bind:aligned={mapAligned} bind:animating={mapAnimating} {data} {onJump} />
     {/if}
   </div>
 
-  <div class="overlay-info"><InfoPanel /></div>
+  <div class="overlay-info"><InfoPanel {data} /></div>
   <div class="overlay-legend"><Legend showHidden={$showHidden} /></div>
 </div>
 
