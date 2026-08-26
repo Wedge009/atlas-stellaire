@@ -153,7 +153,7 @@ export function createNavScene({ canvas, onSelect }) {
   }
 
   // --- orbit camera ---
-  let radius = 90, theta = Math.PI / 4, phi = Math.PI / 3.2;
+  let radius = 180, theta = Math.PI / 4, phi = Math.PI / 3.2;
   let savedRadius = radius, savedTheta = theta, savedPhi = phi;
   let interactionLocked = false;
 
