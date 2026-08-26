@@ -5,8 +5,8 @@
 {#if $selectedNode}
   {@const d = $selectedNode}
   <div class="info">
-    <div class="name">{d.label}{#if d.dest} &rarr; {d.dest}{/if}</div>
-    <div class="row">{d.baseName ? d.baseName + ' — ' : ''}{d.description}</div>
+    <div class="name">{d.label}{#if d.dest}: Jump to {d.dest}{/if}</div>
+    <div class="row">{d.description}</div>
     <div class="row coords">X {d.x}&nbsp; Y {d.y}&nbsp; Z {d.z}</div>
     {#if d.baseName}
       <div class="row muted">{d.baseType}</div>

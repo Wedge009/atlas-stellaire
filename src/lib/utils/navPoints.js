@@ -44,7 +44,7 @@ export function styleForNavPoint(navPoint) {
 }
 
 export function navPointLabel(navPoint) {
-  if (navPoint.dest) return `${navPoint.label} → ${navPoint.dest}`;
+  if (navPoint.dest) return `${navPoint.label}: Jump to ${navPoint.dest}`;
   if (navPoint.baseName) return `${navPoint.label}: ${navPoint.baseName}`;
   return navPoint.label;
 }
