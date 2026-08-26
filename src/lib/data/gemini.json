@@ -393,7 +393,7 @@
         },
         {
           "id": "mah-rahn",
-          "name": "Mah'Rahn",
+          "name": "Mah’Rahn",
           "navPoints": [
             {
               "id": "nav-1",
@@ -926,7 +926,7 @@
         },
         {
           "id": "sumn-kp-ta",
-          "name": "Sumn-Kp'ta",
+          "name": "Sumn-Kp’ta",
           "navPoints": [
             {
               "id": "nav-1",
@@ -1147,7 +1147,7 @@
         },
         {
           "id": "tr-pakh",
-          "name": "Tr'Pakh",
+          "name": "Tr’Pakh",
           "navPoints": [
             {
               "id": "nav-1",
@@ -2532,9 +2532,9 @@
               "visibleOnMap": true,
               "asteroids": true,
               "type": "base",
-              "description": "Tuck's Pirate Base",
+              "description": "Tuck’s Pirate Base",
               "dest": null,
-              "baseName": "Tuck's",
+              "baseName": "Tuck’s",
               "baseType": "pirate",
               "facilities": {
                 "merchantsGuild": false,
@@ -3208,7 +3208,7 @@
         },
         {
           "id": "pender-s-star",
-          "name": "Pender's Star",
+          "name": "Pender’s Star",
           "navPoints": [
             {
               "id": "nav-1",
@@ -4042,7 +4042,7 @@
         },
         {
           "id": "hind-s-variable-north",
-          "name": "Hind's Variable North",
+          "name": "Hind’s Variable North",
           "navPoints": [
             {
               "id": "nav-1",
