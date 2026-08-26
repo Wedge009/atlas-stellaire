@@ -353,7 +353,7 @@ export function createNavScene({ canvas, onSelect, onJump, data }) {
   let rafId = null;
   function tick() {
     rafId = requestAnimationFrame(tick);
-    if (!aligned && !animating) nodeGroup.children.forEach((c) => { if (c.isMesh) c.rotation.y += 0.01; });
+    if (!animating) nodeGroup.children.forEach((c) => { if (c.isMesh) c.rotation.y += 0.01; });
     renderer.render(scene, camera);
   }
   tick();
