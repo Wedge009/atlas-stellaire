@@ -91,7 +91,7 @@
   .dot-base { fill: #33cc55; }
   .label {
     fill: #a8e8ff;
-    font-size: 2.1px;
+    font-size: 3px;
     paint-order: stroke;
     stroke: #000;
     stroke-width: 0.4px;
