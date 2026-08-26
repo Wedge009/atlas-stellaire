@@ -3,13 +3,11 @@
   import { createNavScene } from '../three/createNavScene.js';
   import { selectedNode } from '../stores/selection.js';
 
-  let { points } = $props();
+  let { points, aligned = $bindable(false), animating = $bindable(false) } = $props();
 
   let canvas;
   let container;
   let scene = null;
-  let aligned = $state(false);
-  let animating = $state(false);
   let resizeObserver;
 
   onMount(() => {
