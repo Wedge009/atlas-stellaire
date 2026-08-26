@@ -131,7 +131,7 @@ export function createNavScene({ canvas, onSelect }) {
 
       let asteroidRing = null;
       if (np.asteroids) {
-        const ringGeo = new THREE.RingGeometry(1.4, 1.7, 24);
+        const ringGeo = new THREE.RingGeometry(2.0, 2.5, 24);
         const ringMat = new THREE.MeshBasicMaterial({ color: 0xa0522d, transparent: true, opacity: 0.6, side: THREE.DoubleSide });
         asteroidRing = new THREE.Mesh(ringGeo, ringMat);
         asteroidRing.rotation.x = -Math.PI / 2;
