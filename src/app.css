@@ -40,7 +40,7 @@ button {
   background: rgba(5, 10, 15, 0.85);
   border: 1px solid var(--border-red);
   color: #ff9999;
-  font-size: 11px;
+  font-size: 12px;
   padding: 10px 14px;
   cursor: pointer;
   letter-spacing: 1px;

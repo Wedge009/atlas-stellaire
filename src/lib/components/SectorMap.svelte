@@ -82,7 +82,7 @@
   .quadrant-label {
     fill: var(--text-amber);
     font-family: var(--font-display);
-    font-size: 2.6px;
+    font-size: 3px;
     letter-spacing: 0.3px;
   }
   .edge { stroke: #4dc8ff; stroke-width: 0.15; opacity: 0.45; }

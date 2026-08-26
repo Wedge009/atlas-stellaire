@@ -61,6 +61,6 @@
     line-height: 1.5;
   }
   .row { color: var(--text-cyan); }
-  .row.coords { margin-top: 6px; color: #557; }
+  .row.coords { margin-top: 6px; color: #668; }
   .row.muted { color: #6a8a99; font-size: 15px; }
 </style>

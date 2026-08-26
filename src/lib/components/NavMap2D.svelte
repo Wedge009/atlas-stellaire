@@ -72,7 +72,7 @@
   .node { cursor: pointer; }
   .label {
     fill: #a8e8ff;
-    font-size: 2.4px;
+    font-size: 2.5px;
     paint-order: stroke;
     stroke: #000;
     stroke-width: 0.4px;

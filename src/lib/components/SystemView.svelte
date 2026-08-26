@@ -87,7 +87,7 @@
   }
   .hud-main {
     font-family: var(--font-display);
-    font-size: 13px;
+    font-size: 14px;
     color: var(--grid-red);
     letter-spacing: 1px;
     text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
@@ -116,7 +116,7 @@
   }
   .overlay-legend {
     position: absolute;
-    bottom: 36px;
+    bottom: 40px;
     right: 18px;
     z-index: 15;
   }

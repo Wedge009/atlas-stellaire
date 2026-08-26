@@ -44,7 +44,7 @@
   }
   .title {
     font-family: var(--font-display);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--grid-red);
     text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
     margin-bottom: 14px;
@@ -58,7 +58,7 @@
   .quadrant { margin-bottom: 16px; }
   .quadrant-name {
     font-family: var(--font-display);
-    font-size: 10px;
+    font-size: 12px;
     color: var(--text-amber);
     margin-bottom: 6px;
     letter-spacing: 1px;

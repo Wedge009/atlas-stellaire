@@ -89,8 +89,8 @@
     position: absolute;
     bottom: 12px;
     right: 16px;
-    color: #446;
-    font-size: 14px;
+    color: #668;
+    font-size: 16px;
     pointer-events: none;
   }
 </style>
