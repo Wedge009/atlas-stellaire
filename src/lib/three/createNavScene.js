@@ -100,7 +100,6 @@ export function createNavScene({ canvas, onSelect }) {
       let geometry;
       if (style.shape === 'box') geometry = new THREE.BoxGeometry(2.6, 2.6, 2.6);
       else if (style.shape === 'dot') geometry = new THREE.SphereGeometry(1.0, 14, 14);
-      else if (style.shape === 'ghost') geometry = new THREE.SphereGeometry(1.2, 12, 12);
       else geometry = new THREE.SphereGeometry(1.6, 16, 16);
 
       const material = new THREE.MeshStandardMaterial({

@@ -23,23 +23,24 @@ export function findSystem(data, systemId) {
   return null;
 }
 
-const TYPE_COLORS = {
-  jump: { color: '#4dc8ff', emissive: '#0a3a55' },
-  base: { color: '#33cc55', emissive: '#114411' },
-  point: { color: '#e0d060', emissive: '#4a3f10' },
-  unknown: { color: '#6a7a85', emissive: '#1a2226' },
+const TYPE_STYLES = {
+  jump: { shape: 'sphere', color: '#4dc8ff', emissive: '#0a3a55' },
+  base: { shape: 'box', color: '#33cc55', emissive: '#114411' },
+  point: { shape: 'dot', color: '#e0d060', emissive: '#4a3f10' },
 };
 
-// Returns the visual treatment for a nav point: shape and color.
+const HIDDEN_COLOR = '#6a7a85';
+const HIDDEN_EMISSIVE = '#1a2226';
+
+// Returns the visual treatment for a nav point: shape by type, color/dimming by visibility.
 export function styleForNavPoint(navPoint) {
-  const type = navPoint.type || 'unknown';
-  const shape = type === 'base' ? 'box' : type === 'point' ? 'dot' : type === 'jump' ? 'sphere' : 'ghost';
-  const palette = TYPE_COLORS[type] || TYPE_COLORS.unknown;
+  const style = TYPE_STYLES[navPoint.type];
+  const hidden = !navPoint.visibleOnMap;
   return {
-    shape,
-    color: palette.color,
-    emissive: palette.emissive,
-    dimmed: type === 'unknown',
+    shape: style.shape,
+    color: hidden ? HIDDEN_COLOR : style.color,
+    emissive: hidden ? HIDDEN_EMISSIVE : style.emissive,
+    dimmed: hidden,
   };
 }
 
