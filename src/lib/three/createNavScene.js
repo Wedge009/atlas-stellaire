@@ -43,7 +43,7 @@ function makeStars(count, spread) {
 
 // Factory wrapping the imperative Three.js nav-map scene: orbit camera,
 // align/unalign animation between real 3D position and flat sx/sy layout,
-// click-to-select. Generalized from the Troy proof-of-concept to take any
+// click-to-select. Generalised from the proof-of-concept to take any
 // system's navPoints array.
 export function createNavScene({ canvas, onSelect }) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });

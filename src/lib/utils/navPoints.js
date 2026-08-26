@@ -32,7 +32,7 @@ const TYPE_STYLES = {
 const HIDDEN_COLOR = '#6a7a85';
 const HIDDEN_EMISSIVE = '#1a2226';
 
-// Returns the visual treatment for a nav point: shape by type, color/dimming by visibility.
+// Returns the visual treatment for a nav point: shape by type, colour/dimming by visibility.
 export function styleForNavPoint(navPoint) {
   const style = TYPE_STYLES[navPoint.type];
   const hidden = !navPoint.visibleOnMap;
