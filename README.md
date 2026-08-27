@@ -8,7 +8,7 @@ expansion, Righteous Fire.
 The code in this repository is licensed under the GNU General Public
 License v3.0 — see [LICENSE](LICENSE).
 
-Wing Commander: Privateer and Righteous Fire, were originally developed by
+Wing Commander: Privateer and Righteous Fire were originally developed by
 Origin Systems and published by Electronic Arts. This is an unofficial,
 non-commercial fan project, not affiliated with or endorsed by Electronic Arts.
 The co-ordinate data in `gemini.json` is derived from the copyrighted game
