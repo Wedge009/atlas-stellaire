@@ -39,3 +39,19 @@ it contains.
   with no visible icon).
 - `TABLE.DAT` — a 69×69 (Privateer) shortest-path matrix between all systems,
   used to independently verify the jump network.
+
+### Rendering: live projection, not a separate layout
+
+`gemini.json` stores only the real extracted co-ordinates — no separate,
+hand-placed 2D layout is maintained alongside them. The app calculates every
+on-screen position at render time, in `navPoints.js`:
+
+- **Nav points** (`resolveFlatPosition`): the flat 2D map, and the 3D view's
+  2D-aligned top-down mode, project a nav point's real (X, Y, Z) straight down
+  the Z-axis — `sx = 50 + 0.0007·x`, `sy = 50 − 0.0007·y`.
+- **Systems** (`sectorPosition`): a system's position on the sector map is
+  projected from its quadrant-local (`qx`, `qy`) — the raw `SYSTINFO` values
+  — via `gx = 100 + (94/137)·qx`, `gy = 100 + (94/140)·qy`. All four
+  quadrants share one co-ordinate origin at the point where the quadrants meet, so
+  no per-quadrant branching is needed: the sign of `qx`/`qy` alone puts a
+  system in the right quadrant.
