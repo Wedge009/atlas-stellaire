@@ -1,8 +1,15 @@
 // Shared helpers for working with the gemini.json sector data.
 
-// Resolves the flat (sx, sy) position to actually render.
+// Scale from a nav point's real in-game X/Y units to the 0-100 flat map
+// space, fitted against the sector's original hand-placed layout (see
+// project history) and confirmed against every non-estimated nav point.
+const FLAT_SCALE = 0.0007;
+
+// Projects a nav point's real 3D position down to a flat 2D map: an
+// orthographic top-down view along the game's Z-axis, using its X/Y
+// in-game co-ordinates directly.
 export function resolveFlatPosition(navPoint) {
-  return { sx: navPoint.sx, sy: navPoint.sy };
+  return { sx: 50 + FLAT_SCALE * navPoint.x, sy: 50 - FLAT_SCALE * navPoint.y };
 }
 
 export function flattenSystems(data) {
