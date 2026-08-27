@@ -1,46 +1,65 @@
 <script>
-  let { data, selectedSystemId, topView, onSelect, onShowSector } = $props();
+  let { data, selectedSystemId, topView, onSelect, onShowSector, onShowAbout } = $props();
 </script>
 
 <nav class="sector-nav">
-  <div class="title">GEMINI SECTOR</div>
-  <button
-    type="button"
-    class="sector-map-btn"
-    class:active={topView === 'sector'}
-    onclick={() => onShowSector?.()}
-  >
-    SECTOR MAP
-  </button>
-  {#each data.quadrants as quadrant (quadrant.id)}
-    <div class="quadrant">
-      <div class="quadrant-name">{quadrant.name}</div>
-      <ul>
-        {#each quadrant.systems as system (system.id)}
-          <li>
-            <button
-              type="button"
-              class="system-btn"
-              class:active={system.id === selectedSystemId}
-              onclick={() => onSelect(system.id)}
-            >
-              {system.name}
-            </button>
-          </li>
-        {/each}
-      </ul>
-    </div>
-  {/each}
+  <div class="nav-scroll">
+    <div class="title">GEMINI SECTOR</div>
+    <button
+      type="button"
+      class="sector-map-btn"
+      class:active={topView === 'sector'}
+      onclick={() => onShowSector?.()}
+    >
+      SECTOR MAP
+    </button>
+    {#each data.quadrants as quadrant (quadrant.id)}
+      <div class="quadrant">
+        <div class="quadrant-name">{quadrant.name}</div>
+        <ul>
+          {#each quadrant.systems as system (system.id)}
+            <li>
+              <button
+                type="button"
+                class="system-btn"
+                class:active={system.id === selectedSystemId}
+                onclick={() => onSelect(system.id)}
+              >
+                {system.name}
+              </button>
+            </li>
+          {/each}
+        </ul>
+      </div>
+    {/each}
+  </div>
+  <div class="nav-footer">
+    <button type="button" class="about-btn" onclick={() => onShowAbout?.()}>ABOUT</button>
+  </div>
 </nav>
 
 <style>
   .sector-nav {
     width: 220px;
     height: 100%;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
     background: #05080a;
     border-right: 1px solid #331515;
+  }
+  .nav-scroll {
+    flex: 1;
+    overflow-y: auto;
     padding: 12px 10px;
+  }
+  .nav-footer {
+    flex: 0 0 auto;
+    padding: 10px;
+    border-top: 1px solid #331515;
+  }
+  .about-btn {
+    display: block;
+    width: 100%;
   }
   .title {
     font-family: var(--font-display);

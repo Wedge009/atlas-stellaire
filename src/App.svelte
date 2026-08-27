@@ -3,11 +3,13 @@
   import SectorNav from './lib/components/SectorNav.svelte';
   import SystemView from './lib/components/SystemView.svelte';
   import SectorMap from './lib/components/SectorMap.svelte';
+  import About from './lib/components/About.svelte';
   import { findSystem } from './lib/utils/navPoints.js';
 
   let geminiData = $state(null);
   let selectedSystemId = $state(null);
   let topView = $state('sector'); // 'system' | 'sector'
+  let showAbout = $state(false);
   let system = $derived(geminiData ? findSystem(geminiData, selectedSystemId) : null);
 
   onMount(async () => {
@@ -31,6 +33,7 @@
       {topView}
       onSelect={goToSystem}
       onShowSector={() => (topView = 'sector')}
+      onShowAbout={() => (showAbout = true)}
     />
     <div class="main-view">
       {#if topView === 'sector'}
@@ -43,6 +46,9 @@
     </div>
   {:else}
     <div class="loading">LOADING SECTOR DATA&hellip;</div>
+  {/if}
+  {#if showAbout}
+    <About onClose={() => (showAbout = false)} />
   {/if}
 </main>
 
