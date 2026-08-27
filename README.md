@@ -3,6 +3,18 @@
 A nostalgic revisit of the Gemini sector from Wing Commander: Privateer and its
 expansion, Righteous Fire.
 
+## Licence and copyright
+
+The code in this repository is licensed under the GNU General Public
+License v3.0 — see [LICENSE](LICENSE).
+
+Wing Commander: Privateer and Righteous Fire, were originally developed by
+Origin Systems and published by Electronic Arts. This is an unofficial,
+non-commercial fan project, not affiliated with or endorsed by Electronic Arts.
+The co-ordinate data in `gemini.json` is derived from the copyrighted game
+archives described below; no rights to the original game, its assets, or its
+data are claimed, and all related trademarks belong to their respective owners.
+
 ## Data sources
 
 The co-ordinates in `gemini.json` — sector-map quadrant/system positions and
