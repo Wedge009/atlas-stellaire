@@ -30,10 +30,19 @@ export function findSystem(data, systemId) {
   return null;
 }
 
-// Global sector-map position for a system: its quadrant tile (100 units square,
-// placed by gridCol/gridRow) offset by the system's own local sx/sy.
-export function sectorPosition(quadrant, system) {
-  return { gx: quadrant.gridCol * 100 + system.sx, gy: quadrant.gridRow * 100 + system.sy };
+// Scale from a system's real in-game quadrant-local X/Y units (qx, qy - raw
+// int16 values straight from the game's QUADRANT.IFF) to the sector map's
+// continuous grid space, where each quadrant tile is 100 units square. Every
+// quadrant shares the same co-ordinate origin at the point where all four
+// tiles meet, so a single pair of scales (with no per-quadrant branching)
+// places a system correctly regardless of which quadrant it's in: negative
+// qx/qy sit in the west/south tiles, positive in the east/north tiles.
+const SECTOR_SCALE = { x: 94 / 137, y: 94 / 140 };
+
+// Global sector-map position for a system, projected directly from its real
+// quadrant-local co-ordinates rather than a separately hand-placed layout.
+export function sectorPosition(system) {
+  return { gx: 100 + SECTOR_SCALE.x * system.qx, gy: 100 + SECTOR_SCALE.y * system.qy };
 }
 
 // Flattens every system across all quadrants with its resolved global position.
@@ -41,7 +50,7 @@ export function sectorSystems(data) {
   const systems = [];
   for (const quadrant of data.quadrants) {
     for (const system of quadrant.systems) {
-      const { gx, gy } = sectorPosition(quadrant, system);
+      const { gx, gy } = sectorPosition(system);
       systems.push({ ...system, quadrantId: quadrant.id, quadrantName: quadrant.name, gx, gy });
     }
   }

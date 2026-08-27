@@ -10,8 +10,8 @@
         {
           "id": "blockade-point-alpha",
           "name": "Blockade Point Alpha",
-          "sx": 29,
-          "sy": 19,
+          "qx": 42,
+          "qy": -122,
           "navPoints": [
             {
               "id": "nav-1",
@@ -102,8 +102,8 @@
         {
           "id": "blockade-point-charlie",
           "name": "Blockade Point Charlie",
-          "sx": 59,
-          "sy": 63,
+          "qx": 86,
+          "qy": -56,
           "navPoints": [
             {
               "id": "nav-1",
@@ -158,8 +158,8 @@
         {
           "id": "blockade-point-tango",
           "name": "Blockade Point Tango",
-          "sx": 70,
-          "sy": 55,
+          "qx": 102,
+          "qy": -68,
           "navPoints": [
             {
               "id": "nav-1",
@@ -226,8 +226,8 @@
         {
           "id": "cmf-a",
           "name": "CMF-A",
-          "sx": 23,
-          "sy": 57,
+          "qx": 33,
+          "qy": -65,
           "navPoints": [
             {
               "id": "nav-1",
@@ -270,8 +270,8 @@
         {
           "id": "hyades",
           "name": "Hyades",
-          "sx": 68,
-          "sy": 31,
+          "qx": 99,
+          "qy": -104,
           "navPoints": [
             {
               "id": "nav-1",
@@ -333,8 +333,8 @@
         {
           "id": "lisacc",
           "name": "Lisacc",
-          "sx": 78,
-          "sy": 82,
+          "qx": 114,
+          "qy": -27,
           "navPoints": [
             {
               "id": "nav-1",
@@ -384,8 +384,8 @@
         {
           "id": "mah-rahn",
           "name": "Mah’Rahn",
-          "sx": 83,
-          "sy": 37,
+          "qx": 122,
+          "qy": -95,
           "navPoints": [
             {
               "id": "nav-1",
@@ -404,8 +404,8 @@
         {
           "id": "midgard",
           "name": "Midgard",
-          "sx": 21,
-          "sy": 83,
+          "qx": 30,
+          "qy": -26,
           "navPoints": [
             {
               "id": "nav-1",
@@ -467,8 +467,8 @@
         {
           "id": "nitir",
           "name": "Nitir",
-          "sx": 41,
-          "sy": 52,
+          "qx": 59,
+          "qy": -73,
           "navPoints": [
             {
               "id": "nav-1",
@@ -542,8 +542,8 @@
         {
           "id": "perry",
           "name": "Perry",
-          "sx": 28,
-          "sy": 74,
+          "qx": 41,
+          "qy": -39,
           "navPoints": [
             {
               "id": "nav-1",
@@ -672,8 +672,8 @@
         {
           "id": "ragnarok",
           "name": "Ragnarok",
-          "sx": 12,
-          "sy": 49,
+          "qx": 17,
+          "qy": -77,
           "navPoints": [
             {
               "id": "nav-1",
@@ -735,8 +735,8 @@
         {
           "id": "rikel",
           "name": "Rikel",
-          "sx": 6,
-          "sy": 89,
+          "qx": 8,
+          "qy": -17,
           "navPoints": [
             {
               "id": "nav-1",
@@ -865,8 +865,8 @@
         {
           "id": "sumn-kp-ta",
           "name": "Sumn-Kp’ta",
-          "sx": 84,
-          "sy": 19,
+          "qx": 123,
+          "qy": -123,
           "navPoints": [
             {
               "id": "nav-1",
@@ -909,8 +909,8 @@
         {
           "id": "surtur",
           "name": "Surtur",
-          "sx": 44,
-          "sy": 78,
+          "qx": 64,
+          "qy": -33,
           "navPoints": [
             {
               "id": "nav-1",
@@ -972,8 +972,8 @@
         {
           "id": "tingerhoff",
           "name": "Tingerhoff",
-          "sx": 14,
-          "sy": 66,
+          "qx": 19,
+          "qy": -52,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1066,8 +1066,8 @@
         {
           "id": "tr-pakh",
           "name": "Tr’Pakh",
-          "sx": 80,
-          "sy": 9,
+          "qx": 117,
+          "qy": -137,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1118,8 +1118,8 @@
         {
           "id": "17-ar",
           "name": "17-AR",
-          "sx": 14,
-          "sy": 45,
+          "qx": -126,
+          "qy": -83,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1186,8 +1186,8 @@
         {
           "id": "beta",
           "name": "Beta",
-          "sx": 72,
-          "sy": 20,
+          "qx": -40,
+          "qy": -121,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1254,8 +1254,8 @@
         {
           "id": "capella",
           "name": "Capella",
-          "sx": 54,
-          "sy": 54,
+          "qx": -66,
+          "qy": -69,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1329,8 +1329,8 @@
         {
           "id": "castor",
           "name": "Castor",
-          "sx": 63,
-          "sy": 89,
+          "qx": -54,
+          "qy": -16,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1380,8 +1380,8 @@
         {
           "id": "crab-12",
           "name": "Crab-12",
-          "sx": 43,
-          "sy": 45,
+          "qx": -83,
+          "qy": -83,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1436,8 +1436,8 @@
         {
           "id": "death",
           "name": "Death",
-          "sx": 47,
-          "sy": 70,
+          "qx": -77,
+          "qy": -46,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1480,8 +1480,8 @@
         {
           "id": "delta",
           "name": "Delta",
-          "sx": 32,
-          "sy": 23,
+          "qx": -99,
+          "qy": -116,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1548,8 +1548,8 @@
         {
           "id": "delta-prime",
           "name": "Delta Prime",
-          "sx": 22,
-          "sy": 11,
+          "qx": -115,
+          "qy": -135,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1587,8 +1587,8 @@
         {
           "id": "eden",
           "name": "Eden",
-          "sx": 66,
-          "sy": 67,
+          "qx": -49,
+          "qy": -50,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1686,8 +1686,8 @@
         {
           "id": "famine",
           "name": "Famine",
-          "sx": 41,
-          "sy": 62,
+          "qx": -86,
+          "qy": -58,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1742,8 +1742,8 @@
         {
           "id": "gamma",
           "name": "Gamma",
-          "sx": 55,
-          "sy": 16,
+          "qx": -65,
+          "qy": -127,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1822,8 +1822,8 @@
         {
           "id": "j900",
           "name": "J900",
-          "sx": 7,
-          "sy": 86,
+          "qx": -136,
+          "qy": -21,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1866,8 +1866,8 @@
         {
           "id": "km-252",
           "name": "KM-252",
-          "sx": 91,
-          "sy": 80,
+          "qx": -12,
+          "qy": -30,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1905,8 +1905,8 @@
         {
           "id": "new-caledonia",
           "name": "New Caledonia",
-          "sx": 30,
-          "sy": 37,
+          "qx": -102,
+          "qy": -95,
           "navPoints": [
             {
               "id": "nav-1",
@@ -1999,8 +1999,8 @@
         {
           "id": "nexus",
           "name": "Nexus",
-          "sx": 87,
-          "sy": 71,
+          "qx": -18,
+          "qy": -44,
           "navPoints": [
             {
               "id": "nav-1",
@@ -2074,8 +2074,8 @@
         {
           "id": "palan",
           "name": "Palan",
-          "sx": 79,
-          "sy": 40,
+          "qx": -30,
+          "qy": -90,
           "navPoints": [
             {
               "id": "nav-1",
@@ -2156,8 +2156,8 @@
         {
           "id": "pestilence",
           "name": "Pestilence",
-          "sx": 63,
-          "sy": 77,
+          "qx": -54,
+          "qy": -34,
           "navPoints": [
             {
               "id": "nav-1",
@@ -2200,8 +2200,8 @@
         {
           "id": "regallis",
           "name": "Regallis",
-          "sx": 18,
-          "sy": 78,
+          "qx": -120,
+          "qy": -33,
           "navPoints": [
             {
               "id": "nav-1",
@@ -2287,8 +2287,8 @@
         {
           "id": "rygannon",
           "name": "Rygannon",
-          "sx": 61,
-          "sy": 29,
+          "qx": -57,
+          "qy": -107,
           "navPoints": [
             {
               "id": "nav-1",
@@ -2338,8 +2338,8 @@
         {
           "id": "sherwood",
           "name": "Sherwood",
-          "sx": 22,
-          "sy": 57,
+          "qx": -115,
+          "qy": -65,
           "navPoints": [
             {
               "id": "nav-1",
@@ -2449,8 +2449,8 @@
         {
           "id": "telar",
           "name": "Telar",
-          "sx": 7,
-          "sy": 65,
+          "qx": -137,
+          "qy": -53,
           "navPoints": [
             {
               "id": "nav-1",
@@ -2512,8 +2512,8 @@
         {
           "id": "valhalla",
           "name": "Valhalla",
-          "sx": 42,
-          "sy": 79,
+          "qx": -85,
+          "qy": -31,
           "navPoints": [
             {
               "id": "nav-1",
@@ -2575,8 +2575,8 @@
         {
           "id": "war",
           "name": "War",
-          "sx": 45,
-          "sy": 90,
+          "qx": -80,
+          "qy": -15,
           "navPoints": [
             {
               "id": "nav-1",
@@ -2619,8 +2619,8 @@
         {
           "id": "xytani",
           "name": "Xytani",
-          "sx": 75,
-          "sy": 33,
+          "qx": -37,
+          "qy": -102,
           "navPoints": [
             {
               "id": "nav-1",
@@ -2683,8 +2683,8 @@
         {
           "id": "119ce",
           "name": "119CE",
-          "sx": 81,
-          "sy": 75,
+          "qx": -27,
+          "qy": 112,
           "navPoints": [
             {
               "id": "nav-1",
@@ -2739,8 +2739,8 @@
         {
           "id": "cm-n1054",
           "name": "CM-N1054",
-          "sx": 12,
-          "sy": 81,
+          "qx": -129,
+          "qy": 122,
           "navPoints": [
             {
               "id": "nav-1",
@@ -2759,8 +2759,8 @@
         {
           "id": "freyja",
           "name": "Freyja",
-          "sx": 10,
-          "sy": 26,
+          "qx": -132,
+          "qy": 39,
           "navPoints": [
             {
               "id": "nav-1",
@@ -2803,8 +2803,8 @@
         {
           "id": "junction",
           "name": "Junction",
-          "sx": 46,
-          "sy": 77,
+          "qx": -79,
+          "qy": 116,
           "navPoints": [
             {
               "id": "nav-1",
@@ -2940,8 +2940,8 @@
         {
           "id": "padre",
           "name": "Padre",
-          "sx": 92,
-          "sy": 56,
+          "qx": -11,
+          "qy": 84,
           "navPoints": [
             {
               "id": "nav-1",
@@ -2991,8 +2991,8 @@
         {
           "id": "pender-s-star",
           "name": "Pender’s Star",
-          "sx": 31,
-          "sy": 66,
+          "qx": -101,
+          "qy": 98,
           "navPoints": [
             {
               "id": "nav-1",
@@ -3035,8 +3035,8 @@
         {
           "id": "pentonville",
           "name": "Pentonville",
-          "sx": 65,
-          "sy": 93,
+          "qx": -51,
+          "qy": 139,
           "navPoints": [
             {
               "id": "nav-1",
@@ -3086,8 +3086,8 @@
         {
           "id": "pollux",
           "name": "Pollux",
-          "sx": 43,
-          "sy": 11,
+          "qx": -83,
+          "qy": 15,
           "navPoints": [
             {
               "id": "nav-1",
@@ -3149,8 +3149,8 @@
         {
           "id": "prasepe",
           "name": "Prasepe",
-          "sx": 26,
-          "sy": 18,
+          "qx": -108,
+          "qy": 26,
           "navPoints": [
             {
               "id": "nav-1",
@@ -3200,8 +3200,8 @@
         {
           "id": "pyrenees",
           "name": "Pyrenees",
-          "sx": 12,
-          "sy": 54,
+          "qx": -129,
+          "qy": 80,
           "navPoints": [
             {
               "id": "nav-1",
@@ -3294,8 +3294,8 @@
         {
           "id": "troy",
           "name": "Troy",
-          "sx": 44,
-          "sy": 29,
+          "qx": -82,
+          "qy": 43,
           "navPoints": [
             {
               "id": "nav-1",
@@ -3419,8 +3419,8 @@
         {
           "id": "varnus",
           "name": "Varnus",
-          "sx": 82,
-          "sy": 28,
+          "qx": -25,
+          "qy": 42,
           "navPoints": [
             {
               "id": "nav-1",
@@ -3497,8 +3497,8 @@
         {
           "id": "41-gs",
           "name": "41-GS",
-          "sx": 89,
-          "sy": 28,
+          "qx": 130,
+          "qy": 41,
           "navPoints": [
             {
               "id": "nav-1",
@@ -3517,8 +3517,8 @@
         {
           "id": "44-p-1m",
           "name": "44-P-1M",
-          "sx": 64,
-          "sy": 16,
+          "qx": 94,
+          "qy": 23,
           "navPoints": [
             {
               "id": "nav-1",
@@ -3561,8 +3561,8 @@
         {
           "id": "aldebran",
           "name": "Aldebran",
-          "sx": 11,
-          "sy": 85,
+          "qx": 16,
+          "qy": 128,
           "navPoints": [
             {
               "id": "nav-1",
@@ -3624,8 +3624,8 @@
         {
           "id": "auriga",
           "name": "Auriga",
-          "sx": 59,
-          "sy": 48,
+          "qx": 87,
+          "qy": 72,
           "navPoints": [
             {
               "id": "nav-1",
@@ -3694,8 +3694,8 @@
         {
           "id": "dn-n1912",
           "name": "DN-N1912",
-          "sx": 85,
-          "sy": 71,
+          "qx": 125,
+          "qy": 106,
           "navPoints": [
             {
               "id": "nav-1",
@@ -3757,8 +3757,8 @@
         {
           "id": "hind-s-variable-north",
           "name": "Hind’s Variable North",
-          "sx": 37,
-          "sy": 74,
+          "qx": 54,
+          "qy": 111,
           "navPoints": [
             {
               "id": "nav-1",
@@ -3839,8 +3839,8 @@
         {
           "id": "manchester",
           "name": "Manchester",
-          "sx": 22,
-          "sy": 64,
+          "qx": 32,
+          "qy": 95,
           "navPoints": [
             {
               "id": "nav-1",
@@ -3909,8 +3909,8 @@
         {
           "id": "metsor",
           "name": "Metsor",
-          "sx": 47,
-          "sy": 58,
+          "qx": 69,
+          "qy": 87,
           "navPoints": [
             {
               "id": "nav-1",
@@ -3953,8 +3953,8 @@
         {
           "id": "nd-57",
           "name": "ND-57",
-          "sx": 68,
-          "sy": 26,
+          "qx": 100,
+          "qy": 39,
           "navPoints": [
             {
               "id": "nav-1",
@@ -4016,8 +4016,8 @@
         {
           "id": "newcastle",
           "name": "Newcastle",
-          "sx": 13,
-          "sy": 32,
+          "qx": 18,
+          "qy": 48,
           "navPoints": [
             {
               "id": "nav-1",
@@ -4091,8 +4091,8 @@
         {
           "id": "new-constantinople",
           "name": "New Constantinople",
-          "sx": 26,
-          "sy": 17,
+          "qx": 37,
+          "qy": 25,
           "navPoints": [
             {
               "id": "nav-1",
@@ -4221,8 +4221,8 @@
         {
           "id": "new-detroit",
           "name": "New Detroit",
-          "sx": 55,
-          "sy": 36,
+          "qx": 81,
+          "qy": 53,
           "navPoints": [
             {
               "id": "nav-1",
@@ -4344,8 +4344,8 @@
         {
           "id": "oxford",
           "name": "Oxford",
-          "sx": 69,
-          "sy": 93,
+          "qx": 101,
+          "qy": 140,
           "navPoints": [
             {
               "id": "nav-1",
@@ -4407,8 +4407,8 @@
         {
           "id": "raxis",
           "name": "Raxis",
-          "sx": 82,
-          "sy": 46,
+          "qx": 120,
+          "qy": 68,
           "navPoints": [
             {
               "id": "nav-1",
@@ -4477,8 +4477,8 @@
         {
           "id": "saxtogue",
           "name": "Saxtogue",
-          "sx": 82,
-          "sy": 55,
+          "qx": 120,
+          "qy": 82,
           "navPoints": [
             {
               "id": "nav-1",
@@ -4540,8 +4540,8 @@
         {
           "id": "shangri-la",
           "name": "Shangri La",
-          "sx": 85,
-          "sy": 82,
+          "qx": 125,
+          "qy": 123,
           "navPoints": [
             {
               "id": "nav-1",
@@ -4591,8 +4591,8 @@
         {
           "id": "xxn-1927",
           "name": "XXN-1927",
-          "sx": 47,
-          "sy": 87,
+          "qx": 68,
+          "qy": 130,
           "navPoints": [
             {
               "id": "nav-1",
