@@ -1,5 +1,5 @@
 <script>
-  let { data, selectedSystemId, topView, onSelect, onShowSector, onShowAbout } = $props();
+  let { data, selectedSystemId, topView, onSelect, onShowSector, onShowAbout, onPlotJourney } = $props();
 </script>
 
 <nav class="sector-nav">
@@ -12,6 +12,9 @@
       onclick={() => onShowSector?.()}
     >
       SECTOR MAP
+    </button>
+    <button type="button" class="plot-journey-btn" onclick={() => onPlotJourney?.()}>
+      PLOT JOURNEY
     </button>
     {#each data.quadrants as quadrant (quadrant.id)}
       <div class="quadrant">
@@ -70,6 +73,11 @@
     letter-spacing: 1px;
   }
   .sector-map-btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  .plot-journey-btn {
     display: block;
     width: 100%;
     margin-bottom: 16px;

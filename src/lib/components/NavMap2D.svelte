@@ -1,8 +1,9 @@
 <script>
   import { resolveFlatPosition, styleForNavPoint, navPointLabel } from '../utils/navPoints.js';
   import { selectedNode } from '../stores/selection.js';
+  import { journey } from '../stores/journey.js';
 
-  let { points, data, onJump } = $props();
+  let { points, data, onJump, systemId = null } = $props();
 
   let display = $derived(
     points.map((np) => ({
@@ -11,6 +12,25 @@
       style: styleForNavPoint(np),
     }))
   );
+
+  // Which navPoint(s) in this system to highlight for the plotted journey: the
+  // jump point to leave through for the next hop, any base if this system is
+  // a planned refuel stop, and the specific destination point if this is the
+  // final system in the route.
+  let routeHighlight = $derived.by(() => {
+    if (!$journey || !systemId) return { leaveViaId: null, refuelIds: new Set(), targetId: null };
+    const idx = $journey.hops.findIndex((h) => h.systemId === systemId);
+    if (idx === -1) return { leaveViaId: null, refuelIds: new Set(), targetId: null };
+    const hop = $journey.hops[idx];
+    const next = $journey.hops[idx + 1];
+    const refuelIds = hop.refuelStop ? new Set(points.filter((p) => p.type === 'base').map((p) => p.id)) : new Set();
+    const targetId = idx === $journey.hops.length - 1 ? $journey.targetNavPointId : null;
+    return { leaveViaId: next?.viaNavPointId ?? null, refuelIds, targetId };
+  });
+
+  function isRouteHighlighted(np) {
+    return np.id === routeHighlight.leaveViaId || np.id === routeHighlight.targetId || routeHighlight.refuelIds.has(np.id);
+  }
 
   const gridLines = [10, 20, 30, 40, 50, 60, 70, 80, 90];
 
@@ -51,6 +71,9 @@
       {#if d.np.asteroids}
         <circle r="2.6" class="asteroid-ring" />
       {/if}
+      {#if isRouteHighlighted(d.np)}
+        <circle r="3.6" class="route-ring" />
+      {/if}
       {#if isSelected}
         <circle r="3.2" class="select-ring" />
       {/if}
@@ -87,5 +110,11 @@
     stroke: #a0522d;
     stroke-width: 0.25;
     stroke-dasharray: 0.6 0.5;
+  }
+  .route-ring {
+    fill: none;
+    stroke: #ffcc55;
+    stroke-width: 0.35;
+    stroke-dasharray: 1 0.6;
   }
 </style>

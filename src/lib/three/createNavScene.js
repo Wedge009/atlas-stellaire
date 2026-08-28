@@ -4,6 +4,7 @@ import { skyboxSpriteTexture } from '../utils/skyboxSprites.js';
 
 const SCALE = 1 / 1000;
 const FLAT_SPAN = 55;
+const ROUTE_BEACON_HEIGHT = 5;
 
 // A system's SUNS/GLXY sky-box chunk (gemini.json `skybox`) gives each backdrop
 // object's raw in-game co-ordinates, which sit on a completely different scale
@@ -121,12 +122,16 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
         n.asteroidRing.geometry.dispose();
         n.asteroidRing.material.dispose();
       }
+      if (n.routeBeacon) {
+        n.routeBeacon.geometry.dispose();
+        n.routeBeacon.material.dispose();
+      }
     }
     nodeGroup.clear();
     nodes = [];
   }
 
-  function setPoints(navPoints) {
+  function setPoints(navPoints, routeHighlightIds = new Set()) {
     clearNodes();
     // Nodes must be built in whatever layout (orbit vs flat-aligned) is
     // currently active, since `setPoints` can be re-invoked (eg the
@@ -184,7 +189,21 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
         nodeGroup.add(asteroidRing);
       }
 
-      nodes.push({ np, mesh, dropLine, dropMat, spoke, spokeMat, label, asteroidRing, pos3d, pos2d });
+      // The route marker is a vertical beacon rather than a ring, so it can't
+      // be mistaken for the (also amber-ish) flat asteroid ring lying on the
+      // ground plane - and being a cylinder aligned on its own spin axis, the
+      // idle rotation below doesn't make it visibly "turn" the way a ring
+      // would.
+      let routeBeacon = null;
+      if (routeHighlightIds.has(np.id)) {
+        const beaconGeo = new THREE.CylinderGeometry(0.15, 0.15, ROUTE_BEACON_HEIGHT, 8);
+        const beaconMat = new THREE.MeshBasicMaterial({ color: 0xffee66, transparent: true, opacity: 0.9, fog: false });
+        routeBeacon = new THREE.Mesh(beaconGeo, beaconMat);
+        routeBeacon.position.copy(initialPos).add(new THREE.Vector3(0, ROUTE_BEACON_HEIGHT / 2, 0));
+        nodeGroup.add(routeBeacon);
+      }
+
+      nodes.push({ np, mesh, dropLine, dropMat, spoke, spokeMat, label, asteroidRing, routeBeacon, pos3d, pos2d });
     }
   }
 
@@ -195,6 +214,7 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
     n.spoke.geometry.setFromPoints([new THREE.Vector3(0, 0, 0), p.clone()]);
     n.label.position.copy(p).add(new THREE.Vector3(0, 2.8, 0));
     if (n.asteroidRing) n.asteroidRing.position.copy(p);
+    if (n.routeBeacon) n.routeBeacon.position.copy(p).add(new THREE.Vector3(0, ROUTE_BEACON_HEIGHT / 2, 0));
   }
 
   // --- orbit camera ---

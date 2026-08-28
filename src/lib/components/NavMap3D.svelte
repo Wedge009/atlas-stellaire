@@ -1,8 +1,27 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
   import { selectedNode } from '../stores/selection.js';
+  import { journey } from '../stores/journey.js';
 
   let { points, aligned = $bindable(false), animating = $bindable(false), data, onJump, systemId } = $props();
+
+  // Same route-highlight logic as NavMap2D: the jump point to leave through
+  // for the next hop, any base if this system is a planned refuel stop, and
+  // the specific destination point if this is the final system in the route.
+  let routeHighlightIds = $derived.by(() => {
+    if (!$journey) return new Set();
+    const idx = $journey.hops.findIndex((h) => h.systemId === systemId);
+    if (idx === -1) return new Set();
+    const hop = $journey.hops[idx];
+    const next = $journey.hops[idx + 1];
+    const ids = new Set();
+    if (next?.viaNavPointId) ids.add(next.viaNavPointId);
+    if (idx === $journey.hops.length - 1 && $journey.targetNavPointId) ids.add($journey.targetNavPointId);
+    if (hop.refuelStop) {
+      for (const p of points) if (p.type === 'base') ids.add(p.id);
+    }
+    return ids;
+  });
 
   let canvas;
   let container;
@@ -25,7 +44,7 @@
         data,
         systemId,
       });
-      scene.setPoints(points);
+      scene.setPoints(points, routeHighlightIds);
       loading = false;
       resize();
       resizeObserver = new ResizeObserver(resize);
@@ -50,9 +69,11 @@
   }
 
   $effect(() => {
-    // re-run whenever `points` changes (system switch or hidden-toggle)
+    // re-run whenever `points` or the route highlight changes (system switch,
+    // hidden-toggle, or a journey plotted/advanced while this system is open)
     const current = points;
-    if (scene) scene.setPoints(current);
+    const highlightIds = routeHighlightIds;
+    if (scene) scene.setPoints(current, highlightIds);
   });
 
   function toggleAlign() {

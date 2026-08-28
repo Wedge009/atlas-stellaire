@@ -4,12 +4,16 @@
   import SystemView from './lib/components/SystemView.svelte';
   import SectorMap from './lib/components/SectorMap.svelte';
   import About from './lib/components/About.svelte';
+  import PlotJourneyDialog from './lib/components/PlotJourneyDialog.svelte';
+  import JourneyPanel from './lib/components/JourneyPanel.svelte';
   import { findSystem } from './lib/utils/navPoints.js';
+  import { journey } from './lib/stores/journey.js';
 
   let geminiData = $state(null);
   let selectedSystemId = $state(null);
   let topView = $state('sector'); // 'system' | 'sector'
   let showAbout = $state(false);
+  let showPlotJourney = $state(false);
   let system = $derived(geminiData ? findSystem(geminiData, selectedSystemId) : null);
 
   onMount(async () => {
@@ -34,6 +38,7 @@
       onSelect={goToSystem}
       onShowSector={() => (topView = 'sector')}
       onShowAbout={() => (showAbout = true)}
+      onPlotJourney={() => (showPlotJourney = true)}
     />
     <div class="main-view">
       {#if topView === 'sector'}
@@ -43,12 +48,22 @@
           <SystemView {system} data={geminiData} onJump={goToSystem} />
         {/key}
       {/if}
+      {#if $journey}
+        <div class="journey-overlay"><JourneyPanel data={geminiData} {selectedSystemId} /></div>
+      {/if}
     </div>
   {:else}
     <div class="loading">LOADING SECTOR DATA&hellip;</div>
   {/if}
   {#if showAbout}
     <About onClose={() => (showAbout = false)} />
+  {/if}
+  {#if showPlotJourney}
+    <PlotJourneyDialog
+      data={geminiData}
+      currentSystemId={selectedSystemId}
+      onClose={() => (showPlotJourney = false)}
+    />
   {/if}
 </main>
 
@@ -62,6 +77,12 @@
     flex: 1;
     position: relative;
     overflow: hidden;
+  }
+  .journey-overlay {
+    position: absolute;
+    top: 70px;
+    left: 18px;
+    z-index: 20;
   }
   .loading {
     flex: 1;
