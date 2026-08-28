@@ -871,9 +871,9 @@
               "y": -35000,
               "z": 15000,
               "visibleOnMap": false,
-              "asteroids": false,
+              "asteroids": true,
               "type": "point",
-              "description": "Ambush Point",
+              "description": "Asteroid Field",
               "dest": null
             },
             {
@@ -883,7 +883,7 @@
               "y": 0,
               "z": 15000,
               "visibleOnMap": false,
-              "asteroids": false,
+              "asteroids": true,
               "type": "jump",
               "description": "Jump Point",
               "dest": "eden"
@@ -1656,9 +1656,9 @@
               "y": 7500,
               "z": 7500,
               "visibleOnMap": false,
-              "asteroids": false,
+              "asteroids": true,
               "type": "point",
-              "description": "",
+              "description": "Asteroid Field",
               "dest": null
             },
             {
@@ -1668,9 +1668,9 @@
               "y": 7500,
               "z": 7500,
               "visibleOnMap": false,
-              "asteroids": false,
+              "asteroids": true,
               "type": "point",
-              "description": "",
+              "description": "Asteroid Field",
               "dest": null
             },
             {
@@ -1680,9 +1680,9 @@
               "y": 7500,
               "z": 7500,
               "visibleOnMap": false,
-              "asteroids": false,
+              "asteroids": true,
               "type": "point",
-              "description": "",
+              "description": "Asteroid Field",
               "dest": null
             },
             {
@@ -3179,7 +3179,7 @@
               "y": -30000,
               "z": 6000,
               "visibleOnMap": true,
-              "asteroids": false,
+              "asteroids": true,
               "type": "base",
               "description": "Oakham Pirate Base",
               "dest": null,
