@@ -1,8 +1,18 @@
 import * as THREE from 'three';
-import { resolveFlatPosition, styleForNavPoint, systemName } from '../utils/navPoints.js';
+import { findSystem, resolveFlatPosition, styleForNavPoint, systemName } from '../utils/navPoints.js';
+import { skyboxSpriteTexture } from '../utils/skyboxSprites.js';
 
 const SCALE = 1 / 1000;
 const FLAT_SPAN = 55;
+
+// A system's SUNS/GLXY sky-box chunk (gemini.json `skybox`) gives each backdrop
+// object's raw in-game co-ordinates, which sit on a completely different scale
+// to the flight-sim nav space above - they're not navigable positions, just a
+// direction the sprite sits in the sky. So the raw values are only ever used as a
+// direction, normalised out at a fixed backdrop radius, never scaled/placed
+// like a real nav point.
+const BACKDROP_RADIUS = 600;
+const BACKDROP_SIZE = 50;
 
 function easeInOutCubic(t) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -45,7 +55,7 @@ function makeStars(count, spread) {
 // align/unalign animation between real 3D position and flat sx/sy layout,
 // click-to-select. Generalised from the proof-of-concept to take any
 // system's navPoints array.
-export function createNavScene({ canvas, onSelect, onJump, data }) {
+export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
@@ -55,6 +65,33 @@ export function createNavScene({ canvas, onSelect, onJump, data }) {
   const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 2000);
 
   scene.add(makeStars(1200, 900));
+
+  const backdropGroup = new THREE.Group();
+  scene.add(backdropGroup);
+  const textureLoader = new THREE.TextureLoader();
+  const skybox = findSystem(data, systemId)?.skybox ?? [];
+  for (const obj of skybox) {
+    const iconPath = skyboxSpriteTexture(obj.name);
+    if (!iconPath) continue;
+    const direction = new THREE.Vector3(obj.x, obj.y, obj.z).normalize();
+    const sprite = new THREE.Sprite();
+    sprite.visible = false;
+    sprite.position.copy(direction.multiplyScalar(BACKDROP_RADIUS));
+    backdropGroup.add(sprite);
+    textureLoader.load(iconPath, (texture) => {
+      texture.magFilter = THREE.NearestFilter;
+      texture.minFilter = THREE.NearestFilter;
+      texture.colorSpace = THREE.SRGBColorSpace;
+      // Sky-box objects sit outside the scene's local fog volume (they read as
+      // being at optical infinity), otherwise FogExp2 at this radius blends
+      // the sprite almost entirely into the black background before it's
+      // visible.
+      sprite.material = new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false, fog: false });
+      const aspect = texture.image.width / texture.image.height;
+      sprite.scale.set(BACKDROP_SIZE * aspect, BACKDROP_SIZE, 1);
+      sprite.visible = true;
+    });
+  }
 
   const grid = new THREE.GridHelper(160, 16, 0x992222, 0x551515);
   grid.material.opacity = 0.55;
@@ -361,6 +398,10 @@ export function createNavScene({ canvas, onSelect, onJump, data }) {
   function dispose() {
     cancelAnimationFrame(rafId);
     clearNodes();
+    for (const sprite of backdropGroup.children) {
+      sprite.material.map?.dispose();
+      sprite.material.dispose();
+    }
     canvas.removeEventListener('mousedown', onMouseDown);
     window.removeEventListener('mouseup', onMouseUp);
     window.removeEventListener('mousemove', onMouseMove);

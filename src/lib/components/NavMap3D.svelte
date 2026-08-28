@@ -2,7 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { selectedNode } from '../stores/selection.js';
 
-  let { points, aligned = $bindable(false), animating = $bindable(false), data, onJump } = $props();
+  let { points, aligned = $bindable(false), animating = $bindable(false), data, onJump, systemId } = $props();
 
   let canvas;
   let container;
@@ -23,6 +23,7 @@
         onSelect: (np) => selectedNode.set(np),
         onJump,
         data,
+        systemId,
       });
       scene.setPoints(points);
       loading = false;

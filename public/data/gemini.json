@@ -265,6 +265,20 @@
               "description": "Jump Point",
               "dest": "nitir"
             }
+          ],
+          "skybox": [
+            {
+              "name": "nebula2",
+              "x": -200,
+              "y": -200,
+              "z": 100
+            },
+            {
+              "name": "sunbrwn",
+              "x": -800,
+              "y": 500,
+              "z": 300
+            }
           ]
         },
         {
@@ -383,7 +397,7 @@
         },
         {
           "id": "mah-rahn",
-          "name": "Mah’Rahn",
+          "name": "Mah\u2019Rahn",
           "qx": 122,
           "qy": -95,
           "navPoints": [
@@ -667,6 +681,20 @@
                 "shipDealer": true
               }
             }
+          ],
+          "skybox": [
+            {
+              "name": "galaxy3",
+              "x": 200,
+              "y": 550,
+              "z": 0
+            },
+            {
+              "name": "moon2",
+              "x": -300,
+              "y": -200,
+              "z": -800
+            }
           ]
         },
         {
@@ -864,7 +892,7 @@
         },
         {
           "id": "sumn-kp-ta",
-          "name": "Sumn-Kp’ta",
+          "name": "Sumn-Kp\u2019ta",
           "qx": 123,
           "qy": -123,
           "navPoints": [
@@ -1065,7 +1093,7 @@
         },
         {
           "id": "tr-pakh",
-          "name": "Tr’Pakh",
+          "name": "Tr\u2019Pakh",
           "qx": 117,
           "qy": -137,
           "navPoints": [
@@ -1681,6 +1709,14 @@
               "description": "Jump Point",
               "dest": "rikel"
             }
+          ],
+          "skybox": [
+            {
+              "name": "moon1",
+              "x": 2000,
+              "y": 900,
+              "z": 400
+            }
           ]
         },
         {
@@ -1994,6 +2030,14 @@
                 "shipDealer": true
               }
             }
+          ],
+          "skybox": [
+            {
+              "name": "nebula3",
+              "x": 100,
+              "y": 100,
+              "z": 100
+            }
           ]
         },
         {
@@ -2150,6 +2194,20 @@
                 "mercenariesGuild": true,
                 "shipDealer": true
               }
+            }
+          ],
+          "skybox": [
+            {
+              "name": "galaxy3",
+              "x": 300,
+              "y": 500,
+              "z": 100
+            },
+            {
+              "name": "nebula3",
+              "x": -300,
+              "y": -300,
+              "z": -400
             }
           ]
         },
@@ -2374,9 +2432,9 @@
               "visibleOnMap": true,
               "asteroids": true,
               "type": "base",
-              "description": "Tuck’s Pirate Base",
+              "description": "Tuck\u2019s Pirate Base",
               "dest": null,
-              "baseName": "Tuck’s",
+              "baseName": "Tuck\u2019s",
               "baseType": "pirate",
               "facilities": {
                 "merchantsGuild": false,
@@ -2734,6 +2792,26 @@
               "description": "Jump Point",
               "dest": "pentonville"
             }
+          ],
+          "skybox": [
+            {
+              "name": "galaxy3",
+              "x": 400,
+              "y": 600,
+              "z": -300
+            },
+            {
+              "name": "nebula1",
+              "x": 100,
+              "y": 0,
+              "z": 500
+            },
+            {
+              "name": "sunbrwn",
+              "x": -800,
+              "y": 500,
+              "z": 300
+            }
           ]
         },
         {
@@ -2753,6 +2831,20 @@
               "type": "jump",
               "description": "Jump Point",
               "dest": "pyrenees"
+            }
+          ],
+          "skybox": [
+            {
+              "name": "moon1",
+              "x": 800,
+              "y": 700,
+              "z": -200
+            },
+            {
+              "name": "sunblue",
+              "x": -100,
+              "y": -500,
+              "z": 200
             }
           ]
         },
@@ -2935,6 +3027,20 @@
                 "shipDealer": false
               }
             }
+          ],
+          "skybox": [
+            {
+              "name": "galaxy1",
+              "x": -1000,
+              "y": 1000,
+              "z": -100
+            },
+            {
+              "name": "moon1",
+              "x": 800,
+              "y": 700,
+              "z": 200
+            }
           ]
         },
         {
@@ -2986,11 +3092,25 @@
               "description": "Ambush Point",
               "dest": null
             }
+          ],
+          "skybox": [
+            {
+              "name": "gasgiant",
+              "x": -200,
+              "y": -550,
+              "z": 0
+            },
+            {
+              "name": "nebula1",
+              "x": 100,
+              "y": 0,
+              "z": 500
+            }
           ]
         },
         {
           "id": "pender-s-star",
-          "name": "Pender’s Star",
+          "name": "Pender\u2019s Star",
           "qx": -101,
           "qy": 98,
           "navPoints": [
@@ -3029,6 +3149,20 @@
               "type": "jump",
               "description": "Jump Point",
               "dest": "troy"
+            }
+          ],
+          "skybox": [
+            {
+              "name": "gasgiant",
+              "x": -200,
+              "y": -550,
+              "z": 0
+            },
+            {
+              "name": "starwhit",
+              "x": -300,
+              "y": 200,
+              "z": -800
             }
           ]
         },
@@ -3414,6 +3548,26 @@
               "description": "Nav Point",
               "dest": null
             }
+          ],
+          "skybox": [
+            {
+              "name": "mars",
+              "x": -200,
+              "y": -550,
+              "z": 0
+            },
+            {
+              "name": "starwhit",
+              "x": -300,
+              "y": 200,
+              "z": -800
+            },
+            {
+              "name": "galaxy3",
+              "x": 300,
+              "y": 200,
+              "z": 400
+            }
           ]
         },
         {
@@ -3484,6 +3638,20 @@
               "description": "Ambush Point",
               "dest": null
             }
+          ],
+          "skybox": [
+            {
+              "name": "mars",
+              "x": -300,
+              "y": -550,
+              "z": -300
+            },
+            {
+              "name": "nebula2",
+              "x": 300,
+              "y": 200,
+              "z": 400
+            }
           ]
         }
       ]
@@ -3511,6 +3679,26 @@
               "type": "jump",
               "description": "Jump Point",
               "dest": "surtur"
+            }
+          ],
+          "skybox": [
+            {
+              "name": "galaxy3",
+              "x": -400,
+              "y": 600,
+              "z": -300
+            },
+            {
+              "name": "nebula1",
+              "x": 300,
+              "y": 0,
+              "z": 500
+            },
+            {
+              "name": "uranus",
+              "x": -600,
+              "y": -1000,
+              "z": -500
             }
           ]
         },
@@ -3555,6 +3743,26 @@
               "type": "jump",
               "description": "Jump Point",
               "dest": "new-constantinople"
+            }
+          ],
+          "skybox": [
+            {
+              "name": "galaxy2",
+              "x": -300,
+              "y": 500,
+              "z": 100
+            },
+            {
+              "name": "moon2",
+              "x": 600,
+              "y": 800,
+              "z": -1000
+            },
+            {
+              "name": "sunbin1",
+              "x": -100,
+              "y": -300,
+              "z": 0
             }
           ]
         },
@@ -3618,6 +3826,14 @@
               "type": "point",
               "description": "Ambush Point",
               "dest": null
+            }
+          ],
+          "skybox": [
+            {
+              "name": "nebula1",
+              "x": 100,
+              "y": 0,
+              "z": 500
             }
           ]
         },
@@ -3689,6 +3905,20 @@
                 "shipDealer": false
               }
             }
+          ],
+          "skybox": [
+            {
+              "name": "galaxy2",
+              "x": 300,
+              "y": 500,
+              "z": 100
+            },
+            {
+              "name": "sunyel",
+              "x": -100,
+              "y": -500,
+              "z": 400
+            }
           ]
         },
         {
@@ -3752,11 +3982,25 @@
               "description": "Ambush Point",
               "dest": null
             }
+          ],
+          "skybox": [
+            {
+              "name": "galaxy3",
+              "x": 400,
+              "y": 600,
+              "z": -300
+            },
+            {
+              "name": "mars",
+              "x": -200,
+              "y": -200,
+              "z": 400
+            }
           ]
         },
         {
           "id": "hind-s-variable-north",
-          "name": "Hind’s Variable North",
+          "name": "Hind\u2019s Variable North",
           "qx": 54,
           "qy": 111,
           "navPoints": [
@@ -3834,6 +4078,26 @@
               "description": "Jump Point",
               "dest": "aldebran"
             }
+          ],
+          "skybox": [
+            {
+              "name": "galaxy4",
+              "x": 400,
+              "y": 600,
+              "z": -300
+            },
+            {
+              "name": "moon2",
+              "x": -600,
+              "y": -800,
+              "z": 400
+            },
+            {
+              "name": "starwhit",
+              "x": -300,
+              "y": 200,
+              "z": -800
+            }
           ]
         },
         {
@@ -3904,6 +4168,26 @@
               "description": "Ambush Point",
               "dest": null
             }
+          ],
+          "skybox": [
+            {
+              "name": "gasgiant",
+              "x": -200,
+              "y": -550,
+              "z": 0
+            },
+            {
+              "name": "moon3",
+              "x": -100,
+              "y": -500,
+              "z": 170
+            },
+            {
+              "name": "starwhit",
+              "x": 300,
+              "y": 200,
+              "z": 800
+            }
           ]
         },
         {
@@ -3947,6 +4231,14 @@
               "type": "point",
               "description": "Ambush Point",
               "dest": null
+            }
+          ],
+          "skybox": [
+            {
+              "name": "galaxy2",
+              "x": -300,
+              "y": 500,
+              "z": 100
             }
           ]
         },
@@ -4010,6 +4302,20 @@
               "type": "point",
               "description": "Ambush Point",
               "dest": null
+            }
+          ],
+          "skybox": [
+            {
+              "name": "galaxy4",
+              "x": 400,
+              "y": 600,
+              "z": -300
+            },
+            {
+              "name": "mars",
+              "x": 0,
+              "y": -200,
+              "z": 400
             }
           ]
         },
@@ -4085,6 +4391,20 @@
               "type": "jump",
               "description": "Jump Point",
               "dest": "perry"
+            }
+          ],
+          "skybox": [
+            {
+              "name": "gasgiant",
+              "x": -200,
+              "y": -550,
+              "z": 0
+            },
+            {
+              "name": "nebula1",
+              "x": 100,
+              "y": 0,
+              "z": 500
             }
           ]
         },
@@ -4216,6 +4536,26 @@
               "description": "Jump Point",
               "dest": "xxn-1927"
             }
+          ],
+          "skybox": [
+            {
+              "name": "galaxy4",
+              "x": -200,
+              "y": -1000,
+              "z": -100
+            },
+            {
+              "name": "gasgiant",
+              "x": 100,
+              "y": 100,
+              "z": 100
+            },
+            {
+              "name": "moon3",
+              "x": 25,
+              "y": 80,
+              "z": 100
+            }
           ]
         },
         {
@@ -4339,6 +4679,20 @@
               "description": "Jump Point",
               "dest": "new-constantinople"
             }
+          ],
+          "skybox": [
+            {
+              "name": "galaxy1",
+              "x": -200,
+              "y": -550,
+              "z": 0
+            },
+            {
+              "name": "sunbin1",
+              "x": 100,
+              "y": 0,
+              "z": 500
+            }
           ]
         },
         {
@@ -4401,6 +4755,14 @@
                 "mercenariesGuild": true,
                 "shipDealer": true
               }
+            }
+          ],
+          "skybox": [
+            {
+              "name": "nebula3",
+              "x": 100,
+              "y": 0,
+              "z": 500
             }
           ]
         },
@@ -4472,6 +4834,20 @@
               "description": "Ambush Point",
               "dest": null
             }
+          ],
+          "skybox": [
+            {
+              "name": "uranus",
+              "x": -200,
+              "y": -550,
+              "z": 0
+            },
+            {
+              "name": "nebula1",
+              "x": 300,
+              "y": 200,
+              "z": -800
+            }
           ]
         },
         {
@@ -4535,6 +4911,20 @@
               "description": "Ambush Point",
               "dest": null
             }
+          ],
+          "skybox": [
+            {
+              "name": "moon1",
+              "x": -200,
+              "y": -550,
+              "z": 0
+            },
+            {
+              "name": "sunyel",
+              "x": -300,
+              "y": 200,
+              "z": -200
+            }
           ]
         },
         {
@@ -4585,6 +4975,20 @@
               "type": "point",
               "description": "Ambush Point",
               "dest": null
+            }
+          ],
+          "skybox": [
+            {
+              "name": "nebula2",
+              "x": -200,
+              "y": -550,
+              "z": 0
+            },
+            {
+              "name": "galaxy4",
+              "x": -300,
+              "y": 200,
+              "z": -800
             }
           ]
         },
@@ -4691,6 +5095,26 @@
                 "mercenariesGuild": true,
                 "shipDealer": true
               }
+            }
+          ],
+          "skybox": [
+            {
+              "name": "mars",
+              "x": -200,
+              "y": -550,
+              "z": 0
+            },
+            {
+              "name": "starwhit",
+              "x": -300,
+              "y": 200,
+              "z": -800
+            },
+            {
+              "name": "galaxy3",
+              "x": 300,
+              "y": 200,
+              "z": 400
             }
           ]
         }

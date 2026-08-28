@@ -59,7 +59,7 @@
     {#if $viewMode === '2d'}
       <NavMap2D points={visiblePoints} {data} {onJump} />
     {:else}
-      <NavMap3D points={visiblePoints} bind:aligned={$viewAligned} bind:animating={mapAnimating} {data} {onJump} />
+      <NavMap3D points={visiblePoints} bind:aligned={$viewAligned} bind:animating={mapAnimating} {data} {onJump} systemId={system.id} />
     {/if}
   </div>
 
