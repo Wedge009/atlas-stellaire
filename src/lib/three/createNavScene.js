@@ -215,6 +215,7 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
   let dragging = false, lastX = 0, lastY = 0, lastTouchDist = null;
 
   function onMouseDown(e) {
+    if (e.button !== 0) return;
     canvas.style.cursor = '';
     if (!interactionLocked && !aligned) { dragging = true; lastX = e.clientX; lastY = e.clientY; }
   }
