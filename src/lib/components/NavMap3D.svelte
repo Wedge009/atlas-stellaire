@@ -6,8 +6,10 @@
   let { points, aligned = $bindable(false), animating = $bindable(false), data, onJump, systemId } = $props();
 
   // Same route-highlight logic as NavMap2D: the jump point to leave through
-  // for the next hop, any base if this system is a planned refuel stop, and
-  // the specific destination point if this is the final system in the route.
+  // for the next hop, the specific base chosen if this system is a planned
+  // refuel stop (journey.js already picked the nearest one when a system has
+  // more than one base), and the specific destination point if this is the
+  // final system in the route.
   let routeHighlightIds = $derived.by(() => {
     if (!$journey) return new Set();
     const idx = $journey.hops.findIndex((h) => h.systemId === systemId);
@@ -17,9 +19,7 @@
     const ids = new Set();
     if (next?.viaNavPointId) ids.add(next.viaNavPointId);
     if (idx === $journey.hops.length - 1 && $journey.targetNavPointId) ids.add($journey.targetNavPointId);
-    if (hop.refuelStop) {
-      for (const p of points) if (p.type === 'base') ids.add(p.id);
-    }
+    if (hop.refuelStop && hop.refuelNavPointId) ids.add(hop.refuelNavPointId);
     return ids;
   });
 

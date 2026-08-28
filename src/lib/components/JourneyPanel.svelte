@@ -9,7 +9,13 @@
   let totalJumps = $derived($journey ? $journey.hops.length - 1 : 0);
   let refuelStopNames = $derived(
     $journey
-      ? $journey.hops.filter((h) => h.refuelStop).map((h) => findSystem(data, h.systemId)?.name ?? h.systemId)
+      ? $journey.hops
+          .filter((h) => h.refuelStop)
+          .map((h) => {
+            const system = findSystem(data, h.systemId);
+            const base = system?.navPoints.find((np) => np.id === h.refuelNavPointId);
+            return base?.baseName ? `${base.baseName} (${system.name})` : (system?.name ?? h.systemId);
+          })
       : []
   );
 

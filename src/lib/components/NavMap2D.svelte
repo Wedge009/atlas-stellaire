@@ -14,22 +14,45 @@
   );
 
   // Which navPoint(s) in this system to highlight for the plotted journey: the
-  // jump point to leave through for the next hop, any base if this system is
-  // a planned refuel stop, and the specific destination point if this is the
-  // final system in the route.
+  // jump point to leave through for the next hop, the specific base chosen if
+  // this system is a planned refuel stop (a system can have more than one
+  // base, so journey.js already picked the nearest to the entry point), and
+  // the specific destination point if this is the final system in the route.
+  // Past the origin (nothing to arrive "from" there), also draws an arrow
+  // from the point this system was entered through to wherever the journey
+  // continues from here - routed via the refuel base if this is a stop.
   let routeHighlight = $derived.by(() => {
-    if (!$journey || !systemId) return { leaveViaId: null, refuelIds: new Set(), targetId: null };
+    if (!$journey || !systemId) return { leaveViaId: null, refuelId: null, targetId: null, arrow: [] };
     const idx = $journey.hops.findIndex((h) => h.systemId === systemId);
-    if (idx === -1) return { leaveViaId: null, refuelIds: new Set(), targetId: null };
+    if (idx === -1) return { leaveViaId: null, refuelId: null, targetId: null, arrow: [] };
     const hop = $journey.hops[idx];
     const next = $journey.hops[idx + 1];
-    const refuelIds = hop.refuelStop ? new Set(points.filter((p) => p.type === 'base').map((p) => p.id)) : new Set();
+    const refuelId = hop.refuelStop ? hop.refuelNavPointId : null;
     const targetId = idx === $journey.hops.length - 1 ? $journey.targetNavPointId : null;
-    return { leaveViaId: next?.viaNavPointId ?? null, refuelIds, targetId };
+    const leaveViaId = next?.viaNavPointId ?? null;
+
+    let arrow = [];
+    if (idx > 0) {
+      const prevSystemId = $journey.hops[idx - 1].systemId;
+      const entryPoint = points.find((p) => p.dest === prevSystemId);
+      const exitId = leaveViaId ?? targetId;
+      const exitPoint = exitId ? points.find((p) => p.id === exitId) : null;
+      const viaPoint = refuelId ? points.find((p) => p.id === refuelId) : null;
+      if (entryPoint && viaPoint && exitPoint) {
+        arrow = [
+          { from: resolveFlatPosition(entryPoint), to: resolveFlatPosition(viaPoint) },
+          { from: resolveFlatPosition(viaPoint), to: resolveFlatPosition(exitPoint) },
+        ];
+      } else if (entryPoint && exitPoint) {
+        arrow = [{ from: resolveFlatPosition(entryPoint), to: resolveFlatPosition(exitPoint) }];
+      }
+    }
+
+    return { leaveViaId, refuelId, targetId, arrow };
   });
 
   function isRouteHighlighted(np) {
-    return np.id === routeHighlight.leaveViaId || np.id === routeHighlight.targetId || routeHighlight.refuelIds.has(np.id);
+    return np.id === routeHighlight.leaveViaId || np.id === routeHighlight.targetId || np.id === routeHighlight.refuelId;
   }
 
   const gridLines = [10, 20, 30, 40, 50, 60, 70, 80, 90];
@@ -44,6 +67,11 @@
 </script>
 
 <svg class="navmap2d" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <marker id="navmap2d-route-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" class="route-arrowhead" />
+    </marker>
+  </defs>
   <rect x="0" y="0" width="100" height="100" fill="#000" />
   {#each gridLines as g}
     <line x1={g} y1="0" x2={g} y2="100" class="grid" />
@@ -52,10 +80,12 @@
   <line x1="50" y1="0" x2="50" y2="100" class="grid-center" />
   <line x1="0" y1="50" x2="100" y2="50" class="grid-center" />
 
+  <!-- Markers first, so the route arrow draws over them; labels are drawn
+       last (after the route arrow) so nav point names stay legible on top. -->
   {#each display as d (d.np.id)}
     {@const isSelected = $selectedNode?.id === d.np.id}
     <g
-      class="node"
+      class="node-marker"
       transform="translate({d.flat.sx}, {d.flat.sy})"
       onclick={() => select(d.np)}
       ondblclick={() => jump(d.np)}
@@ -77,6 +107,30 @@
       {#if isSelected}
         <circle r="3.2" class="select-ring" />
       {/if}
+    </g>
+  {/each}
+
+  {#each routeHighlight.arrow as seg, i (i)}
+    <line
+      x1={seg.from.sx}
+      y1={seg.from.sy}
+      x2={seg.to.sx}
+      y2={seg.to.sy}
+      class="route-line"
+      marker-end="url(#navmap2d-route-arrow)"
+    />
+  {/each}
+
+  {#each display as d (d.np.id)}
+    <g
+      class="node-label"
+      transform="translate({d.flat.sx}, {d.flat.sy})"
+      onclick={() => select(d.np)}
+      ondblclick={() => jump(d.np)}
+      role="button"
+      tabindex="-1"
+      onkeydown={(e) => e.key === 'Enter' && select(d.np)}
+    >
       <text x="2.4" y="0.5" class="label">{navPointLabel(d.np, data)}</text>
     </g>
   {/each}
@@ -92,7 +146,9 @@
   }
   .grid { stroke: #551515; stroke-width: 0.15; }
   .grid-center { stroke: #992222; stroke-width: 0.2; }
-  .node { cursor: pointer; }
+  .node-marker, .node-label { cursor: pointer; }
+  .route-line { stroke: #ffcc55; stroke-width: 0.5; stroke-dasharray: 1.2 0.8; opacity: 0.9; }
+  .route-arrowhead { fill: #ffcc55; }
   .label {
     fill: #a8e8ff;
     font-size: 2.5px;

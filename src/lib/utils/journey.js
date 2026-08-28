@@ -80,6 +80,21 @@ export function findRoute(data, fromSystemId, toSystemId) {
   return hops;
 }
 
+function distance2(a, b) {
+  return (a.x - b.x) ** 2 + (a.y - b.y) ** 2 + (a.z - b.z) ** 2;
+}
+
+// Picks which base to land at when a system has more than one: the nearest
+// to wherever the ship enters the system from, since that's the point it'll
+// actually be flying from. Falls back to the first base if there's no entry
+// point to measure from (shouldn't happen for a mid-route stop, but keeps
+// this defensible stand-alone).
+function nearestBase(system, entryPoint) {
+  const bases = system.navPoints.filter((np) => np.type === 'base');
+  if (bases.length <= 1 || !entryPoint) return bases[0] ?? null;
+  return bases.reduce((best, b) => (distance2(b, entryPoint) < distance2(best, entryPoint) ? b : best));
+}
+
 // Inserts refuel stops into an already-computed route: a ship's tank is good
 // for `tankJumps` jumps, and every base can be landed on to refuel (game-play
 // simplification - even hostile/Derelict bases refuel the player). This is a
@@ -91,7 +106,7 @@ export function withRefuelStops(hops, data, tankJumps = 6) {
   const byId = new Map(flattenSystems(data).map((s) => [s.id, s]));
   const hasBase = (systemId) => byId.get(systemId)?.navPoints.some((np) => np.type === 'base') ?? false;
 
-  const result = hops.map((h) => ({ ...h, refuelStop: false }));
+  const result = hops.map((h) => ({ ...h, refuelStop: false, refuelNavPointId: null }));
   const warnings = [];
   let lastRefuelIndex = 0; // the ship starts with a full tank at the origin
 
@@ -110,7 +125,10 @@ export function withRefuelStops(hops, data, tankJumps = 6) {
     }
 
     if (stopIndex !== null) {
+      const stopSystem = byId.get(result[stopIndex].systemId);
+      const entryPoint = stopSystem.navPoints.find((np) => np.dest === result[stopIndex - 1].systemId);
       result[stopIndex].refuelStop = true;
+      result[stopIndex].refuelNavPointId = nearestBase(stopSystem, entryPoint)?.id ?? null;
       lastRefuelIndex = stopIndex;
     } else {
       warnings.push({
