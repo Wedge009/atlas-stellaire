@@ -48,8 +48,18 @@ it contains.
   live in `SPHR`).
 - `SPHR` chunk — fixed 19-byte records giving the (X, Y, Z) and radius of
   every nav-map object in the system: labelled bases, jump points, plain nav
-  points, and unlabelled 'hidden trigger' zones (encounter/asteroid zones
-  with no visible icon).
+  points, and unlabelled 'hidden trigger' zones (encounter zones with no
+  visible icon).
+- `FORM SCRP` > `FORM PLAY` (nested inside the same per-system block) — a
+  `SCEN` (scripted-encounter zone) record per distinct `SPHR` position, in
+  file order, with `SCEN[0]` always a non-point 'default' zone. Byte offset
+  7–8 of each per-point `SCEN` record is a little-endian signed 16-bit value
+  that gives the **asteroid field flag**: `-1` (`0xFFFF`) means no asteroid
+  field is near that point; any other value is an ID for a shared
+  asteroid-field object in the system, and points sharing the same ID sit in
+  the same physical field (eg Rikel's Nav 1, 2, 4, 5 and Hidden 3 all
+  reference field `5` — one belt spans near all five). Populates each nav
+  point's `asteroids` boolean in `gemini.json`.
 - `TABLE.DAT` — a 69×69 (Privateer) shortest-path matrix between all systems,
   used to independently verify the jump network.
 - `FORM GLXY` > `FORM SUNS` (nested inside the same per-system block) — fixed
