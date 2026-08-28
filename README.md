@@ -40,6 +40,7 @@ quadrant) gives the system's own (X, Y) and name, plus which bases (by ID)
 it contains.
 
 **Per-system nav points** (`SECTORS.IFF`, one block per system):
+
 - `BASE` chunk — fixed 46-byte records giving each base's exact in-system
   (X, Y, Z), name, and class (agricultural/mining/refinery/pleasure/etc).
 - `JUMP` chunk — same record layout, giving each jump point's destination
@@ -51,6 +52,16 @@ it contains.
   with no visible icon).
 - `TABLE.DAT` — a 69×69 (Privateer) shortest-path matrix between all systems,
   used to independently verify the jump network.
+- `FORM GLXY` > `FORM SUNS` (nested inside the same per-system block) — fixed
+  16-byte records giving each system's backdrop sky-box sprites: an 8-byte
+  name (eg `MOON1`, `NEBULA2`) followed by (X, Y, Z) as three signed
+  16-bit values. This is a separate, much smaller co-ordinate space (roughly
+  ±1000) than the flight-sim nav space above (roughly ±60000) — these
+  aren't navigable positions, just the direction each sprite sits in the sky.
+  29 of the 70 systems have one or more; the rest have no `SUNS` chunk at
+  all. Stored as each system's `skybox` array in `gemini.json`; the sprite
+  images themselves live in `public/assets/skybox/` and are mapped by name in
+  `skyboxSprites.js`.
 
 ### Rendering: live projection, not a separate layout
 
@@ -67,3 +78,7 @@ on-screen position at render time, in `navPoints.js`:
   quadrants share one co-ordinate origin at the point where the quadrants meet, so
   no per-quadrant branching is needed: the sign of `qx`/`qy` alone puts a
   system in the right quadrant.
+- **Sky-box backdrops** (`createNavScene.js`): since a `skybox` entry's (X, Y,
+  Z) isn't a real position, it's normalised to a direction vector out at a fixed
+  radius in the 3D view — the sprite sits in the correct direction in the sky,
+  at a distance chosen only for visibility, not meaning.
