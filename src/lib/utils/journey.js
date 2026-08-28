@@ -142,3 +142,41 @@ export function withRefuelStops(hops, data, tankJumps = 6) {
 
   return { hops: result, warnings };
 }
+
+// Works out how a plotted journey touches one specific system - which
+// navPoint(s) to call out (the jump point to leave via, the refuel base if
+// this is a stop, the final destination point) and which point-to-point
+// segments to draw as an arrow through the system: entry point -> refuel
+// base -> exit point, or straight entry -> exit if it isn't a refuel stop.
+// Shared by the 2D and 3D system views so they stay in sync.
+export function routeThroughSystem(/** @type {any} */ journey, /** @type {string} */ systemId, /** @type {any[]} */ points) {
+  const empty = { leaveViaId: null, refuelId: null, targetId: null, segments: [] };
+  if (!journey || !systemId) return empty;
+  const idx = journey.hops.findIndex((h) => h.systemId === systemId);
+  if (idx === -1) return empty;
+
+  const hop = journey.hops[idx];
+  const next = journey.hops[idx + 1];
+  const leaveViaId = next?.viaNavPointId ?? null;
+  const refuelId = hop.refuelStop ? hop.refuelNavPointId : null;
+  const targetId = idx === journey.hops.length - 1 ? journey.targetNavPointId : null;
+
+  // Nothing to arrive "from" at the origin, so no arrow there - just the
+  // leave-via highlight above.
+  const segments = [];
+  if (idx > 0) {
+    const prevSystemId = journey.hops[idx - 1].systemId;
+    const entryPoint = points.find((p) => p.dest === prevSystemId);
+    const exitId = leaveViaId ?? targetId;
+    const exitPoint = exitId ? points.find((p) => p.id === exitId) : null;
+    const viaPoint = refuelId ? points.find((p) => p.id === refuelId) : null;
+    if (entryPoint && viaPoint && exitPoint) {
+      segments.push({ fromId: entryPoint.id, toId: viaPoint.id });
+      segments.push({ fromId: viaPoint.id, toId: exitPoint.id });
+    } else if (entryPoint && exitPoint) {
+      segments.push({ fromId: entryPoint.id, toId: exitPoint.id });
+    }
+  }
+
+  return { leaveViaId, refuelId, targetId, segments };
+}

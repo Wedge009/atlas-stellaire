@@ -108,6 +108,14 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
   let nodeGroup = new THREE.Group();
   scene.add(nodeGroup);
 
+  // Route-line arrows live in their own group, separate from nodeGroup - the
+  // idle-spin below only touches nodeGroup's meshes, and an arrowhead cone
+  // needs an arbitrary orientation (whatever direction the segment points)
+  // that the idle-spin's naive rotation.y increment would otherwise wreck.
+  let routeLines = [];
+  let routeLineGroup = new THREE.Group();
+  scene.add(routeLineGroup);
+
   function clearNodes() {
     for (const n of nodes) {
       n.mesh.geometry.dispose();
@@ -131,7 +139,70 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
     nodes = [];
   }
 
-  function setPoints(navPoints, routeHighlightIds = new Set()) {
+  function clearRouteLines() {
+    for (const r of routeLines) {
+      r.lineGeo.dispose();
+      r.lineMat.dispose();
+      r.coneGeo.dispose();
+      r.coneMat.dispose();
+    }
+    routeLineGroup.clear();
+    routeLines = [];
+  }
+
+  // Rebuilds the entry -> [refuel base ->] exit arrow through this system,
+  // from the already-built node positions - so it must run after the main
+  // per-point loop in setPoints below, and again after any animation moves
+  // those positions (see updateRouteLines).
+  function buildRouteLines(routeSegments) {
+    clearRouteLines();
+    for (const seg of routeSegments) {
+      const fromNode = nodes.find((n) => n.np.id === seg.fromId);
+      const toNode = nodes.find((n) => n.np.id === seg.toId);
+      if (!fromNode || !toNode) continue;
+
+      const lineGeo = new THREE.BufferGeometry();
+      const lineMat = new THREE.LineDashedMaterial({ color: 0xffcc55, dashSize: 1.2, gapSize: 0.8, transparent: true, opacity: 0.9, fog: false });
+      const line = new THREE.Line(lineGeo, lineMat);
+      routeLineGroup.add(line);
+
+      const coneGeo = new THREE.ConeGeometry(0.5, 1.4, 10);
+      const coneMat = new THREE.MeshBasicMaterial({ color: 0xffcc55, transparent: true, opacity: 0.95, fog: false });
+      const cone = new THREE.Mesh(coneGeo, coneMat);
+      routeLineGroup.add(cone);
+
+      routeLines.push({ fromNode, toNode, line, lineMat, lineGeo, cone, coneGeo, coneMat });
+    }
+    updateRouteLines();
+  }
+
+  // An arrowhead cone points 1.6 units back from the exit point along the
+  // segment direction, clear of that node's own sphere/box geometry - the
+  // same "don't bury the arrowhead in the target" idea as the SVG marker's
+  // refX in the 2D/sector views.
+  const ARROWHEAD_GAP = 1.6;
+
+  function updateRouteLines() {
+    for (const r of routeLines) {
+      const fromPos = r.fromNode.mesh.position;
+      const toPos = r.toNode.mesh.position;
+      r.line.geometry.setFromPoints([fromPos.clone(), toPos.clone()]);
+      r.line.computeLineDistances();
+
+      const dir = toPos.clone().sub(fromPos);
+      const dist = dir.length();
+      if (dist < 0.001) {
+        r.cone.visible = false;
+        continue;
+      }
+      r.cone.visible = true;
+      dir.normalize();
+      r.cone.position.copy(fromPos).addScaledVector(dir, Math.max(dist - ARROWHEAD_GAP, dist * 0.5));
+      r.cone.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+    }
+  }
+
+  function setPoints(navPoints, routeHighlightIds = new Set(), routeSegments = []) {
     clearNodes();
     // Nodes must be built in whatever layout (orbit vs flat-aligned) is
     // currently active, since `setPoints` can be re-invoked (eg the
@@ -205,6 +276,8 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
 
       nodes.push({ np, mesh, dropLine, dropMat, spoke, spokeMat, label, asteroidRing, routeBeacon, pos3d, pos2d });
     }
+
+    buildRouteLines(routeSegments);
   }
 
   function updateAuxLines(n) {
@@ -341,6 +414,7 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
         n.dropMat.opacity = op; n.spokeMat.opacity = op * 0.5;
         updateAuxLines(n);
       });
+      updateRouteLines();
       camera.position.lerpVectors(camStart, camEnd, e);
       camera.up.lerpVectors(upStart, upEnd, e).normalize();
       camera.lookAt(0, 0, 0);
@@ -364,6 +438,7 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
       n.spokeMat.opacity = 0.06;
       updateAuxLines(n);
     });
+    updateRouteLines();
     camera.position.set(0, 120, 0.001);
     camera.up.set(0, 0, -1);
     camera.lookAt(0, 0, 0);
@@ -388,6 +463,7 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
         n.dropMat.opacity = op; n.spokeMat.opacity = op * 0.5;
         updateAuxLines(n);
       });
+      updateRouteLines();
       camera.position.lerpVectors(camStart, camEnd, e);
       camera.up.lerpVectors(upStart, upEnd, e).normalize();
       camera.lookAt(0, 0, 0);
@@ -419,6 +495,7 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
   function dispose() {
     cancelAnimationFrame(rafId);
     clearNodes();
+    clearRouteLines();
     for (const sprite of backdropGroup.children) {
       if (!(sprite instanceof THREE.Sprite)) continue;
       sprite.material.map?.dispose();

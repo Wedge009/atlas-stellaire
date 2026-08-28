@@ -2,6 +2,7 @@
   import { resolveFlatPosition, styleForNavPoint, navPointLabel } from '../utils/navPoints.js';
   import { selectedNode } from '../stores/selection.js';
   import { journey } from '../stores/journey.js';
+  import { routeThroughSystem } from '../utils/journey.js';
 
   let { points, data, onJump, systemId = null } = $props();
 
@@ -13,46 +14,19 @@
     }))
   );
 
-  // Which navPoint(s) in this system to highlight for the plotted journey: the
-  // jump point to leave through for the next hop, the specific base chosen if
-  // this system is a planned refuel stop (a system can have more than one
-  // base, so journey.js already picked the nearest to the entry point), and
-  // the specific destination point if this is the final system in the route.
-  // Past the origin (nothing to arrive "from" there), also draws an arrow
-  // from the point this system was entered through to wherever the journey
-  // continues from here - routed via the refuel base if this is a stop.
-  let routeHighlight = $derived.by(() => {
-    if (!$journey || !systemId) return { leaveViaId: null, refuelId: null, targetId: null, arrow: [] };
-    const idx = $journey.hops.findIndex((h) => h.systemId === systemId);
-    if (idx === -1) return { leaveViaId: null, refuelId: null, targetId: null, arrow: [] };
-    const hop = $journey.hops[idx];
-    const next = $journey.hops[idx + 1];
-    const refuelId = hop.refuelStop ? hop.refuelNavPointId : null;
-    const targetId = idx === $journey.hops.length - 1 ? $journey.targetNavPointId : null;
-    const leaveViaId = next?.viaNavPointId ?? null;
-
-    let arrow = [];
-    if (idx > 0) {
-      const prevSystemId = $journey.hops[idx - 1].systemId;
-      const entryPoint = points.find((p) => p.dest === prevSystemId);
-      const exitId = leaveViaId ?? targetId;
-      const exitPoint = exitId ? points.find((p) => p.id === exitId) : null;
-      const viaPoint = refuelId ? points.find((p) => p.id === refuelId) : null;
-      if (entryPoint && viaPoint && exitPoint) {
-        arrow = [
-          { from: resolveFlatPosition(entryPoint), to: resolveFlatPosition(viaPoint) },
-          { from: resolveFlatPosition(viaPoint), to: resolveFlatPosition(exitPoint) },
-        ];
-      } else if (entryPoint && exitPoint) {
-        arrow = [{ from: resolveFlatPosition(entryPoint), to: resolveFlatPosition(exitPoint) }];
-      }
-    }
-
-    return { leaveViaId, refuelId, targetId, arrow };
-  });
+  // Which navPoint(s) in this system to highlight for the plotted journey,
+  // and which point-to-point segments to draw as an arrow through it - see
+  // routeThroughSystem in utils/journey.js (shared with the 3D view).
+  let routeInfo = $derived(routeThroughSystem($journey, systemId, points));
+  let routeArrow = $derived(
+    routeInfo.segments.map((seg) => ({
+      from: resolveFlatPosition(points.find((p) => p.id === seg.fromId)),
+      to: resolveFlatPosition(points.find((p) => p.id === seg.toId)),
+    }))
+  );
 
   function isRouteHighlighted(np) {
-    return np.id === routeHighlight.leaveViaId || np.id === routeHighlight.targetId || np.id === routeHighlight.refuelId;
+    return np.id === routeInfo.leaveViaId || np.id === routeInfo.targetId || np.id === routeInfo.refuelId;
   }
 
   const gridLines = [10, 20, 30, 40, 50, 60, 70, 80, 90];
@@ -110,7 +84,7 @@
     </g>
   {/each}
 
-  {#each routeHighlight.arrow as seg, i (i)}
+  {#each routeArrow as seg, i (i)}
     <line
       x1={seg.from.sx}
       y1={seg.from.sy}
