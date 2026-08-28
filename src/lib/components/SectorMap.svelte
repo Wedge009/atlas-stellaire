@@ -67,15 +67,13 @@
     <line x1={e.a.gx} y1={e.a.gy} x2={e.b.gx} y2={e.b.gy} class="edge" />
   {/each}
 
-  {#each routeSegments as seg, i (i)}
-    <line x1={seg.a.gx} y1={seg.a.gy} x2={seg.b.gx} y2={seg.b.gy} class="route-line" marker-end="url(#route-arrow)" />
-  {/each}
-
+  <!-- Markers first, so the route line draws over them; labels are drawn
+       last (after the route line) so system names stay legible on top. -->
   {#each systems as s (s.id)}
     {@const isSelected = s.id === selectedSystemId}
     {@const isRefuelStop = refuelSystemIds.has(s.id)}
     <g
-      class="node"
+      class="node-marker"
       transform="translate({s.gx}, {s.gy})"
       onclick={() => select(s)}
       role="button"
@@ -93,6 +91,22 @@
       {#if isSelected}
         <circle r="3" class="select-ring" />
       {/if}
+    </g>
+  {/each}
+
+  {#each routeSegments as seg, i (i)}
+    <line x1={seg.a.gx} y1={seg.a.gy} x2={seg.b.gx} y2={seg.b.gy} class="route-line" marker-end="url(#route-arrow)" />
+  {/each}
+
+  {#each systems as s (s.id)}
+    <g
+      class="node-label"
+      transform="translate({s.gx}, {s.gy})"
+      onclick={() => select(s)}
+      role="button"
+      tabindex="-1"
+      onkeydown={(e) => e.key === 'Enter' && select(s)}
+    >
       <text x="2.2" y="0.6" class="label">{s.name}</text>
     </g>
   {/each}
@@ -119,7 +133,7 @@
   .route-line { stroke: #ffcc55; stroke-width: 0.6; stroke-dasharray: 1.5 1; opacity: 0.9; }
   .route-arrowhead { fill: #ffcc55; }
   .refuel-ring { fill: none; stroke: #33cc55; stroke-width: 0.4; stroke-dasharray: 0.8 0.6; }
-  .node { cursor: pointer; }
+  .node-marker, .node-label { cursor: pointer; }
   .dot { fill: #33cc55; stroke: none; }
   .dot-base { fill: #33cc55; }
   .label {
