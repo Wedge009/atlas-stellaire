@@ -390,7 +390,7 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
   let rafId = null;
   function tick() {
     rafId = requestAnimationFrame(tick);
-    if (!animating) nodeGroup.children.forEach((c) => { if (c.isMesh) c.rotation.y += 0.01; });
+    if (!animating) nodeGroup.children.forEach((c) => { if (c instanceof THREE.Mesh) c.rotation.y += 0.01; });
     renderer.render(scene, camera);
   }
   tick();
@@ -399,6 +399,7 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
     cancelAnimationFrame(rafId);
     clearNodes();
     for (const sprite of backdropGroup.children) {
+      if (!(sprite instanceof THREE.Sprite)) continue;
       sprite.material.map?.dispose();
       sprite.material.dispose();
     }
