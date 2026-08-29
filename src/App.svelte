@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { get } from 'svelte/store';
   import SectorNav from './lib/components/SectorNav.svelte';
   import SystemView from './lib/components/SystemView.svelte';
   import SectorMap from './lib/components/SectorMap.svelte';
@@ -7,18 +8,34 @@
   import PlotJourneyDialog from './lib/components/PlotJourneyDialog.svelte';
   import JourneyPanel from './lib/components/JourneyPanel.svelte';
   import { findSystem } from './lib/utils/navPoints.js';
-  import { journey } from './lib/stores/journey.js';
+  import { journey, journeyInputs, plotJourney } from './lib/stores/journey.js';
+  import { lastTopView, lastSystemId } from './lib/stores/ui.js';
 
   let geminiData = $state(null);
-  let selectedSystemId = $state(null);
-  let topView = $state('sector'); // 'system' | 'sector'
+  let selectedSystemId = $state(get(lastSystemId));
+  let topView = $state(get(lastTopView)); // 'system' | 'sector'
   let showAbout = $state(false);
   let showPlotJourney = $state(false);
   let system = $derived(geminiData ? findSystem(geminiData, selectedSystemId) : null);
 
+  // Keeps the persisted 'last view' synchronised with whatever's currently shown,
+  // so a reload can restore it.
+  $effect(() => {
+    lastTopView.set(topView);
+    lastSystemId.set(selectedSystemId);
+  });
+
   onMount(async () => {
     const res = await fetch(`${import.meta.env.BASE_URL}data/gemini.json`);
     geminiData = await res.json();
+
+    if (topView === 'system' && !findSystem(geminiData, selectedSystemId)) {
+      topView = 'sector';
+      selectedSystemId = null;
+    }
+
+    const savedJourney = get(journeyInputs);
+    if (savedJourney) plotJourney(geminiData, savedJourney);
   });
 
   function goToSystem(id) {

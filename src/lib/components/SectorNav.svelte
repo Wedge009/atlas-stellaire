@@ -1,30 +1,24 @@
 <script>
-  import { onMount } from 'svelte';
+  import { sidebarCollapsed } from '../stores/ui.js';
 
   let { data, selectedSystemId, topView, onSelect, onShowSector, onShowAbout, onPlotJourney } = $props();
 
-  let collapsed = $state(false);
-
-  onMount(() => {
-    collapsed = window.innerWidth < 768;
-  });
-
   function selectSystem(id) {
     onSelect(id);
-    if (window.innerWidth < 768) collapsed = true;
+    if (window.innerWidth < 768) $sidebarCollapsed = true;
   }
 </script>
 
-<nav class="sector-nav" class:collapsed>
+<nav class="sector-nav" class:collapsed={$sidebarCollapsed}>
   <button
     type="button"
     class="collapse-toggle"
-    aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-    onclick={() => (collapsed = !collapsed)}
+    aria-label={$sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+    onclick={() => ($sidebarCollapsed = !$sidebarCollapsed)}
   >
-    {collapsed ? '»' : '«'}
+    {$sidebarCollapsed ? '»' : '«'}
   </button>
-  {#if !collapsed}
+  {#if !$sidebarCollapsed}
     <div class="nav-scroll">
       <div class="title">GEMINI SECTOR</div>
       <button
