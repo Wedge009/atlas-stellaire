@@ -77,25 +77,23 @@
     transition: width 0.15s ease;
   }
   .sector-nav.collapsed {
-    width: 28px;
+    width: 0;
+    border-right: none;
   }
   .collapse-toggle {
     position: absolute;
     top: 50%;
     right: -1px;
     transform: translate(100%, -50%);
-    z-index: 1;
+    z-index: 30;
     padding: 6px 8px;
     font-size: 12px;
     line-height: 1;
   }
   .collapsed .collapse-toggle {
-    position: static;
-    transform: none;
-    width: 100%;
-    text-align: center;
-    margin-top: auto;
-    margin-bottom: auto;
+    right: auto;
+    left: 0;
+    transform: translateY(-50%);
   }
   .nav-scroll {
     flex: 1;
