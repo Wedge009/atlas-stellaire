@@ -1,54 +1,101 @@
 <script>
+  import { onMount } from 'svelte';
+
   let { data, selectedSystemId, topView, onSelect, onShowSector, onShowAbout, onPlotJourney } = $props();
+
+  let collapsed = $state(false);
+
+  onMount(() => {
+    collapsed = window.innerWidth < 768;
+  });
+
+  function selectSystem(id) {
+    onSelect(id);
+    if (window.innerWidth < 768) collapsed = true;
+  }
 </script>
 
-<nav class="sector-nav">
-  <div class="nav-scroll">
-    <div class="title">GEMINI SECTOR</div>
-    <button
-      type="button"
-      class="sector-map-btn"
-      class:active={topView === 'sector'}
-      onclick={() => onShowSector?.()}
-    >
-      SECTOR MAP
-    </button>
-    <button type="button" class="plot-journey-btn" onclick={() => onPlotJourney?.()}>
-      PLOT JOURNEY
-    </button>
-    {#each data.quadrants as quadrant (quadrant.id)}
-      <div class="quadrant">
-        <div class="quadrant-name">{quadrant.name}</div>
-        <ul>
-          {#each quadrant.systems as system (system.id)}
-            <li>
-              <button
-                type="button"
-                class="system-btn"
-                class:active={system.id === selectedSystemId}
-                onclick={() => onSelect(system.id)}
-              >
-                {system.name}
-              </button>
-            </li>
-          {/each}
-        </ul>
-      </div>
-    {/each}
-  </div>
-  <div class="nav-footer">
-    <button type="button" class="about-btn" onclick={() => onShowAbout?.()}>ABOUT</button>
-  </div>
+<nav class="sector-nav" class:collapsed>
+  <button
+    type="button"
+    class="collapse-toggle"
+    aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+    onclick={() => (collapsed = !collapsed)}
+  >
+    {collapsed ? '»' : '«'}
+  </button>
+  {#if !collapsed}
+    <div class="nav-scroll">
+      <div class="title">GEMINI SECTOR</div>
+      <button
+        type="button"
+        class="sector-map-btn"
+        class:active={topView === 'sector'}
+        onclick={() => onShowSector?.()}
+      >
+        SECTOR MAP
+      </button>
+      <button type="button" class="plot-journey-btn" onclick={() => onPlotJourney?.()}>
+        PLOT JOURNEY
+      </button>
+      {#each data.quadrants as quadrant (quadrant.id)}
+        <div class="quadrant">
+          <div class="quadrant-name">{quadrant.name}</div>
+          <ul>
+            {#each quadrant.systems as system (system.id)}
+              <li>
+                <button
+                  type="button"
+                  class="system-btn"
+                  class:active={system.id === selectedSystemId}
+                  onclick={() => selectSystem(system.id)}
+                >
+                  {system.name}
+                </button>
+              </li>
+            {/each}
+          </ul>
+        </div>
+      {/each}
+    </div>
+    <div class="nav-footer">
+      <button type="button" class="about-btn" onclick={() => onShowAbout?.()}>ABOUT</button>
+    </div>
+  {/if}
 </nav>
 
 <style>
   .sector-nav {
+    position: relative;
     width: 220px;
+    flex: 0 0 auto;
     height: 100%;
     display: flex;
     flex-direction: column;
     background: #05080a;
     border-right: 1px solid #331515;
+    transition: width 0.15s ease;
+  }
+  .sector-nav.collapsed {
+    width: 28px;
+  }
+  .collapse-toggle {
+    position: absolute;
+    top: 50%;
+    right: -1px;
+    transform: translate(100%, -50%);
+    z-index: 1;
+    padding: 6px 8px;
+    font-size: 12px;
+    line-height: 1;
+  }
+  .collapsed .collapse-toggle {
+    position: static;
+    transform: none;
+    width: 100%;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
   }
   .nav-scroll {
     flex: 1;
