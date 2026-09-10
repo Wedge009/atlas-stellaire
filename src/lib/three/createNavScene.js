@@ -328,7 +328,7 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
     markActivity();
     const dx = e.clientX - lastX, dy = e.clientY - lastY;
     lastX = e.clientX; lastY = e.clientY;
-    theta -= dx * 0.005;
+    theta += dx * 0.005;
     phi = Math.min(Math.max(phi - dy * 0.005, 0.2), Math.PI - 0.2);
     updateCameraFromOrbit();
   }
@@ -352,7 +352,7 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
     if (e.touches.length === 1 && dragging && !aligned) {
       const dx = e.touches[0].clientX - lastX, dy = e.touches[0].clientY - lastY;
       lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
-      theta -= dx * 0.006;
+      theta += dx * 0.006;
       phi = Math.min(Math.max(phi - dy * 0.006, 0.2), Math.PI - 0.2);
       updateCameraFromOrbit();
     } else if (e.touches.length === 2 && !aligned) {
