@@ -6,6 +6,12 @@ const SCALE = 1 / 1000;
 const FLAT_SPAN = 55;
 const ROUTE_BEACON_HEIGHT = 5;
 
+// After this long with no user interaction, the orbit camera drifts slowly
+// around Y on its own. AUTO_ROTATE_SPEED is radians/frame at an assumed
+// ~60fps, tuned for a lazy ~2-minute revolution rather than anything dizzying.
+const IDLE_ROTATE_DELAY_MS = 30000;
+const AUTO_ROTATE_SPEED = 0.0009;
+
 // A system's SUNS/GLXY sky-box chunk (gemini.json `skybox`) gives each backdrop
 // object's raw in-game co-ordinates, which sit on a completely different scale
 // to the flight-sim nav space above - they're not navigable positions, just a
@@ -294,6 +300,9 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
   let radius = 180, theta = Math.PI / 4, phi = Math.PI / 3.2;
   let savedRadius = radius, savedTheta = theta, savedPhi = phi;
   let interactionLocked = false;
+  let lastInteractionAt = performance.now();
+  const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+  function markActivity() { lastInteractionAt = performance.now(); }
 
   function orbitCameraPosition(r, t, p) {
     return new THREE.Vector3(r * Math.sin(p) * Math.cos(t), r * Math.cos(p), r * Math.sin(p) * Math.sin(t));
@@ -309,12 +318,14 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
 
   function onMouseDown(e) {
     if (e.button !== 0) return;
+    markActivity();
     canvas.style.cursor = '';
     if (!interactionLocked && !aligned) { dragging = true; lastX = e.clientX; lastY = e.clientY; }
   }
   function onMouseUp() { dragging = false; }
   function onMouseMove(e) {
     if (!dragging || interactionLocked || aligned) return;
+    markActivity();
     const dx = e.clientX - lastX, dy = e.clientY - lastY;
     lastX = e.clientX; lastY = e.clientY;
     theta -= dx * 0.005;
@@ -323,17 +334,20 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
   }
   function onWheel(e) {
     if (interactionLocked || aligned) return;
+    markActivity();
     e.preventDefault();
     radius = Math.min(Math.max(radius + e.deltaY * 0.05, 20), 220);
     updateCameraFromOrbit();
   }
   function onTouchStart(e) {
     if (interactionLocked || aligned) return;
+    markActivity();
     if (e.touches.length === 1) { dragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; }
   }
   function onTouchEnd() { dragging = false; lastTouchDist = null; }
   function onTouchMove(e) {
     if (interactionLocked) return;
+    markActivity();
     e.preventDefault();
     if (e.touches.length === 1 && dragging && !aligned) {
       const dx = e.touches[0].clientX - lastX, dy = e.touches[0].clientY - lastY;
@@ -362,12 +376,14 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
     mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
   }
   function onClick(e) {
+    markActivity();
     setMouseFromEvent(e);
     raycaster.setFromCamera(mouse, camera);
     const hits = raycaster.intersectObjects(pointerNodeTargets());
     onSelect(hits.length ? hits[0].object.userData : null);
   }
   function onDblClick(e) {
+    markActivity();
     setMouseFromEvent(e);
     raycaster.setFromCamera(mouse, camera);
     const hits = raycaster.intersectObjects(pointerNodeTargets());
@@ -375,6 +391,10 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
     if (np?.dest) onJump?.(np.dest);
   }
   function onHoverMove(e) {
+    // Plain cursor movement over the canvas (no click, drag, zoom or touch)
+    // deliberately does not reset the idle timer - otherwise the auto-rotate
+    // would almost never get a chance to start whenever the pointer merely
+    // rests near the view.
     if (dragging || animating) return;
     setMouseFromEvent(e);
     raycaster.setFromCamera(mouse, camera);
@@ -397,6 +417,7 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
 
   function animateToAligned(onDone) {
     if (animating) return;
+    markActivity();
     animating = true;
     interactionLocked = true;
     savedRadius = radius; savedTheta = theta; savedPhi = phi;
@@ -447,6 +468,7 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
 
   function animateToOrbit(onDone) {
     if (animating) return;
+    markActivity();
     animating = true;
     interactionLocked = true;
     const startPositions = nodes.map((n) => n.mesh.position.clone());
@@ -488,6 +510,13 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
   function tick() {
     rafId = requestAnimationFrame(tick);
     if (!animating) nodeGroup.children.forEach((c) => { if (c instanceof THREE.Mesh) c.rotation.y += 0.01; });
+    if (
+      !animating && !aligned && !dragging && !interactionLocked && !prefersReducedMotion &&
+      performance.now() - lastInteractionAt > IDLE_ROTATE_DELAY_MS
+    ) {
+      theta -= AUTO_ROTATE_SPEED;
+      updateCameraFromOrbit();
+    }
     renderer.render(scene, camera);
   }
   tick();
