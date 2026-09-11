@@ -15,8 +15,9 @@ The co-ordinate data in `gemini.json` is derived from the copyrighted game
 archives described below; no rights to the original game, its assets, or its
 data are claimed, and all related trademarks belong to their respective owners.
 
-The 3D station/base models in `public/assets/models/` are adapted (extracted,
-decimated, and recoloured/retextured for this project) from the
+The 3D station/base models in `public/assets/models/`, and the jump-point
+animation frames in `public/assets/animations/jump/`, are adapted (extracted,
+decimated/recoloured, or retextured for this project) from the
 [Privateer Gemini Gold](https://sourceforge.net/projects/privateer/) project's
 public assets, used per its non-commercial art licence terms with credit to
 the Privateer Gemini Gold project and to Origin Systems as the original

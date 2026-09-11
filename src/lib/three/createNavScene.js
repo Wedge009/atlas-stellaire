@@ -85,6 +85,31 @@ function disposeNodeMesh(mesh) {
   });
 }
 
+// Gemini Gold's jump-point animation: a 7-frame sequence played as a
+// ping-pong loop (1..7 then back down to 2) at 150ms/frame. Neither the
+// individual JPEGs nor a static fall-back have any alpha channel or radial
+// fall-off so the 'glowing orb' look isn't a masked sprite, it's additive
+// blending (alpha="ONE ONE"): dark areas add nothing, so background shows
+// through unchanged, while the swirling bright areas glow on top.
+// THREE.AdditiveBlending on the material reproduces this exactly - see
+// setPoints below, where jump points get this instead of the plain
+// placeholder sphere whenever base models are enabled.
+const JUMP_FRAME_COUNT = 7;
+const JUMP_FRAME_SEQUENCE = [0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1];
+const JUMP_FRAME_INTERVAL_MS = 150;
+let jumpTexturesPromise = null;
+function loadJumpFrameTextures() {
+  if (!jumpTexturesPromise) {
+    const loader = new THREE.TextureLoader();
+    jumpTexturesPromise = Promise.all(
+      Array.from({ length: JUMP_FRAME_COUNT }, (_, i) =>
+        loader.loadAsync(`${import.meta.env.BASE_URL}assets/animations/jump/frame${String(i + 1).padStart(2, '0')}.jpg`)
+      )
+    );
+  }
+  return jumpTexturesPromise;
+}
+
 const SCALE = 1 / 1000;
 const FLAT_SPAN = 55;
 const ROUTE_BEACON_HEIGHT = 5;
@@ -161,6 +186,13 @@ export function createNavScene({
   baseModelsEnabled = true,
 }) {
   let idleRotationOn = idleRotationEnabled;
+  // Resolved once here (rather than per-node) so tick() below can swap frames
+  // synchronously every 150ms without awaiting anything - jumpMaterials that
+  // exist before this resolves just render untextured white until it does.
+  let jumpTextures = null;
+  let jumpAnimStartTime = performance.now();
+  let lastJumpFrameIdx = -1;
+  loadJumpFrameTextures().then((textures) => { jumpTextures = textures; });
   let baseModelsOn = baseModelsEnabled;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -214,6 +246,13 @@ export function createNavScene({
   let nodeGroup = new THREE.Group();
   scene.add(nodeGroup);
 
+  // Every jump-point orb's material, tracked separately from `nodes` so
+  // tick() can swap their shared `.map` each animation frame without having
+  // to filter the full node list every frame. Rebuilt alongside `nodes` in
+  // setPoints/clearNodes - materials themselves are disposed there already
+  // (via disposeNodeMesh), this array just stops referencing them.
+  let jumpMaterials = [];
+
   // Route-line arrows live in their own group, separate from nodeGroup - the
   // idle-spin below only touches nodeGroup's meshes, and an arrowhead cone
   // needs an arbitrary orientation (whatever direction the segment points)
@@ -242,6 +281,7 @@ export function createNavScene({
     }
     nodeGroup.clear();
     nodes = [];
+    jumpMaterials = [];
   }
 
   function clearRouteLines() {
@@ -357,6 +397,25 @@ export function createNavScene({
           stampUserData(instance, np);
           mesh.add(instance);
         });
+      } else if (baseModelsOn && style.shape === 'sphere') {
+        // Gemini Gold's jump-point look: an additively-blended animated orb
+        // rather than the plain lit sphere below. White base colour so the
+        // frame texture's own blue reads unmodified, matching the real asset
+        // rather than re-tinting it through style.color.
+        const material = new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          transparent: true,
+          opacity: style.dimmed ? 0.5 : 1,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          fog: false,
+        });
+        jumpMaterials.push(material);
+        loadJumpFrameTextures().then((textures) => {
+          material.map = textures[0];
+          material.needsUpdate = true;
+        });
+        mesh = new THREE.Mesh(new THREE.SphereGeometry(1.6, 16, 16), material);
       } else {
         let geometry;
         if (style.shape === 'box') geometry = new THREE.BoxGeometry(2.6, 2.6, 2.6);
@@ -652,6 +711,14 @@ export function createNavScene({
   function tick() {
     rafId = requestAnimationFrame(tick);
     if (!animating) nodeGroup.children.forEach((c) => { if (c instanceof THREE.Mesh || c instanceof THREE.Group) c.rotation.y += NODE_IDLE_SPIN_SPEED; });
+    if (jumpTextures && jumpMaterials.length) {
+      const step = Math.floor((performance.now() - jumpAnimStartTime) / JUMP_FRAME_INTERVAL_MS) % JUMP_FRAME_SEQUENCE.length;
+      if (step !== lastJumpFrameIdx) {
+        lastJumpFrameIdx = step;
+        const texture = jumpTextures[JUMP_FRAME_SEQUENCE[step]];
+        for (const mat of jumpMaterials) { mat.map = texture; mat.needsUpdate = true; }
+      }
+    }
     if (
       idleRotationOn && !animating && !aligned && !dragging && !interactionLocked && !prefersReducedMotion &&
       performance.now() - lastInteractionAt > IDLE_ROTATE_DELAY_MS
