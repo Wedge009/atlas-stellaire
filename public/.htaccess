@@ -1,0 +1,17 @@
+# Compress text-based assets in transit - cPanel/Apache ship mod_deflate
+# enabled by default, so this needs no shell access to take effect, just
+# uploading this file alongside the rest of dist/.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE application/wasm
+</IfModule>
+
+# Long-cache hashed build assets (Vite fingerprints filenames on every
+# change, so a far-future cache is safe here) while leaving index.html
+# and data/ JSON short-lived so deploys are picked up promptly.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/css "access plus 1 year"
+</IfModule>
