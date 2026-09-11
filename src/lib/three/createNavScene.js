@@ -149,8 +149,10 @@ export function createNavScene({
   systemId,
   idleRotationEnabled = true,
   skyboxEnabled = true,
+  baseModelsEnabled = true,
 }) {
   let idleRotationOn = idleRotationEnabled;
+  let baseModelsOn = baseModelsEnabled;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
@@ -296,7 +298,17 @@ export function createNavScene({
     }
   }
 
+  // Cached so setBaseModelsEnabled below can force a rebuild with the same
+  // points/route it was last called with - unlike idle-rotation/sky-box
+  // (bare flag flips read every frame or on next render), swapping models
+  // for placeholders changes actual node geometry and needs setPoints to
+  // run again.
+  let lastNavPoints = [], lastRouteHighlightIds = new Set(), lastRouteSegments = [];
+
   function setPoints(navPoints, routeHighlightIds = new Set(), routeSegments = []) {
+    lastNavPoints = navPoints;
+    lastRouteHighlightIds = routeHighlightIds;
+    lastRouteSegments = routeSegments;
     clearNodes();
     // Nodes must be built in whatever layout (orbit vs flat-aligned) is
     // currently active, since `setPoints` can be re-invoked (eg the
@@ -310,7 +322,7 @@ export function createNavScene({
       const pos2d = new THREE.Vector3(((flat.sx - 50) / 50) * FLAT_SPAN, 0, ((flat.sy - 50) / 50) * FLAT_SPAN);
       const initialPos = aligned ? pos2d : pos3d;
 
-      const modelTemplate = np.baseType ? loadBaseModelTemplate(np.baseType) : null;
+      const modelTemplate = (baseModelsOn && np.baseType) ? loadBaseModelTemplate(np.baseType) : null;
 
       let mesh;
       if (modelTemplate) {
@@ -674,5 +686,9 @@ export function createNavScene({
     isAligned: () => aligned,
     setIdleRotationEnabled: (v) => { idleRotationOn = v; },
     setSkyboxEnabled: (v) => { backdropGroup.visible = v; },
+    setBaseModelsEnabled: (v) => {
+      baseModelsOn = v;
+      setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments);
+    },
   };
 }

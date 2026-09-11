@@ -6,3 +6,4 @@ export const showHidden = persisted('showHidden', false);
 export const idleRotationEnabled = persisted('idleRotationEnabled', true);
 export const jumpTransitionEnabled = persisted('jumpTransitionEnabled', true);
 export const skyboxEnabled = persisted('skyboxEnabled', true);
+export const baseModelsEnabled = persisted('baseModelsEnabled', true);

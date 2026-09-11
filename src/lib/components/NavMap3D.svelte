@@ -2,7 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { selectedNode } from '../stores/selection.js';
   import { journey } from '../stores/journey.js';
-  import { idleRotationEnabled, skyboxEnabled } from '../stores/settings.js';
+  import { idleRotationEnabled, skyboxEnabled, baseModelsEnabled } from '../stores/settings.js';
   import { routeThroughSystem } from '../utils/journey.js';
 
   let { points, aligned = $bindable(false), animating = $bindable(false), data, onJump, systemId } = $props();
@@ -46,6 +46,7 @@
         systemId,
         idleRotationEnabled: $idleRotationEnabled,
         skyboxEnabled: $skyboxEnabled,
+        baseModelsEnabled: $baseModelsEnabled,
       });
       scene.setPoints(points, routeHighlightIds, routeInfo.segments);
       loading = false;
@@ -93,6 +94,11 @@
   $effect(() => {
     const enabled = $skyboxEnabled;
     scene?.setSkyboxEnabled(enabled);
+  });
+
+  $effect(() => {
+    const enabled = $baseModelsEnabled;
+    scene?.setBaseModelsEnabled(enabled);
   });
 
   function toggleAlign() {

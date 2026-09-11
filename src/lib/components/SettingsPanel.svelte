@@ -1,5 +1,11 @@
 <script>
-  import { showHidden, idleRotationEnabled, jumpTransitionEnabled, skyboxEnabled } from '../stores/settings.js';
+  import {
+    showHidden,
+    idleRotationEnabled,
+    jumpTransitionEnabled,
+    skyboxEnabled,
+    baseModelsEnabled,
+  } from '../stores/settings.js';
 
   // The whole menu is locked shut while the 3D<->2D alignment flight
   // animation is actually in progress - rebuilding a toggled setting's
@@ -59,6 +65,14 @@
       <label class="checkbox-row">
         <input type="checkbox" checked={$skyboxEnabled} onchange={() => skyboxEnabled.update((v) => !v)} />
         <span>Sky box sprites</span>
+      </label>
+      <label class="checkbox-row">
+        <input
+          type="checkbox"
+          checked={$baseModelsEnabled}
+          onchange={() => baseModelsEnabled.update((v) => !v)}
+        />
+        <span>3D base models</span>
       </label>
     </div>
   {/if}
