@@ -1,10 +1,89 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { findSystem, resolveFlatPosition, styleForNavPoint, systemName } from '../utils/navPoints.js';
 import { skyboxSpriteTexture } from '../utils/skyboxSprites.js';
+
+// Real extracted-and-decimated station models for specific baseTypes, keyed
+// the same way navPoints' own `baseType` field is. Anything not listed here
+// keeps the plain placeholder box/sphere below. Loaded once per baseType and
+// cloned per node instance - GLTFLoader is async, so a node using one of these
+// starts as an empty group and the model fades in once its (shared, cached)
+// load promise resolves.
+const BASE_MODEL_PATHS = {
+  // zUp: true means the source model came out of the BFXM/LightWave pipeline
+  // (Z-up) and needs the -90deg X correction below - the planetary sphere
+  // was built fresh for this project already Y-up, so it doesn't.
+  refinery: { path: `${import.meta.env.BASE_URL}assets/models/refinery.glb`, zUp: true },
+  agricultural: { path: `${import.meta.env.BASE_URL}assets/models/agricultural.glb`, zUp: false },
+  pleasure: { path: `${import.meta.env.BASE_URL}assets/models/pleasure.glb`, zUp: false },
+  oxford: { path: `${import.meta.env.BASE_URL}assets/models/oxford.glb`, zUp: false },
+  gaea: { path: `${import.meta.env.BASE_URL}assets/models/gaea.glb`, zUp: false },
+  'new-detroit': { path: `${import.meta.env.BASE_URL}assets/models/new-detroit.glb`, zUp: false },
+  mining: { path: `${import.meta.env.BASE_URL}assets/models/mining.glb`, zUp: true },
+  // Pirate bases re-use the same mining_base unit/mesh
+  pirate: { path: `${import.meta.env.BASE_URL}assets/models/mining.glb`, zUp: true },
+  'new-constantinople': { path: `${import.meta.env.BASE_URL}assets/models/new-constantinople.glb`, zUp: false },
+  perry: { path: `${import.meta.env.BASE_URL}assets/models/perry.glb`, zUp: true },
+  steltek: { path: `${import.meta.env.BASE_URL}assets/models/steltek.glb`, zUp: false },
+};
+// Model-space units don't match the plain box/sphere placeholders' hand-picked
+// sizes, so each model is rescaled to roughly the same on-screen footprint as
+// the 2.6-unit placeholder box (diagonal ~4.5) rather than rendered 'to scale'
+// - a real station is km-sized next to the tens-of-units nav point spacing,
+// so 'to scale' would be an invisible speck, same reasoning as the box/sphere
+// placeholders it replaces.
+const BASE_MODEL_TARGET_SIZE = 4.5;
+const modelTemplateCache = new Map();
+function loadBaseModelTemplate(baseType) {
+  const config = BASE_MODEL_PATHS[baseType];
+  if (!config) return null;
+  if (!modelTemplateCache.has(baseType)) {
+    const loader = new GLTFLoader();
+    modelTemplateCache.set(
+      baseType,
+      loader.loadAsync(config.path).then((gltf) => {
+        const template = gltf.scene;
+        // Source model is Z-up (BFXM/LightWave convention) - this scene is
+        // Y-up. Rotate -90 about X so model-space Z (the tank ring's
+        // turret/dome axis) becomes world +Y, matching the placeholder
+        // box/sphere it replaces having no inherent 'up' of its own.
+        if (config.zUp) template.rotation.x = -Math.PI / 2;
+        const box = new THREE.Box3().setFromObject(template);
+        const size = box.getSize(new THREE.Vector3());
+        const longest = Math.max(size.x, size.y, size.z) || 1;
+        template.scale.setScalar(BASE_MODEL_TARGET_SIZE / longest);
+        return template;
+      })
+    );
+  }
+  return modelTemplateCache.get(baseType);
+}
+
+// A loaded model's meshes carry no userData of their own, so click/hover
+// raycasting (which reads `hit.object.userData` expecting the navPoint) would
+// silently break on real models unless every descendant is stamped too.
+function stampUserData(object3d, np) {
+  object3d.traverse((child) => { child.userData = np; });
+}
+
+// Disposal for a node's visual mesh, which is either a plain THREE.Mesh (the
+// box/sphere placeholders) or a THREE.Group wrapping a cloned GLTF model -
+// Group has no .geometry/.material of its own, so it must be traversed.
+function disposeNodeMesh(mesh) {
+  mesh.traverse((child) => {
+    if (child.geometry) child.geometry.dispose();
+    if (child.material) child.material.dispose();
+  });
+}
 
 const SCALE = 1 / 1000;
 const FLAT_SPAN = 55;
 const ROUTE_BEACON_HEIGHT = 5;
+// Idle per-frame spin applied uniformly to every node's mesh/model (radians,
+// assumed ~60fps) - it's the same rate for a plain box/sphere and a detailed
+// model, but a symmetric placeholder barely reads as rotating at all while an
+// asymmetric station model makes the same angular speed look much faster.
+const NODE_IDLE_SPIN_SPEED = 0.002;
 
 // After this long with no user interaction, the orbit camera drifts slowly
 // around Y on its own. AUTO_ROTATE_SPEED is radians/frame at an assumed
@@ -134,8 +213,7 @@ export function createNavScene({
 
   function clearNodes() {
     for (const n of nodes) {
-      n.mesh.geometry.dispose();
-      n.mesh.material.dispose();
+      disposeNodeMesh(n.mesh);
       n.dropLine.geometry.dispose();
       n.dropMat.dispose();
       n.spoke.geometry.dispose();
@@ -232,19 +310,47 @@ export function createNavScene({
       const pos2d = new THREE.Vector3(((flat.sx - 50) / 50) * FLAT_SPAN, 0, ((flat.sy - 50) / 50) * FLAT_SPAN);
       const initialPos = aligned ? pos2d : pos3d;
 
-      let geometry;
-      if (style.shape === 'box') geometry = new THREE.BoxGeometry(2.6, 2.6, 2.6);
-      else if (style.shape === 'dot') geometry = new THREE.SphereGeometry(1.0, 14, 14);
-      else geometry = new THREE.SphereGeometry(1.6, 16, 16);
+      const modelTemplate = np.baseType ? loadBaseModelTemplate(np.baseType) : null;
 
-      const material = new THREE.MeshStandardMaterial({
-        color: new THREE.Color(style.color),
-        emissive: new THREE.Color(style.emissive),
-        roughness: 0.5,
-        transparent: style.dimmed,
-        opacity: style.dimmed ? 0.5 : 1,
-      });
-      const mesh = new THREE.Mesh(geometry, material);
+      let mesh;
+      if (modelTemplate) {
+        // Starts as an empty group at the right position/userData so
+        // ray-casting and disposal work immediately - the actual model gets
+        // added as a child once the (cached, shared) load resolves.
+        mesh = new THREE.Group();
+        modelTemplate.then((template) => {
+          const instance = template.clone(true);
+          // Object3D.clone() only deep-clones the node hierarchy - materials
+          // and geometry are shared by reference from the cached template,
+          // so two nodes using the same model (eg two refinery bases in one
+          // system) would otherwise dim/undim each other. Give this instance
+          // its own material copies.
+          instance.traverse((child) => {
+            if (child.material) child.material = child.material.clone();
+          });
+          if (style.dimmed) {
+            instance.traverse((child) => {
+              if (child.material) { child.material.transparent = true; child.material.opacity = 0.5; }
+            });
+          }
+          stampUserData(instance, np);
+          mesh.add(instance);
+        });
+      } else {
+        let geometry;
+        if (style.shape === 'box') geometry = new THREE.BoxGeometry(2.6, 2.6, 2.6);
+        else if (style.shape === 'dot') geometry = new THREE.SphereGeometry(1.0, 14, 14);
+        else geometry = new THREE.SphereGeometry(1.6, 16, 16);
+
+        const material = new THREE.MeshStandardMaterial({
+          color: new THREE.Color(style.color),
+          emissive: new THREE.Color(style.emissive),
+          roughness: 0.5,
+          transparent: style.dimmed,
+          opacity: style.dimmed ? 0.5 : 1,
+        });
+        mesh = new THREE.Mesh(geometry, material);
+      }
       mesh.position.copy(initialPos);
       mesh.userData = np;
       nodeGroup.add(mesh);
@@ -268,7 +374,12 @@ export function createNavScene({
 
       let asteroidRing = null;
       if (np.asteroids) {
-        const ringGeo = new THREE.RingGeometry(2.0, 2.5, 24);
+        // A real model's footprint (BASE_MODEL_TARGET_SIZE-normalised, ~4.5
+        // units across) is much wider than the plain placeholder box/sphere
+        // the ring was originally sized for - widen it so the ring clears the
+        // model instead of cutting through it.
+        const [ringInner, ringOuter] = modelTemplate ? [3.2, 3.8] : [2.0, 2.5];
+        const ringGeo = new THREE.RingGeometry(ringInner, ringOuter, 24);
         const ringMat = new THREE.MeshBasicMaterial({ color: 0xa0522d, transparent: true, opacity: 0.6, side: THREE.DoubleSide });
         asteroidRing = new THREE.Mesh(ringGeo, ringMat);
         asteroidRing.rotation.x = -Math.PI / 2;
@@ -519,7 +630,7 @@ export function createNavScene({
   let rafId = null;
   function tick() {
     rafId = requestAnimationFrame(tick);
-    if (!animating) nodeGroup.children.forEach((c) => { if (c instanceof THREE.Mesh) c.rotation.y += 0.01; });
+    if (!animating) nodeGroup.children.forEach((c) => { if (c instanceof THREE.Mesh || c instanceof THREE.Group) c.rotation.y += NODE_IDLE_SPIN_SPEED; });
     if (
       idleRotationOn && !animating && !aligned && !dragging && !interactionLocked && !prefersReducedMotion &&
       performance.now() - lastInteractionAt > IDLE_ROTATE_DELAY_MS
