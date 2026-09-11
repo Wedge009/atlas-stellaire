@@ -73,6 +73,33 @@ it contains.
   images themselves live in `public/assets/skybox/` and are mapped by name in
   `skyboxSprites.js`.
 
+### Jump transition animation
+
+The full-viewport hyperspace-jump effect played when you use a jump point
+(`public/assets/transitions/jump.webp`) is likewise decoded from the real game
+data, not a recreation:
+
+- `DATA\MIDGAMES\JUMP.PAK`, inside `PRIV.TRE`, holds the cut-scene. Unlike the
+  map data above it isn't EA-IFF-85 — it's Origin's separate "VGA" bitmap/
+  animation codec shared by Wing Commander 1, Wing Commander 2, Academy and
+  Privateer's own 2D in-flight engine (documented at
+  https://fabiensanglard.net/reverse_engineering_strike_commander/docs/wc1g.txt).
+- Container layout: a 4-byte total-length header followed by a table of
+  32-bit offsets (relative to the container start); the first offset's value
+  always equals the header+table's own byte length. Each entry points to
+  either a resource — `JUMP.PAK`'s first block is a 256-colour palette, 6
+  bits per channel — or another such table whose entries are individual
+  frames.
+- Each frame is RLE-compressed: an 8-byte bounding-box header
+  (`X2, X1, Y1, Y2` as signed 16-bit values; width = `X1+X2+1`, height =
+  `Y1+Y2+1`), then `{key, x, y, pixel data}` records until a terminating
+  `key == 0`. An even key is a literal run of `key >> 1` bytes; an odd key is
+  an encoded run of `key >> 1` pixels built from sub-runs, each starting with
+  a control byte that's either a further literal copy or a single repeated
+  byte.
+- `JUMP.PAK` contains two such 42-frame tables — 320×70 and 320×60 — stacked
+  to build each full frame, then encoded as WebP (80ms/frame).
+
 ### Rendering: live projection, not a separate layout
 
 `gemini.json` stores only the real extracted co-ordinates — no separate,
