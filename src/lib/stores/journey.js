@@ -3,8 +3,8 @@ import { findRoute, withRefuelStops } from '../utils/journey.js';
 import { persisted } from './persisted.js';
 
 // The currently-plotted journey (or null). A plain top-level store, like
-// selectedNode/showHidden in selection.js, so it stays intact across
-// sector-map <-> system-view navigation without any extra plumbing.
+// selectedNode in selection.js, so it stays intact across sector-map
+// <-> system-view navigation without any extra plumbing.
 //
 // There's no separate 'current leg' counter here: progress is derived live,
 // wherever it's needed, from whichever system is currently being viewed and

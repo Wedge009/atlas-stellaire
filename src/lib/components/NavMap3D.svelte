@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { selectedNode } from '../stores/selection.js';
   import { journey } from '../stores/journey.js';
+  import { idleRotationEnabled, skyboxEnabled } from '../stores/settings.js';
   import { routeThroughSystem } from '../utils/journey.js';
 
   let { points, aligned = $bindable(false), animating = $bindable(false), data, onJump, systemId } = $props();
@@ -34,6 +35,8 @@
         onJump,
         data,
         systemId,
+        idleRotationEnabled: $idleRotationEnabled,
+        skyboxEnabled: $skyboxEnabled,
       });
       scene.setPoints(points, routeHighlightIds, routeInfo.segments);
       loading = false;
@@ -66,6 +69,21 @@
     const highlightIds = routeHighlightIds;
     const segments = routeInfo.segments;
     if (scene) scene.setPoints(current, highlightIds, segments);
+  });
+
+  $effect(() => {
+    // Read the store value unconditionally (not after `scene?.`) so it's
+    // tracked as a dependency even on the first run, while scene is still
+    // null (createNavScene hasn't resolved yet) - otherwise the optional
+    // chaining short-circuits before the store is ever read, and this
+    // effect would never re-run once scene is actually assigned.
+    const enabled = $idleRotationEnabled;
+    scene?.setIdleRotationEnabled(enabled);
+  });
+
+  $effect(() => {
+    const enabled = $skyboxEnabled;
+    scene?.setSkyboxEnabled(enabled);
   });
 
   function toggleAlign() {

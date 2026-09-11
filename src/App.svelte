@@ -10,6 +10,7 @@
   import JumpTransition from './lib/components/JumpTransition.svelte';
   import { findSystem } from './lib/utils/navPoints.js';
   import { journey, journeyInputs, plotJourney } from './lib/stores/journey.js';
+  import { jumpTransitionEnabled } from './lib/stores/settings.js';
   import { lastTopView, lastSystemId } from './lib/stores/ui.js';
 
   let geminiData = $state(null);
@@ -48,6 +49,10 @@
   }
 
   function handleJump(id) {
+    if (!$jumpTransitionEnabled) {
+      goToSystem(id);
+      return;
+    }
     // Ignore re-jumps while a transition is already playing.
     if (jumpTarget === null) jumpTarget = id;
   }

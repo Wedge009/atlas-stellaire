@@ -62,7 +62,16 @@ function makeStars(count, spread) {
 // align/unalign animation between real 3D position and flat sx/sy layout,
 // click-to-select. Generalised from the proof-of-concept to take any
 // system's navPoints array.
-export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
+export function createNavScene({
+  canvas,
+  onSelect,
+  onJump,
+  data,
+  systemId,
+  idleRotationEnabled = true,
+  skyboxEnabled = true,
+}) {
+  let idleRotationOn = idleRotationEnabled;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
@@ -74,6 +83,7 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
   scene.add(makeStars(1200, 900));
 
   const backdropGroup = new THREE.Group();
+  backdropGroup.visible = skyboxEnabled;
   scene.add(backdropGroup);
   const textureLoader = new THREE.TextureLoader();
   const skybox = findSystem(data, systemId)?.skybox ?? [];
@@ -511,7 +521,7 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
     rafId = requestAnimationFrame(tick);
     if (!animating) nodeGroup.children.forEach((c) => { if (c instanceof THREE.Mesh) c.rotation.y += 0.01; });
     if (
-      !animating && !aligned && !dragging && !interactionLocked && !prefersReducedMotion &&
+      idleRotationOn && !animating && !aligned && !dragging && !interactionLocked && !prefersReducedMotion &&
       performance.now() - lastInteractionAt > IDLE_ROTATE_DELAY_MS
     ) {
       theta -= AUTO_ROTATE_SPEED;
@@ -551,5 +561,7 @@ export function createNavScene({ canvas, onSelect, onJump, data, systemId }) {
     resize,
     dispose,
     isAligned: () => aligned,
+    setIdleRotationEnabled: (v) => { idleRotationOn = v; },
+    setSkyboxEnabled: (v) => { backdropGroup.visible = v; },
   };
 }

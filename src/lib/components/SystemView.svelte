@@ -3,17 +3,20 @@
   import NavMap3D from './NavMap3D.svelte';
   import InfoPanel from './InfoPanel.svelte';
   import Legend from './Legend.svelte';
-  import { selectedNode, showHidden } from '../stores/selection.js';
+  import SettingsPanel from './SettingsPanel.svelte';
+  import { selectedNode } from '../stores/selection.js';
+  import { showHidden } from '../stores/settings.js';
   import { viewMode, viewAligned } from '../stores/view.js';
 
   let { system, data, onJump } = $props();
 
   let mapAnimating = $state(false);
-  // While the 3D view is aligned (or animating to/from aligned) to the 2D projection,
-  // switching mode or toggling hidden points would unmount/redraw NavMap3D mid-transition
-  // and mangle the projection. Lock from the moment the transition starts, not just once
-  // it settles, so there's no window to click through mid-animation.
-  let alignLocked = $derived($viewMode === '3d' && ($viewAligned || mapAnimating));
+  // Both the view-mode toggle and the settings menu only need to be locked while
+  // the 3D<->2D alignment flight animation is actually in flight - switching mode
+  // or rebuilding a toggled setting's effect (eg the node meshes) mid-flight would
+  // fight the running animation. Once it settles into either end state (including
+  // the aligned 2D projection), both are safe again.
+  let animationLocked = $derived($viewMode === '3d' && mapAnimating);
 
   $effect(() => {
     // reset selection whenever the system changes so no stale node leaks in
@@ -35,23 +38,13 @@
     <div class="hud-controls">
       <button
         type="button"
-        class:active={$viewMode === '2d'}
-        disabled={alignLocked}
-        title={alignLocked ? 'Return to 3D view before switching to 2D view' : undefined}
-        onclick={() => ($viewMode = '2d')}
+        disabled={animationLocked}
+        title={animationLocked ? 'Wait for the alignment animation to finish' : undefined}
+        onclick={() => ($viewMode = $viewMode === '2d' ? '3d' : '2d')}
       >
-        2D VIEW
+        {$viewMode === '2d' ? '2D VIEW' : '3D VIEW'}
       </button>
-      <button type="button" class:active={$viewMode === '3d'} onclick={() => ($viewMode = '3d')}>3D VIEW</button>
-      <button
-        type="button"
-        class:active={$showHidden}
-        disabled={alignLocked}
-        title={alignLocked ? 'Return to 3D view to change this' : undefined}
-        onclick={() => showHidden.update((v) => !v)}
-      >
-        {$showHidden ? 'HIDE HIDDEN' : 'SHOW HIDDEN'}
-      </button>
+      <SettingsPanel locked={animationLocked} />
     </div>
   </div>
 
