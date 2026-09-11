@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { findSystem, resolveFlatPosition, styleForNavPoint, systemName } from '../utils/navPoints.js';
 import { skyboxSpriteTexture } from '../utils/skyboxSprites.js';
 
@@ -34,14 +33,24 @@ const BASE_MODEL_PATHS = {
 // placeholders it replaces.
 const BASE_MODEL_TARGET_SIZE = 4.5;
 const modelTemplateCache = new Map();
+// GLTFLoader (and everything it pulls in) is only worth its ~90KB if a base
+// model actually needs loading, so it's fetched as its own chunk on first
+// use rather than bundled into createNavScene - a session that never enters
+// the 3D view, or has base models toggled off, never pays for it.
+let gltfLoaderPromise = null;
+function getGLTFLoader() {
+  if (!gltfLoaderPromise) {
+    gltfLoaderPromise = import('three/examples/jsm/loaders/GLTFLoader.js').then(({ GLTFLoader }) => new GLTFLoader());
+  }
+  return gltfLoaderPromise;
+}
 function loadBaseModelTemplate(baseType) {
   const config = BASE_MODEL_PATHS[baseType];
   if (!config) return null;
   if (!modelTemplateCache.has(baseType)) {
-    const loader = new GLTFLoader();
     modelTemplateCache.set(
       baseType,
-      loader.loadAsync(config.path).then((gltf) => {
+      getGLTFLoader().then((loader) => loader.loadAsync(config.path)).then((gltf) => {
         const template = gltf.scene;
         // Source model is Z-up (BFXM/LightWave convention) - this scene is
         // Y-up. Rotate -90 about X so model-space Z (the tank ring's
