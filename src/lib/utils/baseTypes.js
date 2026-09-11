@@ -4,7 +4,7 @@ const BASE_TYPE_ICONS = {
   agricultural: `${base}assets/bases/agricultural.png`,
   gaea: `${base}assets/bases/agricultural.png`,
   mining: `${base}assets/bases/mining.png`,
-  pirate: `${base}assets/bases/pirate.png`,
+  pirate: `${base}assets/bases/mining.png`,
   steltek: `${base}assets/bases/steltek.png`,
   'new-constantinople': `${base}assets/bases/new-constantinople.png`,
   'new-detroit': `${base}assets/bases/new-detroit.png`,
