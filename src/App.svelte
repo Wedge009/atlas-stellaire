@@ -7,6 +7,7 @@
   import About from './lib/components/About.svelte';
   import PlotJourneyDialog from './lib/components/PlotJourneyDialog.svelte';
   import JourneyPanel from './lib/components/JourneyPanel.svelte';
+  import JumpTransition from './lib/components/JumpTransition.svelte';
   import { findSystem } from './lib/utils/navPoints.js';
   import { journey, journeyInputs, plotJourney } from './lib/stores/journey.js';
   import { lastTopView, lastSystemId } from './lib/stores/ui.js';
@@ -16,6 +17,7 @@
   let topView = $state(get(lastTopView)); // 'system' | 'sector'
   let showAbout = $state(false);
   let showPlotJourney = $state(false);
+  let jumpTarget = $state(null);
   let system = $derived(geminiData ? findSystem(geminiData, selectedSystemId) : null);
 
   // Keeps the persisted 'last view' synchronised with whatever's currently shown,
@@ -44,6 +46,11 @@
       topView = 'system';
     }
   }
+
+  function handleJump(id) {
+    // Ignore re-jumps while a transition is already playing.
+    if (jumpTarget === null) jumpTarget = id;
+  }
 </script>
 
 <main>
@@ -62,7 +69,15 @@
         <SectorMap data={geminiData} {selectedSystemId} onSelect={goToSystem} />
       {:else if system}
         {#key system.id}
-          <SystemView {system} data={geminiData} onJump={goToSystem} />
+          <SystemView {system} data={geminiData} onJump={handleJump} />
+        {/key}
+      {/if}
+      {#if jumpTarget !== null}
+        {#key jumpTarget}
+          <JumpTransition
+            onSwap={() => goToSystem(jumpTarget)}
+            onDone={() => (jumpTarget = null)}
+          />
         {/key}
       {/if}
       {#if $journey}
