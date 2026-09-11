@@ -27,7 +27,16 @@
     // sector map and 2D view never need it, and it only pays for itself once
     // a system's 3D view actually mounts.
     (async () => {
-      const { createNavScene } = await import('../three/createNavScene.js');
+      const [{ createNavScene }] = await Promise.all([
+        import('../three/createNavScene.js'),
+        // Nav-point labels are baked once into a canvas texture (see
+        // makeLabel in createNavScene.js), so VT323 must actually be loaded
+        // before that bake happens - on a cold cache, canvas text silently
+        // falls back to the browser's default font for both measurement and
+        // rendering, and being a one-shot bake, it never corrects itself
+        // once the font does arrive later.
+        document.fonts.load("34px 'VT323'").catch(() => {}),
+      ]);
       if (destroyed) return;
       scene = createNavScene({
         canvas,
