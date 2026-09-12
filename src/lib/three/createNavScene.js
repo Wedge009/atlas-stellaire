@@ -61,6 +61,19 @@ function loadBaseModelTemplate(baseType) {
         const size = box.getSize(new THREE.Vector3());
         const longest = Math.max(size.x, size.y, size.z) || 1;
         template.scale.setScalar(BASE_MODEL_TARGET_SIZE / longest);
+        // Some source files (this project has no control over how the
+        // original artist created them) don't have a centred pivot - the
+        // mesh's own local origin can sit well outside its bounding-box
+        // centre. Left alone, idle-spin rotation happens around that
+        // off-centre origin instead of the model's visual middle, so an
+        // asymmetric model sweeps through a wide arc rather than spinning in
+        // place (confirmed on the mining/pirate asteroid model: its centroid
+        // sat 374 units from local origin, ~35% of its own longest
+        // dimension). Re-centre after scaling so every model rotates about
+        // its own visual centre regardless of how it was originally pivoted.
+        const scaledBox = new THREE.Box3().setFromObject(template);
+        const center = scaledBox.getCenter(new THREE.Vector3());
+        template.position.sub(center);
         return template;
       })
     );
