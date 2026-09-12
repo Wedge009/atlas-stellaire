@@ -19,8 +19,13 @@
         <div class="row">{d.description}</div>
         <div class="row coords">X {d.x}&nbsp; Y {d.y}&nbsp; Z {d.z}</div>
         {#if d.baseName && d.facilities}
+          {@const facilityList = [
+            d.facilities.merchantsGuild ? 'Merchants Guild' : null,
+            d.facilities.mercenariesGuild ? 'Mercenaries Guild' : null,
+            d.facilities.shipDealer ? 'Ship Dealer' : null,
+          ].filter(Boolean)}
           <div class="row muted">
-            {d.facilities.merchantsGuild ? 'Merchants Guild · ' : ''}{d.facilities.mercenariesGuild ? 'Mercenaries Guild · ' : ''}{d.facilities.shipDealer ? 'Ship Dealer' : ''}
+            {facilityList.join(' · ')}
           </div>
         {/if}
       </div>
