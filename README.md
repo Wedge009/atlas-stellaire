@@ -126,6 +126,36 @@ data, not a recreation:
 - `JUMP.PAK` contains two such 42-frame tables — 320×70 and 320×60 — stacked
   to build each full frame, then encoded as WebP (80ms/frame).
 
+### Base sprite images
+
+The station/base icons in `public/assets/bases/` are likewise decoded
+directly from the game archives:
+
+- Source: `DATA\APPEARNC\*.IFF` in `PRIV.TRE`/`RF.TRE` (eg `PERRY.IFF`,
+  `ROIDBASE.IFF`), wrapping the same RLE codec as `JUMP.PAK` in an EA-IFF-85
+  container: `FORM APPR` > `FORM BMAP` > `INFO` (frame count) + `SHAP` (frame
+  table + RLE frames).
+- Each RLE record's `x, y` are **signed**, relative to the frame's own
+  bounding-box origin — canvas position is `(X1+x, Y1+y)`, not `(x, y)`
+  directly.
+- A sprite's multiple 'frames' aren't always independent alternate images.
+  Several base sprites split one picture across differently-directioned
+  frames that share a common origin — eg Perry's dome and docking module are
+  each one quadrant of the full station, meant to be composited on to a
+  single shared canvas, not treated as 4 alternate views.
+- Palette index 0 isn't a reliable transparency sentinel. Some sprites (eg
+  `ROIDBASE.IFF`) explicitly draw with index 0 for genuine near-black detail
+  — rivets, cable shadow — indistinguishable from 'never drawn' by value
+  alone; a separate per-pixel 'was this drawn' mask, not the palette value,
+  decides what's opaque.
+- `OXFORD.IFF` and `PLEASURE.IFF` are distinct-but-near-identical station
+  skins (not a literal copy — a few hundred bytes apart), which is why
+  `oxford` maps to the `pleasure` icon in `baseTypes.js`. There's no separate
+  `GAEA.IFF` at all — `gaea` reusing the `agricultural` icon reflects the
+  original game data, not a short-cut taken by this project. Oxford's sprite
+  also bakes in a vertical band of duplicated pixels down its middle; that's
+  present in the original asset itself, not a decoding artefact.
+
 ### Rendering: live projection, not a separate layout
 
 `gemini.json` stores only the real extracted co-ordinates — no separate,
