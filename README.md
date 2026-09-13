@@ -72,6 +72,20 @@ it contains.
   the same physical field (eg Rikel's Nav 1, 2, 4, 5 and Hidden 3 all
   reference field `5` — one belt spans near all five). Populates each nav
   point's `asteroids` boolean in `gemini.json`.
+- `CAST` (squadron roster) and `WAND` (46-byte squadron records) chunks give
+  each nav point's random-encounter table: which ship(s), how many, and at
+  what odds. Each `WAND` record names its own `CAST` slot directly (bytes
+  19–20) and its zone (byte 21, matching `SPHR`/nav-point order) rather than
+  relying on file position, carries the ship's stats-file and sprite-file
+  names (bytes 3–18), a squad size (bytes 35–36), and a cumulative
+  probability percentage (byte 0) — records sharing a cumulative value in a
+  zone are alternative squads spawned together as one group, and a group's
+  own weight is its cumulative value minus the previous one seen in that
+  zone. Populates each nav point's `encounters` array in `gemini.json`
+  (omitted where a nav point has no encounter table) as `{chance, ships:
+  [{ship, count}]}`; `ship` is the internal sprite filename as-is (eg
+  `STILETTO`, or `TALPIR`/`TALMIL`/`TALRELIG` for the three Talon faction
+  skins) — `src/lib/utils/ships.js` maps these to friendly display names.
 - `TABLE.DAT` — a 69×69 (Privateer) shortest-path matrix between all systems,
   used to independently verify the jump network.
 - `FORM GLXY` > `FORM SUNS` (nested inside the same per-system block) — fixed
