@@ -156,6 +156,23 @@ directly from the game archives:
   also bakes in a vertical band of duplicated pixels down its middle; that's
   present in the original asset itself, not a decoding artefact.
 
+### Jump-point sphere sprite
+
+The nav-map's 'original' jump sphere sprites (Settings → Original jump sphere)
+is decoded from `DATA\APPEARNC\JUMP.IFF`, wrapping the same RLE codec and
+`FORM APPR` > `FORM BMAP` > `INFO`/`SHAP` container as the base sprites above,
+with one difference: `SHAP`'s frame-table entries are 4 bytes each, but only
+the low 16 bits are the real offset — the high 16 bits are a constant `0xC100`
+filler, not part of the offset, and reading the table unmasked misparses it.
+
+Unlike the base sprites quadrant-tiled frames, `JUMP.IFF`'s 9 frames are
+genuine independent animation frames — each is already a complete, if sparse,
+fuzzy blue sphere image on its own, not a slice of one shared picture.
+The source frames are a face-on 2D sprite the way the original 3Space engine
+actually drew them. The decoded alpha is also a hard 0/255 cut-out — this
+project feathers it with a Gaussian blur before use so it reads as translucent
+rather than a solid disc.
+
 ### Rendering: live projection, not a separate layout
 
 `gemini.json` stores only the real extracted co-ordinates — no separate,

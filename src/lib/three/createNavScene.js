@@ -88,12 +88,17 @@ function stampUserData(object3d, np) {
   object3d.traverse((child) => { child.userData = np; });
 }
 
-// Disposal for a node's visual mesh, which is either a plain THREE.Mesh (the
-// box/sphere placeholders) or a THREE.Group wrapping a cloned GLTF model -
-// Group has no .geometry/.material of its own, so it must be traversed.
+// Disposal for a node's visual mesh, which is a plain THREE.Mesh (the
+// box/sphere placeholders), a THREE.Group wrapping a cloned GLTF model (no
+// .geometry/.material of its own, so it must be traversed), or a THREE.Sprite
+// (the real jump-sphere sprites). A Sprite's `.geometry` is not its
+// own - three.js gives every Sprite instance the same lazily-created static
+// quad (see Sprite.js), so calling .dispose() on it would destroy the GPU
+// buffer backing every other sprite in the scene too (labels included).
+// Only the material - genuinely per-instance - gets disposed for a Sprite.
 function disposeNodeMesh(mesh) {
   mesh.traverse((child) => {
-    if (child.geometry) child.geometry.dispose();
+    if (child.geometry && !child.isSprite) child.geometry.dispose();
     if (child.material) child.material.dispose();
   });
 }
@@ -121,6 +126,27 @@ function loadJumpFrameTextures() {
     );
   }
   return jumpTexturesPromise;
+}
+
+// The real DATA/APPEARNC/JUMP.IFF frames, decoded straight from the game data
+// rather than Gemini Gold's reinterpretation above: 9 frames, each already a
+// complete but sparse/noisy fuzzy-sphere image with genuine per-pixel alpha
+// (the undrawn ~1/4-1/3 of each frame IS the 'heavy transparency', not an
+// additive glow over a dark image). Offered as an alternative style toggled
+// from Settings rather than replacing Gemini Gold's outright.
+const ORIGINAL_JUMP_FRAME_COUNT = 9;
+const ORIGINAL_JUMP_FRAME_SEQUENCE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1];
+let originalJumpTexturesPromise = null;
+function loadOriginalJumpFrameTextures() {
+  if (!originalJumpTexturesPromise) {
+    const loader = new THREE.TextureLoader();
+    originalJumpTexturesPromise = Promise.all(
+      Array.from({ length: ORIGINAL_JUMP_FRAME_COUNT }, (_, i) =>
+        loader.loadAsync(`${import.meta.env.BASE_URL}assets/animations/jump-original/frame${String(i).padStart(2, '0')}.png`)
+      )
+    );
+  }
+  return originalJumpTexturesPromise;
 }
 
 const SCALE = 1 / 1000;
@@ -197,16 +223,20 @@ export function createNavScene({
   idleRotationEnabled = true,
   skyboxEnabled = true,
   baseModelsEnabled = true,
+  originalJumpSphereEnabled = true,
 }) {
   let idleRotationOn = idleRotationEnabled;
   // Resolved once here (rather than per-node) so tick() below can swap frames
   // synchronously every 150ms without awaiting anything - jumpMaterials that
   // exist before this resolves just render untextured white until it does.
   let jumpTextures = null;
+  let originalJumpTextures = null;
   let jumpAnimStartTime = performance.now();
   let lastJumpFrameIdx = -1;
   loadJumpFrameTextures().then((textures) => { jumpTextures = textures; });
+  loadOriginalJumpFrameTextures().then((textures) => { originalJumpTextures = textures; });
   let baseModelsOn = baseModelsEnabled;
+  let originalJumpOn = originalJumpSphereEnabled;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
@@ -410,6 +440,39 @@ export function createNavScene({
           stampUserData(instance, np);
           mesh.add(instance);
         });
+      } else if (style.shape === 'sphere' && originalJumpOn) {
+        // The original jump sphere, independent of the 3D base-models toggle -
+        // unlike Gemini Gold's orb below, this doesn't need a loaded model
+        // file to compare against, so it's shown whenever this style is on even
+        // with base models off. The real JUMP.IFF frames are a face-on 2D sprite
+        // (that's how the original 3Space engine drew it too). A camera-facing
+        // THREE.Sprite always shows the frame face-on regardless of view angle,
+        // matching how it actually rendered. Normal alpha blending, not
+        // additive - the (feathered) sparse undrawn pixels are real transparency,
+        // not a glow to add on top of a dark back-drop. But the drawn pixels
+        // themselves are still fully opaque per-frame (this VGA-era format
+        // has no real per-pixel alpha gradient beyond the mask) - baseOpacity
+        // caps the whole sprite well under 1 so it still reads as translucent
+        // rather than a solid disc.
+        const baseOpacity = 0.35;
+        const material = new THREE.SpriteMaterial({
+          color: 0xffffff,
+          transparent: true,
+          opacity: style.dimmed ? baseOpacity * 0.5 : baseOpacity,
+          depthWrite: false,
+          fog: false,
+        });
+        jumpMaterials.push(material);
+        loadOriginalJumpFrameTextures().then((textures) => {
+          material.map = textures[0];
+          material.needsUpdate = true;
+        });
+        mesh = new THREE.Sprite(material);
+        // Sized to roughly the same on-screen footprint as the 1.6-radius
+        // sphere it replaces (diameter 3.2), corrected for the source
+        // frames' own non-square 89x73 aspect ratio so the sprite isn't
+        // squashed into an oval.
+        mesh.scale.set(3.2 * (89 / 73), 3.2, 1);
       } else if (baseModelsOn && style.shape === 'sphere') {
         // Gemini Gold's jump-point look: an additively-blended animated orb
         // rather than the plain lit sphere below. White base colour so the
@@ -724,12 +787,16 @@ export function createNavScene({
   function tick() {
     rafId = requestAnimationFrame(tick);
     if (!animating) nodeGroup.children.forEach((c) => { if (c instanceof THREE.Mesh || c instanceof THREE.Group) c.rotation.y += NODE_IDLE_SPIN_SPEED; });
-    if (jumpTextures && jumpMaterials.length) {
-      const step = Math.floor((performance.now() - jumpAnimStartTime) / JUMP_FRAME_INTERVAL_MS) % JUMP_FRAME_SEQUENCE.length;
-      if (step !== lastJumpFrameIdx) {
-        lastJumpFrameIdx = step;
-        const texture = jumpTextures[JUMP_FRAME_SEQUENCE[step]];
-        for (const mat of jumpMaterials) { mat.map = texture; mat.needsUpdate = true; }
+    if (jumpMaterials.length) {
+      const textures = originalJumpOn ? originalJumpTextures : jumpTextures;
+      const sequence = originalJumpOn ? ORIGINAL_JUMP_FRAME_SEQUENCE : JUMP_FRAME_SEQUENCE;
+      if (textures) {
+        const step = Math.floor((performance.now() - jumpAnimStartTime) / JUMP_FRAME_INTERVAL_MS) % sequence.length;
+        if (step !== lastJumpFrameIdx) {
+          lastJumpFrameIdx = step;
+          const texture = textures[sequence[step]];
+          for (const mat of jumpMaterials) { mat.map = texture; mat.needsUpdate = true; }
+        }
       }
     }
     if (
@@ -777,6 +844,11 @@ export function createNavScene({
     setSkyboxEnabled: (v) => { backdropGroup.visible = v; },
     setBaseModelsEnabled: (v) => {
       baseModelsOn = v;
+      setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments);
+    },
+    setOriginalJumpSphereEnabled: (v) => {
+      originalJumpOn = v;
+      lastJumpFrameIdx = -1;
       setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments);
     },
   };
