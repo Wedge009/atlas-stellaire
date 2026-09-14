@@ -1,19 +1,9 @@
 <script>
   import { shipSpritePath } from '../utils/encounters.js';
-  import { shipName, shipSize } from '../utils/ships.js';
+  import { shipName } from '../utils/ships.js';
+  import { spriteSizeFor } from '../utils/encounterLayout.js';
 
   let { ships, onSelect, onJump } = $props();
-
-  // Base SVG size (viewBox is 0-100) for a Talon-class fighter; other ships
-  // scale relative to it via shipSize() (see README.md 'Ship encounter
-  // sprites' — the sprite bitmaps themselves are NOT drawn to scale).
-  const BASE_SPRITE_SIZE = 1.6;
-  const BASE_SHIP_SIZE = shipSize('TALMIL');
-
-  function spriteSizeFor(shipId) {
-    const size = shipSize(shipId);
-    return size ? BASE_SPRITE_SIZE * (size / BASE_SHIP_SIZE) : BASE_SPRITE_SIZE;
-  }
 
   // Packs sprites of arbitrary (possibly very different) sizes around the
   // nav point with no overlap: seed each at an even angle a bit out from

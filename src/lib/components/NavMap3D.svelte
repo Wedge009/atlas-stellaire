@@ -7,7 +7,9 @@
     skyboxEnabled,
     baseModelsEnabled,
     originalJumpSphereEnabled,
+    showEncounterSprites,
   } from '../stores/settings.js';
+  import { encounterRolls } from '../stores/encounters.js';
   import { routeThroughSystem } from '../utils/journey.js';
 
   let { points, aligned = $bindable(false), animating = $bindable(false), data, onJump, systemId } = $props();
@@ -53,8 +55,10 @@
         skyboxEnabled: $skyboxEnabled,
         baseModelsEnabled: $baseModelsEnabled,
         originalJumpSphereEnabled: $originalJumpSphereEnabled,
+        encounterSpritesEnabled: $showEncounterSprites,
       });
       scene.setPoints(points, routeHighlightIds, routeInfo.segments);
+      scene.setEncounterShips($encounterRolls);
       loading = false;
       resize();
       resizeObserver = new ResizeObserver(resize);
@@ -110,6 +114,16 @@
   $effect(() => {
     const enabled = $originalJumpSphereEnabled;
     scene?.setOriginalJumpSphereEnabled(enabled);
+  });
+
+  $effect(() => {
+    const enabled = $showEncounterSprites;
+    scene?.setEncounterSpritesEnabled(enabled);
+  });
+
+  $effect(() => {
+    const rolls = $encounterRolls;
+    scene?.setEncounterShips(rolls);
   });
 
   function toggleAlign() {

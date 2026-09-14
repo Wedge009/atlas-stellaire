@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { findSystem, resolveFlatPosition, styleForNavPoint, systemName } from '../utils/navPoints.js';
 import { skyboxSpriteTexture } from '../utils/skyboxSprites.js';
+import { createEncounterSprites3d } from './encounterSprites3d.js';
 
 // Real extracted-and-decimated station models for specific baseTypes, keyed
 // the same way navPoints' own `baseType` field is. Anything not listed here
@@ -224,6 +225,7 @@ export function createNavScene({
   skyboxEnabled = true,
   baseModelsEnabled = true,
   originalJumpSphereEnabled = true,
+  encounterSpritesEnabled = true,
 }) {
   let idleRotationOn = idleRotationEnabled;
   // Resolved once here (rather than per-node) so tick() below can swap frames
@@ -288,6 +290,14 @@ export function createNavScene({
   let nodes = [];
   let nodeGroup = new THREE.Group();
   scene.add(nodeGroup);
+
+  // Ambient ship-encounter sprites: added straight to `scene`, not
+  // nodeGroup, so their own orbit motion isn't compounded by the per-node
+  // idle-spin below (see encounterSprites3d.js's tick(), which re-centres
+  // each nav point's anchor on the node's live position every frame instead).
+  const encounterSprites = createEncounterSprites3d({ scene, systemId });
+  encounterSprites.setVisible(encounterSpritesEnabled);
+  let lastEncounterRolls = null;
 
   // Every jump-point orb's material, tracked separately from `nodes` so
   // tick() can swap their shared `.map` each animation frame without having
@@ -561,6 +571,7 @@ export function createNavScene({
     }
 
     buildRouteLines(routeSegments);
+    if (lastEncounterRolls) encounterSprites.setEncounterShips(lastEncounterRolls, nodes);
   }
 
   function updateAuxLines(n) {
@@ -645,7 +656,7 @@ export function createNavScene({
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
   function pointerNodeTargets() {
-    return nodes.flatMap((n) => [n.mesh, n.label]);
+    return nodes.flatMap((n) => [n.mesh, n.label]).concat(encounterSprites.getPickableObjects());
   }
   function setMouseFromEvent(e) {
     const rect = canvas.getBoundingClientRect();
@@ -806,6 +817,7 @@ export function createNavScene({
       theta -= AUTO_ROTATE_SPEED;
       updateCameraFromOrbit();
     }
+    encounterSprites.tick(camera);
     renderer.render(scene, camera);
   }
   tick();
@@ -814,6 +826,7 @@ export function createNavScene({
     cancelAnimationFrame(rafId);
     clearNodes();
     clearRouteLines();
+    encounterSprites.dispose();
     for (const sprite of backdropGroup.children) {
       if (!(sprite instanceof THREE.Sprite)) continue;
       sprite.material.map?.dispose();
@@ -851,5 +864,10 @@ export function createNavScene({
       lastJumpFrameIdx = -1;
       setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments);
     },
+    setEncounterShips: (rollsMap) => {
+      lastEncounterRolls = rollsMap;
+      encounterSprites.setEncounterShips(rollsMap, nodes);
+    },
+    setEncounterSpritesEnabled: (v) => encounterSprites.setVisible(v),
   };
 }
