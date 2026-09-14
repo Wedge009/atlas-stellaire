@@ -173,6 +173,37 @@ actually drew them. The decoded alpha is also a hard 0/255 cut-out — this
 project feathers it with a Gaussian blur before use so it reads as translucent
 rather than a solid disc.
 
+### Ship encounter sprites
+
+The encountered ship sprites (`public/assets/ships/<ship>/`) are decoded from
+`DATA\APPEARNC\<SHIP>.IFF` in `PRIV.TRE`/`RF.TRE`, for the 16 ships that appear
+in ambient `WAND` encounters:
+
+- Structurally these are `FORM APPR` > `FORM BM3D`, containing an `INFO`
+  chunk followed by `VSHP` — a different layout from the base/jump-point
+  sprites above, despite sharing the same underlying RLE codec.
+- `VSHP` isn't one shared frame-offset table. It's 37 back-to-back
+  self-contained sub-blocks (one per rotation angle, matching `INFO`'s frame
+  count), each a 4-byte length + a single masked offset entry + one RLE
+  frame — no compositing needed, unlike the base sprites' quadrant tiling.
+  Frame 0 is a top-down/nose-up view for every ship, sweeping through 3/4,
+  side-on, and belly views across the 37 frames.
+- **Rendered sprite size is not to scale between ships.** Every ship's
+  decoded rotation-frame canvas comes out roughly the same pixel footprint
+  (about 90–125px) regardless of hull class — Paradigm and Kamekh, the two
+  largest ships in the game, decode *smaller* in raw pixels than several
+  fighters.
+- The real relative hull size instead comes from `INFO` itself: 12 bytes,
+  six little-endian 16-bit fields `(frameCount, 30, 30, typeFlag, dim1,
+  dim2)`. `dim1`/`dim2` are in-universe hull-dimension units with no known
+  real-world conversion, but are internally consistent across every ship —
+  capital ships > freighters > fighters, Paradigm coming out ~4x a Talon —
+  and missile/decoy `APPEARNC` files (which aren't ships) carry a
+  distinctly smaller `dim1`/`dim2` pair alongside a different `typeFlag`.
+  `src/lib/utils/ships.js`'s `shipSize()` exposes `dim2` per ship; the
+  encounter renderer scales each sprite by this value rather than by the
+  sprite bitmap's own pixel size.
+
 ### Rendering: live projection, not a separate layout
 
 `gemini.json` stores only the real extracted co-ordinates — no separate,

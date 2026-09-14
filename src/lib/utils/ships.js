@@ -43,10 +43,39 @@ const SHIP_MAX_SPEEDS = {
   TUG: 350,
 };
 
+// Relative hull size, read from each ship's DATA/APPEARNC/<ship>.IFF sprite
+// file (`FORM BM3D > INFO`, the second of two previously-unexplained u16
+// fields trailing the frame count). Values are in-universe units with no
+// known real-world conversion (same caveat as SHIP_MAX_SPEEDS above), but
+// they're internally consistent: capital ships > freighters > fighters, with
+// Paradigm coming out ~4x a Talon.
+const SHIP_SIZES = {
+  BRDSWORD: 270,
+  CLUNKER: 158,
+  DEMON: 156,
+  DRALTHI: 140,
+  DRAYMAN: 370,
+  FIGHTER: 166,
+  FRIGATE: 500,
+  GLADIUS: 183,
+  GOTHRI: 192,
+  KAMEKH: 440,
+  MERCHANT: 240,
+  STILETTO: 155,
+  TALMIL: 120,
+  TALPIR: 120,
+  TALRELIG: 120,
+  TUG: 230,
+};
+
 export function shipName(shipId) {
   return SHIP_NAMES[shipId] ?? shipId;
 }
 
 export function shipMaxSpeed(shipId) {
   return SHIP_MAX_SPEEDS[shipId];
+}
+
+export function shipSize(shipId) {
+  return SHIP_SIZES[shipId];
 }
