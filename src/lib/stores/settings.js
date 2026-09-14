@@ -8,3 +8,4 @@ export const jumpTransitionEnabled = persisted('jumpTransitionEnabled', true);
 export const skyboxEnabled = persisted('skyboxEnabled', true);
 export const baseModelsEnabled = persisted('baseModelsEnabled', true);
 export const originalJumpSphereEnabled = persisted('originalJumpSphereEnabled', true);
+export const showEncounterSprites = persisted('showEncounterSprites', true);

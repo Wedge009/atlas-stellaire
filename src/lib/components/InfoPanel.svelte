@@ -2,6 +2,8 @@
   import { selectedNode } from '../stores/selection.js';
   import { baseTypeIcon } from '../utils/baseTypes.js';
   import { systemName } from '../utils/navPoints.js';
+  import { sortedEncounterGroups } from '../utils/encounters.js';
+  import { shipName } from '../utils/ships.js';
 
   let { data } = $props();
 </script>
@@ -27,6 +29,17 @@
           <div class="row muted">
             {facilityList.join(' · ')}
           </div>
+        {/if}
+        {#if d.encounters?.length}
+          {@const groups = sortedEncounterGroups(d)}
+          <details class="encounters">
+            <summary>Encounter Probability</summary>
+            {#each groups as g}
+              <div class="row muted encounter-row">
+                {Math.round(g.chance)}% — {g.ships.map((s) => `${s.count}× ${shipName(s.ship)}`).join(' + ')}
+              </div>
+            {/each}
+          </details>
         {/if}
       </div>
     </div>
@@ -68,4 +81,7 @@
   .row { color: var(--text-cyan); }
   .row.coords { margin-top: 6px; color: #668; }
   .row.muted { color: #6a8a99; font-size: 15px; }
+  .encounters { margin-top: 8px; }
+  .encounters summary { cursor: pointer; color: var(--text-amber); font-size: 15px; }
+  .encounter-row { font-size: 14px; margin-top: 4px; }
 </style>

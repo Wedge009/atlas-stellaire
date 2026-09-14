@@ -3,6 +3,9 @@
   import { selectedNode } from '../stores/selection.js';
   import { journey } from '../stores/journey.js';
   import { routeThroughSystem } from '../utils/journey.js';
+  import { encounterRolls } from '../stores/encounters.js';
+  import { showEncounterSprites } from '../stores/settings.js';
+  import EncounterSprites from './EncounterSprites.svelte';
 
   let { points, data, onJump, systemId = null } = $props();
 
@@ -83,6 +86,17 @@
       {/if}
     </g>
   {/each}
+
+  {#if $showEncounterSprites}
+    {#each display as d (d.np.id)}
+      {@const ships = $encounterRolls.get(d.np.id)}
+      {#if ships?.length}
+        <g transform="translate({d.flat.sx}, {d.flat.sy})">
+          <EncounterSprites {ships} onSelect={() => select(d.np)} onJump={() => jump(d.np)} />
+        </g>
+      {/if}
+    {/each}
+  {/if}
 
   {#each routeArrow as seg, i (i)}
     <line

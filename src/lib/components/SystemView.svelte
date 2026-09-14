@@ -7,6 +7,7 @@
   import { selectedNode } from '../stores/selection.js';
   import { showHidden } from '../stores/settings.js';
   import { viewMode, viewAligned } from '../stores/view.js';
+  import { rollForSystem } from '../stores/encounters.js';
 
   let { system, data, onJump } = $props();
 
@@ -22,6 +23,7 @@
     // reset selection whenever the system changes so no stale node leaks in
     system.id;
     selectedNode.set(null);
+    rollForSystem(system.navPoints);
   });
 
   let visiblePoints = $derived(

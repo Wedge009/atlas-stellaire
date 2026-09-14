@@ -6,6 +6,7 @@
     skyboxEnabled,
     baseModelsEnabled,
     originalJumpSphereEnabled,
+    showEncounterSprites,
   } from '../stores/settings.js';
 
   // The whole menu is locked shut while the 3D<->2D alignment flight
@@ -82,6 +83,14 @@
           onchange={() => originalJumpSphereEnabled.update((v) => !v)}
         />
         <span>Original jump sphere</span>
+      </label>
+      <label class="checkbox-row">
+        <input
+          type="checkbox"
+          checked={$showEncounterSprites}
+          onchange={() => showEncounterSprites.update((v) => !v)}
+        />
+        <span>Encounter sprites</span>
       </label>
     </div>
   {/if}
