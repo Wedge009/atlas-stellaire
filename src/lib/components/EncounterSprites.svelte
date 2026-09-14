@@ -9,26 +9,67 @@
   // sprites' — the sprite bitmaps themselves are NOT drawn to scale).
   const BASE_SPRITE_SIZE = 1.6;
   const BASE_SHIP_SIZE = shipSize('TALMIL');
-  const RADIUS = 2.4;
 
   function spriteSizeFor(shipId) {
     const size = shipSize(shipId);
     return size ? BASE_SPRITE_SIZE * (size / BASE_SHIP_SIZE) : BASE_SPRITE_SIZE;
   }
 
-  // Stable per-index offset so the cluster doesn't jitter across re-renders
-  // (position depends only on index/total, never Math.random()).
-  function offsetFor(i, total) {
-    const angle = (i / Math.max(total, 1)) * Math.PI * 2 + (i % 2) * 0.5;
-    const r = RADIUS * (0.5 + 0.5 * ((i * 37) % 5) / 4);
-    return { dx: Math.cos(angle) * r, dy: Math.sin(angle) * r };
+  // Packs sprites of arbitrary (possibly very different) sizes around the
+  // nav point with no overlap: seed each at an even angle a bit out from
+  // centre, then relax pairs apart whenever they're closer than the sum of
+  // their radii. Pure function of sizes/order, so it's deterministic - the
+  // cluster doesn't jitter across re-renders, and a mixed Paradigm+Stiletto
+  // escort naturally settles with the big hull in the middle and the
+  // fighters fanned out clear of it, rather than everything sharing one
+  // fixed ring radius regardless of size.
+  function layoutCluster(sizes, { margin = 0.3, iterations = 30 } = {}) {
+    const n = sizes.length;
+    if (n === 0) return [];
+    if (n === 1) return [{ dx: 0, dy: 0 }];
+
+    const startRadius = Math.max(...sizes) * 0.4;
+    const positions = sizes.map((_, i) => {
+      const angle = (i / n) * Math.PI * 2;
+      return { dx: Math.cos(angle) * startRadius, dy: Math.sin(angle) * startRadius };
+    });
+
+    for (let iter = 0; iter < iterations; iter++) {
+      for (let i = 0; i < n; i++) {
+        for (let j = i + 1; j < n; j++) {
+          const minDist = (sizes[i] + sizes[j]) / 2 + margin;
+          let ddx = positions[j].dx - positions[i].dx;
+          let ddy = positions[j].dy - positions[i].dy;
+          let dist = Math.hypot(ddx, ddy);
+          if (dist === 0) {
+            const angle = (i - j) * 0.7;
+            ddx = Math.cos(angle);
+            ddy = Math.sin(angle);
+            dist = 1;
+          }
+          if (dist < minDist) {
+            const push = (minDist - dist) / 2;
+            const nx = ddx / dist;
+            const ny = ddy / dist;
+            positions[i].dx -= nx * push;
+            positions[i].dy -= ny * push;
+            positions[j].dx += nx * push;
+            positions[j].dy += ny * push;
+          }
+        }
+      }
+    }
+    return positions;
   }
+
+  let sizes = $derived(ships.map((s) => spriteSizeFor(s.ship)));
+  let positions = $derived(layoutCluster(sizes));
 </script>
 
 <g class="encounter-sprites">
   {#each ships as s, i (i)}
-    {@const { dx, dy } = offsetFor(i, ships.length)}
-    {@const size = spriteSizeFor(s.ship)}
+    {@const { dx, dy } = positions[i]}
+    {@const size = sizes[i]}
     <g
       class="ship-sprite-hit"
       onclick={onSelect}
