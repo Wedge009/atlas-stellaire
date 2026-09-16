@@ -13,19 +13,21 @@ import { createEncounterSprites3d } from './encounterSprites3d.js';
 const BASE_MODEL_PATHS = {
   // zUp: true means the source model came out of the BFXM/LightWave pipeline
   // (Z-up) and needs the -90deg X correction below - the planetary sphere
-  // was built fresh for this project already Y-up, so it doesn't.
-  refinery: { path: `${import.meta.env.BASE_URL}assets/models/refinery.glb`, zUp: true },
+  // was built fresh for this project already Y-up, so it doesn't. Original
+  // models were from Gemini Gold, current Origin models are mostly oriented
+  // Y-up.
+  refinery: { path: `${import.meta.env.BASE_URL}assets/models/refinery.glb`, zUp: false },
   agricultural: { path: `${import.meta.env.BASE_URL}assets/models/agricultural.glb`, zUp: false },
   pleasure: { path: `${import.meta.env.BASE_URL}assets/models/pleasure.glb`, zUp: false },
   oxford: { path: `${import.meta.env.BASE_URL}assets/models/oxford.glb`, zUp: false },
   gaea: { path: `${import.meta.env.BASE_URL}assets/models/gaea.glb`, zUp: false },
   'new-detroit': { path: `${import.meta.env.BASE_URL}assets/models/new-detroit.glb`, zUp: false },
-  mining: { path: `${import.meta.env.BASE_URL}assets/models/mining.glb`, zUp: true },
+  mining: { path: `${import.meta.env.BASE_URL}assets/models/mining.glb`, zUp: false },
   // Pirate bases re-use the same mining_base unit/mesh
   pirate: { path: `${import.meta.env.BASE_URL}assets/models/mining.glb`, zUp: true },
   'new-constantinople': { path: `${import.meta.env.BASE_URL}assets/models/new-constantinople.glb`, zUp: false },
   perry: { path: `${import.meta.env.BASE_URL}assets/models/perry.glb`, zUp: false },
-  steltek: { path: `${import.meta.env.BASE_URL}assets/models/steltek.glb`, zUp: false },
+  steltek: { path: `${import.meta.env.BASE_URL}assets/models/steltek.glb`, zUp: true },
 };
 // Model-space units don't match the plain box/sphere placeholders' hand-picked
 // sizes, so each model is rescaled to roughly the same on-screen footprint as
@@ -267,7 +269,17 @@ export function createNavScene({
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x000000);
   scene.fog = new THREE.FogExp2(0x000000, 0.0035);
-  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 2000);
+  // Near/far chosen to fit what's actually in the scene rather than leaving
+  // generous defaults: orbit radius is clamped to 20-220 (below), the
+  // sky-box backdrop sits at BACKDROP_RADIUS (600), and the starfield spans a
+  // 900-unit cube (~780 from origin at the corners) - nothing is ever nearer
+  // than ~15 units or further than ~1000. WebGL's depth buffer is non-linear
+  // and front-loaded near the camera, so the old 0.1/2000 pair (a 20,000:1
+  // ratio) wasted precision on a range nothing ever occupies, starving it at
+  // the distances models actually render at - symptom was faint z-fighting
+  // on some models' geometry when viewed from further away. This pair is a
+  // 1000:1 ratio instead, a 20x improvement, with margin on both ends.
+  const camera = new THREE.PerspectiveCamera(50, 1, 1, 1000);
 
   // Gives glTF-imported PBR materials (KHR_materials_specular/IOR, baked in by
   // Blender's exporter from imported .3ds Ks/Ns values) something to reflect -
