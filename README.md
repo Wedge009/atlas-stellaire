@@ -22,13 +22,13 @@ public assets, used per its non-commercial art licence terms with credit to
 the Privateer Gemini Gold project and to Origin Systems as the original
 rights holder.
 
-The 3D station models are converted from original Origin assets hosted at the
-[WC CIC](https://www.wcnews.com/wcpedia/WC3D_Collection_Index) which, again,
-are credited to Origin Systems as the original rights holder. While faithfulness
-to the original game assets was a goal, the single static sprite for Privateer
-bases was a downgrade from the multi-view-angle sprites used for bases in previous
-3Space Wing Commander games. So Origin's source models are used as a faithful
-reproduction.
+The 3D station models are alpha-corrected and converted from original Origin
+assets hosted at the [WC CIC](https://www.wcnews.com/wcpedia/WC3D_Collection_Index)
+which, again, are credited to Origin Systems as the original rights holder.
+While nostalgia was an initial goal, the single static sprite used for bases
+was a significant downgrade from the multi-view-angle sprites used for bases in
+previous Wing Commander games. So Origin's source models are used as a faithful
+reproduction instead.
 
 ## Data sources
 

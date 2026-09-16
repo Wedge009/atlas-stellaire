@@ -24,7 +24,7 @@ const BASE_MODEL_PATHS = {
   // Pirate bases re-use the same mining_base unit/mesh
   pirate: { path: `${import.meta.env.BASE_URL}assets/models/mining.glb`, zUp: true },
   'new-constantinople': { path: `${import.meta.env.BASE_URL}assets/models/new-constantinople.glb`, zUp: false },
-  perry: { path: `${import.meta.env.BASE_URL}assets/models/perry.glb`, zUp: true },
+  perry: { path: `${import.meta.env.BASE_URL}assets/models/perry.glb`, zUp: false },
   steltek: { path: `${import.meta.env.BASE_URL}assets/models/steltek.glb`, zUp: false },
 };
 // Model-space units don't match the plain box/sphere placeholders' hand-picked
