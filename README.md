@@ -15,17 +15,20 @@ The co-ordinate data in `gemini.json` is derived from the copyrighted game
 archives described below; no rights to the original game, its assets, or its
 data are claimed, and all related trademarks belong to their respective owners.
 
-Most of the 3D station/base models in `public/assets/models/`, and the jump-point
-animation frames in `public/assets/animations/jump/`, are adapted (extracted,
-decimated/recoloured, or retextured for this project) from the
+The planetary textures for models in `public/assets/models/`, and the jump-point
+animation frames in `public/assets/animations/jump/`, are adapted from the
 [Privateer Gemini Gold](https://sourceforge.net/projects/privateer/) project's
 public assets, used per its non-commercial art licence terms with credit to
 the Privateer Gemini Gold project and to Origin Systems as the original
 rights holder.
 
-The remainder are derived from Origin assets hosted at the
+The 3D station models are converted from original Origin assets hosted at the
 [WC CIC](https://www.wcnews.com/wcpedia/WC3D_Collection_Index) which, again,
-are credited to Origin Systems as the original rights holder.
+are credited to Origin Systems as the original rights holder. While faithfulness
+to the original game assets was a goal, the single static sprite for Privateer
+bases was a downgrade from the multi-view-angle sprites used for bases in previous
+3Space Wing Commander games. So Origin's source models are used as a faithful
+reproduction.
 
 ## Data sources
 

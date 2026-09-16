@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { findSystem, resolveFlatPosition, styleForNavPoint, systemName } from '../utils/navPoints.js';
 import { skyboxSpriteTexture } from '../utils/skyboxSprites.js';
 import { createEncounterSprites3d } from './encounterSprites3d.js';
@@ -41,7 +42,28 @@ const modelTemplateCache = new Map();
 let gltfLoaderPromise = null;
 function getGLTFLoader() {
   if (!gltfLoaderPromise) {
-    gltfLoaderPromise = import('three/examples/jsm/loaders/GLTFLoader.js').then(({ GLTFLoader }) => new GLTFLoader());
+    gltfLoaderPromise = Promise.all([
+      import('three/examples/jsm/loaders/GLTFLoader.js'),
+      import('three/examples/jsm/loaders/DRACOLoader.js'),
+    ]).then(([{ GLTFLoader }, { DRACOLoader }]) => {
+      // Note for author only: Station models are exported through gltf-transform's
+      // Draco rather than Blender's own glTF exporter - Blender's Draco support
+      // depends on a pre-built library Ubuntu's package doesn't install, so
+      // compression happens as a separate post-processing step instead.
+      //
+      // Decoder files are resolved straight out of the three package (via
+      // Vite's asset-URL handling for `new URL(..., import.meta.url)`) rather
+      // than a manually-maintained copy, so they always match whatever three
+      // version is actually installed.
+      const dracoLoader = new DRACOLoader();
+      dracoLoader.setDecoderPath({
+        js: new URL('three/examples/jsm/libs/draco/gltf/draco_wasm_wrapper.js', import.meta.url).href,
+        wasm: new URL('three/examples/jsm/libs/draco/gltf/draco_decoder.wasm', import.meta.url).href,
+      });
+      const loader = new GLTFLoader();
+      loader.setDRACOLoader(dracoLoader);
+      return loader;
+    });
   }
   return gltfLoaderPromise;
 }
@@ -193,7 +215,7 @@ function makeLabel(text, color) {
   ctx.textBaseline = 'top';
   ctx.fillText(text, 4, 4);
   const tex = new THREE.CanvasTexture(cnv);
-  const mat = new THREE.SpriteMaterial({ map: tex, depthTest: false, transparent: true });
+  const mat = new THREE.SpriteMaterial({ map: tex, depthTest: true, depthWrite: false, transparent: true });
   const sprite = new THREE.Sprite(mat);
   sprite.scale.set((cnv.width / cnv.height) * 4, 4, 1);
   return sprite;
@@ -246,6 +268,15 @@ export function createNavScene({
   scene.background = new THREE.Color(0x000000);
   scene.fog = new THREE.FogExp2(0x000000, 0.0035);
   const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 2000);
+
+  // Gives glTF-imported PBR materials (KHR_materials_specular/IOR, baked in by
+  // Blender's exporter from imported .3ds Ks/Ns values) something to reflect -
+  // without this, scene.environment is unset and those materials render
+  // near-black regardless of their base colour/alpha, since they lean on
+  // environment lighting rather than the scene's plain point/ambient lights.
+  const pmremGenerator = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+  pmremGenerator.dispose();
 
   scene.add(makeStars(1200, 900));
 
