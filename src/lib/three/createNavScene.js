@@ -313,7 +313,7 @@ export function createNavScene({
   grid.material.transparent = true;
   scene.add(grid);
 
-  const cameraLight = new THREE.PointLight(0xffffff, 5, 1000, 0);
+  const cameraLight = new THREE.PointLight(0xffffff, 2, 1000);
   camera.add(cameraLight);
   scene.add(camera);
   scene.add(new THREE.AmbientLight(0x223344, 1.2));
