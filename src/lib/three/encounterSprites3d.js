@@ -213,8 +213,9 @@ export function createEncounterSprites3d({ scene, systemId }) {
         const planeNormal = new THREE.Vector3(0, 1, 0).applyAxisAngle(tiltAxis, tiltAngle).normalize();
         const { u, v } = basisFromNormal(planeNormal);
         const phase = rand() * Math.PI * 2;
+        const direction = rand() < 0.5 ? 1 : -1;
         const maxSpeed = shipMaxSpeed(s.ship) ?? 300;
-        const angularSpeed = (maxSpeed * SPEED_SCALE) / radius;
+        const angularSpeed = direction * (maxSpeed * SPEED_SCALE) / radius;
 
         const material = new THREE.SpriteMaterial({
           color: 0xffffff,
@@ -260,13 +261,16 @@ export function createEncounterSprites3d({ scene, systemId }) {
         entry.u.y * cosA * entry.radius + entry.v.y * sinA * entry.radius,
         entry.u.z * cosA * entry.radius + entry.v.z * sinA * entry.radius
       );
-      // Nose-first: forward is the instantaneous direction of travel, i.e.
-      // d/dangle of the position above.
+      // Nose-first: forwards is the instantaneous direction of travel, ie
+      // d/dangle of the position above, signed by orbit direction so ships
+      // running the loop backwards (angularSpeed < 0) still face the way
+      // they're actually moving.
+      const dirSign = Math.sign(entry.angularSpeed) || 1;
       tmpForward
         .set(
-          -entry.u.x * sinA + entry.v.x * cosA,
-          -entry.u.y * sinA + entry.v.y * cosA,
-          -entry.u.z * sinA + entry.v.z * cosA
+          (-entry.u.x * sinA + entry.v.x * cosA) * dirSign,
+          (-entry.u.y * sinA + entry.v.y * cosA) * dirSign,
+          (-entry.u.z * sinA + entry.v.z * cosA) * dirSign
         )
         .normalize();
 
