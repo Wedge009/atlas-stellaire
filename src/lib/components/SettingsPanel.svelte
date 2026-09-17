@@ -1,12 +1,12 @@
 <script>
   import {
     showHidden,
-    idleRotationEnabled,
     jumpTransitionEnabled,
     skyboxEnabled,
-    baseModelsEnabled,
-    originalJumpSphereEnabled,
-    showEncounterSprites,
+    encounterMode,
+    idleRotationEnabled,
+    baseModelStyle,
+    jumpPointStyle,
   } from '../stores/settings.js';
 
   // The whole menu is locked shut while the 3D<->2D alignment flight
@@ -44,17 +44,11 @@
   </button>
   {#if open}
     <div class="panel">
+      <div class="group-label">Global</div>
+
       <label class="checkbox-row">
         <input type="checkbox" checked={$showHidden} onchange={() => showHidden.update((v) => !v)} />
         <span>Show hidden points</span>
-      </label>
-      <label class="checkbox-row">
-        <input
-          type="checkbox"
-          checked={$idleRotationEnabled}
-          onchange={() => idleRotationEnabled.update((v) => !v)}
-        />
-        <span>Idle rotation</span>
       </label>
       <label class="checkbox-row">
         <input
@@ -66,31 +60,41 @@
       </label>
       <label class="checkbox-row">
         <input type="checkbox" checked={$skyboxEnabled} onchange={() => skyboxEnabled.update((v) => !v)} />
-        <span>Sky box sprites</span>
+        <span>Background sprites</span>
       </label>
+      <label class="select-row">
+        <span>Ship encounters</span>
+        <select value={$encounterMode} onchange={(e) => encounterMode.set(e.currentTarget.value)}>
+          <option value="none">None</option>
+          <option value="sprites">Sprites</option>
+          <option value="models">Models</option>
+        </select>
+      </label>
+
+      <div class="group-label">3D View</div>
+
       <label class="checkbox-row">
         <input
           type="checkbox"
-          checked={$baseModelsEnabled}
-          onchange={() => baseModelsEnabled.update((v) => !v)}
+          checked={$idleRotationEnabled}
+          onchange={() => idleRotationEnabled.update((v) => !v)}
         />
-        <span>3D base models</span>
+        <span>Idle rotation</span>
       </label>
-      <label class="checkbox-row">
-        <input
-          type="checkbox"
-          checked={$originalJumpSphereEnabled}
-          onchange={() => originalJumpSphereEnabled.update((v) => !v)}
-        />
-        <span>Original jump sphere</span>
+      <label class="select-row">
+        <span>Bases</span>
+        <select value={$baseModelStyle} onchange={(e) => baseModelStyle.set(e.currentTarget.value)}>
+          <option value="none">None</option>
+          <option value="models">Models</option>
+        </select>
       </label>
-      <label class="checkbox-row">
-        <input
-          type="checkbox"
-          checked={$showEncounterSprites}
-          onchange={() => showEncounterSprites.update((v) => !v)}
-        />
-        <span>Encounter sprites</span>
+      <label class="select-row">
+        <span>Jump points</span>
+        <select value={$jumpPointStyle} onchange={(e) => jumpPointStyle.set(e.currentTarget.value)}>
+          <option value="none">None</option>
+          <option value="sprites">Sprites</option>
+          <option value="models">Models</option>
+        </select>
       </label>
     </div>
   {/if}
@@ -115,12 +119,31 @@
     font-size: 16px;
     z-index: 20;
   }
+  .group-label {
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: #5a8a99;
+    text-transform: uppercase;
+    border-bottom: 1px solid #2a4a55;
+    padding-bottom: 3px;
+    margin-top: 4px;
+  }
+  .group-label:first-child {
+    margin-top: 0;
+  }
   label.checkbox-row {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 8px;
     cursor: pointer;
+  }
+  label.select-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
   }
   input[type='checkbox'] {
     appearance: none;
@@ -143,5 +166,14 @@
   }
   input[type='checkbox']:checked::before {
     transform: scale(1);
+  }
+  select {
+    background: rgba(5, 10, 15, 0.85);
+    color: var(--text-cyan);
+    border: 1px solid var(--border-cyan);
+    font: inherit;
+    font-size: 14px;
+    padding: 2px 4px;
+    cursor: pointer;
   }
 </style>

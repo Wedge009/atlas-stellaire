@@ -6,12 +6,18 @@ import { createEncounterSprites3d } from './encounterSprites3d.js';
 import { createEncounterModels3d } from './encounterModels3d.js';
 import { getGLTFLoader } from './gltfLoader.js';
 
-// Two interchangeable renderers for the ambient ship-encounter ships, same
-// five-function interface (setEncounterShips/tick/setVisible/
-// getPickableObjects/dispose) - swap which factory is used here to compare
-// the original 2D rotation-sprite billboards against real orbiting 3D ship
-// models. Sprite implementation is left fully intact in encounterSprites3d.js.
-const createEncounterShips3d = createEncounterModels3d;
+// The ambient ship-encounter ships can render as either the original 2D
+// sprites or real orbiting 3D ship models (the 'Ship encounters' setting) -
+// both factories share the same five-function interface (setEncounterShips/
+// tick/setVisible/getPickableObjects/dispose), keyed here by the same
+// 'sprites'/'models' strings the setting uses. Both are always instantiated
+// (cheap - neither loads any asset until setEncounterShips actually gives
+// it ships to show), and only the active one is ever populated - see
+// applyEncounterMode below.
+const ENCOUNTER_RENDERER_FACTORIES = {
+  sprites: createEncounterSprites3d,
+  models: createEncounterModels3d,
+};
 
 // Real extracted-and-decimated station models for specific baseTypes, keyed
 // the same way navPoints' own `baseType` field is. Anything not listed here
@@ -227,8 +233,10 @@ export function createNavScene({
   idleRotationEnabled = true,
   skyboxEnabled = true,
   baseModelsEnabled = true,
-  originalJumpSphereEnabled = true,
-  encounterSpritesEnabled = true,
+  // 'none' | 'sprites' | 'models' - see the jump-point branch in setPoints.
+  jumpPointStyle = 'sprites',
+  // 'none' | 'sprites' | 'models' - see applyEncounterMode.
+  encounterMode = 'sprites',
 }) {
   let idleRotationOn = idleRotationEnabled;
   // Resolved once here (rather than per-node) so tick() below can swap frames
@@ -241,7 +249,7 @@ export function createNavScene({
   loadJumpFrameTextures().then((textures) => { jumpTextures = textures; });
   loadOriginalJumpFrameTextures().then((textures) => { originalJumpTextures = textures; });
   let baseModelsOn = baseModelsEnabled;
-  let originalJumpOn = originalJumpSphereEnabled;
+  let jumpPointStyleOn = jumpPointStyle;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
@@ -313,13 +321,31 @@ export function createNavScene({
   let nodeGroup = new THREE.Group();
   scene.add(nodeGroup);
 
-  // Ambient ship-encounter sprites: added straight to `scene`, not
+  // Ambient ship-encounter renderers: added straight to `scene`, not
   // nodeGroup, so their own orbit motion isn't compounded by the per-node
-  // idle-spin below (see encounterSprites3d.js's tick(), which re-centres
-  // each nav point's anchor on the node's live position every frame instead).
-  const encounterShips3d = createEncounterShips3d({ scene, systemId });
-  encounterShips3d.setVisible(encounterSpritesEnabled);
+  // idle-spin below (see encounterSprites3d.js/encounterModels3d.js's own
+  // tick(), which re-centres each nav point's anchor on the node's live
+  // position every frame instead). Both are always created; only the one
+  // matching encounterModeOn is ever given ships to show - see
+  // applyEncounterMode.
+  const encounterRenderers = {
+    sprites: ENCOUNTER_RENDERER_FACTORIES.sprites({ scene, systemId }),
+    models: ENCOUNTER_RENDERER_FACTORIES.models({ scene, systemId }),
+  };
+  let encounterModeOn = encounterMode;
   let lastEncounterRolls = null;
+
+  // Shows/repopulates whichever renderer matches encounterModeOn against the
+  // current nodes/lastEncounterRolls, and hides+clears the other one (so an
+  // inactive mode never keeps ships loaded/ticking in the background).
+  function applyEncounterMode() {
+    for (const [key, renderer] of Object.entries(encounterRenderers)) {
+      const active = key === encounterModeOn;
+      renderer.setVisible(active);
+      renderer.setEncounterShips(active ? lastEncounterRolls : null, nodes);
+    }
+  }
+  applyEncounterMode();
 
   // Every jump-point orb's material, tracked separately from `nodes` so
   // tick() can swap their shared `.map` each animation frame without having
@@ -472,11 +498,11 @@ export function createNavScene({
           stampUserData(instance, np);
           mesh.add(instance);
         });
-      } else if (style.shape === 'sphere' && originalJumpOn) {
-        // The original jump sphere, independent of the 3D base-models toggle -
-        // unlike Gemini Gold's orb below, this doesn't need a loaded model
-        // file to compare against, so it's shown whenever this style is on even
-        // with base models off. The real JUMP.IFF frames are a face-on 2D sprite
+      } else if (style.shape === 'sphere' && jumpPointStyleOn === 'sprites') {
+        // The original-Privateer jump sphere ('Jump points: Sprites'),
+        // independent of the 'Bases' model toggle - unlike Gemini Gold's orb
+        // below, this doesn't need a loaded model file to compare against.
+        // The real JUMP.IFF frames are a face-on 2D sprite
         // (that's how the original 3Space engine drew it too). A camera-facing
         // THREE.Sprite always shows the frame face-on regardless of view angle,
         // matching how it actually rendered. Normal alpha blending, not
@@ -505,11 +531,14 @@ export function createNavScene({
         // frames' own non-square 89x73 aspect ratio so the sprite isn't
         // squashed into an oval.
         mesh.scale.set(3.2 * (89 / 73), 3.2, 1);
-      } else if (baseModelsOn && style.shape === 'sphere') {
-        // Gemini Gold's jump-point look: an additively-blended animated orb
-        // rather than the plain lit sphere below. White base colour so the
-        // frame texture's own blue reads unmodified, matching the real asset
-        // rather than re-tinting it through style.color.
+      } else if (style.shape === 'sphere' && jumpPointStyleOn === 'models') {
+        // Gemini Gold's jump-point look ('Jump points: Models'): an
+        // additively-blended animated orb rather than the plain lit sphere
+        // below. White base colour so the frame texture's own blue reads
+        // unmodified, matching the real asset rather than re-tinting it
+        // through style.color. Independent of the 'Bases' model toggle -
+        // this no longer uses baseModelsOn even though both are Gemini Gold
+        // texture sources.
         const material = new THREE.MeshBasicMaterial({
           color: 0xffffff,
           transparent: true,
@@ -593,7 +622,8 @@ export function createNavScene({
     }
 
     buildRouteLines(routeSegments);
-    if (lastEncounterRolls) encounterShips3d.setEncounterShips(lastEncounterRolls, nodes);
+    const activeRenderer = encounterRenderers[encounterModeOn];
+    if (lastEncounterRolls && activeRenderer) activeRenderer.setEncounterShips(lastEncounterRolls, nodes);
   }
 
   function updateAuxLines(n) {
@@ -695,7 +725,9 @@ export function createNavScene({
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
   function pointerNodeTargets() {
-    return nodes.flatMap((n) => [n.mesh, n.label]).concat(encounterShips3d.getPickableObjects());
+    return nodes.flatMap((n) => [n.mesh, n.label])
+      .concat(encounterRenderers.sprites.getPickableObjects())
+      .concat(encounterRenderers.models.getPickableObjects());
   }
   function setMouseFromEvent(e) {
     const rect = canvas.getBoundingClientRect();
@@ -903,8 +935,12 @@ export function createNavScene({
     rafId = requestAnimationFrame(tick);
     if (!animating) nodeGroup.children.forEach((c) => { if (c instanceof THREE.Mesh || c instanceof THREE.Group) c.rotation.y += NODE_IDLE_SPIN_SPEED; });
     if (jumpMaterials.length) {
-      const textures = originalJumpOn ? originalJumpTextures : jumpTextures;
-      const sequence = originalJumpOn ? ORIGINAL_JUMP_FRAME_SEQUENCE : JUMP_FRAME_SEQUENCE;
+      // jumpMaterials is only ever populated by one of the two jump-point
+      // branches in setPoints (mutually exclusive on jumpPointStyleOn), so
+      // every entry always agrees on which texture set/sequence applies.
+      const spriteStyle = jumpPointStyleOn === 'sprites';
+      const textures = spriteStyle ? originalJumpTextures : jumpTextures;
+      const sequence = spriteStyle ? ORIGINAL_JUMP_FRAME_SEQUENCE : JUMP_FRAME_SEQUENCE;
       if (textures) {
         const step = Math.floor((performance.now() - jumpAnimStartTime) / JUMP_FRAME_INTERVAL_MS) % sequence.length;
         if (step !== lastJumpFrameIdx) {
@@ -921,7 +957,8 @@ export function createNavScene({
       theta -= AUTO_ROTATE_SPEED;
       updateCameraFromOrbit();
     }
-    encounterShips3d.tick(camera);
+    encounterRenderers.sprites.tick(camera);
+    encounterRenderers.models.tick(camera);
     renderer.render(scene, camera);
   }
   tick();
@@ -930,7 +967,8 @@ export function createNavScene({
     cancelAnimationFrame(rafId);
     clearNodes();
     clearRouteLines();
-    encounterShips3d.dispose();
+    encounterRenderers.sprites.dispose();
+    encounterRenderers.models.dispose();
     for (const sprite of backdropGroup.children) {
       if (!(sprite instanceof THREE.Sprite)) continue;
       sprite.material.map?.dispose();
@@ -966,15 +1004,19 @@ export function createNavScene({
       baseModelsOn = v;
       setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments);
     },
-    setOriginalJumpSphereEnabled: (v) => {
-      originalJumpOn = v;
+    setJumpPointStyle: (v) => {
+      jumpPointStyleOn = v;
       lastJumpFrameIdx = -1;
       setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments);
     },
     setEncounterShips: (rollsMap) => {
       lastEncounterRolls = rollsMap;
-      encounterShips3d.setEncounterShips(rollsMap, nodes);
+      const activeRenderer = encounterRenderers[encounterModeOn];
+      activeRenderer?.setEncounterShips(rollsMap, nodes);
     },
-    setEncounterSpritesEnabled: (v) => encounterShips3d.setVisible(v),
+    setEncounterMode: (mode) => {
+      encounterModeOn = mode;
+      applyEncounterMode();
+    },
   };
 }

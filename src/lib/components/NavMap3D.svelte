@@ -5,9 +5,9 @@
   import {
     idleRotationEnabled,
     skyboxEnabled,
-    baseModelsEnabled,
-    originalJumpSphereEnabled,
-    showEncounterSprites,
+    baseModelStyle,
+    jumpPointStyle,
+    encounterMode,
   } from '../stores/settings.js';
   import { encounterRolls } from '../stores/encounters.js';
   import { routeThroughSystem } from '../utils/journey.js';
@@ -60,9 +60,9 @@
         systemId,
         idleRotationEnabled: $idleRotationEnabled,
         skyboxEnabled: $skyboxEnabled,
-        baseModelsEnabled: $baseModelsEnabled,
-        originalJumpSphereEnabled: $originalJumpSphereEnabled,
-        encounterSpritesEnabled: $showEncounterSprites,
+        baseModelsEnabled: $baseModelStyle === 'models',
+        jumpPointStyle: $jumpPointStyle,
+        encounterMode: $encounterMode,
       });
       scene.setPoints(points, routeHighlightIds, routeInfo.segments);
       scene.setEncounterShips($encounterRolls);
@@ -114,18 +114,18 @@
   });
 
   $effect(() => {
-    const enabled = $baseModelsEnabled;
-    scene?.setBaseModelsEnabled(enabled);
+    const style = $baseModelStyle;
+    scene?.setBaseModelsEnabled(style === 'models');
   });
 
   $effect(() => {
-    const enabled = $originalJumpSphereEnabled;
-    scene?.setOriginalJumpSphereEnabled(enabled);
+    const style = $jumpPointStyle;
+    scene?.setJumpPointStyle(style);
   });
 
   $effect(() => {
-    const enabled = $showEncounterSprites;
-    scene?.setEncounterSpritesEnabled(enabled);
+    const mode = $encounterMode;
+    scene?.setEncounterMode(mode);
   });
 
   $effect(() => {

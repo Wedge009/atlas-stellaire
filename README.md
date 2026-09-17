@@ -161,7 +161,7 @@ directly from the game archives:
 
 ### Jump-point sphere sprite
 
-The nav-map's 'original' jump sphere sprites (Settings → Original jump sphere)
+The nav-map's 'original' jump sphere sprites (Settings → Jump points → Sprites)
 is decoded from `DATA\APPEARNC\JUMP.IFF`, wrapping the same RLE codec and
 `FORM APPR` > `FORM BMAP` > `INFO`/`SHAP` container as the base sprites above,
 with one difference: `SHAP`'s frame-table entries are 4 bytes each, but only

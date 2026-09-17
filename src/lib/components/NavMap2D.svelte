@@ -4,7 +4,7 @@
   import { journey } from '../stores/journey.js';
   import { routeThroughSystem } from '../utils/journey.js';
   import { encounterRolls } from '../stores/encounters.js';
-  import { showEncounterSprites } from '../stores/settings.js';
+  import { encounterMode } from '../stores/settings.js';
   import EncounterSprites from './EncounterSprites.svelte';
 
   let { points, data, onJump, systemId = null } = $props();
@@ -87,7 +87,7 @@
     </g>
   {/each}
 
-  {#if $showEncounterSprites}
+  {#if $encounterMode !== 'none'}
     {#each display as d (d.np.id)}
       {@const ships = $encounterRolls.get(d.np.id)}
       {#if ships?.length}
