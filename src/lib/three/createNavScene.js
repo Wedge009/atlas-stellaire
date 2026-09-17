@@ -176,6 +176,7 @@ function loadOriginalJumpFrameTextures() {
 
 const SCALE = 1 / 1000;
 const FLAT_SPAN = 55;
+const ORIGIN = new THREE.Vector3(0, 0, 0);
 const ROUTE_BEACON_HEIGHT = 5;
 // Idle per-frame spin applied uniformly to every node's mesh/model (radians,
 // assumed ~60fps) - it's the same rate for a plain box/sphere and a detailed
@@ -243,6 +244,7 @@ export function createNavScene({
   canvas,
   onSelect,
   onJump,
+  onFocusBase,
   data,
   systemId,
   idleRotationEnabled = true,
@@ -628,8 +630,21 @@ export function createNavScene({
   }
 
   // --- orbit camera ---
+  // Orbit radius has two clamp ranges depending on whether the camera is
+  // circling the whole system (pivot at the origin) or focused in on a
+  // single base (pivot moved to that base's position, see enterFocus below)
+  // - a base model is only ~4.5 units across, so the system-wide 20-220
+  // range would either clip through it or view it from a km away.
+  const ORBIT_RADIUS_MIN = 20, ORBIT_RADIUS_MAX = 220;
+  const FOCUS_RADIUS_MIN = 6, FOCUS_RADIUS_MAX = 25, FOCUS_RADIUS_DEFAULT = 10;
   let radius = 180, theta = Math.PI / 4, phi = Math.PI / 3.2;
   let savedRadius = radius, savedTheta = theta, savedPhi = phi;
+  // Orbit pivot: the origin for the whole-system view, or a focused base's
+  // world position while zoomed in on it (see enterFocus/exitFocus). Kept as
+  // a live vector (rather than always literally the origin) so the same
+  // orbitCameraPosition/lookAt maths serves both.
+  let target = new THREE.Vector3(0, 0, 0);
+  let focused = false;
   let interactionLocked = false;
   let lastInteractionAt = performance.now();
   const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
@@ -640,8 +655,8 @@ export function createNavScene({
   }
   function updateCameraFromOrbit() {
     camera.up.set(0, 1, 0);
-    camera.position.copy(orbitCameraPosition(radius, theta, phi));
-    camera.lookAt(0, 0, 0);
+    camera.position.copy(orbitCameraPosition(radius, theta, phi)).add(target);
+    camera.lookAt(target);
   }
   updateCameraFromOrbit();
 
@@ -667,7 +682,9 @@ export function createNavScene({
     if (interactionLocked || aligned) return;
     markActivity();
     e.preventDefault();
-    radius = Math.min(Math.max(radius + e.deltaY * 0.05, 20), 220);
+    const min = focused ? FOCUS_RADIUS_MIN : ORBIT_RADIUS_MIN;
+    const max = focused ? FOCUS_RADIUS_MAX : ORBIT_RADIUS_MAX;
+    radius = Math.min(Math.max(radius + e.deltaY * 0.05, min), max);
     updateCameraFromOrbit();
   }
   function onTouchStart(e) {
@@ -689,7 +706,9 @@ export function createNavScene({
     } else if (e.touches.length === 2 && !aligned) {
       const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
       if (lastTouchDist !== null) {
-        radius = Math.min(Math.max(radius - (dist - lastTouchDist) * 0.15, 20), 220);
+        const min = focused ? FOCUS_RADIUS_MIN : ORBIT_RADIUS_MIN;
+        const max = focused ? FOCUS_RADIUS_MAX : ORBIT_RADIUS_MAX;
+        radius = Math.min(Math.max(radius - (dist - lastTouchDist) * 0.15, min), max);
         updateCameraFromOrbit();
       }
       lastTouchDist = dist;
@@ -719,7 +738,12 @@ export function createNavScene({
     raycaster.setFromCamera(mouse, camera);
     const hits = raycaster.intersectObjects(pointerNodeTargets());
     const np = hits.length ? hits[0].object.userData : null;
-    if (np?.dest) onJump?.(np.dest);
+    if (np?.dest) { onJump?.(np.dest); return; }
+    // Bases don't make sense to zoom into from the flattened 2D-aligned
+    // projection (they sit flush on the ground plane there) - the caller
+    // (NavMap3D) also disables the align toggle while focused, this is the
+    // defensive/entry-point half of that same rule.
+    if (np?.baseName && !aligned) onFocusBase?.(np);
   }
   function onHoverMove(e) {
     // Plain cursor movement over the canvas (no click, drag, zoom or touch)
@@ -747,7 +771,11 @@ export function createNavScene({
   let aligned = false, animating = false;
 
   function animateToAligned(onDone) {
-    if (animating) return;
+    // Base-focus and the flattened 2D-aligned projection are mutually
+    // exclusive views (a focused base sits flush on the ground plane once
+    // flattened) - NavMap3D already disables its align toggle while
+    // focused, this guard is the defensive back-stop in the scene itself.
+    if (animating || focused) return;
     markActivity();
     animating = true;
     interactionLocked = true;
@@ -831,6 +859,62 @@ export function createNavScene({
     requestAnimationFrame(step);
   }
 
+  // Zooms in on a single base: moves the orbit pivot from the origin to the
+  // base's own position and dollies the radius down into FOCUS_RADIUS range,
+  // keeping the current theta/phi (viewing angle) throughout rather than
+  // animating them too - it reads as 'pushing in on what you're already
+  // looking at' instead of snapping to some other angle. Can be called again
+  // with a different base while already focused (re-targets base-to-base
+  // without returning to the system view first); savedRadius is only
+  // captured on the first entry so a later exitFocus still restores the
+  // original system-wide zoom level.
+  function enterFocus(np, onDone) {
+    if (animating || aligned) return;
+    const node = nodes.find((n) => n.np === np);
+    if (!node) return;
+    markActivity();
+    animating = true;
+    interactionLocked = true;
+    if (!focused) savedRadius = radius;
+    const targetStart = target.clone();
+    const targetEnd = node.pos3d.clone();
+    const radiusStart = radius;
+    const duration = 1200, t0 = performance.now();
+    function step(now) {
+      const t = Math.min((now - t0) / duration, 1);
+      const e = easeInOutCubic(t);
+      target.lerpVectors(targetStart, targetEnd, e);
+      radius = radiusStart + (FOCUS_RADIUS_DEFAULT - radiusStart) * e;
+      updateCameraFromOrbit();
+      if (t < 1) requestAnimationFrame(step);
+      else { animating = false; interactionLocked = false; focused = true; onDone?.(); }
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Reverses enterFocus: pivot glides back to the origin and radius back to
+  // whatever it was before the system's first focus entry, again holding the
+  // current theta/phi rather than restoring an old angle.
+  function exitFocus(onDone) {
+    if (animating || !focused) return;
+    markActivity();
+    animating = true;
+    interactionLocked = true;
+    const targetStart = target.clone();
+    const radiusStart = radius;
+    const duration = 1200, t0 = performance.now();
+    function step(now) {
+      const t = Math.min((now - t0) / duration, 1);
+      const e = easeInOutCubic(t);
+      target.lerpVectors(targetStart, ORIGIN, e);
+      radius = radiusStart + (savedRadius - radiusStart) * e;
+      updateCameraFromOrbit();
+      if (t < 1) requestAnimationFrame(step);
+      else { animating = false; interactionLocked = false; focused = false; target.set(0, 0, 0); onDone?.(); }
+    }
+    requestAnimationFrame(step);
+  }
+
   function resize(width, height) {
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
@@ -893,9 +977,12 @@ export function createNavScene({
     animateToAligned,
     animateToOrbit,
     setAlignedInstant,
+    enterFocus,
+    exitFocus,
     resize,
     dispose,
     isAligned: () => aligned,
+    isFocused: () => focused,
     setIdleRotationEnabled: (v) => { idleRotationOn = v; },
     setSkyboxEnabled: (v) => { backdropGroup.visible = v; },
     setBaseModelsEnabled: (v) => {

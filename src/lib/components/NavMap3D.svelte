@@ -28,6 +28,12 @@
   let resizeObserver;
   let loading = $state(true);
   let destroyed = false;
+  // The navPoint currently focused-in on (see enterFocus/exitFocus in
+  // createNavScene.js), or null for the regular whole-system view. Not for
+  // binding further up - unlike `aligned`, there's no reason a base focus
+  // should survive a reload, and a system switch already tears down and
+  // rebuilds this whole component.
+  let focused = $state(null);
 
   onMount(() => {
     // Three.js is loaded lazily so it isn't part of the initial bundle - the
@@ -49,6 +55,7 @@
         canvas,
         onSelect: (np) => selectedNode.set(np),
         onJump,
+        onFocusBase: handleFocusBase,
         data,
         systemId,
         idleRotationEnabled: $idleRotationEnabled,
@@ -127,7 +134,7 @@
   });
 
   function toggleAlign() {
-    if (!scene || animating) return;
+    if (!scene || animating || focused) return;
     animating = true;
     if (!aligned) {
       scene.animateToAligned(() => { aligned = true; animating = false; });
@@ -135,20 +142,56 @@
       scene.animateToOrbit(() => { aligned = false; animating = false; });
     }
   }
+
+  // Called from createNavScene's own dblclick handler (ray-casting happens in
+  // the three.js layer, not a Svelte DOM handler) whenever a base is
+  // double-clicked - toggles focus off if it's the currently-focused base,
+  // otherwise focuses it (re-targeting directly if a different base was
+  // already focused).
+  function handleFocusBase(np) {
+    if (!scene || animating) return;
+    if (focused?.id === np.id) { exitFocus(); return; }
+    animating = true;
+    scene.enterFocus(np, () => { focused = np; animating = false; });
+  }
+
+  function exitFocus() {
+    if (!scene || animating || !focused) return;
+    animating = true;
+    scene.exitFocus(() => { focused = null; animating = false; });
+  }
+
+  function onWindowKeyDown(e) {
+    if (e.key !== 'Escape') return;
+    if (focused) exitFocus();
+    else if (aligned) toggleAlign();
+  }
 </script>
+
+<svelte:window onkeydown={onWindowKeyDown} />
 
 <div class="navmap3d" bind:this={container}>
   <canvas bind:this={canvas}></canvas>
   {#if loading}
     <div class="loading">LOADING 3D ENGINE&hellip;</div>
   {:else}
-    <button type="button" class="align-btn" onclick={toggleAlign} disabled={animating}>
+    <button
+      type="button"
+      class="align-btn"
+      onclick={toggleAlign}
+      disabled={animating || !!focused}
+      title={focused ? 'Exit base focus first (double-click the base or press Esc)' : undefined}
+    >
       {aligned ? 'RETURN TO 3D VIEW' : 'ALIGN TO 2D VIEW'}
     </button>
     <div class="hint">
-      {aligned
-        ? 'click a node · double-click a jump point to travel'
-        : 'drag to orbit · scroll to zoom · click a node · double-click a jump point to travel'}
+      {#if focused}
+        inspecting {focused.baseName} &middot; drag to orbit &middot; scroll to zoom &middot; double-click or Esc to return
+      {:else if aligned}
+        click a node &middot; double-click a jump point to travel
+      {:else}
+        drag to orbit &middot; scroll to zoom &middot; click a node &middot; double-click a jump point to travel &middot; double-click a base to inspect
+      {/if}
     </div>
   {/if}
 </div>
