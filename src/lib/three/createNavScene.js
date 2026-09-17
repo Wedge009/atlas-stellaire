@@ -24,7 +24,7 @@ const BASE_MODEL_PATHS = {
   'new-detroit': { path: `${import.meta.env.BASE_URL}assets/models/new-detroit.glb`, zUp: false },
   mining: { path: `${import.meta.env.BASE_URL}assets/models/mining.glb`, zUp: false },
   // Pirate bases re-use the same mining_base unit/mesh
-  pirate: { path: `${import.meta.env.BASE_URL}assets/models/mining.glb`, zUp: true },
+  pirate: { path: `${import.meta.env.BASE_URL}assets/models/mining.glb`, zUp: false },
   'new-constantinople': { path: `${import.meta.env.BASE_URL}assets/models/new-constantinople.glb`, zUp: false },
   perry: { path: `${import.meta.env.BASE_URL}assets/models/perry.glb`, zUp: false },
   steltek: { path: `${import.meta.env.BASE_URL}assets/models/steltek.glb`, zUp: true },
