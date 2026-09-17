@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { shipMaxSpeed } from '../utils/ships.js';
 import { spriteSizeFor } from '../utils/encounterLayout.js';
 import { loadShipFrames } from './shipSpriteFrames.js';
+import { createOrbitParams, orbitStateAt } from './encounterOrbit.js';
 
 // Reproduces the original engine's rotation-sprite scheme for a full 3D
 // orientation: each ship flies a real nose-first circular orbit around its
@@ -32,48 +32,11 @@ const POLE_TOP_FRAME = 0;
 const POLE_BOTTOM_FRAME = 36;
 const STEP = Math.PI / 6; // 30 deg
 
-// Cheap deterministic per-instance seeding (mulberry32 + a string hash) so
-// orbit shape/phase/tilt stay stable across re-renders of the same
-// system/nav-point/ship/instance, but vary across different instances -
-// same spirit as EncounterSprites.svelte's layoutCluster, just for orbit
-// shells instead of a static packed cluster.
-function hashSeed(str) {
-  let h = 2166136261;
-  for (let i = 0; i < str.length; i++) {
-    h ^= str.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return h >>> 0;
-}
-function mulberry32(seed) {
-  let a = seed;
-  return function () {
-    a |= 0; a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
+// Orbit shape/speed/phase (position over time) is shared with
+// encounterModels3d.js's real 3D ship models - see encounterOrbit.js - so
+// both renderers agree on where a given ship instance actually is. Sprite
+// *visual* size still scales with spriteSizeFor below, independent of that.
 
-// Orbit shells start clear of a node's own placeholder/model footprint and
-// step outwards per-instance by a fixed amount (not by cumulative ship size -
-// a single oversized hull like the Paradigm/FRIGATE would otherwise push
-// every ship after it in the group out far enough to collide with
-// neighbouring nav points). Sprite *visual* size still scales with
-// spriteSizeFor - only orbit spacing is decoupled from it here.
-const ORBIT_BASE_RADIUS = 5;
-const ORBIT_SHELL_STEP = 2.2;
-// Per-instance orbit-plane tilt off level, seeded per instance so a
-// multi-ship encounter spreads through vertical space instead of every ship
-// sharing one flat ring at the same height - concentric-only spacing reads
-// as flat and needs more radius to avoid clipping than tilting instances
-// into different planes does.
-const MAX_ORBIT_TILT = Math.PI * 0.45; // ~81 deg, so orbits can run quite steep
-// Tuned so real per-ship max speeds (200-500 kps, see ships.js) turn into a
-// plausible-looking on-screen orbital speed - fast ship classes
-// (Gladius/Centurion, 500) visibly lap slow ones (Frigate/Drayman, 200)
-// rather than all orbiting at the same rate.
-const SPEED_SCALE = 0.006;
 // In-plane sprite rotation is a roll around the view axis to make a known
 // reference direction within the current frame image line up with how it
 // actually projects on screen. Away from the poles, that reference is the
@@ -86,13 +49,6 @@ const SPEED_SCALE = 0.006;
 const UP_ROTATION_OFFSET = -Math.PI / 2;
 const FORWARD_ROTATION_OFFSET = Math.PI / 2;
 const AXIS_EPSILON = 1e-4;
-
-function basisFromNormal(n) {
-  const arbitrary = Math.abs(n.y) < 0.99 ? new THREE.Vector3(0, 1, 0) : new THREE.Vector3(1, 0, 0);
-  const u = new THREE.Vector3().crossVectors(arbitrary, n).normalize();
-  const v = new THREE.Vector3().crossVectors(n, u).normalize();
-  return { u, v };
-}
 
 const tmpCamQuat = new THREE.Quaternion();
 
@@ -202,20 +158,8 @@ export function createEncounterSprites3d({ scene, systemId }) {
       anchors.set(navPointId, anchor);
 
       ships.forEach((s, i) => {
-        const seed = hashSeed(`${systemId}:${navPointId}:${s.ship}:${s.instanceIndex}`);
-        const rand = mulberry32(seed);
+        const orbit = createOrbitParams({ systemId, navPointId, shipId: s.ship, instanceIndex: s.instanceIndex, shellIndex: i });
         const size = spriteSizeFor(s.ship);
-        const radius = ORBIT_BASE_RADIUS + i * ORBIT_SHELL_STEP;
-
-        const tiltAngle = rand() * MAX_ORBIT_TILT;
-        const tiltAxisAngle = rand() * Math.PI * 2;
-        const tiltAxis = new THREE.Vector3(Math.cos(tiltAxisAngle), 0, Math.sin(tiltAxisAngle));
-        const planeNormal = new THREE.Vector3(0, 1, 0).applyAxisAngle(tiltAxis, tiltAngle).normalize();
-        const { u, v } = basisFromNormal(planeNormal);
-        const phase = rand() * Math.PI * 2;
-        const direction = rand() < 0.5 ? 1 : -1;
-        const maxSpeed = shipMaxSpeed(s.ship) ?? 300;
-        const angularSpeed = direction * (maxSpeed * SPEED_SCALE) / radius;
 
         const material = new THREE.SpriteMaterial({
           color: 0xffffff,
@@ -228,7 +172,7 @@ export function createEncounterSprites3d({ scene, systemId }) {
         anchor.add(sprite);
 
         const entry = {
-          sprite, material, anchor, u, v, up: planeNormal, radius, phase, angularSpeed,
+          sprite, material, anchor, orbit, up: orbit.up,
           frames: null, lastFrameIndex: -1, lastFlip: false,
         };
         entries.push(entry);
@@ -254,25 +198,7 @@ export function createEncounterSprites3d({ scene, systemId }) {
     for (const anchor of anchors.values()) anchor.position.copy(anchor.userData.node.mesh.position);
 
     for (const entry of entries) {
-      const angle = entry.phase + entry.angularSpeed * t;
-      const cosA = Math.cos(angle), sinA = Math.sin(angle);
-      entry.sprite.position.set(
-        entry.u.x * cosA * entry.radius + entry.v.x * sinA * entry.radius,
-        entry.u.y * cosA * entry.radius + entry.v.y * sinA * entry.radius,
-        entry.u.z * cosA * entry.radius + entry.v.z * sinA * entry.radius
-      );
-      // Nose-first: forwards is the instantaneous direction of travel, ie
-      // d/dangle of the position above, signed by orbit direction so ships
-      // running the loop backwards (angularSpeed < 0) still face the way
-      // they're actually moving.
-      const dirSign = Math.sign(entry.angularSpeed) || 1;
-      tmpForward
-        .set(
-          (-entry.u.x * sinA + entry.v.x * cosA) * dirSign,
-          (-entry.u.y * sinA + entry.v.y * cosA) * dirSign,
-          (-entry.u.z * sinA + entry.v.z * cosA) * dirSign
-        )
-        .normalize();
+      orbitStateAt(entry.orbit, t, entry.sprite.position, tmpForward);
 
       if (!entry.frames) continue; // stay untextured (white) until loaded
 

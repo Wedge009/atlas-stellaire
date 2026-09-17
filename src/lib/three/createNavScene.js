@@ -3,6 +3,15 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 import { findSystem, resolveFlatPosition, styleForNavPoint, systemName } from '../utils/navPoints.js';
 import { skyboxSpriteTexture } from '../utils/skyboxSprites.js';
 import { createEncounterSprites3d } from './encounterSprites3d.js';
+import { createEncounterModels3d } from './encounterModels3d.js';
+import { getGLTFLoader } from './gltfLoader.js';
+
+// Two interchangeable renderers for the ambient ship-encounter ships, same
+// five-function interface (setEncounterShips/tick/setVisible/
+// getPickableObjects/dispose) - swap which factory is used here to compare
+// the original 2D rotation-sprite billboards against real orbiting 3D ship
+// models. Sprite implementation is left fully intact in encounterSprites3d.js.
+const createEncounterShips3d = createEncounterModels3d;
 
 // Real extracted-and-decimated station models for specific baseTypes, keyed
 // the same way navPoints' own `baseType` field is. Anything not listed here
@@ -37,38 +46,6 @@ const BASE_MODEL_PATHS = {
 // placeholders it replaces.
 const BASE_MODEL_TARGET_SIZE = 4.5;
 const modelTemplateCache = new Map();
-// GLTFLoader (and everything it pulls in) is only worth its ~90KB if a base
-// model actually needs loading, so it's fetched as its own chunk on first
-// use rather than bundled into createNavScene - a session that never enters
-// the 3D view, or has base models toggled off, never pays for it.
-let gltfLoaderPromise = null;
-function getGLTFLoader() {
-  if (!gltfLoaderPromise) {
-    gltfLoaderPromise = Promise.all([
-      import('three/examples/jsm/loaders/GLTFLoader.js'),
-      import('three/examples/jsm/loaders/DRACOLoader.js'),
-    ]).then(([{ GLTFLoader }, { DRACOLoader }]) => {
-      // Note for author only: Station models are exported through gltf-transform's
-      // Draco rather than Blender's own glTF exporter - Blender's Draco support
-      // depends on a pre-built library Ubuntu's package doesn't install, so
-      // compression happens as a separate post-processing step instead.
-      //
-      // Decoder files are resolved straight out of the three package (via
-      // Vite's asset-URL handling for `new URL(..., import.meta.url)`) rather
-      // than a manually-maintained copy, so they always match whatever three
-      // version is actually installed.
-      const dracoLoader = new DRACOLoader();
-      dracoLoader.setDecoderPath({
-        js: new URL('three/examples/jsm/libs/draco/gltf/draco_wasm_wrapper.js', import.meta.url).href,
-        wasm: new URL('three/examples/jsm/libs/draco/gltf/draco_decoder.wasm', import.meta.url).href,
-      });
-      const loader = new GLTFLoader();
-      loader.setDRACOLoader(dracoLoader);
-      return loader;
-    });
-  }
-  return gltfLoaderPromise;
-}
 function loadBaseModelTemplate(baseType) {
   const config = BASE_MODEL_PATHS[baseType];
   if (!config) return null;
@@ -340,8 +317,8 @@ export function createNavScene({
   // nodeGroup, so their own orbit motion isn't compounded by the per-node
   // idle-spin below (see encounterSprites3d.js's tick(), which re-centres
   // each nav point's anchor on the node's live position every frame instead).
-  const encounterSprites = createEncounterSprites3d({ scene, systemId });
-  encounterSprites.setVisible(encounterSpritesEnabled);
+  const encounterShips3d = createEncounterShips3d({ scene, systemId });
+  encounterShips3d.setVisible(encounterSpritesEnabled);
   let lastEncounterRolls = null;
 
   // Every jump-point orb's material, tracked separately from `nodes` so
@@ -616,7 +593,7 @@ export function createNavScene({
     }
 
     buildRouteLines(routeSegments);
-    if (lastEncounterRolls) encounterSprites.setEncounterShips(lastEncounterRolls, nodes);
+    if (lastEncounterRolls) encounterShips3d.setEncounterShips(lastEncounterRolls, nodes);
   }
 
   function updateAuxLines(n) {
@@ -718,7 +695,7 @@ export function createNavScene({
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
   function pointerNodeTargets() {
-    return nodes.flatMap((n) => [n.mesh, n.label]).concat(encounterSprites.getPickableObjects());
+    return nodes.flatMap((n) => [n.mesh, n.label]).concat(encounterShips3d.getPickableObjects());
   }
   function setMouseFromEvent(e) {
     const rect = canvas.getBoundingClientRect();
@@ -944,7 +921,7 @@ export function createNavScene({
       theta -= AUTO_ROTATE_SPEED;
       updateCameraFromOrbit();
     }
-    encounterSprites.tick(camera);
+    encounterShips3d.tick(camera);
     renderer.render(scene, camera);
   }
   tick();
@@ -953,7 +930,7 @@ export function createNavScene({
     cancelAnimationFrame(rafId);
     clearNodes();
     clearRouteLines();
-    encounterSprites.dispose();
+    encounterShips3d.dispose();
     for (const sprite of backdropGroup.children) {
       if (!(sprite instanceof THREE.Sprite)) continue;
       sprite.material.map?.dispose();
@@ -996,8 +973,8 @@ export function createNavScene({
     },
     setEncounterShips: (rollsMap) => {
       lastEncounterRolls = rollsMap;
-      encounterSprites.setEncounterShips(rollsMap, nodes);
+      encounterShips3d.setEncounterShips(rollsMap, nodes);
     },
-    setEncounterSpritesEnabled: (v) => encounterSprites.setVisible(v),
+    setEncounterSpritesEnabled: (v) => encounterShips3d.setVisible(v),
   };
 }
