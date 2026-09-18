@@ -50,3 +50,8 @@ button {
 button:hover { background: rgba(255, 60, 60, 0.15); color: #fff; }
 button:disabled { opacity: 0.5; cursor: default; }
 button.active { background: rgba(77, 200, 255, 0.15); border-color: var(--border-cyan); color: var(--text-cyan-bright); }
+
+/* Presentational capitals for the display font, applied at the call site
+   (fixed action buttons, dialogue titles) rather than baked into the
+   translated string - not every language treats upper-case the same way. */
+.caps { text-transform: uppercase; }

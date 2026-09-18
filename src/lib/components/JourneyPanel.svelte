@@ -1,6 +1,7 @@
 <script>
   import { journey, clearJourney } from '../stores/journey.js';
   import { findSystem } from '../utils/navPoints.js';
+  import { t } from '../i18n/index.js';
 
   let { data, selectedSystemId = null } = $props();
 
@@ -31,7 +32,7 @@
 {#if $journey}
   <div class="journey-panel">
     <div class="title">
-      JOURNEY: {fromName}
+      <span class="caps">{$t('journeyPanel.titlePrefix')}</span> {fromName}
       <span class="dest">
         <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M3 12h16M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -40,17 +41,17 @@
       </span>
     </div>
     {#if currentHopIndex !== -1}
-      <div class="row">Leg {currentHopIndex} of {totalJumps} jumps</div>
+      <div class="row">{$t('journeyPanel.legOfJumps', { current: currentHopIndex, total: totalJumps })}</div>
     {:else}
-      <div class="row muted">Currently off route &middot; {totalJumps} jumps total</div>
+      <div class="row muted">{$t('journeyPanel.offRoute', { total: totalJumps })}</div>
     {/if}
     {#if refuelStopNames.length}
-      <div class="row muted">Refuel at: {refuelStopNames.join(', ')}</div>
+      <div class="row muted">{$t('journeyPanel.refuelAt', { names: refuelStopNames.join(', ') })}</div>
     {/if}
     {#each $journey.warnings as w}
-      <div class="row warning">{w.message}</div>
+      <div class="row warning">{$t(w.messageKey, w.params)}</div>
     {/each}
-    <button type="button" class="clear-btn" onclick={clearJourney}>CLEAR JOURNEY</button>
+    <button type="button" class="clear-btn caps" onclick={clearJourney}>{$t('journeyPanel.clearJourney')}</button>
   </div>
 {/if}
 

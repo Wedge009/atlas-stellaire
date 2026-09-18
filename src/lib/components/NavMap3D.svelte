@@ -13,6 +13,7 @@
   import { encounterRolls } from '../stores/encounters.js';
   import { routeThroughSystem } from '../utils/journey.js';
   import { vt323Ready } from '../utils/fonts.js';
+  import { t } from '../i18n/index.js';
 
   let { points, aligned = $bindable(false), animating = $bindable(false), data, onJump, systemId } = $props();
 
@@ -180,24 +181,24 @@
 <div class="navmap3d" bind:this={container}>
   <canvas bind:this={canvas}></canvas>
   {#if loading}
-    <div class="loading">LOADING 3D ENGINE&hellip;</div>
+    <div class="loading">{$t('navMap3D.loading')}</div>
   {:else}
     <button
       type="button"
       class="align-btn"
       onclick={toggleAlign}
       disabled={animating || !!focused}
-      title={focused ? 'Exit base focus first (double-click the base or press Esc)' : undefined}
+      title={focused ? $t('navMap3D.exitBaseFocusFirst') : undefined}
     >
-      {aligned ? 'RETURN TO 3D VIEW' : 'ALIGN TO 2D VIEW'}
+      {aligned ? $t('navMap3D.returnTo3d') : $t('navMap3D.alignTo2d')}
     </button>
     <div class="hint">
       {#if focused}
-        inspecting {focused.baseName} &middot; drag to orbit &middot; scroll to zoom &middot; double-click or Esc to return
+        {$t('navMap3D.hintInspecting', { baseName: focused.baseName })}
       {:else if aligned}
-        click a node &middot; double-click a jump point to travel
+        {$t('navMap3D.hintAligned')}
       {:else}
-        drag to orbit &middot; scroll to zoom &middot; click a node &middot; double-click a jump point to travel &middot; double-click a base to inspect
+        {$t('navMap3D.hintDefault')}
       {/if}
     </div>
   {/if}
@@ -220,6 +221,7 @@
     position: absolute;
     top: 64px;
     right: 20px;
+    text-transform: uppercase;
   }
   .hint {
     position: absolute;
@@ -239,6 +241,7 @@
     color: var(--text-cyan);
     letter-spacing: 1px;
     text-shadow: 0 0 6px rgba(100, 200, 255, 0.5);
+    text-transform: uppercase;
     pointer-events: none;
   }
 </style>

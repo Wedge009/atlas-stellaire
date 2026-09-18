@@ -5,6 +5,7 @@
   import SystemView from './lib/components/SystemView.svelte';
   import SectorMap from './lib/components/SectorMap.svelte';
   import About from './lib/components/About.svelte';
+  import LanguageDialog from './lib/components/LanguageDialog.svelte';
   import PlotJourneyDialog from './lib/components/PlotJourneyDialog.svelte';
   import SearchDialog from './lib/components/SearchDialog.svelte';
   import JourneyPanel from './lib/components/JourneyPanel.svelte';
@@ -13,11 +14,13 @@
   import { journey, journeyInputs, plotJourney } from './lib/stores/journey.js';
   import { jumpTransitionEnabled } from './lib/stores/settings.js';
   import { lastTopView, lastSystemId } from './lib/stores/ui.js';
+  import { t } from './lib/i18n/index.js';
 
   let geminiData = $state(null);
   let selectedSystemId = $state(get(lastSystemId));
   let topView = $state(get(lastTopView)); // 'system' | 'sector'
   let showAbout = $state(false);
+  let showLanguage = $state(false);
   let showPlotJourney = $state(false);
   let showSearch = $state(false);
   let jumpTarget = $state(null);
@@ -69,6 +72,7 @@
       onSelect={goToSystem}
       onShowSector={() => (topView = 'sector')}
       onShowAbout={() => (showAbout = true)}
+      onShowLanguage={() => (showLanguage = true)}
       onPlotJourney={() => (showPlotJourney = true)}
       onSearch={() => (showSearch = true)}
     />
@@ -93,10 +97,13 @@
       {/if}
     </div>
   {:else}
-    <div class="loading">LOADING SECTOR DATA&hellip;</div>
+    <div class="loading">{$t('app.loadingSectorData')}</div>
   {/if}
   {#if showAbout}
     <About onClose={() => (showAbout = false)} />
+  {/if}
+  {#if showLanguage}
+    <LanguageDialog onClose={() => (showLanguage = false)} />
   {/if}
   {#if showPlotJourney}
     <PlotJourneyDialog
@@ -136,6 +143,7 @@
     font-family: var(--font-display);
     color: var(--text-cyan);
     letter-spacing: 1px;
+    text-transform: uppercase;
     text-shadow: 0 0 6px rgba(100, 200, 255, 0.5);
   }
 </style>

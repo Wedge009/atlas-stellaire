@@ -8,6 +8,7 @@
   import { showHidden } from '../stores/settings.js';
   import { viewMode, viewAligned } from '../stores/view.js';
   import { rollForSystem } from '../stores/encounters.js';
+  import { t } from '../i18n/index.js';
 
   let { system, data, onJump } = $props();
 
@@ -34,17 +35,18 @@
 <div class="system-view">
   <div class="hud">
     <div class="hud-main">
-      <div>SYSTEM: {system.name.toUpperCase()}</div>
-      <div class="sub">{system.quadrantName} Quadrant &middot; Gemini Sector</div>
+      <div class="caps">{$t('systemView.systemLabel', { name: system.name })}</div>
+      <div class="sub">{$t('systemView.quadrantSector', { quadrant: system.quadrantName })}</div>
     </div>
     <div class="hud-controls">
       <button
         type="button"
+        class="caps"
         disabled={animationLocked}
-        title={animationLocked ? 'Wait for the alignment animation to finish' : undefined}
+        title={animationLocked ? $t('settings.waitForAnimation') : undefined}
         onclick={() => ($viewMode = $viewMode === '2d' ? '3d' : '2d')}
       >
-        {$viewMode === '2d' ? '2D VIEW' : '3D VIEW'}
+        {$viewMode === '2d' ? $t('systemView.view2d') : $t('systemView.view3d')}
       </button>
       <SettingsPanel locked={animationLocked} />
     </div>

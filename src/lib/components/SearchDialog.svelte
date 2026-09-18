@@ -1,5 +1,6 @@
 <script>
   import { searchableEntries, searchEntries } from '../utils/navPoints.js';
+  import { t } from '../i18n/index.js';
 
   let { data, onSelect, onClose } = $props();
 
@@ -53,14 +54,14 @@
 <svelte:window onkeydown={onKeydown} />
 
 <div class="backdrop" role="presentation" onclick={onBackdropClick}>
-  <div class="dialog" role="dialog" aria-modal="true" aria-label="Search">
-    <button type="button" class="close-btn" onclick={onClose} aria-label="Close">&times;</button>
-    <div class="title">SEARCH</div>
+  <div class="dialog" role="dialog" aria-modal="true" aria-label={$t('common.search')}>
+    <button type="button" class="close-btn" onclick={onClose} aria-label={$t('common.close')}>&times;</button>
+    <div class="title">{$t('common.search')}</div>
 
     <input
       type="text"
       class="query-field"
-      placeholder="System or base name&hellip;"
+      placeholder={$t('searchDialog.placeholder')}
       use:autofocus
       bind:value={query}
     />
@@ -79,21 +80,21 @@
               <span class="result-name">{entry.name}</span>
               <span class="result-subtitle">
                 {#if entry.kind === 'system'}
-                  System &middot; {entry.quadrantName}
+                  {$t('searchDialog.systemSubtitle', { quadrant: entry.quadrantName })}
                 {:else}
-                  Base in {entry.systemName} &middot; {entry.quadrantName}
+                  {$t('searchDialog.baseSubtitle', { system: entry.systemName, quadrant: entry.quadrantName })}
                 {/if}
               </span>
             </button>
           </li>
         {:else}
-          <li class="no-results">No matches</li>
+          <li class="no-results">{$t('searchDialog.noMatches')}</li>
         {/each}
       </ul>
     {/if}
 
     <button type="button" class="go-btn" disabled={activeIndex < 0} onclick={() => goTo(results[activeIndex])}>
-      GO TO
+      {$t('searchDialog.goTo')}
     </button>
   </div>
 </div>
@@ -126,6 +127,7 @@
     text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
     letter-spacing: 1px;
     margin-bottom: 16px;
+    text-transform: uppercase;
   }
   .query-field {
     display: block;
@@ -189,6 +191,7 @@
     border-color: var(--border-cyan);
     color: var(--text-cyan-bright);
     box-shadow: 0 0 8px rgba(60, 180, 255, 0.3);
+    text-transform: uppercase;
   }
   .go-btn:hover:not(:disabled) {
     background: rgba(77, 200, 255, 0.15);

@@ -30,7 +30,7 @@ export function plotJourney(data, { fromSystemId, toSystemId, targetNavPointId =
       targetNavPointId,
       refuelEnabled,
       hops: [],
-      warnings: [{ message: 'No jump route exists between these systems.' }],
+      warnings: [{ messageKey: 'journey.noRouteExists' }],
     });
     return;
   }

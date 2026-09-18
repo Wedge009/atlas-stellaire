@@ -4,6 +4,7 @@
   import { systemName } from '../utils/navPoints.js';
   import { sortedEncounterGroups } from '../utils/encounters.js';
   import { shipName } from '../utils/ships.js';
+  import { t } from '../i18n/index.js';
 
   let { data } = $props();
 </script>
@@ -17,14 +18,14 @@
         <img class="base-icon" src={icon} alt={d.baseType} />
       {/if}
       <div class="info-text">
-        <div class="name">{d.label}{#if d.dest}: Jump to {systemName(data, d.dest)}{/if}</div>
+        <div class="name">{d.label}{#if d.dest}: {$t('infoPanel.jumpTo', { system: systemName(data, d.dest) })}{/if}</div>
         <div class="row">{d.description}</div>
-        <div class="row coords">X {d.x}&nbsp; Y {d.y}&nbsp; Z {d.z}</div>
+        <div class="row coords">{$t('infoPanel.coords', { x: d.x, y: d.y, z: d.z })}</div>
         {#if d.baseName && d.facilities}
           {@const facilityList = [
-            d.facilities.merchantsGuild ? 'Merchants Guild' : null,
-            d.facilities.mercenariesGuild ? 'Mercenaries Guild' : null,
-            d.facilities.shipDealer ? 'Ship Dealer' : null,
+            d.facilities.merchantsGuild ? $t('infoPanel.merchantsGuild') : null,
+            d.facilities.mercenariesGuild ? $t('infoPanel.mercenariesGuild') : null,
+            d.facilities.shipDealer ? $t('infoPanel.shipDealer') : null,
           ].filter(Boolean)}
           <div class="row muted">
             {facilityList.join(' · ')}
@@ -33,7 +34,7 @@
         {#if d.encounters?.length}
           {@const groups = sortedEncounterGroups(d)}
           <details class="encounters">
-            <summary>Encounter Probability</summary>
+            <summary>{$t('infoPanel.encounterProbability')}</summary>
             {#each groups as g}
               <div class="row muted encounter-row">
                 {Math.round(g.chance)}% — {g.ships.map((s) => `${s.count}× ${shipName(s.ship)}`).join(' + ')}

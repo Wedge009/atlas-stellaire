@@ -1,7 +1,18 @@
 <script>
   import { sidebarCollapsed } from '../stores/ui.js';
+  import { t, availableLocales } from '../i18n/index.js';
 
-  let { data, selectedSystemId, topView, onSelect, onShowSector, onShowAbout, onPlotJourney, onSearch } = $props();
+  let {
+    data,
+    selectedSystemId,
+    topView,
+    onSelect,
+    onShowSector,
+    onShowAbout,
+    onShowLanguage,
+    onPlotJourney,
+    onSearch,
+  } = $props();
 
   function selectSystem(id) {
     onSelect(id);
@@ -13,27 +24,27 @@
   <button
     type="button"
     class="collapse-toggle"
-    aria-label={$sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+    aria-label={$sidebarCollapsed ? $t('nav.expandSidebar') : $t('nav.collapseSidebar')}
     onclick={() => ($sidebarCollapsed = !$sidebarCollapsed)}
   >
     {$sidebarCollapsed ? '»' : '«'}
   </button>
   {#if !$sidebarCollapsed}
     <div class="nav-header">
-      <div class="title">GEMINI SECTOR</div>
+      <div class="title">Gemini Sector</div>
       <button
         type="button"
-        class="sector-map-btn"
+        class="sector-map-btn caps"
         class:active={topView === 'sector'}
         onclick={() => onShowSector?.()}
       >
-        SECTOR MAP
+        {$t('nav.sectorMap')}
       </button>
-      <button type="button" class="plot-journey-btn" onclick={() => onPlotJourney?.()}>
-        PLOT JOURNEY
+      <button type="button" class="plot-journey-btn caps" onclick={() => onPlotJourney?.()}>
+        {$t('common.plotJourney')}
       </button>
-      <button type="button" class="search-btn" onclick={() => onSearch?.()}>
-        SEARCH
+      <button type="button" class="search-btn caps" onclick={() => onSearch?.()}>
+        {$t('common.search')}
       </button>
     </div>
     <div class="nav-scroll">
@@ -58,7 +69,12 @@
       {/each}
     </div>
     <div class="nav-footer">
-      <button type="button" class="about-btn" onclick={() => onShowAbout?.()}>ABOUT</button>
+      {#if availableLocales.length > 1}
+        <button type="button" class="language-btn caps" onclick={() => onShowLanguage?.()}>
+          {$t('common.language')}
+        </button>
+      {/if}
+      <button type="button" class="about-btn caps" onclick={() => onShowAbout?.()}>{$t('common.about')}</button>
     </div>
   {/if}
 </nav>
@@ -108,6 +124,11 @@
     padding: 10px;
     border-top: 1px solid #331515;
   }
+  .language-btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+  }
   .about-btn {
     display: block;
     width: 100%;
@@ -119,6 +140,7 @@
     text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
     margin-bottom: 14px;
     letter-spacing: 1px;
+    text-transform: uppercase;
   }
   .sector-map-btn {
     display: block;

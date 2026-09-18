@@ -1,4 +1,6 @@
 <script>
+  import { t } from '../i18n/index.js';
+
   let { onClose } = $props();
 
   function onKeydown(e) {
@@ -13,11 +15,11 @@
 <svelte:window onkeydown={onKeydown} />
 
 <div class="backdrop" role="presentation" onclick={onBackdropClick}>
-  <div class="about" role="dialog" aria-modal="true" aria-label="About">
-    <button type="button" class="close-btn" onclick={onClose} aria-label="Close">&times;</button>
-    <div class="title">ATLAS STELLAIRE</div>
-    <p class="summary">A nostalgic revisit of the Gemini sector from Wing Commander: Privateer.</p>
-    <div class="row">Version {__APP_VERSION__} &middot; {__GIT_COMMIT__}</div>
+  <div class="about" role="dialog" aria-modal="true" aria-label={$t('common.about')}>
+    <button type="button" class="close-btn" onclick={onClose} aria-label={$t('common.close')}>&times;</button>
+    <div class="title">Atlas Stellaire</div>
+    <p class="summary">{$t('about.summary')}</p>
+    <div class="row">{$t('about.version', { version: __APP_VERSION__, commit: __GIT_COMMIT__ })}</div>
     <div class="row">
       <a href="https://github.com/Wedge009/atlas-stellaire" target="_blank" rel="noopener noreferrer">
         github.com/Wedge009/atlas-stellaire
@@ -53,6 +55,7 @@
     text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
     letter-spacing: 1px;
     margin-bottom: 14px;
+    text-transform: uppercase;
   }
   .summary {
     color: var(--text-cyan);

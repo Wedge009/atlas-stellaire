@@ -1,15 +1,17 @@
 <script>
+  import { t } from '../i18n/index.js';
+
   let { showHidden = false } = $props();
 </script>
 
 <div class="legend">
-  <div><span class="sw sw-jump"></span>Jump Point</div>
-  <div><span class="sw sw-base"></span>Base / Planet</div>
-  <div><span class="sw sw-point"></span>Nav Point</div>
+  <div><span class="sw sw-jump"></span>{$t('legend.jumpPoint')}</div>
+  <div><span class="sw sw-base"></span>{$t('legend.basePlanet')}</div>
+  <div><span class="sw sw-point"></span>{$t('legend.navPoint')}</div>
   {#if showHidden}
-    <div><span class="sw sw-unknown"></span>Hidden / Unknown</div>
+    <div><span class="sw sw-unknown"></span>{$t('legend.hiddenUnknown')}</div>
   {/if}
-  <div><span class="sw sw-asteroid"></span>Asteroids Present</div>
+  <div><span class="sw sw-asteroid"></span>{$t('legend.asteroidsPresent')}</div>
 </div>
 
 <style>

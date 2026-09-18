@@ -2,6 +2,7 @@
   import { sectorSystems, sectorEdges } from '../utils/navPoints.js';
   import { journey } from '../stores/journey.js';
   import SystemInfoPanel from './SystemInfoPanel.svelte';
+  import { t } from '../i18n/index.js';
 
   let { data, selectedSystemId, onSelect } = $props();
 
@@ -107,7 +108,7 @@
   <rect x="0" y="0" width="200" height="200" class="sector-border" fill="none" />
 
   {#each tiles as tile (tile.q.id)}
-    <text x={tile.x + 3} y={tile.y + 6} class="quadrant-label">{tile.q.name.toUpperCase()} QUADRANT</text>
+    <text x={tile.x + 3} y={tile.y + 6} class="quadrant-label">{$t('sectorMap.quadrant', { name: tile.q.name })}</text>
   {/each}
 
   {#each edges as e (e.a.id + '|' + e.b.id)}
@@ -191,6 +192,7 @@
     font-family: var(--font-display);
     font-size: 3px;
     letter-spacing: 0.3px;
+    text-transform: uppercase;
   }
   .edge { stroke: #4dc8ff; stroke-width: 0.15; opacity: 0.45; }
   .route-line { stroke: #ffcc55; stroke-width: 0.6; stroke-dasharray: 1.5 1; opacity: 0.9; }

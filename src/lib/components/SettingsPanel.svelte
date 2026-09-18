@@ -9,6 +9,7 @@
     baseModelStyle,
     jumpPointStyle,
   } from '../stores/settings.js';
+  import { t } from '../i18n/index.js';
 
   // The whole menu is locked shut while the 3D<->2D alignment flight
   // animation is actually in progress - rebuilding a toggled setting's
@@ -36,24 +37,25 @@
 <div class="settings" bind:this={root}>
   <button
     type="button"
+    class="caps"
     class:active={open}
     disabled={locked}
-    title={locked ? 'Wait for the alignment animation to finish' : undefined}
+    title={locked ? $t('settings.waitForAnimation') : undefined}
     onclick={() => (open = !open)}
   >
-    SETTINGS
+    {$t('settings.button')}
   </button>
   {#if open}
     <div class="panel">
-      <div class="group-label">Global</div>
+      <div class="group-label">{$t('settings.global')}</div>
 
       <label class="checkbox-row">
         <input type="checkbox" checked={$showHidden} onchange={() => showHidden.update((v) => !v)} />
-        <span>Show hidden points</span>
+        <span>{$t('settings.showHiddenPoints')}</span>
       </label>
       <label class="checkbox-row">
         <input type="checkbox" checked={$showGridLines} onchange={() => showGridLines.update((v) => !v)} />
-        <span>Show grid lines</span>
+        <span>{$t('settings.showGridLines')}</span>
       </label>
       <label class="checkbox-row">
         <input
@@ -61,22 +63,22 @@
           checked={$jumpTransitionEnabled}
           onchange={() => jumpTransitionEnabled.update((v) => !v)}
         />
-        <span>Jump transition</span>
+        <span>{$t('settings.jumpTransition')}</span>
       </label>
       <label class="checkbox-row">
         <input type="checkbox" checked={$skyboxEnabled} onchange={() => skyboxEnabled.update((v) => !v)} />
-        <span>Background sprites</span>
+        <span>{$t('settings.backgroundSprites')}</span>
       </label>
       <label class="select-row">
-        <span>Ship encounters</span>
+        <span>{$t('settings.shipEncounters')}</span>
         <select value={$encounterMode} onchange={(e) => encounterMode.set(e.currentTarget.value)}>
-          <option value="none">None</option>
-          <option value="sprites">Sprites</option>
-          <option value="models">Models</option>
+          <option value="none">{$t('common.none')}</option>
+          <option value="sprites">{$t('settings.sprites')}</option>
+          <option value="models">{$t('settings.models')}</option>
         </select>
       </label>
 
-      <div class="group-label">3D View</div>
+      <div class="group-label">{$t('settings.view3d')}</div>
 
       <label class="checkbox-row">
         <input
@@ -84,21 +86,21 @@
           checked={$idleRotationEnabled}
           onchange={() => idleRotationEnabled.update((v) => !v)}
         />
-        <span>Idle rotation</span>
+        <span>{$t('settings.idleRotation')}</span>
       </label>
       <label class="select-row">
-        <span>Bases</span>
+        <span>{$t('common.bases')}</span>
         <select value={$baseModelStyle} onchange={(e) => baseModelStyle.set(e.currentTarget.value)}>
-          <option value="none">None</option>
-          <option value="models">Models</option>
+          <option value="none">{$t('common.none')}</option>
+          <option value="models">{$t('settings.models')}</option>
         </select>
       </label>
       <label class="select-row">
-        <span>Jump points</span>
+        <span>{$t('settings.jumpPoints')}</span>
         <select value={$jumpPointStyle} onchange={(e) => jumpPointStyle.set(e.currentTarget.value)}>
-          <option value="none">None</option>
-          <option value="sprites">Sprites</option>
-          <option value="models">Models</option>
+          <option value="none">{$t('common.none')}</option>
+          <option value="sprites">{$t('settings.sprites')}</option>
+          <option value="models">{$t('settings.models')}</option>
         </select>
       </label>
     </div>

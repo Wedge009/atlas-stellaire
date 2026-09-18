@@ -134,7 +134,11 @@ export function withRefuelStops(hops, data, tankJumps = 6) {
       warnings.push({
         fromSystemId: result[lastRefuelIndex].systemId,
         toSystemId: result[i].systemId,
-        message: `No landable base within tank range between ${byId.get(result[lastRefuelIndex].systemId)?.name ?? result[lastRefuelIndex].systemId} and ${byId.get(result[i].systemId)?.name ?? result[i].systemId}.`,
+        messageKey: 'journey.noLandableBase',
+        params: {
+          from: byId.get(result[lastRefuelIndex].systemId)?.name ?? result[lastRefuelIndex].systemId,
+          to: byId.get(result[i].systemId)?.name ?? result[i].systemId,
+        },
       });
       lastRefuelIndex = i; // avoid repeating the same warning for every subsequent leg
     }

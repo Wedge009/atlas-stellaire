@@ -1,6 +1,7 @@
 <script>
   import { systemName } from '../utils/navPoints.js';
   import { shipName } from '../utils/ships.js';
+  import { t } from '../i18n/index.js';
 
   let { data, system, maxHeight, onClose, onGoTo } = $props();
 
@@ -26,13 +27,13 @@
 </script>
 
 <div class="info" style={maxHeight ? `max-height: ${maxHeight}px` : ''}>
-  <button type="button" class="close-btn" aria-label="Close" onclick={onClose}>&times;</button>
+  <button type="button" class="close-btn" aria-label={$t('common.close')} onclick={onClose}>&times;</button>
   <div class="name">{system.name}</div>
-  <div class="row muted">{system.quadrantName} Quadrant</div>
+  <div class="row muted">{$t('systemInfoPanel.quadrant', { quadrant: system.quadrantName })}</div>
 
   {#if bases.length}
     <div class="section">
-      <div class="section-title">Bases</div>
+      <div class="section-title">{$t('common.bases')}</div>
       {#each bases as b (b.id)}
         <div class="row">{b.description ?? b.baseName}</div>
       {/each}
@@ -40,28 +41,28 @@
   {/if}
 
   <div class="section">
-    <div class="section-title">Jump Points</div>
+    <div class="section-title">{$t('systemInfoPanel.jumpPoints')}</div>
     {#if jumpDestinations.length}
       {#each jumpDestinations as name}
         <div class="row">{name}</div>
       {/each}
     {:else}
-      <div class="row muted">None</div>
+      <div class="row muted">{$t('common.none')}</div>
     {/if}
   </div>
 
   {#if encounterShips.length}
     <div class="section">
-      <div class="section-title">Ship Encounters</div>
+      <div class="section-title">{$t('systemInfoPanel.shipEncounters')}</div>
       <div class="row muted">{encounterShips.join(', ')}</div>
     </div>
   {/if}
 
   {#if hasAsteroids}
-    <div class="row hazard">Hazards: Asteroids</div>
+    <div class="row hazard">{$t('systemInfoPanel.hazardsAsteroids')}</div>
   {/if}
 
-  <button type="button" class="goto-btn" onclick={onGoTo}>GO TO SYSTEM</button>
+  <button type="button" class="goto-btn" onclick={onGoTo}>{$t('systemInfoPanel.goToSystem')}</button>
 </div>
 
 <style>
@@ -116,5 +117,6 @@
     width: 100%;
     font-size: 11px;
     padding: 6px 10px;
+    text-transform: uppercase;
   }
 </style>
