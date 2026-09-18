@@ -7,6 +7,7 @@ import { persisted } from './persisted.js';
 
 // --- Global ---
 export const showHidden = persisted('showHidden', false);
+export const showGridLines = persisted('showGridLines', true);
 export const jumpTransitionEnabled = persisted('jumpTransitionEnabled', true);
 export const skyboxEnabled = persisted('skyboxEnabled', true);
 // 'none' | 'sprites' | 'models' - the 2D view only ever draws sprites (no

@@ -5,6 +5,7 @@
   import {
     idleRotationEnabled,
     skyboxEnabled,
+    showGridLines,
     baseModelStyle,
     jumpPointStyle,
     encounterMode,
@@ -60,6 +61,7 @@
         systemId,
         idleRotationEnabled: $idleRotationEnabled,
         skyboxEnabled: $skyboxEnabled,
+        gridLinesEnabled: $showGridLines,
         baseModelsEnabled: $baseModelStyle === 'models',
         jumpPointStyle: $jumpPointStyle,
         encounterMode: $encounterMode,
@@ -111,6 +113,11 @@
   $effect(() => {
     const enabled = $skyboxEnabled;
     scene?.setSkyboxEnabled(enabled);
+  });
+
+  $effect(() => {
+    const enabled = $showGridLines;
+    scene?.setGridLinesEnabled(enabled);
   });
 
   $effect(() => {

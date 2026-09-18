@@ -222,6 +222,7 @@ export function createNavScene({
   systemId,
   idleRotationEnabled = true,
   skyboxEnabled = true,
+  gridLinesEnabled = true,
   baseModelsEnabled = true,
   // 'none' | 'sprites' | 'models' - see the jump-point branch in setPoints.
   jumpPointStyle = 'sprites',
@@ -238,6 +239,7 @@ export function createNavScene({
   let lastJumpFrameIdx = -1;
   loadJumpFrameTextures().then((textures) => { jumpTextures = textures; });
   loadOriginalJumpFrameTextures().then((textures) => { originalJumpTextures = textures; });
+  let gridLinesOn = gridLinesEnabled;
   let baseModelsOn = baseModelsEnabled;
   let jumpPointStyleOn = jumpPointStyle;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
@@ -300,6 +302,7 @@ export function createNavScene({
   const grid = new THREE.GridHelper(160, 16, 0x992222, 0x551515);
   grid.material.opacity = 0.55;
   grid.material.transparent = true;
+  grid.visible = gridLinesOn;
   scene.add(grid);
 
   const cameraLight = new THREE.PointLight(0xffffff, 2, 1000);
@@ -566,11 +569,13 @@ export function createNavScene({
       const dropMat = new THREE.LineDashedMaterial({ color: 0x335566, dashSize: 0.8, gapSize: 0.6, transparent: true, opacity: initialOpacity });
       const dropLine = new THREE.Line(dropGeo, dropMat);
       dropLine.computeLineDistances();
+      dropLine.visible = gridLinesOn;
       nodeGroup.add(dropLine);
 
       const spokeGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), initialPos.clone()]);
       const spokeMat = new THREE.LineBasicMaterial({ color: 0x2266aa, transparent: true, opacity: initialOpacity * 0.5 });
       const spoke = new THREE.Line(spokeGeo, spokeMat);
+      spoke.visible = gridLinesOn;
       nodeGroup.add(spoke);
 
       const labelText = np.label + (np.dest ? `: Jump to ${systemName(data, np.dest)}` : (np.baseName ? `: ${np.baseName}` : ''));
@@ -990,6 +995,14 @@ export function createNavScene({
     isFocused: () => focused,
     setIdleRotationEnabled: (v) => { idleRotationOn = v; },
     setSkyboxEnabled: (v) => { backdropGroup.visible = v; },
+    setGridLinesEnabled: (v) => {
+      gridLinesOn = v;
+      grid.visible = v;
+      for (const n of nodes) {
+        n.dropLine.visible = v;
+        n.spoke.visible = v;
+      }
+    },
     setBaseModelsEnabled: (v) => {
       baseModelsOn = v;
       setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments);

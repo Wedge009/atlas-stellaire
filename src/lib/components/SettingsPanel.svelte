@@ -1,6 +1,7 @@
 <script>
   import {
     showHidden,
+    showGridLines,
     jumpTransitionEnabled,
     skyboxEnabled,
     encounterMode,
@@ -49,6 +50,10 @@
       <label class="checkbox-row">
         <input type="checkbox" checked={$showHidden} onchange={() => showHidden.update((v) => !v)} />
         <span>Show hidden points</span>
+      </label>
+      <label class="checkbox-row">
+        <input type="checkbox" checked={$showGridLines} onchange={() => showGridLines.update((v) => !v)} />
+        <span>Show grid lines</span>
       </label>
       <label class="checkbox-row">
         <input

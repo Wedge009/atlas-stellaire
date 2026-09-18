@@ -4,7 +4,7 @@
   import { journey } from '../stores/journey.js';
   import { routeThroughSystem } from '../utils/journey.js';
   import { encounterRolls } from '../stores/encounters.js';
-  import { encounterMode } from '../stores/settings.js';
+  import { encounterMode, showGridLines } from '../stores/settings.js';
   import EncounterSprites from './EncounterSprites.svelte';
 
   let { points, data, onJump, systemId = null } = $props();
@@ -50,12 +50,14 @@
     </marker>
   </defs>
   <rect x="0" y="0" width="100" height="100" fill="#000" />
-  {#each gridLines as g}
-    <line x1={g} y1="0" x2={g} y2="100" class="grid" />
-    <line x1="0" y1={g} x2="100" y2={g} class="grid" />
-  {/each}
-  <line x1="50" y1="0" x2="50" y2="100" class="grid-center" />
-  <line x1="0" y1="50" x2="100" y2="50" class="grid-center" />
+  {#if $showGridLines}
+    {#each gridLines as g}
+      <line x1={g} y1="0" x2={g} y2="100" class="grid" />
+      <line x1="0" y1={g} x2="100" y2={g} class="grid" />
+    {/each}
+    <line x1="50" y1="0" x2="50" y2="100" class="grid-center" />
+    <line x1="0" y1="50" x2="100" y2="50" class="grid-center" />
+  {/if}
 
   <!-- Markers first, so the route arrow draws over them; labels are drawn
        last (after the route arrow) so nav point names stay legible on top. -->
