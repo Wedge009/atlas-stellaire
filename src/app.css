@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap');
+/* VT323/Press Start 2P are loaded via a <link> in index.html, not an
+   @import here - see the comment there for why. */
 
 :root {
   --bg: #000000;

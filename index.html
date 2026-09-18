@@ -4,6 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Atlas Stellaire</title>
+    <!-- As a <link> (rather than a CSS @import), the HTML parser's pre-load
+         scanner discovers and starts fetching this well before app.css is
+         even injected by JS, giving VT323 the best possible head start
+         before the 3D nav view might need to bake it into a canvas texture
+         (see src/lib/utils/fonts.js and its use in NavMap3D.svelte). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap"
+    />
   </head>
   <body>
     <div id="app"></div>
