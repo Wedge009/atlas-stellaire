@@ -77,6 +77,53 @@ export function sectorEdges(data) {
   return edges;
 }
 
+// Flat list of every system and every named base, for the side-bar search
+// dialogue. Ambiguous names (eg a system and a same-named base within it)
+// are distinguished by their subtitle.
+export function searchableEntries(data) {
+  const entries = [];
+  for (const quadrant of data.quadrants) {
+    for (const system of quadrant.systems) {
+      entries.push({
+        kind: 'system',
+        id: system.id,
+        systemId: system.id,
+        name: system.name,
+        quadrantName: quadrant.name,
+      });
+      for (const navPoint of system.navPoints) {
+        if (!navPoint.baseName) continue;
+        entries.push({
+          kind: 'base',
+          id: `${system.id}:${navPoint.id}`,
+          systemId: system.id,
+          navPointId: navPoint.id,
+          name: navPoint.baseName,
+          systemName: system.name,
+          quadrantName: quadrant.name,
+        });
+      }
+    }
+  }
+  return entries;
+}
+
+// Case-insensitive sub-string search over searchableEntries(), ranking
+// name-starts-with matches above mid-name matches.
+export function searchEntries(entries, query, limit = 20) {
+  const q = query.trim().toLowerCase();
+  if (!q) return [];
+  return entries
+    .filter((entry) => entry.name.toLowerCase().includes(q))
+    .sort((a, b) => {
+      const aStarts = a.name.toLowerCase().startsWith(q);
+      const bStarts = b.name.toLowerCase().startsWith(q);
+      if (aStarts !== bStarts) return aStarts ? -1 : 1;
+      return a.name.localeCompare(b.name);
+    })
+    .slice(0, limit);
+}
+
 // Resolves a nav point's `dest` (a system id) to its display name.
 export function systemName(data, systemId) {
   return findSystem(data, systemId)?.name ?? systemId;

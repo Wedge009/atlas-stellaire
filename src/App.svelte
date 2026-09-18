@@ -6,6 +6,7 @@
   import SectorMap from './lib/components/SectorMap.svelte';
   import About from './lib/components/About.svelte';
   import PlotJourneyDialog from './lib/components/PlotJourneyDialog.svelte';
+  import SearchDialog from './lib/components/SearchDialog.svelte';
   import JourneyPanel from './lib/components/JourneyPanel.svelte';
   import JumpTransition from './lib/components/JumpTransition.svelte';
   import { findSystem } from './lib/utils/navPoints.js';
@@ -18,6 +19,7 @@
   let topView = $state(get(lastTopView)); // 'system' | 'sector'
   let showAbout = $state(false);
   let showPlotJourney = $state(false);
+  let showSearch = $state(false);
   let jumpTarget = $state(null);
   let system = $derived(geminiData ? findSystem(geminiData, selectedSystemId) : null);
 
@@ -68,6 +70,7 @@
       onShowSector={() => (topView = 'sector')}
       onShowAbout={() => (showAbout = true)}
       onPlotJourney={() => (showPlotJourney = true)}
+      onSearch={() => (showSearch = true)}
     />
     <div class="main-view">
       {#if topView === 'sector'}
@@ -101,6 +104,9 @@
       currentSystemId={selectedSystemId}
       onClose={() => (showPlotJourney = false)}
     />
+  {/if}
+  {#if showSearch}
+    <SearchDialog data={geminiData} onSelect={goToSystem} onClose={() => (showSearch = false)} />
   {/if}
 </main>
 

@@ -1,7 +1,7 @@
 <script>
   import { sidebarCollapsed } from '../stores/ui.js';
 
-  let { data, selectedSystemId, topView, onSelect, onShowSector, onShowAbout, onPlotJourney } = $props();
+  let { data, selectedSystemId, topView, onSelect, onShowSector, onShowAbout, onPlotJourney, onSearch } = $props();
 
   function selectSystem(id) {
     onSelect(id);
@@ -31,6 +31,9 @@
       </button>
       <button type="button" class="plot-journey-btn" onclick={() => onPlotJourney?.()}>
         PLOT JOURNEY
+      </button>
+      <button type="button" class="search-btn" onclick={() => onSearch?.()}>
+        SEARCH
       </button>
       {#each data.quadrants as quadrant (quadrant.id)}
         <div class="quadrant">
@@ -117,6 +120,11 @@
     margin-bottom: 8px;
   }
   .plot-journey-btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  .search-btn {
     display: block;
     width: 100%;
     margin-bottom: 16px;
