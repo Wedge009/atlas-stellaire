@@ -26,23 +26,18 @@ const ENCOUNTER_RENDERER_FACTORIES = {
 // starts as an empty group and the model fades in once its (shared, cached)
 // load promise resolves.
 const BASE_MODEL_PATHS = {
-  // zUp: true means the source model came out of the BFXM/LightWave pipeline
-  // (Z-up) and needs the -90deg X correction below - the planetary sphere
-  // was built fresh for this project already Y-up, so it doesn't. Original
-  // models were from Gemini Gold, current Origin models are mostly oriented
-  // Y-up.
-  refinery: { path: `${import.meta.env.BASE_URL}assets/models/refinery.glb`, zUp: false },
-  agricultural: { path: `${import.meta.env.BASE_URL}assets/models/agricultural.glb`, zUp: false },
-  pleasure: { path: `${import.meta.env.BASE_URL}assets/models/pleasure.glb`, zUp: false },
-  oxford: { path: `${import.meta.env.BASE_URL}assets/models/oxford.glb`, zUp: false },
-  gaea: { path: `${import.meta.env.BASE_URL}assets/models/gaea.glb`, zUp: false },
-  'new-detroit': { path: `${import.meta.env.BASE_URL}assets/models/new-detroit.glb`, zUp: false },
-  mining: { path: `${import.meta.env.BASE_URL}assets/models/mining.glb`, zUp: false },
+  refinery: { path: `${import.meta.env.BASE_URL}assets/models/refinery.glb` },
+  agricultural: { path: `${import.meta.env.BASE_URL}assets/models/agricultural.glb` },
+  pleasure: { path: `${import.meta.env.BASE_URL}assets/models/pleasure.glb` },
+  oxford: { path: `${import.meta.env.BASE_URL}assets/models/oxford.glb` },
+  gaea: { path: `${import.meta.env.BASE_URL}assets/models/gaea.glb` },
+  'new-detroit': { path: `${import.meta.env.BASE_URL}assets/models/new-detroit.glb` },
+  mining: { path: `${import.meta.env.BASE_URL}assets/models/mining.glb` },
   // Pirate bases re-use the same mining_base unit/mesh
-  pirate: { path: `${import.meta.env.BASE_URL}assets/models/mining.glb`, zUp: false },
-  'new-constantinople': { path: `${import.meta.env.BASE_URL}assets/models/new-constantinople.glb`, zUp: false },
-  perry: { path: `${import.meta.env.BASE_URL}assets/models/perry.glb`, zUp: false },
-  steltek: { path: `${import.meta.env.BASE_URL}assets/models/steltek.glb`, zUp: true },
+  pirate: { path: `${import.meta.env.BASE_URL}assets/models/mining.glb` },
+  'new-constantinople': { path: `${import.meta.env.BASE_URL}assets/models/new-constantinople.glb` },
+  perry: { path: `${import.meta.env.BASE_URL}assets/models/perry.glb` },
+  steltek: { path: `${import.meta.env.BASE_URL}assets/models/steltek.glb` },
 };
 // Model-space units don't match the plain box/sphere placeholders' hand-picked
 // sizes, so each model is rescaled to roughly the same on-screen footprint as
@@ -60,11 +55,6 @@ function loadBaseModelTemplate(baseType) {
       baseType,
       getGLTFLoader().then((loader) => loader.loadAsync(config.path)).then((gltf) => {
         const template = gltf.scene;
-        // Source model is Z-up (BFXM/LightWave convention) - this scene is
-        // Y-up. Rotate -90 about X so model-space Z (the tank ring's
-        // turret/dome axis) becomes world +Y, matching the placeholder
-        // box/sphere it replaces having no inherent 'up' of its own.
-        if (config.zUp) template.rotation.x = -Math.PI / 2;
         const box = new THREE.Box3().setFromObject(template);
         const size = box.getSize(new THREE.Vector3());
         const longest = Math.max(size.x, size.y, size.z) || 1;
