@@ -1,8 +1,13 @@
 <script>
   import { sectorSystems, sectorEdges } from '../utils/navPoints.js';
   import { journey } from '../stores/journey.js';
+  import SystemInfoPanel from './SystemInfoPanel.svelte';
 
   let { data, selectedSystemId, onSelect } = $props();
+
+  let panelSystem = $state(null);
+  let panelStyle = $state('');
+  let panelMaxHeight = $state(300);
 
   let systems = $derived(sectorSystems(data));
   let edges = $derived(sectorEdges(data));
@@ -34,7 +39,49 @@
     return system.navPoints.some((np) => np.type === 'base');
   }
 
-  function select(system) {
+  // Opens the floating info panel anchored near the click point, clamped so
+  // it stays fully on-screen regardless of where in the viewport the system
+  // sits. Vertically it anchors from whichever side (top or bottom of the
+  // click point) has more room, so a system near the bottom of the map gets
+  // a panel that grows upward instead of a cramped sliver capped at a fixed
+  // height; `maxHeight` is passed through to the panel itself (rather than
+  // just this wrapper) so its own overflow-y:auto is what actually clips it.
+  function openPanel(system, event) {
+    const margin = 12;
+    const gap = 16;
+    const panelWidth = 340;
+    const rect = event.currentTarget?.getBoundingClientRect?.();
+    const cx = event.clientX ?? rect?.left ?? window.innerWidth / 2;
+    const cy = event.clientY ?? rect?.top ?? window.innerHeight / 2;
+
+    let x = cx + gap;
+    if (x + panelWidth + margin > window.innerWidth) x = cx - panelWidth - gap;
+    x = Math.max(margin, x);
+
+    const spaceBelow = window.innerHeight - cy - gap - margin;
+    const spaceAbove = cy - gap - margin;
+
+    let vertStyle;
+    if (spaceBelow >= spaceAbove) {
+      const top = Math.max(margin, cy + gap);
+      panelMaxHeight = Math.max(80, window.innerHeight - top - margin);
+      vertStyle = `top: ${top}px;`;
+    } else {
+      const bottom = Math.max(margin, window.innerHeight - cy + gap);
+      panelMaxHeight = Math.max(80, cy - gap - margin);
+      vertStyle = `bottom: ${bottom}px;`;
+    }
+
+    panelStyle = `left: ${x}px; ${vertStyle}`;
+    panelSystem = system;
+  }
+
+  function closePanel() {
+    panelSystem = null;
+  }
+
+  function goTo(system) {
+    closePanel();
     onSelect?.(system.id);
   }
 </script>
@@ -45,7 +92,7 @@
       <path d="M0,0 L10,5 L0,10 z" class="route-arrowhead" />
     </marker>
   </defs>
-  <rect x="0" y="0" width="200" height="200" fill="#000" />
+  <rect x="0" y="0" width="200" height="200" fill="#000" onclick={closePanel} />
 
   {#each tiles as tile (tile.q.id)}
     {#each gridLines as g}
@@ -75,10 +122,11 @@
     <g
       class="node-marker"
       transform="translate({s.gx}, {s.gy})"
-      onclick={() => select(s)}
+      onclick={(e) => openPanel(s, e)}
+      ondblclick={() => goTo(s)}
       role="button"
       tabindex="0"
-      onkeydown={(e) => e.key === 'Enter' && select(s)}
+      onkeydown={(e) => e.key === 'Enter' && goTo(s)}
     >
       {#if hasBase(s)}
         <rect x="-1.5" y="-1.5" width="3" height="3" class="dot dot-base" />
@@ -102,15 +150,30 @@
     <g
       class="node-label"
       transform="translate({s.gx}, {s.gy})"
-      onclick={() => select(s)}
+      onclick={(e) => openPanel(s, e)}
+      ondblclick={() => goTo(s)}
       role="button"
       tabindex="-1"
-      onkeydown={(e) => e.key === 'Enter' && select(s)}
+      onkeydown={(e) => e.key === 'Enter' && goTo(s)}
     >
       <text x="2.2" y="0.6" class="label">{s.name}</text>
     </g>
   {/each}
 </svg>
+
+<svelte:window onkeydown={(e) => e.key === 'Escape' && closePanel()} />
+
+{#if panelSystem}
+  <div class="info-float" style={panelStyle}>
+    <SystemInfoPanel
+      {data}
+      system={panelSystem}
+      maxHeight={panelMaxHeight}
+      onClose={closePanel}
+      onGoTo={() => goTo(panelSystem)}
+    />
+  </div>
+{/if}
 
 <style>
   .sectormap {
@@ -147,5 +210,9 @@
     fill: none;
     stroke: #fff;
     stroke-width: 0.3;
+  }
+  .info-float {
+    position: fixed;
+    z-index: 30;
   }
 </style>
