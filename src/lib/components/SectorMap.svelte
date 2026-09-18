@@ -92,7 +92,7 @@
       <path d="M0,0 L10,5 L0,10 z" class="route-arrowhead" />
     </marker>
   </defs>
-  <rect x="0" y="0" width="200" height="200" fill="#000" onclick={closePanel} />
+  <rect x="0" y="0" width="200" height="200" fill="#000" role="presentation" onclick={closePanel} />
 
   {#each tiles as tile (tile.q.id)}
     {#each gridLines as g}
