@@ -3,21 +3,28 @@ import { spriteSizeFor } from '../utils/encounterLayout.js';
 import { getGLTFLoader } from './gltfLoader.js';
 import { createOrbitParams, orbitStateAt } from './encounterOrbit.js';
 
-// Real-3D-model alternative to encounterSprites3d.js's rotation-sprite
-// billboards - a parallel implementation, not a replacement (see
+// Real-3D-model alternative to encounterSprites3d.js's rotation-based
+// sprites - a parallel implementation, not a replacement (see
 // createNavScene.js for which one is actually wired in). Each ship instance
-// is a real glTF ship model following the exact same orbit (position/speed/
-// plane, see encounterOrbit.js) as the sprite version, so switching between
-// the two never relocates a ship - only how it's drawn changes. No
+// is a real glTF ship model following the same orbit (position/speed/plane,
+// see encounterOrbit.js) as the sprite version, so switching between the
+// two never relocates a ship - only how it's drawn changes. No
 // frame-picking is needed here: the model's own local forwards/up axes are
 // just rotated every tick to track the orbit's actual travel direction and
 // (non-banking) plane normal, like any other oriented 3D object.
 
-// Ship ID (gemini.json's internal sprite-file id - see ships.js's
+// Ship ID (gemini.json's internal sprite-file ID - see ships.js's
 // SHIP_NAMES) -> the .glb converted from the same Origin ship sources via
 // the station-model pipeline (assimp .3ds -> obj -> Blender ->
-// gltf-transform Draco). All 16 measured Y-up already (their bounding box's
-// smallest dimension is always Y).
+// gltf-transform Draco). Every model is verified in Blender to a shared
+// nose-at-local-negative-Z/dorsal-at-local-+Y convention (LOCAL_FORWARD/LOCAL_UP
+// below) before export, with that rotation baked in (Object > Apply >
+// Rotation) - so no per-ship orientation guessing is needed here. NB the
+// alignment itself must be done using *Blender's own* Z-up viewport axes,
+// not glTF's Y-up ones: Blender's exporter converts
+// (x,y,z)_blender -> (x,z,-y)_gltf on export (confirmed empirically), so in
+// Blender's own viewport this means nose -> Blender's +Y (green) and
+// dorsal/top -> Blender's own +Z (blue, its native up).
 const SHIP_MODEL_FILES = {
   BRDSWORD: 'broadsword',
   CLUNKER: 'tarsus',
@@ -46,134 +53,11 @@ const SHIP_MODEL_FILES = {
 const MODEL_UNIT_SIZE = 1;
 const modelTemplateCache = new Map();
 
+// Every ship model's own local forwards/up axes, per the shared authoring
+// convention (see SHIP_MODEL_FILES above) - the same for every ship, so no
+// per-model computation is needed.
 export const LOCAL_UP = new THREE.Vector3(0, 1, 0);
-
-// Ship models weren't authored to a shared nose-axis convention (some run
-// their fuselage along local X, others along local Z), so which horizontal
-// axis is 'forwards' is guessed per model from its own bounding box (the
-// longer of X/Z) - a real guess, not a rule: it's wrong for any hull whose
-// wingspan is wider than its fuselage is long (confirmed visually on
-// Dralthi and Broadsword, both flying sideways/starboard-leading - their
-// wings are wider than their fuselage, so the longer-axis guess picked the
-// wing axis instead of the nose-tail one). FORWARD_AXIS_OVERRIDES below
-// corrects those by ship ID. Which *end* of the (possibly overridden) axis
-// is the nose (vs the tail) comes from a cheap pointiness heuristic: real
-// vertex data near each end of the axis is checked for cross-sectional
-// spread (perpendicular to the axis, ie in the up/right plane), and the
-// narrower/tapered end is taken as the nose - also just a first-pass guess,
-// see NOSE_SIGN_OVERRIDES below for hulls where it's been found backwards.
-const FORWARD_AXIS_OVERRIDES = {
-  DRALTHI: 'z',
-  BRDSWORD: 'z',
-  GOTHRI: 'z',
-  GLADIUS: 'z',
-};
-
-function inferLocalForward(template, shipId) {
-  const box = new THREE.Box3().setFromObject(template);
-  const size = box.getSize(new THREE.Vector3());
-  const axis = FORWARD_AXIS_OVERRIDES[shipId] ?? (size.x >= size.z ? 'x' : 'z');
-
-  template.updateMatrixWorld(true);
-  const v = new THREE.Vector3();
-  const samples = [];
-  let min = Infinity, max = -Infinity;
-  template.traverse((child) => {
-    if (!child.isMesh) return;
-    const posAttr = child.geometry.attributes.position;
-    for (let i = 0; i < posAttr.count; i++) {
-      v.fromBufferAttribute(posAttr, i).applyMatrix4(child.matrixWorld);
-      const a = axis === 'x' ? v.x : v.z;
-      const r = axis === 'x' ? v.z : v.x;
-      if (a < min) min = a;
-      if (a > max) max = a;
-      samples.push(a, r, v.y);
-    }
-  });
-
-  let sign = 1;
-  if (isFinite(min) && isFinite(max) && max - min > 1e-6) {
-    const range = max - min;
-    const bandStart = min + range * 0.2, bandEnd = max - range * 0.2;
-    let minR2 = 0, minN = 0, maxR2 = 0, maxN = 0;
-    for (let i = 0; i < samples.length; i += 3) {
-      const a = samples[i], r = samples[i + 1], y = samples[i + 2];
-      const r2 = r * r + y * y;
-      if (a <= bandStart) { minR2 += r2; minN++; }
-      else if (a >= bandEnd) { maxR2 += r2; maxN++; }
-    }
-    // Narrower (smaller mean cross-sectional radius) end is the nose.
-    if (minN && maxN && maxR2 / maxN > minR2 / minN) sign = -1;
-  }
-
-  return new THREE.Vector3(axis === 'x' ? sign : 0, 0, axis === 'z' ? sign : 0);
-}
-
-// inferLocalForward's pointiness heuristic gets the nose/tail end backwards
-// for some hulls (confirmed visually: Paradigm/FRIGATE, Demon/DEMON and
-// Dralthi/DRALTHI all flew tail-first) - rather than fight the heuristic
-// further, just flip the sign for whichever ship IDs are found flying
-// backwards.
-const NOSE_SIGN_OVERRIDES = {
-  FRIGATE: -1,
-  DEMON: -1,
-  DRALTHI: -1,
-  TUG: -1,
-};
-
-// Full yaw/pitch/roll correction (degrees, applied on top of the axis/sign
-// guesses above via applyOrientationCorrection) for hulls whose true
-// nose-tail/dorsal lines aren't axis-aligned at all - a genuinely different
-// problem from the 90/180deg axis-or-sign misses above, and not one the
-// bounding-box/pointiness heuristics can detect (they only ever choose among
-// +/-X, +/-Z and the fixed LOCAL_UP). Confirmed needed on Paradigm/FRIGATE
-// (visibly not lined up with its actual direction of travel, on more than
-// one axis). yawDeg rotates about the base up axis, pitchDeg about the
-// resulting right axis, rollDeg about the resulting forwards axis - see
-// applyOrientationCorrection.
-export const SHIP_ORIENTATION_CORRECTIONS = {
-  FRIGATE: { yawDeg: 37, pitchDeg: -15, rollDeg: 7 },
-};
-
-const tmpCorrRight = new THREE.Vector3();
-
-// Rotates a (forwards, up) pair - assumed unit and mutually orthogonal - by
-// an intrinsic yaw/pitch/roll sequence: yaw about `up`, then pitch about the
-// resulting right axis (forwards x up... see orientationQuaternion for why
-// the handedness of 'right' doesn't actually matter here), then roll about
-// the resulting forwards axis. Returns a new {forwards, up} pair, still unit
-// and mutually orthogonal. Used both to apply a baked-in
-// SHIP_ORIENTATION_CORRECTIONS entry and, in the debug harness, to preview
-// one live before baking it in.
-export function applyOrientationCorrection(forward, up, { yawDeg = 0, pitchDeg = 0, rollDeg = 0 } = {}) {
-  const outForward = forward.clone();
-  const outUp = up.clone();
-  if (yawDeg) {
-    outForward.applyAxisAngle(outUp, (yawDeg * Math.PI) / 180);
-  }
-  if (pitchDeg) {
-    tmpCorrRight.crossVectors(outForward, outUp).normalize();
-    const rad = (pitchDeg * Math.PI) / 180;
-    outForward.applyAxisAngle(tmpCorrRight, rad);
-    outUp.applyAxisAngle(tmpCorrRight, rad);
-  }
-  if (rollDeg) {
-    outUp.applyAxisAngle(outForward, (rollDeg * Math.PI) / 180);
-  }
-  return { forward: outForward, up: outUp };
-}
-
-// The axis/sign guesses only, before any SHIP_ORIENTATION_CORRECTIONS entry
-// is applied - exported so the debug harness can preview a correction live
-// from the same starting point loadShipModelTemplate itself bakes in from,
-// rather than compounding a live preview on top of an already-corrected
-// frame (which would make the sliders' final numbers not directly usable as
-// a SHIP_ORIENTATION_CORRECTIONS entry).
-export function computeUncorrectedLocalForward(template, shipId) {
-  const localForward = inferLocalForward(template, shipId);
-  if (NOSE_SIGN_OVERRIDES[shipId] === -1) localForward.negate();
-  return localForward;
-}
+export const LOCAL_FORWARD = new THREE.Vector3(0, 0, -1);
 
 export function loadShipModelTemplate(shipId) {
   const file = SHIP_MODEL_FILES[shipId];
@@ -193,24 +77,18 @@ export function loadShipModelTemplate(shipId) {
           // in createNavScene.js - these source files don't have a centred
           // pivot, and this template's local origin needs to be its own
           // visual centre for the orbit position to land where it looks
-          // right and for the nose-detection sampling above to be meaningful.
+          // right.
           const scaledBox = new THREE.Box3().setFromObject(template);
           const center = scaledBox.getCenter(new THREE.Vector3());
           template.position.sub(center);
           // Bbox-centre recentring isn't the same as centring on a hull's
-          // true left-right centreline, so an asymmetric model (confirmed on
-          // Paradigm) can end up flying with a slight lateral offset from
-          // its nav-point anchor. Left uncorrected for now: unlike the
-          // sprites (whose anchor has to sit exactly on the texture's own
-          // registration point for THREE.Sprite's mirroring to show
-          // correctly), a real mesh is never mirrored, so this doesn't need
-          // the same precision.
-          const baseForward = computeUncorrectedLocalForward(template, shipId);
-          const correction = SHIP_ORIENTATION_CORRECTIONS[shipId];
-          const { forward: localForward, up: localUp } = correction
-            ? applyOrientationCorrection(baseForward, LOCAL_UP, correction)
-            : { forward: baseForward, up: LOCAL_UP.clone() };
-          return { template, localForward, localUp };
+          // true left-right centreline, so an asymmetric model can end up
+          // flying with a slight lateral offset from its nav-point anchor.
+          // Left uncorrected: unlike the sprites (whose anchor has to sit
+          // exactly on the texture's own registration point for
+          // THREE.Sprite's mirroring to show correctly), a real mesh is
+          // never mirrored, so this doesn't need the same precision.
+          return { template, localForward: LOCAL_FORWARD, localUp: LOCAL_UP };
         })
     );
   }
@@ -241,12 +119,11 @@ const tmpRotMatrix = new THREE.Matrix4();
 // Quaternion mapping the model's own local forwards/up axes on to the given
 // world forwards/up directions. Both pairs are unit and mutually orthogonal
 // (guaranteed for the orbit's own forward/plane-normal, and by construction
-// for localForward/localUp - see applyOrientationCorrection). Built by
-// expressing each orthonormal triple (forward, up, and a third 'right' axis
-// derived the same way on both sides via a cross product) as a basis matrix
-// and composing world*local^-1 - this works out to a proper rotation
-// regardless of which handedness the cross product happens to produce,
-// since it's applied identically on both sides.
+// for LOCAL_FORWARD/LOCAL_UP). Built by expressing each orthonormal triple
+// (forwards, up, and a third 'right' axis derived the same way on both sides
+// via a cross product) as a basis matrix and composing world*local^-1 - this
+// works out to a proper rotation regardless of which handedness the cross
+// product happens to produce, since it's applied identically on both sides.
 export function orientationQuaternion(worldForward, worldUp, localForward, localUp, outQuat) {
   tmpWorldRight.crossVectors(worldForward, worldUp);
   tmpLocalRight.crossVectors(localForward, localUp);
