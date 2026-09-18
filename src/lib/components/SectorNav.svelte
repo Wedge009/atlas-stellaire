@@ -19,7 +19,7 @@
     {$sidebarCollapsed ? '»' : '«'}
   </button>
   {#if !$sidebarCollapsed}
-    <div class="nav-scroll">
+    <div class="nav-header">
       <div class="title">GEMINI SECTOR</div>
       <button
         type="button"
@@ -35,6 +35,8 @@
       <button type="button" class="search-btn" onclick={() => onSearch?.()}>
         SEARCH
       </button>
+    </div>
+    <div class="nav-scroll">
       {#each data.quadrants as quadrant (quadrant.id)}
         <div class="quadrant">
           <div class="quadrant-name">{quadrant.name}</div>
@@ -92,10 +94,14 @@
     left: 0;
     transform: translateY(-50%);
   }
+  .nav-header {
+    flex: 0 0 auto;
+    padding: 12px 10px 0;
+  }
   .nav-scroll {
     flex: 1;
     overflow-y: auto;
-    padding: 12px 10px;
+    padding: 0 10px 12px;
   }
   .nav-footer {
     flex: 0 0 auto;
