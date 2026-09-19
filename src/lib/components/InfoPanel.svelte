@@ -4,9 +4,13 @@
   import { systemName } from '../utils/navPoints.js';
   import { sortedEncounterGroups } from '../utils/encounters.js';
   import { shipName } from '../utils/ships.js';
+  import { hasCommodityData } from '../data/commodities.js';
+  import CommoditiesDialog from './CommoditiesDialog.svelte';
   import { t } from '../i18n/index.js';
 
   let { data } = $props();
+
+  let showCommodities = $state(false);
 </script>
 
 {#if $selectedNode}
@@ -42,9 +46,17 @@
             {/each}
           </details>
         {/if}
+        {#if d.baseName && hasCommodityData(d.baseType)}
+          <button type="button" class="commodities-btn" onclick={() => (showCommodities = true)}>
+            {$t('common.commodities')}
+          </button>
+        {/if}
       </div>
     </div>
   </div>
+  {#if showCommodities}
+    <CommoditiesDialog baseType={d.baseType} baseLabel={d.baseName} onClose={() => (showCommodities = false)} />
+  {/if}
 {/if}
 
 <style>
@@ -85,4 +97,15 @@
   .encounters { margin-top: 8px; }
   .encounters summary { cursor: pointer; color: var(--text-amber); font-size: 15px; }
   .encounter-row { font-size: 14px; margin-top: 4px; }
+  .commodities-btn {
+    margin-top: 10px;
+    font-size: 14px;
+    border-color: var(--border-cyan);
+    color: var(--text-cyan-bright);
+    text-transform: uppercase;
+  }
+  .commodities-btn:hover {
+    background: rgba(77, 200, 255, 0.15);
+    color: #fff;
+  }
 </style>

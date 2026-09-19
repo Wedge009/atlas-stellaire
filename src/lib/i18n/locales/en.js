@@ -24,6 +24,7 @@ export default {
   'common.view3d': '3D view',
   'common.quadrant': '{name} Quadrant',
   'common.shipEncounters': 'Ship encounters',
+  'common.commodities': 'Commodities',
 
   'about.summary': 'A nostalgic revisit of the Gemini sector from Wing Commander: Privateer.',
   'about.version': 'Version {version} · {commit}',
@@ -64,6 +65,12 @@ export default {
   'infoPanel.mercenariesGuild': 'Mercenaries Guild',
   'infoPanel.shipDealer': 'Ship Dealer',
   'infoPanel.encounterProbability': 'Encounter Probability',
+
+  'commoditiesDialog.title': '{base} Commodities',
+  'commoditiesDialog.commodity': 'Commodity',
+  'commoditiesDialog.low': 'Low',
+  'commoditiesDialog.high': 'High',
+  'commoditiesDialog.soldHereNote': 'Highlighted rows are sold at this base.',
 
   'journeyPanel.titlePrefix': 'Journey:',
   'journeyPanel.legOfJumps': 'Leg {current} of {total} jumps',

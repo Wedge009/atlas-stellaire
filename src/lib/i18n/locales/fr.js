@@ -13,6 +13,7 @@ export default {
   'common.view3d': 'Vue 3D',
   'common.quadrant': 'Quadrant {name}',
   'common.shipEncounters': 'Rencontres de vaisseaux',
+  'common.commodities': 'Marchandises',
 
   'about.summary': 'Une revisite nostalgique du secteur Gemini de Wing Commander: Privateer.',
   'about.version': 'Version {version} · {commit}',
@@ -50,6 +51,12 @@ export default {
   'infoPanel.mercenariesGuild': 'Guilde des mercenaires',
   'infoPanel.shipDealer': 'Concessionnaire de vaisseaux',
   'infoPanel.encounterProbability': 'Probabilité de rencontre',
+
+  'commoditiesDialog.title': 'Marchandises : {base}',
+  'commoditiesDialog.commodity': 'Marchandise',
+  'commoditiesDialog.low': 'Min',
+  'commoditiesDialog.high': 'Max',
+  'commoditiesDialog.soldHereNote': 'Les lignes en surbrillance sont vendues à cette base.',
 
   'journeyPanel.titlePrefix': 'Itinéraire :',
   'journeyPanel.legOfJumps': 'Étape {current} sur {total} sauts',
