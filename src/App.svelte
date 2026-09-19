@@ -14,7 +14,7 @@
   import { journey, journeyInputs, plotJourney } from './lib/stores/journey.js';
   import { jumpTransitionEnabled } from './lib/stores/settings.js';
   import { lastTopView, lastSystemId } from './lib/stores/ui.js';
-  import { t } from './lib/i18n/index.js';
+  import { t, locale } from './lib/i18n/index.js';
 
   let geminiData = $state(null);
   let selectedSystemId = $state(get(lastSystemId));
@@ -31,6 +31,13 @@
   $effect(() => {
     lastTopView.set(topView);
     lastSystemId.set(selectedSystemId);
+  });
+
+  // index.html's <html lang> is a static template Vite serves as-is - it
+  // can't reference the locale store itself, so this keeps it in sync at
+  // run-time for assistive tech and browser features (spell-check, fonts).
+  $effect(() => {
+    document.documentElement.lang = $locale;
   });
 
   onMount(async () => {
