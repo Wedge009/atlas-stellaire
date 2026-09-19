@@ -1,14 +1,16 @@
 import { derived } from 'svelte/store';
 import { persisted } from '../stores/persisted.js';
+import de from './locales/de.js';
 import en from './locales/en.js';
 import fr from './locales/fr.js';
 
-const dictionaries = { en, fr };
+const dictionaries = { de, en, fr };
 
 // Add a locale by dropping a new dictionary file next to en.js, registering
 // it above, and adding an entry here - the Language button (see
 // SectorNav.svelte) only renders if this list holds more than one locale.
 export const availableLocales = [
+  { code: 'de', label: 'Deutsch' },
   { code: 'en', label: 'English' },
   { code: 'fr', label: 'français' }
 ];
