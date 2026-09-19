@@ -70,7 +70,7 @@
         <span>{$t('settings.backgroundSprites')}</span>
       </label>
       <label class="select-row">
-        <span>{$t('settings.shipEncounters')}</span>
+        <span>{$t('common.shipEncounters')}</span>
         <select value={$encounterMode} onchange={(e) => encounterMode.set(e.currentTarget.value)}>
           <option value="none">{$t('common.none')}</option>
           <option value="sprites">{$t('settings.sprites')}</option>
@@ -78,7 +78,7 @@
         </select>
       </label>
 
-      <div class="group-label">{$t('settings.view3d')}</div>
+      <div class="group-label">{$t('common.view3d')}</div>
 
       <label class="checkbox-row">
         <input

@@ -36,7 +36,7 @@
   <div class="hud">
     <div class="hud-main">
       <div class="caps">{$t('systemView.systemLabel', { name: system.name })}</div>
-      <div class="sub">{$t('systemView.quadrantSector', { quadrant: system.quadrantName })}</div>
+      <div class="sub">{$t('common.quadrant', { name: system.quadrantName })} · Gemini Sector</div>
     </div>
     <div class="hud-controls">
       <button
@@ -46,7 +46,7 @@
         title={animationLocked ? $t('settings.waitForAnimation') : undefined}
         onclick={() => ($viewMode = $viewMode === '2d' ? '3d' : '2d')}
       >
-        {$viewMode === '2d' ? $t('systemView.view2d') : $t('systemView.view3d')}
+        {$viewMode === '2d' ? $t('systemView.view2d') : $t('common.view3d')}
       </button>
       <SettingsPanel locked={animationLocked} />
     </div>

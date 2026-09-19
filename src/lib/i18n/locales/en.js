@@ -21,6 +21,9 @@ export default {
   'common.search': 'Search',
   'common.plotJourney': 'Plot journey',
   'common.bases': 'Bases',
+  'common.view3d': '3D view',
+  'common.quadrant': '{name} Quadrant',
+  'common.shipEncounters': 'Ship encounters',
 
   'about.summary': 'A nostalgic revisit of the Gemini sector from Wing Commander: Privateer.',
   'about.version': 'Version {version} · {commit}',
@@ -28,21 +31,17 @@ export default {
   'settings.button': 'Settings',
   'settings.waitForAnimation': 'Wait for the alignment animation to finish',
   'settings.global': 'Global',
-  'settings.view3d': '3D View',
   'settings.showHiddenPoints': 'Show hidden points',
   'settings.showGridLines': 'Show grid lines',
   'settings.jumpTransition': 'Jump transition',
   'settings.backgroundSprites': 'Background sprites',
-  'settings.shipEncounters': 'Ship encounters',
   'settings.sprites': 'Sprites',
   'settings.models': 'Models',
   'settings.idleRotation': 'Idle rotation',
   'settings.jumpPoints': 'Jump points',
 
   'systemView.systemLabel': 'System: {name}',
-  'systemView.quadrantSector': '{quadrant} Quadrant · Gemini Sector',
   'systemView.view2d': '2D view',
-  'systemView.view3d': '3D view',
 
   'navMap3D.loading': 'Loading 3D engine…',
   'navMap3D.alignTo2d': 'Align to 2D view',
@@ -72,7 +71,7 @@ export default {
   'journeyPanel.refuelAt': 'Refuel at: {names}',
   'journeyPanel.clearJourney': 'Clear journey',
   'journey.noRouteExists': 'No jump route exists between these systems.',
-  'journey.noLandableBase': 'No landable base within tank range between {from} and {to}.',
+  'journey.noLandableBase': 'No base within jump range between {from} and {to}.',
 
   'plotJourneyDialog.fromQuadrant': 'From quadrant (optional)',
   'plotJourneyDialog.fromSystem': 'From system',
@@ -92,9 +91,7 @@ export default {
   'searchDialog.noMatches': 'No matches',
   'searchDialog.goTo': 'Go to',
 
-  'systemInfoPanel.quadrant': '{quadrant} Quadrant',
   'systemInfoPanel.jumpPoints': 'Jump Points',
-  'systemInfoPanel.shipEncounters': 'Ship Encounters',
   'systemInfoPanel.hazardsAsteroids': 'Hazards: Asteroids',
   'systemInfoPanel.goToSystem': 'Go to system',
 
@@ -103,8 +100,6 @@ export default {
   'legend.navPoint': 'Nav Point',
   'legend.hiddenUnknown': 'Hidden / Unknown',
   'legend.asteroidsPresent': 'Asteroids Present',
-
-  'sectorMap.quadrant': '{name} Quadrant',
 
   'app.loadingSectorData': 'Loading sector data…',
 

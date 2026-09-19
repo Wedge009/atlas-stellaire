@@ -29,7 +29,7 @@
 <div class="info" style={maxHeight ? `max-height: ${maxHeight}px` : ''}>
   <button type="button" class="close-btn" aria-label={$t('common.close')} onclick={onClose}>&times;</button>
   <div class="name">{system.name}</div>
-  <div class="row muted">{$t('systemInfoPanel.quadrant', { quadrant: system.quadrantName })}</div>
+  <div class="row muted">{$t('common.quadrant', { name: system.quadrantName })}</div>
 
   {#if bases.length}
     <div class="section">
@@ -53,7 +53,7 @@
 
   {#if encounterShips.length}
     <div class="section">
-      <div class="section-title">{$t('systemInfoPanel.shipEncounters')}</div>
+      <div class="section-title">{$t('common.shipEncounters')}</div>
       <div class="row muted">{encounterShips.join(', ')}</div>
     </div>
   {/if}
@@ -111,6 +111,7 @@
     letter-spacing: 0.5px;
     color: var(--text-amber);
     margin-bottom: 3px;
+    text-transform: capitalize;
   }
   .goto-btn {
     margin-top: 12px;

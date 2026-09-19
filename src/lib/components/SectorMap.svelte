@@ -108,7 +108,7 @@
   <rect x="0" y="0" width="200" height="200" class="sector-border" fill="none" />
 
   {#each tiles as tile (tile.q.id)}
-    <text x={tile.x + 3} y={tile.y + 6} class="quadrant-label">{$t('sectorMap.quadrant', { name: tile.q.name })}</text>
+    <text x={tile.x + 3} y={tile.y + 6} class="quadrant-label">{$t('common.quadrant', { name: tile.q.name })}</text>
   {/each}
 
   {#each edges as e (e.a.id + '|' + e.b.id)}
