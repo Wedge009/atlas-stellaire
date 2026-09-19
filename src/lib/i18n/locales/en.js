@@ -48,11 +48,16 @@ export default {
   'navMap3D.alignTo2d': 'Align to 2D view',
   'navMap3D.returnTo3d': 'Return to 3D view',
   'navMap3D.exitBaseFocusFirst': 'Exit base focus first (double-click the base or press Esc)',
-  'navMap3D.hintInspecting':
-    'inspecting {baseName} · drag to orbit · scroll to zoom · double-click or Esc to return',
-  'navMap3D.hintAligned': 'click a node · double-click a jump point to travel',
-  'navMap3D.hintDefault':
-    'drag to orbit · scroll to zoom · click a node · double-click a jump point to travel · double-click a base to inspect',
+  // Short reusable phrases composed into the hint line at the call site
+  // (see NavMap3D.svelte) - 'drag to orbit' and 'click a node' each appear
+  // in more than one hint state, so they're only translated once.
+  'navMap3D.hintInspectingBase': 'inspecting {baseName}',
+  'navMap3D.hintDragOrbit': 'drag to orbit',
+  'navMap3D.hintScrollZoom': 'scroll to zoom',
+  'navMap3D.hintClickNode': 'click a node',
+  'navMap3D.hintJumpTravel': 'double-click a jump point to travel',
+  'navMap3D.hintBaseInspect': 'double-click a base to inspect',
+  'navMap3D.hintEscReturn': 'double-click or Esc to return',
 
   'infoPanel.jumpTo': 'Jump to {system}',
   'infoPanel.coords': 'X {x}  Y {y}  Z {z}',

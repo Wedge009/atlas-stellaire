@@ -38,6 +38,26 @@
   // rebuilds this whole component.
   let focused = $state(null);
 
+  // The bottom-right hint line, composed from short reusable phrases.
+  let hintText = $derived(
+    focused
+      ? [
+          $t('navMap3D.hintInspectingBase', { baseName: focused.baseName }),
+          $t('navMap3D.hintDragOrbit'),
+          $t('navMap3D.hintScrollZoom'),
+          $t('navMap3D.hintEscReturn'),
+        ].join(' · ')
+      : aligned
+        ? [$t('navMap3D.hintClickNode'), $t('navMap3D.hintJumpTravel')].join(' · ')
+        : [
+            $t('navMap3D.hintDragOrbit'),
+            $t('navMap3D.hintScrollZoom'),
+            $t('navMap3D.hintClickNode'),
+            $t('navMap3D.hintJumpTravel'),
+            $t('navMap3D.hintBaseInspect'),
+          ].join(' · ')
+  );
+
   onMount(() => {
     // Three.js is loaded lazily so it isn't part of the initial bundle - the
     // sector map and 2D view never need it, and it only pays for itself once
@@ -192,15 +212,7 @@
     >
       {aligned ? $t('navMap3D.returnTo3d') : $t('navMap3D.alignTo2d')}
     </button>
-    <div class="hint">
-      {#if focused}
-        {$t('navMap3D.hintInspecting', { baseName: focused.baseName })}
-      {:else if aligned}
-        {$t('navMap3D.hintAligned')}
-      {:else}
-        {$t('navMap3D.hintDefault')}
-      {/if}
-    </div>
+    <div class="hint">{hintText}</div>
   {/if}
 </div>
 
