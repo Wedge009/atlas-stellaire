@@ -6,6 +6,7 @@
   import { encounterRolls } from '../stores/encounters.js';
   import { encounterMode, showGridLines } from '../stores/settings.js';
   import EncounterSprites from './EncounterSprites.svelte';
+  import { t } from '../i18n/index.js';
 
   let { points, data, onJump, systemId = null } = $props();
 
@@ -121,7 +122,7 @@
       tabindex="-1"
       onkeydown={(e) => e.key === 'Enter' && select(d.np)}
     >
-      <text x="2.4" y="0.5" class="label">{navPointLabel(d.np, data)}</text>
+      <text x="2.4" y="0.5" class="label">{navPointLabel(d.np, data, $t)}</text>
     </g>
   {/each}
 </svg>

@@ -228,8 +228,15 @@ export function createNavScene({
   jumpPointStyle = 'sprites',
   // 'none' | 'sprites' | 'models' - see applyEncounterMode.
   encounterMode = 'sprites',
+  // t() from lib/i18n - used for the 'Jump to {system}' baked into a jump
+  // point's label texture (see makeLabel/setPoints below). A plain function
+  // rather than the store itself, matching how every other live-updated
+  // option here is a plain value pushed in through a setter, not a store
+  // read directly by this Three.js-only module.
+  translate = (key) => key,
 }) {
   let idleRotationOn = idleRotationEnabled;
+  let translateFn = translate;
   // Resolved once here (rather than per-node) so tick() below can swap frames
   // synchronously every 150ms without awaiting anything - jumpMaterials that
   // exist before this resolves just render untextured white until it does.
@@ -578,7 +585,9 @@ export function createNavScene({
       spoke.visible = gridLinesOn;
       nodeGroup.add(spoke);
 
-      const labelText = np.label + (np.dest ? `: Jump to ${systemName(data, np.dest)}` : (np.baseName ? `: ${np.baseName}` : ''));
+      const labelText = np.label + (np.dest
+        ? `: ${translateFn('infoPanel.jumpTo', { system: systemName(data, np.dest) })}`
+        : (np.baseName ? `: ${np.baseName}` : ''));
       const label = makeLabel(labelText, '#a8e8ff');
       label.position.copy(initialPos).add(new THREE.Vector3(0, 2.8, 0));
       label.userData = np;
@@ -1020,6 +1029,13 @@ export function createNavScene({
     setEncounterMode: (mode) => {
       encounterModeOn = mode;
       applyEncounterMode();
+    },
+    // Labels are canvas textures baked once per node in setPoints, not
+    // reactive mark-up - a locale change needs an explicit rebuild to
+    // re-bake them with the new translation (see NavMap3D.svelte).
+    setTranslate: (fn) => {
+      translateFn = fn;
+      setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments);
     },
   };
 }

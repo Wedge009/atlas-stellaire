@@ -150,8 +150,11 @@ export function styleForNavPoint(navPoint) {
   };
 }
 
-export function navPointLabel(navPoint, /** @type {any} */ data) {
-  if (navPoint.dest) return `${navPoint.label}: Jump to ${systemName(data, navPoint.dest)}`;
+// `translate` is the caller's $t (see lib/i18n) - passed in explicitly,
+// rather than read from the store here, so Svelte's reactivity tracks it at
+// the call site and re-renders this label when the locale changes.
+export function navPointLabel(navPoint, /** @type {any} */ data, translate = (key) => key) {
+  if (navPoint.dest) return `${navPoint.label}: ${translate('infoPanel.jumpTo', { system: systemName(data, navPoint.dest) })}`;
   if (navPoint.baseName) return `${navPoint.label}: ${navPoint.baseName}`;
   return navPoint.label;
 }

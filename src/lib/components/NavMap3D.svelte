@@ -86,6 +86,7 @@
         baseModelsEnabled: $baseModelStyle === 'models',
         jumpPointStyle: $jumpPointStyle,
         encounterMode: $encounterMode,
+        translate: $t,
       });
       scene.setPoints(points, routeHighlightIds, routeInfo.segments);
       scene.setEncounterShips($encounterRolls);
@@ -159,6 +160,13 @@
   $effect(() => {
     const rolls = $encounterRolls;
     scene?.setEncounterShips(rolls);
+  });
+
+  $effect(() => {
+    // $t itself (not just $locale) so this also catches a hot-swapped
+    // dictionary, not only a locale switch.
+    const translateFn = $t;
+    scene?.setTranslate(translateFn);
   });
 
   function toggleAlign() {

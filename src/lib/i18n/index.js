@@ -1,15 +1,17 @@
 import { derived } from 'svelte/store';
 import { persisted } from '../stores/persisted.js';
 import en from './locales/en.js';
+import fr from './locales/fr.js';
 
-const dictionaries = { en };
+const dictionaries = { en, fr };
 
-// Only English exists today. Add a locale by dropping a new dictionary file
-// next to en.js, registering it above, and adding an entry here - the
-// Language button (see SectorNav.svelte) only renders once this list holds
-// more than one locale, so it stays hidden until there's an actual choice
-// to make.
-export const availableLocales = [{ code: 'en', label: 'English' }];
+// Add a locale by dropping a new dictionary file next to en.js, registering
+// it above, and adding an entry here - the Language button (see
+// SectorNav.svelte) only renders if this list holds more than one locale.
+export const availableLocales = [
+  { code: 'en', label: 'English' },
+  { code: 'fr', label: 'français' }
+];
 
 export const locale = persisted('locale', 'en');
 
