@@ -16,7 +16,16 @@
   import { vt323Ready } from '../utils/fonts.js';
   import { t } from '../i18n/index.js';
 
-  let { points, aligned = $bindable(false), animating = $bindable(false), data, onJump, systemId } = $props();
+  let {
+    points,
+    aligned = $bindable(false),
+    animating = $bindable(false),
+    loading = $bindable(true),
+    focused = $bindable(null),
+    data,
+    onJump,
+    systemId,
+  } = $props();
 
   // Which navPoint(s) to highlight and which entry -> [refuel base ->] exit
   // segments to draw as an arrow through this system - see routeThroughSystem
@@ -30,14 +39,7 @@
   let container;
   let scene = null;
   let resizeObserver;
-  let loading = $state(true);
   let destroyed = false;
-  // The navPoint currently focused-in on (see enterFocus/exitFocus in
-  // createNavScene.js), or null for the regular whole-system view. Not for
-  // binding further up - unlike `aligned`, there's no reason a base focus
-  // should survive a reload, and a system switch already tears down and
-  // rebuilds this whole component.
-  let focused = $state(null);
 
   // The bottom-right hint line, composed from short reusable phrases.
   let hintText = $derived(
@@ -170,7 +172,11 @@
     scene?.setTranslate(translateFn);
   });
 
-  function toggleAlign() {
+  // Exported so SystemView's HUD can drive it directly (the button itself now
+  // lives there, grouped with the other top-right controls, rather than
+  // floating at a fixed offset here where a long, multi-line system name can
+  // grow the title underneath it).
+  export function toggleAlign() {
     if (!scene || animating || focused) return;
     animating = true;
     if (!aligned) {
@@ -212,15 +218,6 @@
   {#if loading}
     <div class="loading">{$t('navMap3D.loading')}</div>
   {:else}
-    <button
-      type="button"
-      class="align-btn"
-      onclick={toggleAlign}
-      disabled={animating || !!focused}
-      title={focused ? $t('navMap3D.exitBaseFocusFirst') : undefined}
-    >
-      {aligned ? $t('navMap3D.returnTo3d') : $t('navMap3D.alignTo2d')}
-    </button>
     <div class="hint" class:legend-collapsed={$legendCollapsed}>{hintText}</div>
   {/if}
 </div>
@@ -238,12 +235,6 @@
     cursor: grab;
   }
   canvas:active { cursor: grabbing; }
-  .align-btn {
-    position: absolute;
-    top: 64px;
-    right: 20px;
-    text-transform: uppercase;
-  }
   .hint {
     position: absolute;
     bottom: 12px;

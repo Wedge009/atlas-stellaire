@@ -13,6 +13,9 @@
   let { system, data, onJump } = $props();
 
   let mapAnimating = $state(false);
+  let mapLoading = $state(true);
+  let mapFocused = $state(null);
+  let navMap3D;
   // Both the view-mode toggle and the settings menu only need to be locked while
   // the 3D<->2D alignment flight animation is actually in flight - switching mode
   // or rebuilding a toggled setting's effect (eg the node meshes) mid-flight would
@@ -36,19 +39,34 @@
   <div class="hud">
     <div class="hud-main">
       <div class="caps">{$t('systemView.systemLabel', { name: system.name })}</div>
-      <div class="sub">{$t('common.quadrant', { name: system.quadrantName })} · Gemini Sector</div>
+      <div class="sub">{$t('common.quadrant', { name: system.quadrantName })} · {$t('common.geminiSector')}</div>
     </div>
     <div class="hud-controls">
-      <button
-        type="button"
-        class="caps"
-        disabled={animationLocked}
-        title={animationLocked ? $t('settings.waitForAnimation') : undefined}
-        onclick={() => ($viewMode = $viewMode === '2d' ? '3d' : '2d')}
-      >
-        {$viewMode === '2d' ? $t('systemView.view2d') : $t('common.view3d')}
-      </button>
-      <SettingsPanel locked={animationLocked} />
+      <div class="hud-controls-row">
+        <button
+          type="button"
+          class="caps"
+          disabled={animationLocked}
+          title={animationLocked ? $t('settings.waitForAnimation') : undefined}
+          onclick={() => ($viewMode = $viewMode === '2d' ? '3d' : '2d')}
+        >
+          {$viewMode === '2d' ? $t('systemView.view2d') : $t('common.view3d')}
+        </button>
+        <SettingsPanel locked={animationLocked} />
+      </div>
+      {#if $viewMode === '3d' && !mapLoading}
+        <div class="hud-controls-row">
+          <button
+            type="button"
+            class="caps"
+            onclick={() => navMap3D?.toggleAlign()}
+            disabled={mapAnimating || !!mapFocused}
+            title={mapFocused ? $t('navMap3D.exitBaseFocusFirst') : undefined}
+          >
+            {$viewAligned ? $t('navMap3D.returnTo3d') : $t('navMap3D.alignTo2d')}
+          </button>
+        </div>
+      {/if}
     </div>
   </div>
 
@@ -56,7 +74,17 @@
     {#if $viewMode === '2d'}
       <NavMap2D points={visiblePoints} {data} {onJump} systemId={system.id} />
     {:else}
-      <NavMap3D points={visiblePoints} bind:aligned={$viewAligned} bind:animating={mapAnimating} {data} {onJump} systemId={system.id} />
+      <NavMap3D
+        bind:this={navMap3D}
+        points={visiblePoints}
+        bind:aligned={$viewAligned}
+        bind:animating={mapAnimating}
+        bind:loading={mapLoading}
+        bind:focused={mapFocused}
+        {data}
+        {onJump}
+        systemId={system.id}
+      />
     {/if}
   </div>
 
@@ -98,8 +126,16 @@
   }
   .hud-controls {
     display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     gap: 8px;
     pointer-events: all;
+  }
+  .hud-controls-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
   }
   .viewport {
     position: absolute;
