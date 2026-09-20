@@ -12,6 +12,7 @@ export default {
   'common.bases': 'Basen',
   'common.view3d': '3D-Ansicht',
   'common.quadrant': 'Quadrant {name}',
+  'common.geminiSector': 'Gemini-Sektor',
   'common.shipEncounters': 'Raumschiffbegegnungen',
   'common.commodities': 'Handelswaren',
 

@@ -31,7 +31,7 @@
   </button>
   {#if !$sidebarCollapsed}
     <div class="nav-header">
-      <div class="title">Gemini Sector</div>
+      <div class="title">{$t('common.geminiSector')}</div>
       <button
         type="button"
         class="sector-map-btn caps"
