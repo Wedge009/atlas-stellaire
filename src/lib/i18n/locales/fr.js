@@ -88,6 +88,9 @@ export default {
   'systemInfoPanel.hazardsAsteroids': 'Dangers : astéroïdes',
   'systemInfoPanel.goToSystem': 'Aller au système',
 
+  'legend.title': 'Légende',
+  'legend.collapse': 'Masquer la légende',
+  'legend.expand': 'Afficher la légende',
   'legend.jumpPoint': 'Point de saut',
   'legend.basePlanet': 'Base / planète',
   'legend.navPoint': 'Point de navigation',

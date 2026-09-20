@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { selectedNode } from '../stores/selection.js';
   import { journey } from '../stores/journey.js';
+  import { legendCollapsed } from '../stores/ui.js';
   import {
     idleRotationEnabled,
     skyboxEnabled,
@@ -220,7 +221,7 @@
     >
       {aligned ? $t('navMap3D.returnTo3d') : $t('navMap3D.alignTo2d')}
     </button>
-    <div class="hint">{hintText}</div>
+    <div class="hint" class:legend-collapsed={$legendCollapsed}>{hintText}</div>
   {/if}
 </div>
 
@@ -246,10 +247,23 @@
   .hint {
     position: absolute;
     bottom: 12px;
-    right: 16px;
+    left: 16px;
+    /* Left-anchored with a capped width, rather than right-anchored, so that
+       wrapping on to extra lines (a longer translation, a narrow view-port)
+       never reaches into the legend's corner - the two no longer share a
+       right edge to collide along, however tall the hint grows. The reserved
+       width tracks the legend's collapsed/expanded state (see legend-collapsed
+       below) so it isn't permanently sized for the wider, expanded case. */
+    max-width: calc(100% - 230px);
     color: #668;
     font-size: 16px;
     pointer-events: none;
+  }
+  .hint.legend-collapsed {
+    /* The legend's collapsed pill is much narrower than its expanded panel -
+       give the hint the extra width back rather than reserving worst-case
+       space for a panel that isn't actually showing. */
+    max-width: calc(100% - 170px);
   }
   .loading {
     position: absolute;

@@ -1,17 +1,31 @@
 <script>
   import { t } from '../i18n/index.js';
+  import { legendCollapsed } from '../stores/ui.js';
 
   let { showHidden = false } = $props();
 </script>
 
 <div class="legend">
-  <div><span class="sw sw-jump"></span>{$t('legend.jumpPoint')}</div>
-  <div><span class="sw sw-base"></span>{$t('legend.basePlanet')}</div>
-  <div><span class="sw sw-point"></span>{$t('legend.navPoint')}</div>
-  {#if showHidden}
-    <div><span class="sw sw-unknown"></span>{$t('legend.hiddenUnknown')}</div>
+  <div class="legend-header">
+    <span class="legend-title">{$t('legend.title')}</span>
+    <button
+      type="button"
+      class="collapse-toggle"
+      aria-label={$legendCollapsed ? $t('legend.expand') : $t('legend.collapse')}
+      onclick={() => ($legendCollapsed = !$legendCollapsed)}
+    >
+      {$legendCollapsed ? '▸' : '▾'}
+    </button>
+  </div>
+  {#if !$legendCollapsed}
+    <div><span class="sw sw-jump"></span>{$t('legend.jumpPoint')}</div>
+    <div><span class="sw sw-base"></span>{$t('legend.basePlanet')}</div>
+    <div><span class="sw sw-point"></span>{$t('legend.navPoint')}</div>
+    {#if showHidden}
+      <div><span class="sw sw-unknown"></span>{$t('legend.hiddenUnknown')}</div>
+    {/if}
+    <div><span class="sw sw-asteroid"></span>{$t('legend.asteroidsPresent')}</div>
   {/if}
-  <div><span class="sw sw-asteroid"></span>{$t('legend.asteroidsPresent')}</div>
 </div>
 
 <style>
@@ -22,6 +36,24 @@
     border: 1px solid #2a4a55;
     padding: 8px 12px;
     line-height: 1.6;
+  }
+  .legend-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .legend-title {
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: #5a8a99;
+    text-transform: uppercase;
+  }
+  .collapse-toggle {
+    padding: 2px 6px;
+    font-size: 12px;
+    line-height: 1;
+    box-shadow: none;
   }
   .sw {
     display: inline-block;

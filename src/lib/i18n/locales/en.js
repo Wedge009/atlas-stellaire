@@ -102,6 +102,9 @@ export default {
   'systemInfoPanel.hazardsAsteroids': 'Hazards: Asteroids',
   'systemInfoPanel.goToSystem': 'Go to system',
 
+  'legend.title': 'Legend',
+  'legend.collapse': 'Collapse legend',
+  'legend.expand': 'Expand legend',
   'legend.jumpPoint': 'Jump Point',
   'legend.basePlanet': 'Base / Planet',
   'legend.navPoint': 'Nav Point',

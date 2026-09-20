@@ -6,6 +6,12 @@ import { persisted } from './persisted.js';
 // of view-port width.
 export const sidebarCollapsed = persisted('sidebarCollapsed', window.innerWidth < 768);
 
+// Whether the system-view legend is collapsed. Same narrow-view-port default
+// as `sidebarCollapsed` above - on a narrow display the legend can otherwise
+// collide with the 3D view's hint text in the same corner, especially with a
+// longer translation.
+export const legendCollapsed = persisted('legendCollapsed', window.innerWidth < 768);
+
 // Which top-level view ('sector' | 'system') and, if 'system', which system
 // was last open - restored on reload. `lastSystemId` is validated against
 // the loaded data before use, since a reload may follow a data edit that
