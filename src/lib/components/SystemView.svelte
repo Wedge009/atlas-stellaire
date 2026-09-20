@@ -15,7 +15,7 @@
   let mapAnimating = $state(false);
   let mapLoading = $state(true);
   let mapFocused = $state(null);
-  let navMap3D;
+  let navMap3D = $state();
   // Both the view-mode toggle and the settings menu only need to be locked while
   // the 3D<->2D alignment flight animation is actually in flight - switching mode
   // or rebuilding a toggled setting's effect (eg the node meshes) mid-flight would
