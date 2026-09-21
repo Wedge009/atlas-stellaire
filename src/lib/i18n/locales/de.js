@@ -11,7 +11,7 @@ export default {
   'common.plotJourney': 'Reise planen',
   'common.bases': 'Basen',
   'common.view3d': '3D-Ansicht',
-  'common.quadrant': 'Quadrant {name}',
+  'common.quadrant': '{name}-Quadrant',
   'common.geminiSector': 'Gemini-Sektor',
   'common.shipEncounters': 'Raumschiffbegegnungen',
   'common.commodities': 'Handelswaren',
