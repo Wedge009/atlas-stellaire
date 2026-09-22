@@ -12,6 +12,10 @@ export const sidebarCollapsed = persisted('sidebarCollapsed', window.innerWidth 
 // longer translation.
 export const legendCollapsed = persisted('legendCollapsed', window.innerWidth < 768);
 
+// IDs of quadrants whose system list is collapsed in the side-bar. Absent
+// from this array means expanded (the default).
+export const collapsedQuadrants = persisted('collapsedQuadrants', /** @type {string[]} */ ([]));
+
 // Which top-level view ('sector' | 'system') and, if 'system', which system
 // was last open - restored on reload. `lastSystemId` is validated against
 // the loaded data before use, since a reload may follow a data edit that

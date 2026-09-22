@@ -2,6 +2,8 @@ export default {
   'nav.expandSidebar': 'Seitenleiste ausklappen',
   'nav.collapseSidebar': 'Seitenleiste einklappen',
   'nav.sectorMap': 'Sektorkarte',
+  'nav.expandQuadrant': '{name} ausklappen',
+  'nav.collapseQuadrant': '{name} einklappen',
 
   'common.close': 'Schließen',
   'common.none': 'Keine',

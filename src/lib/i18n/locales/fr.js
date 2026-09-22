@@ -2,6 +2,8 @@ export default {
   'nav.expandSidebar': 'Développer la barre latérale',
   'nav.collapseSidebar': 'Réduire la barre latérale',
   'nav.sectorMap': 'Carte des secteurs',
+  'nav.expandQuadrant': 'Développer {name}',
+  'nav.collapseQuadrant': 'Réduire {name}',
 
   'common.close': 'Fermer',
   'common.none': 'Aucun',

@@ -13,6 +13,8 @@ export default {
   'nav.expandSidebar': 'Expand side-bar',
   'nav.collapseSidebar': 'Collapse side-bar',
   'nav.sectorMap': 'Sector map',
+  'nav.expandQuadrant': 'Expand {name}',
+  'nav.collapseQuadrant': 'Collapse {name}',
 
   'common.close': 'Close',
   'common.none': 'None',

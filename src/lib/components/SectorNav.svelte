@@ -1,5 +1,5 @@
 <script>
-  import { sidebarCollapsed } from '../stores/ui.js';
+  import { sidebarCollapsed, collapsedQuadrants } from '../stores/ui.js';
   import { t, availableLocales } from '../i18n/index.js';
 
   let {
@@ -17,6 +17,12 @@
   function selectSystem(id) {
     onSelect(id);
     if (window.innerWidth < 768) $sidebarCollapsed = true;
+  }
+
+  function toggleQuadrant(id) {
+    $collapsedQuadrants = $collapsedQuadrants.includes(id)
+      ? $collapsedQuadrants.filter((qid) => qid !== id)
+      : [...$collapsedQuadrants, id];
   }
 </script>
 
@@ -50,21 +56,34 @@
     <div class="nav-scroll">
       {#each data.quadrants as quadrant (quadrant.id)}
         <div class="quadrant">
-          <div class="quadrant-name">{quadrant.name}</div>
-          <ul>
-            {#each quadrant.systems as system (system.id)}
-              <li>
-                <button
-                  type="button"
-                  class="system-btn"
-                  class:active={system.id === selectedSystemId}
-                  onclick={() => selectSystem(system.id)}
-                >
-                  {system.name}
-                </button>
-              </li>
-            {/each}
-          </ul>
+          <button
+            type="button"
+            class="quadrant-name"
+            aria-expanded={!$collapsedQuadrants.includes(quadrant.id)}
+            aria-label={$collapsedQuadrants.includes(quadrant.id)
+              ? $t('nav.expandQuadrant', { name: quadrant.name })
+              : $t('nav.collapseQuadrant', { name: quadrant.name })}
+            onclick={() => toggleQuadrant(quadrant.id)}
+          >
+            <span class="quadrant-arrow">{$collapsedQuadrants.includes(quadrant.id) ? '▸' : '▾'}</span>
+            {quadrant.name}
+          </button>
+          {#if !$collapsedQuadrants.includes(quadrant.id)}
+            <ul>
+              {#each quadrant.systems as system (system.id)}
+                <li>
+                  <button
+                    type="button"
+                    class="system-btn"
+                    class:active={system.id === selectedSystemId}
+                    onclick={() => selectSystem(system.id)}
+                  >
+                    {system.name}
+                  </button>
+                </li>
+              {/each}
+            </ul>
+          {/if}
         </div>
       {/each}
     </div>
@@ -159,11 +178,24 @@
   }
   .quadrant { margin-bottom: 16px; }
   .quadrant-name {
+    display: block;
+    width: 100%;
+    text-align: left;
     font-family: var(--font-display);
     font-size: 12px;
     color: var(--text-amber);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
     margin-bottom: 6px;
     letter-spacing: 1px;
+    cursor: pointer;
+  }
+  .quadrant-name:hover { color: #fff; }
+  .quadrant-arrow {
+    display: inline-block;
+    width: 1em;
   }
   ul { list-style: none; margin: 0; padding: 0; }
   li { margin-bottom: 3px; }
