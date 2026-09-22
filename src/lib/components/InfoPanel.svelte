@@ -81,7 +81,6 @@
     height: 6rem;
     object-fit: contain;
     image-rendering: pixelated;
-    background: rgba(0, 20, 30, 0.4);
   }
   .info-text { min-width: 0; }
   .name {
