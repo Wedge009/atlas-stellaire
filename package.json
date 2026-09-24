@@ -10,13 +10,13 @@
     "compress-model": "gltf-transform draco"
   },
   "devDependencies": {
-    "@gltf-transform/cli": "3.10.0",
-    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@gltf-transform/cli": "4.5.0",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
     "@types/three": "^0.186.0",
     "svelte": "^5.28.1",
-    "vite": "^6.3.5"
+    "vite": "^8.3.1"
   },
   "dependencies": {
-    "three": "^0.186.0"
+    "three": "^0.186.1"
   }
 }
