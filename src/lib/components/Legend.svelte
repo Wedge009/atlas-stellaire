@@ -42,6 +42,8 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+    cursor: grab;
+    touch-action: none;
   }
   .legend-title {
     font-size: 13px;

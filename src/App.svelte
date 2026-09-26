@@ -13,7 +13,8 @@
   import { findSystem } from './lib/utils/navPoints.js';
   import { journey, journeyInputs, plotJourney } from './lib/stores/journey.js';
   import { jumpTransitionEnabled } from './lib/stores/settings.js';
-  import { lastTopView, lastSystemId } from './lib/stores/ui.js';
+  import { lastTopView, lastSystemId, journeyPanelPosition } from './lib/stores/ui.js';
+  import { draggable } from './lib/actions/draggable.js';
   import { t, locale } from './lib/i18n/index.js';
 
   let geminiData = $state(null);
@@ -100,7 +101,12 @@
         {/key}
       {/if}
       {#if $journey}
-        <div class="journey-overlay"><JourneyPanel data={geminiData} {selectedSystemId} /></div>
+        <div
+          class="journey-overlay"
+          use:draggable={{ positionStore: journeyPanelPosition, handle: '.title' }}
+        >
+          <JourneyPanel data={geminiData} {selectedSystemId} />
+        </div>
       {/if}
     </div>
   {:else}

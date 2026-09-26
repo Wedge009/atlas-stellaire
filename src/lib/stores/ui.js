@@ -22,3 +22,11 @@ export const collapsedQuadrants = persisted('collapsedQuadrants', /** @type {str
 // removed the system.
 export const lastTopView = persisted('lastTopView', 'sector');
 export const lastSystemId = persisted('lastSystemId', /** @type {string | null} */ (null));
+
+// Remembered on-screen position (view-port px) for a movable overlay panel,
+// once the user has actually dragged it - null means 'still at its default
+// CSS-anchored corner', so a first-time view-port establishes no position
+// until the user moves something themselves. See lib/actions/draggable.js.
+export const journeyPanelPosition = persisted('journeyPanelPosition', /** @type {{left: number, top: number} | null} */ (null));
+export const infoPanelPosition = persisted('infoPanelPosition', /** @type {{left: number, top: number} | null} */ (null));
+export const legendPanelPosition = persisted('legendPanelPosition', /** @type {{left: number, top: number} | null} */ (null));

@@ -17,6 +17,7 @@
   {@const d = $selectedNode}
   {@const icon = d.baseName ? baseTypeIcon(d.baseType) : null}
   <div class="info">
+    <div class="drag-handle" aria-hidden="true"><span class="grip"></span></div>
     <div class="info-body">
       {#if icon}
         <img class="base-icon" src={icon} alt={d.baseType} />
@@ -69,6 +70,21 @@
     color: var(--text-cyan-bright);
     padding: 10px 14px;
     font-size: 18px;
+  }
+  .drag-handle {
+    display: flex;
+    justify-content: center;
+    margin: -10px -14px 8px;
+    padding: 5px 0;
+    cursor: grab;
+    touch-action: none;
+  }
+  .grip {
+    width: 32px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border-cyan);
+    opacity: 0.6;
   }
   .info-body {
     display: flex;

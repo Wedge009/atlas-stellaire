@@ -72,6 +72,8 @@
     color: #fff;
     margin-bottom: 8px;
     line-height: 1.7;
+    cursor: grab;
+    touch-action: none;
   }
   .dest {
     display: inline-flex;

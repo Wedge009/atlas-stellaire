@@ -8,6 +8,8 @@
   import { showHidden } from '../stores/settings.js';
   import { viewMode, viewAligned } from '../stores/view.js';
   import { rollForSystem } from '../stores/encounters.js';
+  import { infoPanelPosition, legendPanelPosition } from '../stores/ui.js';
+  import { draggable } from '../actions/draggable.js';
   import { t } from '../i18n/index.js';
 
   let { system, data, onJump } = $props();
@@ -88,8 +90,18 @@
     {/if}
   </div>
 
-  <div class="overlay-info"><InfoPanel {data} /></div>
-  <div class="overlay-legend"><Legend showHidden={$showHidden} /></div>
+  <div
+    class="overlay-info"
+    use:draggable={{ positionStore: infoPanelPosition, handle: '.drag-handle' }}
+  >
+    <InfoPanel {data} />
+  </div>
+  <div
+    class="overlay-legend"
+    use:draggable={{ positionStore: legendPanelPosition, handle: '.legend-header' }}
+  >
+    <Legend showHidden={$showHidden} />
+  </div>
 </div>
 
 <style>
