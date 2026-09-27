@@ -37,8 +37,8 @@ export default {
   'systemView.view2d': 'Vue 2D',
 
   'navMap3D.loading': 'Chargement du moteur 3D…',
-  'navMap3D.alignTo2d': 'Aligner sur la vue 2D',
-  'navMap3D.returnTo3d': 'Retour à la vue 3D',
+  'navMap3D.freeView': 'Vue libre',
+  'navMap3D.alignedView': 'Vue alignée',
   'navMap3D.exitBaseFocusFirst': 'Quittez d’abord le mode d’inspection de la base (double-cliquez ou appuyez sur Échap)',
   'navMap3D.hintInspectingBase': 'inspecter {baseName}',
   'navMap3D.hintDragOrbit': 'faites glisser pour faire pivoter la vue',

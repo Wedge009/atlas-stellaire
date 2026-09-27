@@ -48,8 +48,8 @@ export default {
   'systemView.view2d': '2D view',
 
   'navMap3D.loading': 'Loading 3D engine…',
-  'navMap3D.alignTo2d': 'Align to 2D view',
-  'navMap3D.returnTo3d': 'Return to 3D view',
+  'navMap3D.freeView': 'Free view',
+  'navMap3D.alignedView': 'Aligned view',
   'navMap3D.exitBaseFocusFirst': 'Exit base focus first (double-click the base or press Esc)',
   // Short reusable phrases composed into the hint line at the call site
   // (see NavMap3D.svelte) - 'drag to orbit' and 'click a node' each appear

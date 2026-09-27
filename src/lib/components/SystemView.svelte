@@ -65,7 +65,7 @@
             disabled={mapAnimating || !!mapFocused}
             title={mapFocused ? $t('navMap3D.exitBaseFocusFirst') : undefined}
           >
-            {$viewAligned ? $t('navMap3D.returnTo3d') : $t('navMap3D.alignTo2d')}
+            {$viewAligned ? $t('navMap3D.alignedView') : $t('navMap3D.freeView')}
           </button>
         </div>
       {/if}

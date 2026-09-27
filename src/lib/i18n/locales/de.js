@@ -37,8 +37,8 @@ export default {
   'systemView.view2d': '2D-Ansicht',
 
   'navMap3D.loading': '3D-Engine wird geladen…',
-  'navMap3D.alignTo2d': 'An 2D-Ansicht ausrichten',
-  'navMap3D.returnTo3d': 'Zur 3D-Ansicht zurückkehren',
+  'navMap3D.freeView': 'Freie Ansicht',
+  'navMap3D.alignedView': 'Ausgerichtete Ansicht',
   'navMap3D.exitBaseFocusFirst': 'Zuerst die Basenansicht verlassen (Doppelklick auf die Basis oder Esc drücken)',
   'navMap3D.hintInspectingBase': '{baseName} wird untersucht',
   'navMap3D.hintDragOrbit': 'Ziehen, um die Ansicht zu rotieren',
