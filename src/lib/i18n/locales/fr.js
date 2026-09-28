@@ -70,9 +70,9 @@ export default {
   'journey.noLandableBase': 'Aucune base à portée de saut entre {from} et {to}.',
 
   'plotJourneyDialog.fromQuadrant': 'Du quadrant (facultatif)',
-  'plotJourneyDialog.fromSystem': 'Du système X',
+  'plotJourneyDialog.fromSystem': 'Du système',
   'plotJourneyDialog.toQuadrant': 'Au quadrant (facultatif)',
-  'plotJourneyDialog.toSystem': 'Au système X',
+  'plotJourneyDialog.toSystem': 'Au système',
   'plotJourneyDialog.allQuadrants': 'Tous les quadrants',
   'plotJourneyDialog.selectSystem': 'Sélectionnez un système…',
   'plotJourneyDialog.selectDestination': 'Sélectionnez une destination…',
