@@ -122,7 +122,8 @@
   }
   .title {
     font-family: var(--font-display);
-    font-size: var(--font-size-title);
+    font-size: var(--font-size-heading);
+    font-weight: bold;
     color: var(--grid-red);
     text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
     letter-spacing: 1px;
@@ -186,6 +187,7 @@
   }
   .go-btn {
     display: block;
+    font-weight: bold;
     width: 100%;
     margin-top: 16px;
     border-color: var(--border-cyan);
@@ -199,10 +201,11 @@
   }
   .close-btn {
     position: absolute;
+    font-weight: bold;
     top: 8px;
     right: 8px;
-    padding: 2px 8px;
-    font-size: 14px;
+    padding: 2px 6px;
+    font-size: 24px;
     line-height: 1;
   }
 </style>
