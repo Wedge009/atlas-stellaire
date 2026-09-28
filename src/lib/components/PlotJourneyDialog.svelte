@@ -1,5 +1,6 @@
 <script>
   import { untrack } from 'svelte';
+  import Dialog from './Dialog.svelte';
   import { flattenSystems, findSystem } from '../utils/navPoints.js';
   import { plotJourney } from '../stores/journey.js';
   import { t } from '../i18n/index.js';
@@ -35,14 +36,6 @@
 
   let toSystem = $derived(toSystemId ? findSystem(data, toSystemId) : null);
 
-  function onKeydown(e) {
-    if (e.key === 'Escape') onClose?.();
-  }
-
-  function onBackdropClick(e) {
-    if (e.target === e.currentTarget) onClose?.();
-  }
-
   function submit(e) {
     e.preventDefault();
     if (!fromSystemId || !toSystemId) return;
@@ -56,100 +49,64 @@
   }
 </script>
 
-<svelte:window onkeydown={onKeydown} />
+<Dialog title={$t('common.plotJourney')} {onClose} maxWidth="640px">
+  <form onsubmit={submit}>
+    <div class="field-row">
+      <label class="quadrant-field" for="from-quadrant">{$t('plotJourneyDialog.fromQuadrant')}</label>
+      <label class="system-field" for="from-system">{$t('plotJourneyDialog.fromSystem')}</label>
+      <select id="from-quadrant" class="quadrant-field" bind:value={fromQuadrantId}>
+        <option value="">{$t('plotJourneyDialog.allQuadrants')}</option>
+        {#each data.quadrants as quadrant (quadrant.id)}
+          <option value={quadrant.id}>{quadrant.name}</option>
+        {/each}
+      </select>
+      <select id="from-system" class="system-field" bind:value={fromSystemId} required>
+        <option value="" disabled>{$t('plotJourneyDialog.selectSystem')}</option>
+        {#each fromSystemOptions as system (system.id)}
+          <option value={system.id}>{system.name}</option>
+        {/each}
+      </select>
+    </div>
 
-<div class="backdrop" role="presentation" onclick={onBackdropClick}>
-  <div class="dialog" role="dialog" aria-modal="true" aria-label={$t('common.plotJourney')}>
-    <button type="button" class="close-btn" onclick={onClose} aria-label={$t('common.close')}>&times;</button>
-    <div class="title">{$t('common.plotJourney')}</div>
+    <div class="field-row">
+      <label class="quadrant-field" for="to-quadrant">{$t('plotJourneyDialog.toQuadrant')}</label>
+      <label class="system-field" for="to-system">{$t('plotJourneyDialog.toSystem')}</label>
+      <select id="to-quadrant" class="quadrant-field" bind:value={toQuadrantId}>
+        <option value="">{$t('plotJourneyDialog.allQuadrants')}</option>
+        {#each data.quadrants as quadrant (quadrant.id)}
+          <option value={quadrant.id}>{quadrant.name}</option>
+        {/each}
+      </select>
+      <select id="to-system" class="system-field" bind:value={toSystemId} required>
+        <option value="" disabled>{$t('plotJourneyDialog.selectDestination')}</option>
+        {#each toSystemOptions as system (system.id)}
+          <option value={system.id}>{system.name}</option>
+        {/each}
+      </select>
+    </div>
 
-    <form onsubmit={submit}>
-      <div class="field-row">
-        <label class="quadrant-field" for="from-quadrant">{$t('plotJourneyDialog.fromQuadrant')}</label>
-        <label class="system-field" for="from-system">{$t('plotJourneyDialog.fromSystem')}</label>
-        <select id="from-quadrant" class="quadrant-field" bind:value={fromQuadrantId}>
-          <option value="">{$t('plotJourneyDialog.allQuadrants')}</option>
-          {#each data.quadrants as quadrant (quadrant.id)}
-            <option value={quadrant.id}>{quadrant.name}</option>
+    {#if toSystem}
+      <label>
+        <span>{$t('plotJourneyDialog.destinationPoint')}</span>
+        <select bind:value={targetNavPointId}>
+          <option value="">{$t('plotJourneyDialog.anywhereInSystem')}</option>
+          {#each toSystem.navPoints as np (np.id)}
+            <option value={np.id}>{np.label}{np.baseName ? `: ${np.baseName}` : ''}</option>
           {/each}
         </select>
-        <select id="from-system" class="system-field" bind:value={fromSystemId} required>
-          <option value="" disabled>{$t('plotJourneyDialog.selectSystem')}</option>
-          {#each fromSystemOptions as system (system.id)}
-            <option value={system.id}>{system.name}</option>
-          {/each}
-        </select>
-      </div>
-
-      <div class="field-row">
-        <label class="quadrant-field" for="to-quadrant">{$t('plotJourneyDialog.toQuadrant')}</label>
-        <label class="system-field" for="to-system">{$t('plotJourneyDialog.toSystem')}</label>
-        <select id="to-quadrant" class="quadrant-field" bind:value={toQuadrantId}>
-          <option value="">{$t('plotJourneyDialog.allQuadrants')}</option>
-          {#each data.quadrants as quadrant (quadrant.id)}
-            <option value={quadrant.id}>{quadrant.name}</option>
-          {/each}
-        </select>
-        <select id="to-system" class="system-field" bind:value={toSystemId} required>
-          <option value="" disabled>{$t('plotJourneyDialog.selectDestination')}</option>
-          {#each toSystemOptions as system (system.id)}
-            <option value={system.id}>{system.name}</option>
-          {/each}
-        </select>
-      </div>
-
-      {#if toSystem}
-        <label>
-          <span>{$t('plotJourneyDialog.destinationPoint')}</span>
-          <select bind:value={targetNavPointId}>
-            <option value="">{$t('plotJourneyDialog.anywhereInSystem')}</option>
-            {#each toSystem.navPoints as np (np.id)}
-              <option value={np.id}>{np.label}{np.baseName ? `: ${np.baseName}` : ''}</option>
-            {/each}
-          </select>
-        </label>
-      {/if}
-
-      <label class="checkbox-row">
-        <input type="checkbox" bind:checked={refuelEnabled} />
-        <span>{$t('plotJourneyDialog.landForFuel')}</span>
       </label>
+    {/if}
 
-      <button type="submit" class="plot-btn">{$t('plotJourneyDialog.plotRoute')}</button>
-    </form>
-  </div>
-</div>
+    <label class="checkbox-row">
+      <input type="checkbox" bind:checked={refuelEnabled} />
+      <span>{$t('plotJourneyDialog.landForFuel')}</span>
+    </label>
+
+    <button type="submit" class="plot-btn primary caps">{$t('plotJourneyDialog.plotRoute')}</button>
+  </form>
+</Dialog>
 
 <style>
-  .backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-  }
-  .dialog {
-    position: relative;
-    min-width: 320px;
-    max-width: 640px;
-    background: var(--panel-bg);
-    border: 1px solid var(--border-cyan);
-    box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
-    color: var(--text-cyan-bright);
-    padding: 20px 24px;
-  }
-  .title {
-    font-family: var(--font-display);
-    font-size: var(--font-size-heading);
-    font-weight: bold;
-    color: var(--grid-red);
-    text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
-    letter-spacing: 1px;
-    margin-bottom: 16px;
-    text-transform: uppercase;
-  }
   form {
     display: flex;
     flex-direction: column;
@@ -178,14 +135,6 @@
     align-items: center;
     gap: 8px;
   }
-  select {
-    font-family: var(--font-body);
-    font-size: var(--font-size-body);
-    background: rgba(5, 10, 15, 0.85);
-    border: 1px solid var(--border-cyan);
-    color: var(--text-cyan-bright);
-    padding: 6px 8px;
-  }
   input[type='checkbox'] {
     appearance: none;
     width: 16px;
@@ -210,22 +159,5 @@
   }
   .plot-btn {
     margin-top: 8px;
-    font-weight: bold;
-    border-color: var(--border-cyan);
-    color: var(--text-cyan-bright);
-    box-shadow: 0 0 8px rgba(60, 180, 255, 0.3);
-    text-transform: uppercase;
-  }
-  .plot-btn:hover {
-    background: rgba(77, 200, 255, 0.15);
-    color: #fff;
-  }
-  .close-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 2px 6px;
-    font-size: 24px;
-    line-height: 1;
   }
 </style>

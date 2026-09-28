@@ -1,62 +1,21 @@
 <script>
+  import Dialog from './Dialog.svelte';
   import { t } from '../i18n/index.js';
 
   let { onClose } = $props();
-
-  function onKeydown(e) {
-    if (e.key === 'Escape') onClose?.();
-  }
-
-  function onBackdropClick(e) {
-    if (e.target === e.currentTarget) onClose?.();
-  }
 </script>
 
-<svelte:window onkeydown={onKeydown} />
-
-<div class="backdrop" role="presentation" onclick={onBackdropClick}>
-  <div class="about" role="dialog" aria-modal="true" aria-label={$t('common.about')}>
-    <button type="button" class="close-btn" onclick={onClose} aria-label={$t('common.close')}>&times;</button>
-    <div class="title">Atlas Stellaire</div>
-    <p class="summary">{$t('about.summary')}</p>
-    <div class="row">{$t('about.version', { version: __APP_VERSION__, commit: __GIT_COMMIT__ })}</div>
-    <div class="row">
-      <a href="https://github.com/Wedge009/atlas-stellaire" target="_blank" rel="noopener noreferrer">
-        github.com/Wedge009/atlas-stellaire
-      </a>
-    </div>
+<Dialog title="Atlas Stellaire" label={$t('common.about')} {onClose} minWidth="280px" maxWidth="420px">
+  <p class="summary">{$t('about.summary')}</p>
+  <div class="row">{$t('about.version', { version: __APP_VERSION__, commit: __GIT_COMMIT__ })}</div>
+  <div class="row">
+    <a href="https://github.com/Wedge009/atlas-stellaire" target="_blank" rel="noopener noreferrer">
+      github.com/Wedge009/atlas-stellaire
+    </a>
   </div>
-</div>
+</Dialog>
 
 <style>
-  .backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-  }
-  .about {
-    position: relative;
-    min-width: 280px;
-    max-width: 420px;
-    background: var(--panel-bg);
-    border: 1px solid var(--border-cyan);
-    box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
-    color: var(--text-cyan-bright);
-    padding: 20px 24px;
-  }
-  .title {
-    font-family: var(--font-display);
-    font-size: var(--font-size-title);
-    color: var(--grid-red);
-    text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
-    letter-spacing: 1px;
-    margin-bottom: 14px;
-    text-transform: uppercase;
-  }
   .summary {
     color: var(--text-cyan);
     font-size: var(--font-size-body);
@@ -73,13 +32,5 @@
   }
   .row a:hover {
     color: #fff;
-  }
-  .close-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 2px 8px;
-    font-size: 14px;
-    line-height: 1;
   }
 </style>

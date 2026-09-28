@@ -121,7 +121,6 @@
     margin-top: 12px;
     width: 100%;
     font-size: var(--font-size-button);
-    font-weight: bold;
     padding: 6px 10px;
     text-transform: uppercase;
   }

@@ -1,4 +1,5 @@
 <script>
+  import Dialog from './Dialog.svelte';
   import { searchableEntries, searchEntries } from '../utils/navPoints.js';
   import { t } from '../i18n/index.js';
 
@@ -28,10 +29,9 @@
     onClose?.();
   }
 
+  // Escape is handled by Dialog.
   function onKeydown(e) {
-    if (e.key === 'Escape') {
-      onClose?.();
-    } else if (e.key === 'ArrowDown') {
+    if (e.key === 'ArrowDown') {
       if (results.length) {
         e.preventDefault();
         activeIndex = (activeIndex + 1) % results.length;
@@ -45,91 +45,50 @@
       if (activeIndex >= 0) goTo(results[activeIndex]);
     }
   }
-
-  function onBackdropClick(e) {
-    if (e.target === e.currentTarget) onClose?.();
-  }
 </script>
 
-<svelte:window onkeydown={onKeydown} />
+<Dialog title={$t('common.search')} {onClose} {onKeydown} fillWidth>
+  <input
+    type="text"
+    class="query-field"
+    placeholder={$t('searchDialog.placeholder')}
+    use:autofocus
+    bind:value={query}
+  />
 
-<div class="backdrop" role="presentation" onclick={onBackdropClick}>
-  <div class="dialog" role="dialog" aria-modal="true" aria-label={$t('common.search')}>
-    <button type="button" class="close-btn" onclick={onClose} aria-label={$t('common.close')}>&times;</button>
-    <div class="title">{$t('common.search')}</div>
+  {#if query.trim()}
+    <ul class="results">
+      {#each results as entry, i (entry.id)}
+        <li>
+          <button
+            type="button"
+            class="result-item"
+            class:active={i === activeIndex}
+            onclick={() => (activeIndex = i)}
+            ondblclick={() => goTo(entry)}
+          >
+            <span class="result-name">{entry.name}</span>
+            <span class="result-subtitle">
+              {#if entry.kind === 'system'}
+                {$t('searchDialog.systemSubtitle', { quadrant: entry.quadrantName })}
+              {:else}
+                {$t('searchDialog.baseSubtitle', { system: entry.systemName, quadrant: entry.quadrantName })}
+              {/if}
+            </span>
+          </button>
+        </li>
+      {:else}
+        <li class="no-results">{$t('searchDialog.noMatches')}</li>
+      {/each}
+    </ul>
+  {/if}
 
-    <input
-      type="text"
-      class="query-field"
-      placeholder={$t('searchDialog.placeholder')}
-      use:autofocus
-      bind:value={query}
-    />
-
-    {#if query.trim()}
-      <ul class="results">
-        {#each results as entry, i (entry.id)}
-          <li>
-            <button
-              type="button"
-              class="result-item"
-              class:active={i === activeIndex}
-              onclick={() => (activeIndex = i)}
-              ondblclick={() => goTo(entry)}
-            >
-              <span class="result-name">{entry.name}</span>
-              <span class="result-subtitle">
-                {#if entry.kind === 'system'}
-                  {$t('searchDialog.systemSubtitle', { quadrant: entry.quadrantName })}
-                {:else}
-                  {$t('searchDialog.baseSubtitle', { system: entry.systemName, quadrant: entry.quadrantName })}
-                {/if}
-              </span>
-            </button>
-          </li>
-        {:else}
-          <li class="no-results">{$t('searchDialog.noMatches')}</li>
-        {/each}
-      </ul>
-    {/if}
-
-    <button type="button" class="go-btn" disabled={activeIndex < 0} onclick={() => goTo(results[activeIndex])}>
-      {$t('searchDialog.goTo')}
-    </button>
-  </div>
-</div>
+  <button type="button" class="go-btn primary caps" disabled={activeIndex < 0} onclick={() => goTo(results[activeIndex])}>
+    {$t('searchDialog.goTo')}
+  </button>
+</Dialog>
 
 <style>
-  .backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-  }
-  .dialog {
-    position: relative;
-    min-width: 320px;
-    max-width: 460px;
-    width: 100%;
-    background: var(--panel-bg);
-    border: 1px solid var(--border-cyan);
-    box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
-    color: var(--text-cyan-bright);
-    padding: 20px 24px;
-  }
-  .title {
-    font-family: var(--font-display);
-    font-size: var(--font-size-heading);
-    font-weight: bold;
-    color: var(--grid-red);
-    text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
-    letter-spacing: 1px;
-    margin-bottom: 16px;
-    text-transform: uppercase;
-  }
   .query-field {
     display: block;
     width: 100%;
@@ -187,25 +146,7 @@
   }
   .go-btn {
     display: block;
-    font-weight: bold;
     width: 100%;
     margin-top: 16px;
-    border-color: var(--border-cyan);
-    color: var(--text-cyan-bright);
-    box-shadow: 0 0 8px rgba(60, 180, 255, 0.3);
-    text-transform: uppercase;
-  }
-  .go-btn:hover:not(:disabled) {
-    background: rgba(77, 200, 255, 0.15);
-    color: #fff;
-  }
-  .close-btn {
-    position: absolute;
-    font-weight: bold;
-    top: 8px;
-    right: 8px;
-    padding: 2px 6px;
-    font-size: 24px;
-    line-height: 1;
   }
 </style>

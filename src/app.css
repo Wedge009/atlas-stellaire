@@ -58,6 +58,7 @@ button {
   border: 1px solid var(--border-red);
   color: #ff9999;
   font-size: var(--font-size-button);
+  font-weight: bold;
   padding: 10px 14px;
   cursor: pointer;
   letter-spacing: 1px;
@@ -66,6 +67,22 @@ button {
 button:hover { background: rgba(255, 60, 60, 0.15); color: #fff; }
 button:disabled { opacity: 0.5; cursor: default; }
 button.active { background: rgba(77, 200, 255, 0.15); border-color: var(--border-cyan); color: var(--text-cyan-bright); }
+/* Cyan call-to-action button, e.g. a dialogue's submit button */
+button.primary {
+  border-color: var(--border-cyan);
+  color: var(--text-cyan-bright);
+  box-shadow: 0 0 8px rgba(60, 180, 255, 0.3);
+}
+button.primary:hover:not(:disabled) { background: rgba(77, 200, 255, 0.15); color: #fff; }
+
+select {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  background: rgba(5, 10, 15, 0.85);
+  border: 1px solid var(--border-cyan);
+  color: var(--text-cyan-bright);
+  padding: 6px 8px;
+}
 
 /* Presentational capitals for the display font, applied at the call site
    (fixed action buttons, dialogue titles) rather than baked into the

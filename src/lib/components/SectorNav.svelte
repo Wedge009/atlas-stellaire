@@ -132,7 +132,6 @@
     right: -1px;
     transform: translate(100%, -50%);
     z-index: 30;
-    font-weight: bold;
     padding: 6px 8px;
     line-height: 1;
   }
@@ -173,13 +172,6 @@
     margin-bottom: 14px;
     letter-spacing: 1px;
     text-transform: uppercase;
-  }
-  .sector-map-btn,
-  .plot-journey-btn,
-  .search-btn,
-  .language-btn,
-  .about-btn {
-    font-weight: bold;
   }
   .sector-map-btn {
     display: block;
