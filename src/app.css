@@ -88,9 +88,8 @@ html, body {
   height: 100%;
 }
 
-/* Buttons start plain - just the font and spacing. The bordered looks are
-   opt-in classes: .primary (red) for most actions, .confirm (cyan) for a
-   dialogue's submit button. */
+/* Buttons start plain - just the font and spacing. The red bordered look is
+   opt-in via .primary. */
 button {
   font-family: var(--font-display);
   font-size: var(--font-size-button);
@@ -109,17 +108,10 @@ button.primary {
   color: var(--text-red);
   box-shadow: var(--glow-red);
 }
-button.primary:hover { background: var(--highlight-red); color: var(--text-emphasis); }
-button.confirm {
-  background: var(--control-bg);
-  border: 1px solid var(--border-cyan);
-  color: var(--text-cyan-bright);
-  box-shadow: var(--glow-cyan);
-}
-button.confirm:hover:not(:disabled) { background: var(--highlight-active); color: var(--text-emphasis); }
+button.primary:hover:not(:disabled) { background: var(--highlight-red); color: var(--text-emphasis); }
 /* Listed with :hover so a hovered active button stays cyan rather than
    taking .primary's red hover */
-button.active, button.active:hover { background: var(--highlight-active); border-color: var(--border-cyan); color: var(--text-cyan-bright); }
+button.active, button.active:hover:not(:disabled) { background: var(--highlight-active); border-color: var(--border-cyan); color: var(--text-cyan-bright); }
 
 select {
   font-family: var(--font-body);

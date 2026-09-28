@@ -83,7 +83,7 @@
     </ul>
   {/if}
 
-  <button type="button" class="go-btn confirm caps" disabled={activeIndex < 0} onclick={() => goTo(results[activeIndex])}>
+  <button type="button" class="go-btn primary caps" disabled={activeIndex < 0} onclick={() => goTo(results[activeIndex])}>
     {$t('searchDialog.goTo')}
   </button>
 </Dialog>
@@ -118,6 +118,7 @@
     width: 100%;
     text-align: left;
     font-family: var(--font-body);
+    font-weight: normal;
     border-bottom: 1px solid var(--highlight-active);
     color: var(--text-cyan);
     padding: 6px 10px;

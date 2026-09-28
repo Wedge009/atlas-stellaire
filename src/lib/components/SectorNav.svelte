@@ -214,6 +214,7 @@
     text-align: left;
     font-family: var(--font-body);
     font-size: var(--font-size-button-small);
+    font-weight: normal;
     padding: 4px 8px;
     border: 1px solid transparent;
     color: var(--text-cyan);

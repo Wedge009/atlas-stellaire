@@ -102,7 +102,7 @@
       <span>{$t('plotJourneyDialog.landForFuel')}</span>
     </label>
 
-    <button type="submit" class="plot-btn confirm caps">{$t('plotJourneyDialog.plotRoute')}</button>
+    <button type="submit" class="plot-btn primary caps">{$t('plotJourneyDialog.plotRoute')}</button>
   </form>
 </Dialog>
 

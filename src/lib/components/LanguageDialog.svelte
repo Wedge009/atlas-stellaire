@@ -25,7 +25,7 @@
       </select>
     </label>
 
-    <button type="submit" class="apply-btn confirm caps">{$t('language.apply')}</button>
+    <button type="submit" class="apply-btn primary caps">{$t('language.apply')}</button>
   </form>
 </Dialog>
 
