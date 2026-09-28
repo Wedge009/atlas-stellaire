@@ -31,7 +31,7 @@
 <style>
   .legend {
     color: var(--text-cyan);
-    font-size: var(--font-size-body);
+    font-size: var(--font-size-caption);
     background: var(--panel-bg);
     border: 1px solid var(--border-dim);
     padding: 8px 12px;
@@ -46,14 +46,12 @@
     touch-action: none;
   }
   .legend-title {
-    font-size: var(--font-size-caption);
     letter-spacing: 1px;
     color: var(--text-label);
     text-transform: uppercase;
   }
   .collapse-toggle {
     padding: 2px 6px;
-    font-size: 12px;
     line-height: 1;
     box-shadow: none;
   }

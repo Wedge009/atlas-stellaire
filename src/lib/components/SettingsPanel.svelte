@@ -123,11 +123,10 @@
     gap: 8px;
     white-space: nowrap;
     color: var(--text-cyan);
-    font-size: var(--font-size-body);
+    font-size: var(--font-size-body-secondary);
     z-index: 20;
   }
   .group-label {
-    font-size: var(--font-size-caption);
     letter-spacing: 1px;
     color: var(--text-label);
     text-transform: uppercase;

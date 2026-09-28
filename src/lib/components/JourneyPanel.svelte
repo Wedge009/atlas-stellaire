@@ -57,7 +57,6 @@
 
 <style>
   .title {
-    line-height: 1.7;
     cursor: grab;
     touch-action: none;
   }

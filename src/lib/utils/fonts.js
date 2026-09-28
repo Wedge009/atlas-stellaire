@@ -7,4 +7,4 @@
 // three/createNavScene.js bakes its labels with LABEL_FONT_FAMILY, so sharing
 // it here keeps the font waited on and the font baked from being the same one.
 export const LABEL_FONT_FAMILY = 'Kode Mono';
-export const fontReady = document.fonts.load(`34px '${LABEL_FONT_FAMILY}'`).catch(() => {});
+export const fontReady = document.fonts.load(`16px '${LABEL_FONT_FAMILY}'`).catch(() => {});

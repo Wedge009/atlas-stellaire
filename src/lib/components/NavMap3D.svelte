@@ -247,7 +247,7 @@
        below) so it isn't permanently sized for the wider, expanded case. */
     max-width: calc(100% - 230px);
     color: var(--text-dim);
-    font-size: var(--font-size-body);
+    font-size: var(--font-size-body-secondary);
     pointer-events: none;
   }
   .hint.legend-collapsed {

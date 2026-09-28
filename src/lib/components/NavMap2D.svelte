@@ -142,7 +142,7 @@
   .route-arrowhead { fill: var(--map-route); }
   .label {
     fill: var(--map-label);
-    font-size: 2.5px;
+    font-size: 1.8px;
     paint-order: stroke;
     stroke: var(--bg);
     stroke-width: 0.4px;

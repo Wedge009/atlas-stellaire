@@ -54,11 +54,9 @@
   --font-body: 'Kode Mono', monospace;
 
   /* Font sizes by role. Display-font roles: */
-  --font-size-title: 16px;          /* dialogue titles, system view HUD heading */
   --font-size-heading: 18px;        /* panel names, side-bar/journey headings */
   --font-size-subheading: 16px;     /* section titles within a panel */
   --font-size-button: 14px;         /* default for all buttons */
-  --font-size-button-large: 16px;   /* prominent in-panel action buttons */
   --font-size-button-small: 13px;   /* compact in-panel action buttons */
   /* Body-font roles: */
   --font-size-body: 16px;           /* panel text, form labels and selects */
@@ -159,7 +157,7 @@ input[type='checkbox']:checked::before {
    panel's own component always overrides them. */
 .info-panel {
   min-width: 240px;
-  max-width: 340px;
+  max-width: 420px;
   padding: 10px 14px;
   font-size: var(--font-size-body);
 }
@@ -167,7 +165,6 @@ input[type='checkbox']:checked::before {
   font-family: var(--font-display);
   font-size: var(--font-size-heading);
   color: var(--text-emphasis);
-  line-height: 1.5;
   margin-bottom: 8px;
 }
 :where(.info-panel .row) { color: var(--text-cyan); }

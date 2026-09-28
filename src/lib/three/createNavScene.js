@@ -180,7 +180,7 @@ function easeInOutCubic(t) {
 function makeLabel(text, color) {
   const cnv = document.createElement('canvas');
   const ctx = cnv.getContext('2d');
-  const fontSize = 34;
+  const fontSize = 16;
   ctx.font = `${fontSize}px '${LABEL_FONT_FAMILY}', monospace`;
   const w = Math.max(160, ctx.measureText(text).width + 24);
   cnv.width = w;

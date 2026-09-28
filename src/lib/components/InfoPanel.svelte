@@ -95,7 +95,7 @@
   .encounter-row { font-size: var(--font-size-small); margin-top: 4px; }
   .commodities-btn {
     margin-top: 10px;
-    font-size: var(--font-size-button-large);
+    font-size: var(--font-size-button);
     text-transform: uppercase;
   }
 </style>

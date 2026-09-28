@@ -124,7 +124,8 @@
   }
   .hud-main {
     font-family: var(--font-display);
-    font-size: var(--font-size-title);
+    font-size: var(--font-size-heading);
+    font-weight: bold;
     color: var(--grid-red);
     letter-spacing: 1px;
     text-shadow: var(--text-glow-red);
@@ -132,6 +133,7 @@
   .hud-main .sub {
     font-family: var(--font-body);
     font-size: var(--font-size-body);
+    font-weight: normal;
     color: var(--text-cyan);
     margin-top: 6px;
     text-shadow: var(--text-glow-cyan);

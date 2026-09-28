@@ -18,7 +18,7 @@
 <style>
   .summary {
     color: var(--text-cyan);
-    font-size: var(--font-size-body);
+    font-size: var(--font-size-body-secondary);
     line-height: 1.4;
     margin: 0 0 14px;
   }
