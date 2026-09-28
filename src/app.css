@@ -66,6 +66,13 @@
   /* Icon glyph buttons (close, the legend's collapse toggle, sort arrows),
      map labels in SVG units and the 3D nav labels' canvas bake keep their
      own sizes. */
+
+  /* Native UI (scroll bars, select pop-ups) otherwise follows the OS's
+     light theme, which Chromium-browsers render as large bright scroll bars.
+     scrollbar-color is inherited, so this covers every scrolling panel. */
+  color-scheme: dark;
+  scrollbar-color: var(--border-dim) transparent;
+  scrollbar-width: thin;
 }
 
 * { box-sizing: border-box; }
@@ -84,6 +91,13 @@ html, body {
 #app {
   width: 100%;
   height: 100%;
+}
+
+/* Chromium outlines a focused SVG element on mouse click too (not just
+   :focus-visible), drawing a thick ring over the map's select ring. Keep
+   the outline for keyboard focus only. */
+svg [role="button"]:focus:not(:focus-visible) {
+  outline: none;
 }
 
 /* Buttons start plain - just the font and spacing. The red bordered look is
