@@ -75,7 +75,7 @@
     box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
     color: var(--text-cyan-bright);
     padding: 10px 14px;
-    font-size: 16px;
+    font-size: var(--font-size-body);
     overflow-y: auto;
   }
   .close-btn {
@@ -96,18 +96,18 @@
   .close-btn:hover { color: #fff; }
   .name {
     font-family: var(--font-display);
-    font-size: 14px;
+    font-size: var(--font-size-heading);
     color: #fff;
     line-height: 1.5;
     padding-right: 20px;
   }
   .row { color: var(--text-cyan); }
-  .row.muted { color: #6a8a99; font-size: 15px; }
-  .row.hazard { color: var(--text-amber); font-size: 15px; margin-top: 8px; }
+  .row.muted { color: #6a8a99; font-size: var(--font-size-body-secondary); }
+  .row.hazard { color: var(--text-amber); font-size: var(--font-size-body-secondary); margin-top: 8px; }
   .section { margin-top: 8px; }
   .section-title {
     font-family: var(--font-display);
-    font-size: 13px;
+    font-size: var(--font-size-subheading);
     letter-spacing: 0.5px;
     color: var(--text-amber);
     margin-bottom: 3px;
@@ -116,7 +116,7 @@
   .goto-btn {
     margin-top: 12px;
     width: 100%;
-    font-size: 13px;
+    font-size: var(--font-size-button-small);
     padding: 6px 10px;
     text-transform: uppercase;
   }

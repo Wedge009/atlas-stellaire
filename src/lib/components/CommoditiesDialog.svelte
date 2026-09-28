@@ -132,7 +132,7 @@
   }
   .title {
     font-family: var(--font-display);
-    font-size: 16px;
+    font-size: var(--font-size-title);
     color: var(--grid-red);
     text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
     letter-spacing: 1px;
@@ -147,7 +147,7 @@
   .tab {
     flex: 1;
     font-family: var(--font-body);
-    font-size: 15px;
+    font-size: var(--font-size-body-secondary);
     background: transparent;
     border: 1px solid var(--border-cyan);
     color: var(--text-cyan);
@@ -170,7 +170,7 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 15px;
+    font-size: var(--font-size-body-secondary);
   }
   thead {
     position: sticky;
@@ -186,7 +186,7 @@
     display: block;
     width: 100%;
     font-family: var(--font-body);
-    font-size: 15px;
+    font-size: var(--font-size-body-secondary);
     text-align: left;
     color: var(--text-amber);
     font-weight: normal;
@@ -218,7 +218,7 @@
   .legend {
     margin-top: 10px;
     padding: 4px 8px;
-    font-size: 13px;
+    font-size: var(--font-size-caption);
     color: #fff;
     background: rgba(77, 200, 255, 0.12);
   }

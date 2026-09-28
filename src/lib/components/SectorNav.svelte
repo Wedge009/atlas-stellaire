@@ -154,7 +154,7 @@
   }
   .title {
     font-family: var(--font-display);
-    font-size: 14px;
+    font-size: var(--font-size-heading);
     color: var(--grid-red);
     text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
     margin-bottom: 14px;
@@ -182,7 +182,7 @@
     width: 100%;
     text-align: left;
     font-family: var(--font-display);
-    font-size: 14px;
+    font-size: var(--font-size-heading);
     color: var(--text-amber);
     background: transparent;
     border: none;
@@ -204,7 +204,7 @@
     width: 100%;
     text-align: left;
     font-family: var(--font-body);
-    font-size: 16px;
+    font-size: var(--font-size-body);
     padding: 4px 8px;
     background: transparent;
     border: 1px solid transparent;

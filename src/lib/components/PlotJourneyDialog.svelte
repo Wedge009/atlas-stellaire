@@ -142,7 +142,7 @@
   }
   .title {
     font-family: var(--font-display);
-    font-size: 16px;
+    font-size: var(--font-size-title);
     color: var(--grid-red);
     text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
     letter-spacing: 1px;
@@ -158,7 +158,7 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    font-size: 16px;
+    font-size: var(--font-size-body);
     color: var(--text-cyan);
   }
   .field-row {
@@ -174,7 +174,7 @@
   }
   select {
     font-family: var(--font-body);
-    font-size: 16px;
+    font-size: var(--font-size-body);
     background: rgba(5, 10, 15, 0.85);
     border: 1px solid var(--border-cyan);
     color: var(--text-cyan-bright);

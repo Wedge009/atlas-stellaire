@@ -16,6 +16,21 @@
   --sw-unknown: #6a7a85;
   --font-display: 'Kode Mono', monospace;
   --font-body: 'Kode Mono', monospace;
+
+  /* Font sizes by role. Display-font roles: */
+  --font-size-title: 16px;          /* dialogue titles, system view HUD heading */
+  --font-size-heading: 14px;        /* panel names, side-bar/journey headings */
+  --font-size-subheading: 13px;     /* section titles within a panel */
+  --font-size-button: 14px;         /* default for all buttons */
+  --font-size-button-large: 16px;   /* prominent in-panel action buttons */
+  --font-size-button-small: 13px;   /* compact in-panel action buttons */
+  /* Body-font roles: */
+  --font-size-body: 16px;           /* panel text, form labels and selects */
+  --font-size-body-secondary: 15px; /* muted/status rows, tables, tabs */
+  --font-size-small: 14px;          /* dense lists, compact selects */
+  --font-size-caption: 13px;        /* small labels, legends, subtitles */
+  /* Icon glyph buttons (close, collapse, sort arrows), map labels in SVG
+     units and the 3D nav labels' canvas bake keep their own sizes. */
 }
 
 * { box-sizing: border-box; }
@@ -41,7 +56,7 @@ button {
   background: rgba(5, 10, 15, 0.85);
   border: 1px solid var(--border-red);
   color: #ff9999;
-  font-size: 14px;
+  font-size: var(--font-size-button);
   padding: 10px 14px;
   cursor: pointer;
   letter-spacing: 1px;

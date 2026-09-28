@@ -123,11 +123,11 @@
     gap: 8px;
     white-space: nowrap;
     color: var(--text-cyan);
-    font-size: 16px;
+    font-size: var(--font-size-body);
     z-index: 20;
   }
   .group-label {
-    font-size: 13px;
+    font-size: var(--font-size-caption);
     letter-spacing: 1px;
     color: #5a8a99;
     text-transform: uppercase;
@@ -179,7 +179,7 @@
     color: var(--text-cyan);
     border: 1px solid var(--border-cyan);
     font: inherit;
-    font-size: 14px;
+    font-size: var(--font-size-small);
     padding: 2px 4px;
     cursor: pointer;
   }

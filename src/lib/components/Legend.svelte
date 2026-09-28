@@ -31,7 +31,7 @@
 <style>
   .legend {
     color: var(--text-cyan);
-    font-size: 16px;
+    font-size: var(--font-size-body);
     background: var(--panel-bg);
     border: 1px solid #2a4a55;
     padding: 8px 12px;
@@ -46,7 +46,7 @@
     touch-action: none;
   }
   .legend-title {
-    font-size: 13px;
+    font-size: var(--font-size-caption);
     letter-spacing: 1px;
     color: #5a8a99;
     text-transform: uppercase;

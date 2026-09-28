@@ -69,7 +69,7 @@
     box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
     color: var(--text-cyan-bright);
     padding: 10px 14px;
-    font-size: 16px;
+    font-size: var(--font-size-body);
   }
   .drag-handle {
     display: flex;
@@ -101,20 +101,20 @@
   .info-text { min-width: 0; }
   .name {
     font-family: var(--font-display);
-    font-size: 14px;
+    font-size: var(--font-size-heading);
     color: #fff;
     margin-bottom: 8px;
     line-height: 1.5;
   }
   .row { color: var(--text-cyan); }
   .row.coords { margin-top: 6px; color: #668; }
-  .row.muted { color: #6a8a99; font-size: 15px; }
+  .row.muted { color: #6a8a99; font-size: var(--font-size-body-secondary); }
   .encounters { margin-top: 8px; }
-  .encounters summary { cursor: pointer; color: var(--text-amber); font-size: 15px; }
-  .encounter-row { font-size: 14px; margin-top: 4px; }
+  .encounters summary { cursor: pointer; color: var(--text-amber); font-size: var(--font-size-body-secondary); }
+  .encounter-row { font-size: var(--font-size-small); margin-top: 4px; }
   .commodities-btn {
     margin-top: 10px;
-    font-size: 16px;
+    font-size: var(--font-size-button-large);
     border-color: var(--border-cyan);
     color: var(--text-cyan-bright);
     text-transform: uppercase;

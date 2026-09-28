@@ -124,14 +124,14 @@
   }
   .hud-main {
     font-family: var(--font-display);
-    font-size: 16px;
+    font-size: var(--font-size-title);
     color: var(--grid-red);
     letter-spacing: 1px;
     text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
   }
   .hud-main .sub {
     font-family: var(--font-body);
-    font-size: 16px;
+    font-size: var(--font-size-body);
     color: var(--text-cyan);
     margin-top: 6px;
     text-shadow: 0 0 5px rgba(100, 200, 255, 0.5);

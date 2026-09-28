@@ -64,11 +64,11 @@
     box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
     color: var(--text-cyan-bright);
     padding: 10px 14px;
-    font-size: 16px;
+    font-size: var(--font-size-body);
   }
   .title {
     font-family: var(--font-display);
-    font-size: 14px;
+    font-size: var(--font-size-heading);
     color: #fff;
     margin-bottom: 8px;
     line-height: 1.7;
@@ -88,11 +88,11 @@
     flex: 0 0 auto;
   }
   .row { color: var(--text-cyan); }
-  .row.muted { color: #6a8a99; font-size: 15px; margin-top: 4px; }
-  .row.warning { color: var(--text-amber); font-size: 15px; margin-top: 4px; }
+  .row.muted { color: #6a8a99; font-size: var(--font-size-body-secondary); margin-top: 4px; }
+  .row.warning { color: var(--text-amber); font-size: var(--font-size-body-secondary); margin-top: 4px; }
   .clear-btn {
     margin-top: 10px;
-    font-size: 13px;
+    font-size: var(--font-size-button-small);
     padding: 6px 10px;
   }
 </style>
