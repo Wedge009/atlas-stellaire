@@ -190,7 +190,8 @@
   .quadrant-label {
     fill: var(--text-amber);
     font-family: var(--font-display);
-    font-size: 3.5px;
+    font-size: 4px;
+    font-weight: bold;
     letter-spacing: 0.3px;
     text-transform: uppercase;
   }
@@ -203,7 +204,7 @@
   .dot-base { fill: #33cc55; }
   .label {
     fill: #a8e8ff;
-    font-size: 3px;
+    font-size: 2px;
     paint-order: stroke;
     stroke: #000;
     stroke-width: 0.4px;

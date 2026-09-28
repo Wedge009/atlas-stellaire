@@ -69,7 +69,7 @@
   .info {
     position: relative;
     min-width: 240px;
-    max-width: 340px;
+    max-width: 360px;
     background: var(--panel-bg);
     border: 1px solid var(--border-cyan);
     box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
@@ -86,7 +86,7 @@
     height: 24px;
     line-height: 1;
     padding: 0;
-    font-size: 16px;
+    font-size: 32px;
     background: transparent;
     border: none;
     box-shadow: none;
@@ -97,12 +97,16 @@
   .name {
     font-family: var(--font-display);
     font-size: var(--font-size-heading);
+    font-weight: bold;
     color: #fff;
     line-height: 1.5;
     padding-right: 20px;
   }
-  .row { color: var(--text-cyan); }
-  .row.muted { color: #6a8a99; font-size: var(--font-size-body-secondary); }
+  .row {
+    color: var(--text-cyan);
+    font-size: var(--font-size-body-secondary);
+  }
+  .row.muted { color: #6a8a99; }
   .row.hazard { color: var(--text-amber); font-size: var(--font-size-body-secondary); margin-top: 8px; }
   .section { margin-top: 8px; }
   .section-title {
@@ -116,7 +120,8 @@
   .goto-btn {
     margin-top: 12px;
     width: 100%;
-    font-size: var(--font-size-button-small);
+    font-size: var(--font-size-button);
+    font-weight: bold;
     padding: 6px 10px;
     text-transform: uppercase;
   }

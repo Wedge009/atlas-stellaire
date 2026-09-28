@@ -1,4 +1,5 @@
 <script>
+  import { slide } from 'svelte/transition';
   import { sidebarCollapsed, collapsedQuadrants } from '../stores/ui.js';
   import { t, availableLocales } from '../i18n/index.js';
 
@@ -36,64 +37,72 @@
     {$sidebarCollapsed ? '»' : '«'}
   </button>
   {#if !$sidebarCollapsed}
-    <div class="nav-header">
-      <div class="title">{$t('common.geminiSector')}</div>
-      <button
-        type="button"
-        class="sector-map-btn caps"
-        class:active={topView === 'sector'}
-        onclick={() => onShowSector?.()}
-      >
-        {$t('nav.sectorMap')}
-      </button>
-      <button type="button" class="plot-journey-btn caps" onclick={() => onPlotJourney?.()}>
-        {$t('common.plotJourney')}
-      </button>
-      <button type="button" class="search-btn caps" onclick={() => onSearch?.()}>
-        {$t('common.search')}
-      </button>
-    </div>
-    <div class="nav-scroll">
-      {#each data.quadrants as quadrant (quadrant.id)}
-        <div class="quadrant">
+    <!-- The sidebar sizes to its content, and CSS can't transition to or
+         from an auto width, so Svelte's slide measures and animates it.
+         .nav-content keeps its natural width while .nav-clip clips it, so
+         the text doesn't re-wrap mid-slide. -->
+    <div class="nav-clip" transition:slide={{ axis: 'x', duration: 150 }}>
+      <div class="nav-content">
+        <div class="nav-header">
+          <div class="title">{$t('common.geminiSector')}</div>
           <button
             type="button"
-            class="quadrant-name"
-            aria-expanded={!$collapsedQuadrants.includes(quadrant.id)}
-            aria-label={$collapsedQuadrants.includes(quadrant.id)
-              ? $t('nav.expandQuadrant', { name: quadrant.name })
-              : $t('nav.collapseQuadrant', { name: quadrant.name })}
-            onclick={() => toggleQuadrant(quadrant.id)}
+            class="sector-map-btn caps"
+            class:active={topView === 'sector'}
+            onclick={() => onShowSector?.()}
           >
-            <span class="quadrant-arrow">{$collapsedQuadrants.includes(quadrant.id) ? '▸' : '▾'}</span>
-            {quadrant.name}
+            {$t('nav.sectorMap')}
           </button>
-          {#if !$collapsedQuadrants.includes(quadrant.id)}
-            <ul>
-              {#each quadrant.systems as system (system.id)}
-                <li>
-                  <button
-                    type="button"
-                    class="system-btn"
-                    class:active={system.id === selectedSystemId}
-                    onclick={() => selectSystem(system.id)}
-                  >
-                    {system.name}
-                  </button>
-                </li>
-              {/each}
-            </ul>
-          {/if}
+          <button type="button" class="plot-journey-btn caps" onclick={() => onPlotJourney?.()}>
+            {$t('common.plotJourney')}
+          </button>
+          <button type="button" class="search-btn caps" onclick={() => onSearch?.()}>
+            {$t('common.search')}
+          </button>
         </div>
-      {/each}
-    </div>
-    <div class="nav-footer">
-      {#if availableLocales.length > 1}
-        <button type="button" class="language-btn caps" onclick={() => onShowLanguage?.()}>
-          {$t('common.language')}
-        </button>
-      {/if}
-      <button type="button" class="about-btn caps" onclick={() => onShowAbout?.()}>{$t('common.about')}</button>
+        <div class="nav-scroll">
+          {#each data.quadrants as quadrant (quadrant.id)}
+            <div class="quadrant">
+              <button
+                type="button"
+                class="quadrant-name"
+                aria-expanded={!$collapsedQuadrants.includes(quadrant.id)}
+                aria-label={$collapsedQuadrants.includes(quadrant.id)
+                  ? $t('nav.expandQuadrant', { name: quadrant.name })
+                  : $t('nav.collapseQuadrant', { name: quadrant.name })}
+                onclick={() => toggleQuadrant(quadrant.id)}
+              >
+                <span class="quadrant-arrow">{$collapsedQuadrants.includes(quadrant.id) ? '▸' : '▾'}</span>
+                {quadrant.name}
+              </button>
+              {#if !$collapsedQuadrants.includes(quadrant.id)}
+                <ul>
+                  {#each quadrant.systems as system (system.id)}
+                    <li>
+                      <button
+                        type="button"
+                        class="system-btn"
+                        class:active={system.id === selectedSystemId}
+                        onclick={() => selectSystem(system.id)}
+                      >
+                        {system.name}
+                      </button>
+                    </li>
+                  {/each}
+                </ul>
+              {/if}
+            </div>
+          {/each}
+        </div>
+        <div class="nav-footer">
+          {#if availableLocales.length > 1}
+            <button type="button" class="language-btn caps" onclick={() => onShowLanguage?.()}>
+              {$t('common.language')}
+            </button>
+          {/if}
+          <button type="button" class="about-btn caps" onclick={() => onShowAbout?.()}>{$t('common.about')}</button>
+        </div>
+      </div>
     </div>
   {/if}
 </nav>
@@ -101,18 +110,21 @@
 <style>
   .sector-nav {
     position: relative;
-    width: 220px;
     flex: 0 0 auto;
     height: 100%;
     display: flex;
-    flex-direction: column;
     background: #05080a;
-    border-right: 1px solid #331515;
-    transition: width 0.15s ease;
   }
-  .sector-nav.collapsed {
-    width: 0;
-    border-right: none;
+  .nav-clip {
+    display: flex;
+    overflow: hidden;
+    border-right: 1px solid #331515;
+  }
+  .nav-content {
+    width: max-content;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
   }
   .collapse-toggle {
     position: absolute;
@@ -120,8 +132,8 @@
     right: -1px;
     transform: translate(100%, -50%);
     z-index: 30;
+    font-weight: bold;
     padding: 6px 8px;
-    font-size: 12px;
     line-height: 1;
   }
   .collapsed .collapse-toggle {
@@ -155,11 +167,19 @@
   .title {
     font-family: var(--font-display);
     font-size: var(--font-size-heading);
+    font-weight: bold;
     color: var(--grid-red);
     text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
     margin-bottom: 14px;
     letter-spacing: 1px;
     text-transform: uppercase;
+  }
+  .sector-map-btn,
+  .plot-journey-btn,
+  .search-btn,
+  .language-btn,
+  .about-btn {
+    font-weight: bold;
   }
   .sector-map-btn {
     display: block;
@@ -204,7 +224,7 @@
     width: 100%;
     text-align: left;
     font-family: var(--font-body);
-    font-size: var(--font-size-body);
+    font-size: var(--font-size-button-small);
     padding: 4px 8px;
     background: transparent;
     border: 1px solid transparent;
