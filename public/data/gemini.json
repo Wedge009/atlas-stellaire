@@ -1834,20 +1834,7 @@
                   ]
                 },
                 {
-                  "chance": 20,
-                  "ships": [
-                    {
-                      "ship": "TALMIL",
-                      "count": 2
-                    },
-                    {
-                      "ship": "GOTHRI",
-                      "count": 2
-                    }
-                  ]
-                },
-                {
-                  "chance": 20,
+                  "chance": 40,
                   "ships": [
                     {
                       "ship": "TALMIL",
@@ -3897,16 +3884,7 @@
               "dest": "delta",
               "encounters": [
                 {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 40,
+                  "chance": 70,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -3962,16 +3940,7 @@
               "dest": null,
               "encounters": [
                 {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 70,
+                  "chance": 100,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -3994,25 +3963,7 @@
               "dest": "gamma",
               "encounters": [
                 {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 40,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
+                  "chance": 100,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -4091,25 +4042,7 @@
               },
               "encounters": [
                 {
-                  "chance": 50,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 40,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 10,
+                  "chance": 100,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -4132,25 +4065,7 @@
               "dest": "sherwood",
               "encounters": [
                 {
-                  "chance": 50,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 3
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 3
-                    }
-                  ]
-                },
-                {
-                  "chance": 20,
+                  "chance": 100,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -4764,25 +4679,7 @@
               "dest": "beta",
               "encounters": [
                 {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 40,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
+                  "chance": 100,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -4881,34 +4778,7 @@
               "dest": "valhalla",
               "encounters": [
                 {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALRELIG",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALRELIG",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALRELIG",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 10,
+                  "chance": 100,
                   "ships": [
                     {
                       "ship": "TALRELIG",
@@ -4938,7 +4808,7 @@
               },
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 70,
                   "ships": [
                     {
                       "ship": "TALRELIG",
@@ -4952,24 +4822,6 @@
                     {
                       "ship": "TALRELIG",
                       "count": 3
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALRELIG",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 10,
-                  "ships": [
-                    {
-                      "ship": "TALRELIG",
-                      "count": 4
                     }
                   ]
                 }
@@ -5185,16 +5037,7 @@
                   ]
                 },
                 {
-                  "chance": 25,
-                  "ships": [
-                    {
-                      "ship": "GOTHRI",
-                      "count": 3
-                    }
-                  ]
-                },
-                {
-                  "chance": 25,
+                  "chance": 50,
                   "ships": [
                     {
                       "ship": "GOTHRI",
@@ -5515,7 +5358,7 @@
               "dest": "telar",
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 60,
                   "ships": [
                     {
                       "ship": "TALMIL",
@@ -5524,19 +5367,6 @@
                     {
                       "ship": "TALPIR",
                       "count": 3
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 3
-                    },
-                    {
-                      "ship": "TALMIL",
-                      "count": 1
                     }
                   ]
                 },
@@ -5592,25 +5422,7 @@
               },
               "encounters": [
                 {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
+                  "chance": 90,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -5646,16 +5458,7 @@
               "dest": "nexus",
               "encounters": [
                 {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
+                  "chance": 60,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -5827,7 +5630,7 @@
               "dest": "17-ar",
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 50,
                   "ships": [
                     {
                       "ship": "TALMIL",
@@ -5845,15 +5648,6 @@
                     {
                       "ship": "TALPIR",
                       "count": 2
-                    }
-                  ]
-                },
-                {
-                  "chance": 20,
-                  "ships": [
-                    {
-                      "ship": "TALMIL",
-                      "count": 4
                     }
                   ]
                 },
@@ -5943,7 +5737,7 @@
               "dest": "sherwood",
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 60,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -5956,15 +5750,6 @@
                   "ships": [
                     {
                       "ship": "TALMIL",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
                       "count": 4
                     }
                   ]
@@ -6574,16 +6359,7 @@
               },
               "encounters": [
                 {
-                  "chance": 1,
-                  "ships": [
-                    {
-                      "ship": "DEMON",
-                      "count": 6
-                    }
-                  ]
-                },
-                {
-                  "chance": 99,
+                  "chance": 100,
                   "ships": [
                     {
                       "ship": "DEMON",
@@ -6893,16 +6669,7 @@
                   ]
                 },
                 {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
+                  "chance": 60,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -7349,7 +7116,7 @@
                   ]
                 },
                 {
-                  "chance": 30,
+                  "chance": 50,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -7363,15 +7130,6 @@
                     {
                       "ship": "TALRELIG",
                       "count": 3
-                    }
-                  ]
-                },
-                {
-                  "chance": 20,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
                     }
                   ]
                 }
@@ -7438,34 +7196,7 @@
               },
               "encounters": [
                 {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 10,
+                  "chance": 100,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -7488,7 +7219,7 @@
               "dest": null,
               "encounters": [
                 {
-                  "chance": 40,
+                  "chance": 65,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -7508,15 +7239,6 @@
                       "count": 3
                     }
                   ]
-                },
-                {
-                  "chance": 25,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
                 }
               ]
             },
@@ -7533,16 +7255,7 @@
               "dest": null,
               "encounters": [
                 {
-                  "chance": 50,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 40,
+                  "chance": 90,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -7574,7 +7287,7 @@
               "dest": "pollux",
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 60,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -7588,15 +7301,6 @@
                     {
                       "ship": "TALPIR",
                       "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 2
                     }
                   ]
                 },
@@ -7669,16 +7373,7 @@
               "dest": "capella",
               "encounters": [
                 {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 2
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
+                  "chance": 60,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -7731,16 +7426,7 @@
               "dest": "17-ar",
               "encounters": [
                 {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
+                  "chance": 60,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -7792,34 +7478,7 @@
               },
               "encounters": [
                 {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 10,
+                  "chance": 100,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -7842,25 +7501,7 @@
               "dest": "valhalla",
               "encounters": [
                 {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
+                  "chance": 90,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -7892,7 +7533,7 @@
               "dest": "j900",
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 60,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -7906,15 +7547,6 @@
                     {
                       "ship": "TALPIR",
                       "count": 3
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 4
                     }
                   ]
                 },
@@ -8451,7 +8083,7 @@
               "dest": "palan",
               "encounters": [
                 {
-                  "chance": 25,
+                  "chance": 35,
                   "ships": [
                     {
                       "ship": "TALRELIG",
@@ -8482,15 +8114,6 @@
                   "ships": [
                     {
                       "ship": "GOTHRI",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 10,
-                  "ships": [
-                    {
-                      "ship": "TALRELIG",
                       "count": 4
                     }
                   ]
@@ -9332,7 +8955,7 @@
               "dest": "pender-s-star",
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 60,
                   "ships": [
                     {
                       "ship": "DRAYMAN",
@@ -9346,15 +8969,6 @@
                     {
                       "ship": "TALPIR",
                       "count": 3
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "DRAYMAN",
-                      "count": 2
                     }
                   ]
                 },
@@ -9613,7 +9227,7 @@
               "dest": "junction",
               "encounters": [
                 {
-                  "chance": 15,
+                  "chance": 40,
                   "ships": [
                     {
                       "ship": "TALMIL",
@@ -9635,19 +9249,6 @@
                     {
                       "ship": "DRAYMAN",
                       "count": 1
-                    }
-                  ]
-                },
-                {
-                  "chance": 25,
-                  "ships": [
-                    {
-                      "ship": "TALMIL",
-                      "count": 2
-                    },
-                    {
-                      "ship": "TALPIR",
-                      "count": 2
                     }
                   ]
                 },
@@ -9829,16 +9430,7 @@
               },
               "encounters": [
                 {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "TALPIR",
-                      "count": 3
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
+                  "chance": 60,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -13056,16 +12648,7 @@
                   ]
                 },
                 {
-                  "chance": 25,
-                  "ships": [
-                    {
-                      "ship": "GLADIUS",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 25,
+                  "chance": 50,
                   "ships": [
                     {
                       "ship": "GLADIUS",
@@ -13192,7 +12775,7 @@
                   ]
                 },
                 {
-                  "chance": 20,
+                  "chance": 40,
                   "ships": [
                     {
                       "ship": "GLADIUS",
@@ -13210,15 +12793,6 @@
                     {
                       "ship": "TALPIR",
                       "count": 2
-                    }
-                  ]
-                },
-                {
-                  "chance": 20,
-                  "ships": [
-                    {
-                      "ship": "GLADIUS",
-                      "count": 4
                     }
                   ]
                 },
@@ -13457,7 +13031,7 @@
               "dest": "new-constantinople",
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 40,
                   "ships": [
                     {
                       "ship": "GLADIUS",
@@ -13492,19 +13066,6 @@
                     {
                       "ship": "TALPIR",
                       "count": 3
-                    }
-                  ]
-                },
-                {
-                  "chance": 10,
-                  "ships": [
-                    {
-                      "ship": "GLADIUS",
-                      "count": 2
-                    },
-                    {
-                      "ship": "TALPIR",
-                      "count": 2
                     }
                   ]
                 }
@@ -13874,16 +13435,7 @@
               "dest": "newcastle",
               "encounters": [
                 {
-                  "chance": 25,
-                  "ships": [
-                    {
-                      "ship": "TALMIL",
-                      "count": 3
-                    }
-                  ]
-                },
-                {
-                  "chance": 25,
+                  "chance": 50,
                   "ships": [
                     {
                       "ship": "TALMIL",
@@ -14623,16 +14175,7 @@
               },
               "encounters": [
                 {
-                  "chance": 25,
-                  "ships": [
-                    {
-                      "ship": "GLADIUS",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 25,
+                  "chance": 50,
                   "ships": [
                     {
                       "ship": "GLADIUS",

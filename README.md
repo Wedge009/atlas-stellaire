@@ -86,9 +86,12 @@ it contains.
   own weight is its cumulative value minus the previous one seen in that
   zone. Populates each nav point's `encounters` array in `gemini.json`
   (omitted where a nav point has no encounter table) as `{chance, ships:
-  [{ship, count}]}`; `ship` is the internal sprite filename as-is (eg
+  [{ship, count}]}`; `ship` is the internal sprite file name as-is (eg
   `STILETTO`, or `TALPIR`/`TALMIL`/`TALRELIG` for the three Talon faction
   skins) — `src/lib/utils/ships.js` maps these to friendly display names.
+  The game data also distinguishes groups by pilot skill and personality,
+  which isn't modelled here, so groups with an identical ship composition at
+  the same nav point are merged into one with their chances summed.
 - `TABLE.DAT` — a 69×69 (Privateer) shortest-path matrix between all systems,
   used to independently verify the jump network.
 - `FORM GLXY` > `FORM SUNS` (nested inside the same per-system block) — fixed
