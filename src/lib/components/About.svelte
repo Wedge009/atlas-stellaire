@@ -31,6 +31,6 @@
     color: var(--text-amber);
   }
   .row a:hover {
-    color: #fff;
+    color: var(--text-emphasis);
   }
 </style>

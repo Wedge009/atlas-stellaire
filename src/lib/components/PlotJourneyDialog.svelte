@@ -102,7 +102,7 @@
       <span>{$t('plotJourneyDialog.landForFuel')}</span>
     </label>
 
-    <button type="submit" class="plot-btn primary caps">{$t('plotJourneyDialog.plotRoute')}</button>
+    <button type="submit" class="plot-btn confirm caps">{$t('plotJourneyDialog.plotRoute')}</button>
   </form>
 </Dialog>
 
@@ -134,28 +134,6 @@
     flex-direction: row;
     align-items: center;
     gap: 8px;
-  }
-  input[type='checkbox'] {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    margin: 0;
-    background: rgba(5, 10, 15, 0.85);
-    border: 1px solid var(--border-cyan);
-    display: inline-grid;
-    place-content: center;
-    cursor: pointer;
-  }
-  input[type='checkbox']::before {
-    content: '';
-    width: 12px;
-    height: 12px;
-    background: var(--border-cyan);
-    transform: scale(0);
-    transition: transform 0.1s ease-in-out;
-  }
-  input[type='checkbox']:checked::before {
-    transform: scale(1);
   }
   .plot-btn {
     margin-top: 8px;

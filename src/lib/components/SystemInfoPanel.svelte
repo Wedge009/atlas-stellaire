@@ -26,7 +26,7 @@
   let hasAsteroids = $derived(system.navPoints.some((np) => np.asteroids));
 </script>
 
-<div class="info" style={maxHeight ? `max-height: ${maxHeight}px` : ''}>
+<div class="info panel-frame info-panel" style={maxHeight ? `max-height: ${maxHeight}px` : ''}>
   <button type="button" class="close-btn" aria-label={$t('common.close')} onclick={onClose}>&times;</button>
   <div class="name">{system.name}</div>
   <div class="row muted">{$t('common.quadrant', { name: system.quadrantName })}</div>
@@ -59,23 +59,16 @@
   {/if}
 
   {#if hasAsteroids}
-    <div class="row hazard">{$t('systemInfoPanel.hazardsAsteroids')}</div>
+    <div class="row warning">{$t('systemInfoPanel.hazardsAsteroids')}</div>
   {/if}
 
-  <button type="button" class="goto-btn" onclick={onGoTo}>{$t('systemInfoPanel.goToSystem')}</button>
+  <button type="button" class="goto-btn primary" onclick={onGoTo}>{$t('systemInfoPanel.goToSystem')}</button>
 </div>
 
 <style>
   .info {
     position: relative;
-    min-width: 240px;
     max-width: 360px;
-    background: var(--panel-bg);
-    border: 1px solid var(--border-cyan);
-    box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
-    color: var(--text-cyan-bright);
-    padding: 10px 14px;
-    font-size: var(--font-size-body);
     overflow-y: auto;
   }
   .close-btn {
@@ -87,27 +80,19 @@
     line-height: 1;
     padding: 0;
     font-size: 32px;
-    background: transparent;
-    border: none;
-    box-shadow: none;
     color: var(--text-cyan);
     cursor: pointer;
   }
-  .close-btn:hover { color: #fff; }
+  .close-btn:hover { color: var(--text-emphasis); }
   .name {
-    font-family: var(--font-display);
-    font-size: var(--font-size-heading);
     font-weight: bold;
-    color: #fff;
-    line-height: 1.5;
     padding-right: 20px;
+    margin-bottom: 0;
   }
   .row {
-    color: var(--text-cyan);
     font-size: var(--font-size-body-secondary);
   }
-  .row.muted { color: #6a8a99; }
-  .row.hazard { color: var(--text-amber); font-size: var(--font-size-body-secondary); margin-top: 8px; }
+  .row.warning { margin-top: 8px; }
   .section { margin-top: 8px; }
   .section-title {
     font-family: var(--font-display);

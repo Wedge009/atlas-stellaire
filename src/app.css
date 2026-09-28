@@ -4,16 +4,52 @@
 :root {
   --bg: #000000;
   --panel-bg: rgba(5, 10, 15, 0.85);
+  --control-bg: rgba(5, 10, 15, 0.85);  /* buttons, selects, text fields, checkboxes */
   --grid-red: #ff5555;
+
+  /* Text */
   --text-cyan: #7fd6ff;
   --text-cyan-bright: #b6f0ff;
   --text-amber: #ffcc55;
+  --text-red: #ff9999;                  /* primary button labels */
+  --text-emphasis: #fff;                /* names, hovered/selected items */
+  --text-muted: #6a8a99;                /* secondary rows in the info panels */
+  --text-label: #5a8a99;                /* small group labels (legend, settings) */
+  --text-dim: #668;                     /* coordinates, hints */
+
+  /* Borders */
   --border-cyan: #4dd2ff;
   --border-red: #ff5555;
+  --border-dim: #2a4a55;                /* legend/settings frames and dividers */
+  --border-red-dim: #331515;            /* side-bar edges and dividers */
+
+  /* Glows (box-shadow / text-shadow values) */
+  --glow-panel: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
+  --glow-red: 0 0 8px rgba(255, 60, 60, 0.3);
+  --glow-cyan: 0 0 8px rgba(60, 180, 255, 0.3);
+  --text-glow-red: 0 0 6px rgba(255, 60, 60, 0.6);
+  --text-glow-cyan: 0 0 6px rgba(100, 200, 255, 0.5);
+
+  /* Cyan highlight backgrounds, weakest to strongest */
+  --highlight-hover: rgba(77, 200, 255, 0.08);    /* hovered list item */
+  --highlight-mark: rgba(77, 200, 255, 0.12);     /* marked rows, notes */
+  --highlight-active: rgba(77, 200, 255, 0.15);   /* active/hovered buttons, dividers */
+  --highlight-selected: rgba(77, 200, 255, 0.18); /* selected list item or tab */
+  --highlight-red: rgba(255, 60, 60, 0.15);       /* hovered primary button */
+
+  /* Legend swatches, reused for the matching map features */
   --sw-base: #33cc55;
   --sw-jump: #4dc8ff;
   --sw-point: #e0d060;
   --sw-unknown: #6a7a85;
+  --sw-asteroid: #a0522d;
+
+  /* Maps */
+  --map-grid: #551515;
+  --map-label: #a8e8ff;
+  --map-select: #fff;
+  --map-route: var(--text-amber);
+
   --font-display: 'Kode Mono', monospace;
   --font-body: 'Kode Mono', monospace;
 
@@ -52,36 +88,104 @@ html, body {
   height: 100%;
 }
 
+/* Buttons start plain - just the font and spacing. The bordered looks are
+   opt-in classes: .primary (red) for most actions, .confirm (cyan) for a
+   dialogue's submit button. */
 button {
   font-family: var(--font-display);
-  background: rgba(5, 10, 15, 0.85);
-  border: 1px solid var(--border-red);
-  color: #ff9999;
   font-size: var(--font-size-button);
   font-weight: bold;
+  background: transparent;
+  border: none;
+  color: inherit;
   padding: 10px 14px;
   cursor: pointer;
   letter-spacing: 1px;
-  box-shadow: 0 0 8px rgba(255, 60, 60, 0.3);
 }
-button:hover { background: rgba(255, 60, 60, 0.15); color: #fff; }
 button:disabled { opacity: 0.5; cursor: default; }
-button.active { background: rgba(77, 200, 255, 0.15); border-color: var(--border-cyan); color: var(--text-cyan-bright); }
-/* Cyan call-to-action button, e.g. a dialogue's submit button */
 button.primary {
-  border-color: var(--border-cyan);
-  color: var(--text-cyan-bright);
-  box-shadow: 0 0 8px rgba(60, 180, 255, 0.3);
+  background: var(--control-bg);
+  border: 1px solid var(--border-red);
+  color: var(--text-red);
+  box-shadow: var(--glow-red);
 }
-button.primary:hover:not(:disabled) { background: rgba(77, 200, 255, 0.15); color: #fff; }
+button.primary:hover { background: var(--highlight-red); color: var(--text-emphasis); }
+button.confirm {
+  background: var(--control-bg);
+  border: 1px solid var(--border-cyan);
+  color: var(--text-cyan-bright);
+  box-shadow: var(--glow-cyan);
+}
+button.confirm:hover:not(:disabled) { background: var(--highlight-active); color: var(--text-emphasis); }
+/* Listed with :hover so a hovered active button stays cyan rather than
+   taking .primary's red hover */
+button.active, button.active:hover { background: var(--highlight-active); border-color: var(--border-cyan); color: var(--text-cyan-bright); }
 
 select {
   font-family: var(--font-body);
   font-size: var(--font-size-body);
-  background: rgba(5, 10, 15, 0.85);
+  background: var(--control-bg);
   border: 1px solid var(--border-cyan);
   color: var(--text-cyan-bright);
   padding: 6px 8px;
+}
+
+/* Square tick box: an empty cyan-edged square, filled when checked */
+input[type='checkbox'] {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  background: var(--control-bg);
+  border: 1px solid var(--border-cyan);
+  display: inline-grid;
+  place-content: center;
+  cursor: pointer;
+}
+input[type='checkbox']::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background: var(--border-cyan);
+  transform: scale(0);
+  transition: transform 0.1s ease-in-out;
+}
+input[type='checkbox']:checked::before {
+  transform: scale(1);
+}
+
+/* The glowing cyan frame shared by dialogues and the floating info panels */
+.panel-frame {
+  background: var(--panel-bg);
+  border: 1px solid var(--border-cyan);
+  box-shadow: var(--glow-panel);
+  color: var(--text-cyan-bright);
+}
+
+/* Common base for the floating info panels (nav point, system, journey).
+   :where() gives the rules inside it zero specificity, so any rule in a
+   panel's own component always overrides them. */
+.info-panel {
+  min-width: 240px;
+  max-width: 340px;
+  padding: 10px 14px;
+  font-size: var(--font-size-body);
+}
+:where(.info-panel .name) {
+  font-family: var(--font-display);
+  font-size: var(--font-size-heading);
+  color: var(--text-emphasis);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+:where(.info-panel .row) { color: var(--text-cyan); }
+:where(.info-panel .row.muted) {
+  color: var(--text-muted);
+  font-size: var(--font-size-body-secondary);
+}
+:where(.info-panel .row.warning) {
+  color: var(--text-amber);
+  font-size: var(--font-size-body-secondary);
 }
 
 /* Presentational capitals for the display font, applied at the call site

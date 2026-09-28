@@ -246,7 +246,7 @@
        width tracks the legend's collapsed/expanded state (see legend-collapsed
        below) so it isn't permanently sized for the wider, expanded case. */
     max-width: calc(100% - 230px);
-    color: #668;
+    color: var(--text-dim);
     font-size: var(--font-size-body);
     pointer-events: none;
   }
@@ -265,7 +265,7 @@
     font-family: var(--font-display);
     color: var(--text-cyan);
     letter-spacing: 1px;
-    text-shadow: 0 0 6px rgba(100, 200, 255, 0.5);
+    text-shadow: var(--text-glow-cyan);
     text-transform: uppercase;
     pointer-events: none;
   }

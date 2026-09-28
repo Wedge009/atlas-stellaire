@@ -16,7 +16,7 @@
 {#if $selectedNode}
   {@const d = $selectedNode}
   {@const icon = d.baseName ? baseTypeIcon(d.baseType) : null}
-  <div class="info">
+  <div class="info panel-frame info-panel">
     <div class="drag-handle" aria-hidden="true"><span class="grip"></span></div>
     <div class="info-body">
       {#if icon}
@@ -48,7 +48,7 @@
           </details>
         {/if}
         {#if d.baseName && hasCommodityData(d.baseType)}
-          <button type="button" class="commodities-btn" onclick={() => (showCommodities = true)}>
+          <button type="button" class="commodities-btn primary" onclick={() => (showCommodities = true)}>
             {$t('common.commodities')}
           </button>
         {/if}
@@ -61,16 +61,6 @@
 {/if}
 
 <style>
-  .info {
-    min-width: 240px;
-    max-width: 340px;
-    background: var(--panel-bg);
-    border: 1px solid var(--border-cyan);
-    box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
-    color: var(--text-cyan-bright);
-    padding: 10px 14px;
-    font-size: var(--font-size-body);
-  }
   .drag-handle {
     display: flex;
     justify-content: center;
@@ -99,28 +89,13 @@
     image-rendering: pixelated;
   }
   .info-text { min-width: 0; }
-  .name {
-    font-family: var(--font-display);
-    font-size: var(--font-size-heading);
-    color: #fff;
-    margin-bottom: 8px;
-    line-height: 1.5;
-  }
-  .row { color: var(--text-cyan); }
-  .row.coords { margin-top: 6px; color: #668; }
-  .row.muted { color: #6a8a99; font-size: var(--font-size-body-secondary); }
+  .row.coords { margin-top: 6px; color: var(--text-dim); }
   .encounters { margin-top: 8px; }
   .encounters summary { cursor: pointer; color: var(--text-amber); font-size: var(--font-size-body-secondary); }
   .encounter-row { font-size: var(--font-size-small); margin-top: 4px; }
   .commodities-btn {
     margin-top: 10px;
     font-size: var(--font-size-button-large);
-    border-color: var(--border-cyan);
-    color: var(--text-cyan-bright);
     text-transform: uppercase;
-  }
-  .commodities-btn:hover {
-    background: rgba(77, 200, 255, 0.15);
-    color: #fff;
   }
 </style>

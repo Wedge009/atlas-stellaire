@@ -105,19 +105,17 @@
     flex: 1;
     font-family: var(--font-body);
     font-size: var(--font-size-body-secondary);
-    background: transparent;
     border: 1px solid var(--border-cyan);
     color: var(--text-cyan);
-    box-shadow: none;
     padding: 6px 8px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-  .tab:hover { color: #fff; }
+  .tab:hover { color: var(--text-emphasis); }
   .tab.active {
-    color: #fff;
-    background: rgba(77, 200, 255, 0.18);
-    box-shadow: 0 0 8px rgba(60, 180, 255, 0.3);
+    color: var(--text-emphasis);
+    background: var(--highlight-selected);
+    box-shadow: var(--glow-cyan);
   }
   .table-wrap {
     max-height: 360px;
@@ -147,13 +145,10 @@
     text-align: left;
     color: var(--text-amber);
     font-weight: normal;
-    background: transparent;
-    border: none;
-    box-shadow: none;
     padding: 6px 10px;
     cursor: pointer;
   }
-  .sort-btn:hover { color: #fff; }
+  .sort-btn:hover { color: var(--text-emphasis); }
   .col-price .sort-btn { text-align: right; }
   .sort-arrow {
     display: inline-block;
@@ -168,15 +163,15 @@
     border-bottom: 1px solid rgba(77, 200, 255, 0.1);
   }
   tr.sold td {
-    color: #fff;
-    background: rgba(77, 200, 255, 0.12);
+    color: var(--text-emphasis);
+    background: var(--highlight-mark);
   }
   .col-price { text-align: right; }
   .legend {
     margin-top: 10px;
     padding: 4px 8px;
     font-size: var(--font-size-caption);
-    color: #fff;
-    background: rgba(77, 200, 255, 0.12);
+    color: var(--text-emphasis);
+    background: var(--highlight-mark);
   }
 </style>

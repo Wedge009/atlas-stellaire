@@ -181,10 +181,10 @@
     width: 100%;
     height: 100%;
     display: block;
-    background: #000;
+    background: var(--bg);
     font-family: var(--font-body);
   }
-  .grid { stroke: #551515; stroke-width: 0.15; }
+  .grid { stroke: var(--map-grid); stroke-width: 0.15; }
   .quadrant-border { stroke: var(--grid-red); stroke-width: 0.5; opacity: 0.8; }
   .sector-border { stroke: var(--grid-red); stroke-width: 0.5; opacity: 0.8; }
   .quadrant-label {
@@ -195,23 +195,23 @@
     letter-spacing: 0.3px;
     text-transform: uppercase;
   }
-  .edge { stroke: #4dc8ff; stroke-width: 0.15; opacity: 0.45; }
-  .route-line { stroke: #ffcc55; stroke-width: 0.6; stroke-dasharray: 1.5 1; opacity: 0.9; }
-  .route-arrowhead { fill: #ffcc55; }
-  .refuel-ring { fill: none; stroke: #33cc55; stroke-width: 0.4; stroke-dasharray: 0.8 0.6; }
+  .edge { stroke: var(--sw-jump); stroke-width: 0.15; opacity: 0.45; }
+  .route-line { stroke: var(--map-route); stroke-width: 0.6; stroke-dasharray: 1.5 1; opacity: 0.9; }
+  .route-arrowhead { fill: var(--map-route); }
+  .refuel-ring { fill: none; stroke: var(--sw-base); stroke-width: 0.4; stroke-dasharray: 0.8 0.6; }
   .node-marker, .node-label { cursor: pointer; }
-  .dot { fill: #33cc55; stroke: none; }
-  .dot-base { fill: #33cc55; }
+  .dot { fill: var(--sw-base); stroke: none; }
+  .dot-base { fill: var(--sw-base); }
   .label {
-    fill: #a8e8ff;
+    fill: var(--map-label);
     font-size: 2px;
     paint-order: stroke;
-    stroke: #000;
+    stroke: var(--bg);
     stroke-width: 0.4px;
   }
   .select-ring {
     fill: none;
-    stroke: #fff;
+    stroke: var(--map-select);
     stroke-width: 0.3;
   }
   .info-float {

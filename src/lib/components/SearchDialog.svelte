@@ -83,7 +83,7 @@
     </ul>
   {/if}
 
-  <button type="button" class="go-btn primary caps" disabled={activeIndex < 0} onclick={() => goTo(results[activeIndex])}>
+  <button type="button" class="go-btn confirm caps" disabled={activeIndex < 0} onclick={() => goTo(results[activeIndex])}>
     {$t('searchDialog.goTo')}
   </button>
 </Dialog>
@@ -94,7 +94,7 @@
     width: 100%;
     font-family: var(--font-body);
     font-size: var(--font-size-body);
-    background: rgba(5, 10, 15, 0.85);
+    background: var(--control-bg);
     border: 1px solid var(--border-cyan);
     color: var(--text-cyan-bright);
     padding: 8px 10px;
@@ -118,19 +118,16 @@
     width: 100%;
     text-align: left;
     font-family: var(--font-body);
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid rgba(77, 200, 255, 0.15);
-    box-shadow: none;
+    border-bottom: 1px solid var(--highlight-active);
     color: var(--text-cyan);
     padding: 6px 10px;
     cursor: pointer;
   }
   li:last-child .result-item { border-bottom: none; }
-  .result-item:hover { color: #fff; background: rgba(77, 200, 255, 0.08); }
+  .result-item:hover { color: var(--text-emphasis); background: var(--highlight-hover); }
   .result-item.active {
-    color: #fff;
-    background: rgba(77, 200, 255, 0.18);
+    color: var(--text-emphasis);
+    background: var(--highlight-selected);
   }
   .result-name { font-size: var(--font-size-body); }
   .result-subtitle {

@@ -47,7 +47,7 @@
       <div class="hud-controls-row">
         <button
           type="button"
-          class="caps"
+          class="primary caps"
           disabled={animationLocked}
           title={animationLocked ? $t('settings.waitForAnimation') : undefined}
           onclick={() => ($viewMode = $viewMode === '2d' ? '3d' : '2d')}
@@ -60,7 +60,7 @@
         <div class="hud-controls-row">
           <button
             type="button"
-            class="caps"
+            class="primary caps"
             onclick={() => navMap3D?.toggleAlign()}
             disabled={mapAnimating || !!mapFocused}
             title={mapFocused ? $t('navMap3D.exitBaseFocusFirst') : undefined}
@@ -127,14 +127,14 @@
     font-size: var(--font-size-title);
     color: var(--grid-red);
     letter-spacing: 1px;
-    text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
+    text-shadow: var(--text-glow-red);
   }
   .hud-main .sub {
     font-family: var(--font-body);
     font-size: var(--font-size-body);
     color: var(--text-cyan);
     margin-top: 6px;
-    text-shadow: 0 0 5px rgba(100, 200, 255, 0.5);
+    text-shadow: var(--text-glow-cyan);
   }
   .hud-controls {
     display: flex;

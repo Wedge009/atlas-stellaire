@@ -10,7 +10,7 @@
     <span class="legend-title">{$t('legend.title')}</span>
     <button
       type="button"
-      class="collapse-toggle"
+      class="collapse-toggle primary"
       aria-label={$legendCollapsed ? $t('legend.expand') : $t('legend.collapse')}
       onclick={() => ($legendCollapsed = !$legendCollapsed)}
     >
@@ -33,7 +33,7 @@
     color: var(--text-cyan);
     font-size: var(--font-size-body);
     background: var(--panel-bg);
-    border: 1px solid #2a4a55;
+    border: 1px solid var(--border-dim);
     padding: 8px 12px;
     line-height: 1.6;
   }
@@ -48,7 +48,7 @@
   .legend-title {
     font-size: var(--font-size-caption);
     letter-spacing: 1px;
-    color: #5a8a99;
+    color: var(--text-label);
     text-transform: uppercase;
   }
   .collapse-toggle {
@@ -68,5 +68,5 @@
   .sw-jump { background: var(--sw-jump); border-radius: 50%; }
   .sw-point { background: var(--sw-point); border-radius: 50%; }
   .sw-unknown { background: var(--sw-unknown); border-radius: 50%; opacity: 0.6; }
-  .sw-asteroid { background: transparent; border: 1px dashed #a0522d; border-radius: 50%; }
+  .sw-asteroid { background: transparent; border: 1px dashed var(--sw-asteroid); border-radius: 50%; }
 </style>

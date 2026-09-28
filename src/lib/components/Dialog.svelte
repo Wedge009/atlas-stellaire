@@ -32,7 +32,7 @@
 
 <div class="backdrop" role="presentation" onclick={onBackdropClick}>
   <div
-    class="dialog"
+    class="dialog panel-frame"
     class:fill-width={fillWidth}
     style:min-width={minWidth}
     style:max-width={maxWidth}
@@ -40,7 +40,7 @@
     aria-modal="true"
     aria-label={label}
   >
-    <button type="button" class="close-btn" onclick={onClose} aria-label={$t('common.close')}>&times;</button>
+    <button type="button" class="close-btn primary" onclick={onClose} aria-label={$t('common.close')}>&times;</button>
     <div class="title">{title}</div>
     {@render children?.()}
   </div>
@@ -58,10 +58,6 @@
   }
   .dialog {
     position: relative;
-    background: var(--panel-bg);
-    border: 1px solid var(--border-cyan);
-    box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
-    color: var(--text-cyan-bright);
     padding: 20px 24px;
   }
   .dialog.fill-width {
@@ -72,7 +68,7 @@
     font-size: var(--font-size-heading);
     font-weight: bold;
     color: var(--grid-red);
-    text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
+    text-shadow: var(--text-glow-red);
     letter-spacing: 1px;
     margin-bottom: 16px;
     text-transform: uppercase;

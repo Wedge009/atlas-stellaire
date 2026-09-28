@@ -30,8 +30,8 @@
 </script>
 
 {#if $journey}
-  <div class="journey-panel">
-    <div class="title">
+  <div class="journey-panel panel-frame info-panel">
+    <div class="title name">
       <span class="caps">{$t('journeyPanel.titlePrefix')}</span> {fromName}
       <span class="dest">
         <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -51,26 +51,12 @@
     {#each $journey.warnings as w}
       <div class="row warning">{$t(w.messageKey, w.params)}</div>
     {/each}
-    <button type="button" class="clear-btn caps" onclick={clearJourney}>{$t('journeyPanel.clearJourney')}</button>
+    <button type="button" class="clear-btn primary caps" onclick={clearJourney}>{$t('journeyPanel.clearJourney')}</button>
   </div>
 {/if}
 
 <style>
-  .journey-panel {
-    min-width: 240px;
-    max-width: 340px;
-    background: var(--panel-bg);
-    border: 1px solid var(--border-cyan);
-    box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
-    color: var(--text-cyan-bright);
-    padding: 10px 14px;
-    font-size: var(--font-size-body);
-  }
   .title {
-    font-family: var(--font-display);
-    font-size: var(--font-size-heading);
-    color: #fff;
-    margin-bottom: 8px;
     line-height: 1.7;
     cursor: grab;
     touch-action: none;
@@ -87,9 +73,8 @@
     color: var(--text-amber);
     flex: 0 0 auto;
   }
-  .row { color: var(--text-cyan); }
-  .row.muted { color: #6a8a99; font-size: var(--font-size-body-secondary); margin-top: 4px; }
-  .row.warning { color: var(--text-amber); font-size: var(--font-size-body-secondary); margin-top: 4px; }
+  .row.muted { margin-top: 4px; }
+  .row.warning { margin-top: 4px; }
   .clear-btn {
     margin-top: 10px;
     font-size: var(--font-size-button-small);

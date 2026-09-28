@@ -37,7 +37,7 @@
 <div class="settings" bind:this={root}>
   <button
     type="button"
-    class="caps"
+    class="primary caps"
     class:active={open}
     disabled={locked}
     title={locked ? $t('settings.waitForAnimation') : undefined}
@@ -116,7 +116,7 @@
     top: calc(100% + 6px);
     right: 0;
     background: var(--panel-bg);
-    border: 1px solid #2a4a55;
+    border: 1px solid var(--border-dim);
     padding: 10px 14px;
     display: flex;
     flex-direction: column;
@@ -129,9 +129,9 @@
   .group-label {
     font-size: var(--font-size-caption);
     letter-spacing: 1px;
-    color: #5a8a99;
+    color: var(--text-label);
     text-transform: uppercase;
-    border-bottom: 1px solid #2a4a55;
+    border-bottom: 1px solid var(--border-dim);
     padding-bottom: 3px;
     margin-top: 4px;
   }
@@ -152,30 +152,8 @@
     justify-content: space-between;
     gap: 12px;
   }
-  input[type='checkbox'] {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    margin: 0;
-    background: rgba(5, 10, 15, 0.85);
-    border: 1px solid var(--border-cyan);
-    display: inline-grid;
-    place-content: center;
-    cursor: pointer;
-  }
-  input[type='checkbox']::before {
-    content: '';
-    width: 12px;
-    height: 12px;
-    background: var(--border-cyan);
-    transform: scale(0);
-    transition: transform 0.1s ease-in-out;
-  }
-  input[type='checkbox']:checked::before {
-    transform: scale(1);
-  }
   select {
-    background: rgba(5, 10, 15, 0.85);
+    background: var(--control-bg);
     color: var(--text-cyan);
     border: 1px solid var(--border-cyan);
     font: inherit;

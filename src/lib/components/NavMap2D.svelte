@@ -132,35 +132,35 @@
     width: 100%;
     height: 100%;
     display: block;
-    background: #000;
+    background: var(--bg);
     font-family: var(--font-body);
   }
-  .grid { stroke: #551515; stroke-width: 0.15; }
+  .grid { stroke: var(--map-grid); stroke-width: 0.15; }
   .grid-center { stroke: #992222; stroke-width: 0.2; }
   .node-marker, .node-label { cursor: pointer; }
-  .route-line { stroke: #ffcc55; stroke-width: 0.5; stroke-dasharray: 1.2 0.8; opacity: 0.9; }
-  .route-arrowhead { fill: #ffcc55; }
+  .route-line { stroke: var(--map-route); stroke-width: 0.5; stroke-dasharray: 1.2 0.8; opacity: 0.9; }
+  .route-arrowhead { fill: var(--map-route); }
   .label {
-    fill: #a8e8ff;
+    fill: var(--map-label);
     font-size: 2.5px;
     paint-order: stroke;
-    stroke: #000;
+    stroke: var(--bg);
     stroke-width: 0.4px;
   }
   .select-ring {
     fill: none;
-    stroke: #fff;
+    stroke: var(--map-select);
     stroke-width: 0.3;
   }
   .asteroid-ring {
     fill: none;
-    stroke: #a0522d;
+    stroke: var(--sw-asteroid);
     stroke-width: 0.25;
     stroke-dasharray: 0.6 0.5;
   }
   .route-ring {
     fill: none;
-    stroke: #ffcc55;
+    stroke: var(--map-route);
     stroke-width: 0.35;
     stroke-dasharray: 1 0.6;
   }

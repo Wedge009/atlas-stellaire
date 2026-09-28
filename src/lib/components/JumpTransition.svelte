@@ -48,7 +48,7 @@
     position: absolute;
     inset: 0;
     z-index: 50;
-    background: #000;
+    background: var(--bg);
     opacity: 0;
     transition: opacity var(--fade-ms) linear;
     pointer-events: none;

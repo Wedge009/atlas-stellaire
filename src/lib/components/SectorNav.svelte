@@ -30,7 +30,7 @@
 <nav class="sector-nav" class:collapsed={$sidebarCollapsed}>
   <button
     type="button"
-    class="collapse-toggle"
+    class="collapse-toggle primary"
     aria-label={$sidebarCollapsed ? $t('nav.expandSidebar') : $t('nav.collapseSidebar')}
     onclick={() => ($sidebarCollapsed = !$sidebarCollapsed)}
   >
@@ -47,16 +47,16 @@
           <div class="title">{$t('common.geminiSector')}</div>
           <button
             type="button"
-            class="sector-map-btn caps"
+            class="sector-map-btn primary caps"
             class:active={topView === 'sector'}
             onclick={() => onShowSector?.()}
           >
             {$t('nav.sectorMap')}
           </button>
-          <button type="button" class="plot-journey-btn caps" onclick={() => onPlotJourney?.()}>
+          <button type="button" class="plot-journey-btn primary caps" onclick={() => onPlotJourney?.()}>
             {$t('common.plotJourney')}
           </button>
-          <button type="button" class="search-btn caps" onclick={() => onSearch?.()}>
+          <button type="button" class="search-btn primary caps" onclick={() => onSearch?.()}>
             {$t('common.search')}
           </button>
         </div>
@@ -96,11 +96,11 @@
         </div>
         <div class="nav-footer">
           {#if availableLocales.length > 1}
-            <button type="button" class="language-btn caps" onclick={() => onShowLanguage?.()}>
+            <button type="button" class="language-btn primary caps" onclick={() => onShowLanguage?.()}>
               {$t('common.language')}
             </button>
           {/if}
-          <button type="button" class="about-btn caps" onclick={() => onShowAbout?.()}>{$t('common.about')}</button>
+          <button type="button" class="about-btn primary caps" onclick={() => onShowAbout?.()}>{$t('common.about')}</button>
         </div>
       </div>
     </div>
@@ -118,7 +118,7 @@
   .nav-clip {
     display: flex;
     overflow: hidden;
-    border-right: 1px solid #331515;
+    border-right: 1px solid var(--border-red-dim);
   }
   .nav-content {
     width: max-content;
@@ -152,7 +152,7 @@
   .nav-footer {
     flex: 0 0 auto;
     padding: 10px;
-    border-top: 1px solid #331515;
+    border-top: 1px solid var(--border-red-dim);
   }
   .language-btn {
     display: block;
@@ -168,7 +168,7 @@
     font-size: var(--font-size-heading);
     font-weight: bold;
     color: var(--grid-red);
-    text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
+    text-shadow: var(--text-glow-red);
     margin-bottom: 14px;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -196,15 +196,12 @@
     font-family: var(--font-display);
     font-size: var(--font-size-heading);
     color: var(--text-amber);
-    background: transparent;
-    border: none;
-    box-shadow: none;
     padding: 0;
     margin-bottom: 6px;
     letter-spacing: 1px;
     cursor: pointer;
   }
-  .quadrant-name:hover { color: #fff; }
+  .quadrant-name:hover { color: var(--text-emphasis); }
   .quadrant-arrow {
     display: inline-block;
     width: 1em;
@@ -218,16 +215,14 @@
     font-family: var(--font-body);
     font-size: var(--font-size-button-small);
     padding: 4px 8px;
-    background: transparent;
     border: 1px solid transparent;
     color: var(--text-cyan);
-    box-shadow: none;
     cursor: pointer;
   }
-  .system-btn:hover { color: #fff; background: rgba(77, 200, 255, 0.08); }
+  .system-btn:hover { color: var(--text-emphasis); background: var(--highlight-hover); }
   .system-btn.active {
-    color: #fff;
-    background: rgba(77, 200, 255, 0.18);
+    color: var(--text-emphasis);
+    background: var(--highlight-selected);
     border-color: var(--border-cyan);
   }
 </style>
