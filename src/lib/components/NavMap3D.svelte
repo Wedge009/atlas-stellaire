@@ -13,7 +13,7 @@
   } from '../stores/settings.js';
   import { encounterRolls } from '../stores/encounters.js';
   import { routeThroughSystem } from '../utils/journey.js';
-  import { vt323Ready } from '../utils/fonts.js';
+  import { fontReady } from '../utils/fonts.js';
   import { t } from '../i18n/index.js';
 
   let {
@@ -66,14 +66,14 @@
     // sector map and 2D view never need it, and it only pays for itself once
     // a system's 3D view actually mounts.
     (async () => {
-      // vt323Ready was run at application boot (see utils/fonts.js), not
+      // fontReady was run at application boot (see utils/fonts.js), not
       // here, so it has the maximum head start - but this scene's canvas-
       // baked labels still need to wait on it before creating the scene,
       // since the bake is one-time and never corrects itself if the font
       // arrives late.
       const [{ createNavScene }] = await Promise.all([
         import('../three/createNavScene.js'),
-        vt323Ready,
+        fontReady,
       ]);
       if (destroyed) return;
       scene = createNavScene({

@@ -75,7 +75,7 @@
     box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
     color: var(--text-cyan-bright);
     padding: 10px 14px;
-    font-size: 18px;
+    font-size: 16px;
     overflow-y: auto;
   }
   .close-btn {
@@ -96,7 +96,7 @@
   .close-btn:hover { color: #fff; }
   .name {
     font-family: var(--font-display);
-    font-size: 12px;
+    font-size: 14px;
     color: #fff;
     line-height: 1.5;
     padding-right: 20px;
@@ -107,7 +107,7 @@
   .section { margin-top: 8px; }
   .section-title {
     font-family: var(--font-display);
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.5px;
     color: var(--text-amber);
     margin-bottom: 3px;
@@ -116,7 +116,7 @@
   .goto-btn {
     margin-top: 12px;
     width: 100%;
-    font-size: 11px;
+    font-size: 13px;
     padding: 6px 10px;
     text-transform: uppercase;
   }

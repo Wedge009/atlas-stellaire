@@ -64,11 +64,11 @@
     box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
     color: var(--text-cyan-bright);
     padding: 10px 14px;
-    font-size: 18px;
+    font-size: 16px;
   }
   .title {
     font-family: var(--font-display);
-    font-size: 12px;
+    font-size: 14px;
     color: #fff;
     margin-bottom: 8px;
     line-height: 1.7;
@@ -92,7 +92,7 @@
   .row.warning { color: var(--text-amber); font-size: 15px; margin-top: 4px; }
   .clear-btn {
     margin-top: 10px;
-    font-size: 11px;
+    font-size: 13px;
     padding: 6px 10px;
   }
 </style>

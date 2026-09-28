@@ -5,6 +5,7 @@ import { skyboxSpriteTexture } from '../utils/skyboxSprites.js';
 import { createEncounterSprites3d } from './encounterSprites3d.js';
 import { createEncounterModels3d } from './encounterModels3d.js';
 import { getGLTFLoader } from './gltfLoader.js';
+import { LABEL_FONT_FAMILY } from '../utils/fonts.js';
 
 // The ambient ship-encounter ships can render as either the original 2D
 // sprites or real orbiting 3D ship models (the 'Ship encounters' setting) -
@@ -180,11 +181,11 @@ function makeLabel(text, color) {
   const cnv = document.createElement('canvas');
   const ctx = cnv.getContext('2d');
   const fontSize = 34;
-  ctx.font = `${fontSize}px 'VT323', monospace`;
+  ctx.font = `${fontSize}px '${LABEL_FONT_FAMILY}', monospace`;
   const w = Math.max(160, ctx.measureText(text).width + 24);
   cnv.width = w;
   cnv.height = fontSize + 16;
-  ctx.font = `${fontSize}px 'VT323', monospace`;
+  ctx.font = `${fontSize}px '${LABEL_FONT_FAMILY}', monospace`;
   ctx.fillStyle = color;
   ctx.shadowColor = color;
   ctx.shadowBlur = 8;

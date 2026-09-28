@@ -4,4 +4,7 @@
 // three/createNavScene.js). A canvas bake is one-shot and never corrects
 // itself if the font arrives late, so NavMap3D awaits this promise before
 // creating its scene.
-export const vt323Ready = document.fonts.load("34px 'VT323'").catch(() => {});
+// three/createNavScene.js bakes its labels with LABEL_FONT_FAMILY, so sharing
+// it here keeps the font waited on and the font baked from being the same one.
+export const LABEL_FONT_FAMILY = 'Kode Mono';
+export const fontReady = document.fonts.load(`34px '${LABEL_FONT_FAMILY}'`).catch(() => {});

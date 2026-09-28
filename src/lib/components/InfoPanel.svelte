@@ -69,7 +69,7 @@
     box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
     color: var(--text-cyan-bright);
     padding: 10px 14px;
-    font-size: 18px;
+    font-size: 16px;
   }
   .drag-handle {
     display: flex;
@@ -101,7 +101,7 @@
   .info-text { min-width: 0; }
   .name {
     font-family: var(--font-display);
-    font-size: 12px;
+    font-size: 14px;
     color: #fff;
     margin-bottom: 8px;
     line-height: 1.5;
@@ -114,7 +114,7 @@
   .encounter-row { font-size: 14px; margin-top: 4px; }
   .commodities-btn {
     margin-top: 10px;
-    font-size: 14px;
+    font-size: 16px;
     border-color: var(--border-cyan);
     color: var(--text-cyan-bright);
     text-transform: uppercase;

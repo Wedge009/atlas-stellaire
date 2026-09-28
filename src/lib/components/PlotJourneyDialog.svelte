@@ -133,7 +133,7 @@
   .dialog {
     position: relative;
     min-width: 320px;
-    max-width: 460px;
+    max-width: 640px;
     background: var(--panel-bg);
     border: 1px solid var(--border-cyan);
     box-shadow: 0 0 10px rgba(60, 180, 255, 0.35), inset 0 0 20px rgba(0, 60, 90, 0.3);
@@ -142,7 +142,7 @@
   }
   .title {
     font-family: var(--font-display);
-    font-size: 14px;
+    font-size: 16px;
     color: var(--grid-red);
     text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
     letter-spacing: 1px;
@@ -163,7 +163,7 @@
   }
   .field-row {
     display: grid;
-    grid-template-columns: 1fr 1.4fr;
+    grid-template-columns: 1fr 1.25fr;
     column-gap: 10px;
     row-gap: 4px;
   }

@@ -124,7 +124,7 @@
   }
   .hud-main {
     font-family: var(--font-display);
-    font-size: 14px;
+    font-size: 16px;
     color: var(--grid-red);
     letter-spacing: 1px;
     text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);

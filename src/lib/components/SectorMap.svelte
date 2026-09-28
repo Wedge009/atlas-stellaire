@@ -190,7 +190,7 @@
   .quadrant-label {
     fill: var(--text-amber);
     font-family: var(--font-display);
-    font-size: 3px;
+    font-size: 3.5px;
     letter-spacing: 0.3px;
     text-transform: uppercase;
   }

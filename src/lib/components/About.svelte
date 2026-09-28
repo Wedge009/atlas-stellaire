@@ -50,7 +50,7 @@
   }
   .title {
     font-family: var(--font-display);
-    font-size: 14px;
+    font-size: 16px;
     color: var(--grid-red);
     text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
     letter-spacing: 1px;
@@ -59,7 +59,7 @@
   }
   .summary {
     color: var(--text-cyan);
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.4;
     margin: 0 0 14px;
   }

@@ -122,7 +122,7 @@
   }
   .title {
     font-family: var(--font-display);
-    font-size: 14px;
+    font-size: 16px;
     color: var(--grid-red);
     text-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
     letter-spacing: 1px;
@@ -133,7 +133,7 @@
     display: block;
     width: 100%;
     font-family: var(--font-body);
-    font-size: 18px;
+    font-size: 16px;
     background: rgba(5, 10, 15, 0.85);
     border: 1px solid var(--border-cyan);
     color: var(--text-cyan-bright);
@@ -172,7 +172,7 @@
     color: #fff;
     background: rgba(77, 200, 255, 0.18);
   }
-  .result-name { font-size: 17px; }
+  .result-name { font-size: 16px; }
   .result-subtitle {
     font-size: 13px;
     color: var(--text-amber);
