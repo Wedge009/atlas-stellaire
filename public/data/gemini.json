@@ -411,7 +411,36 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 40,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 4
+                    }
+                  ]
+                },
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 3
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -1226,7 +1255,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "MERCHANT",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "GOTHRI",
+                      "count": 4
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -2478,7 +2527,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TUG",
+                      "count": 1
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "DRAYMAN",
+                      "count": 1
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -2763,7 +2832,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "GLADIUS",
+                      "count": 4
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "DEMON",
+                      "count": 3
+                    }
+                  ]
+                }
+              ]
             },
             {
               "id": "hidden-2",
@@ -2775,7 +2864,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 60,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 2
+                    }
+                  ]
+                },
+                {
+                  "chance": 40,
+                  "ships": [
+                    {
+                      "ship": "DEMON",
+                      "count": 3
+                    }
+                  ]
+                }
+              ]
             },
             {
               "id": "hidden-3",
@@ -2787,7 +2896,27 @@
               "asteroids": true,
               "type": "point",
               "description": "Asteroid Field",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 60,
+                  "ships": [
+                    {
+                      "ship": "GLADIUS",
+                      "count": 2
+                    }
+                  ]
+                },
+                {
+                  "chance": 40,
+                  "ships": [
+                    {
+                      "ship": "TUG",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
             },
             {
               "id": "hidden-4",
@@ -2935,7 +3064,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 70,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 4
+                    }
+                  ]
+                },
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 4
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -3664,7 +3813,27 @@
               "asteroids": true,
               "type": "point",
               "description": "Asteroid Field",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "GOTHRI",
+                      "count": 2
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "DRALTHI",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
@@ -3849,7 +4018,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 2
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "DEMON",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
             },
             {
               "id": "hidden-2",
@@ -3861,7 +4050,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "STILETTO",
+                      "count": 2
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -4294,7 +4503,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 60,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 4
+                    }
+                  ]
+                },
+                {
+                  "chance": 40,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 4
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -4445,7 +4674,27 @@
               "asteroids": true,
               "type": "point",
               "description": "Asteroid Field",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 2
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -4707,36 +4956,7 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "gamma",
-              "encounters": [
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "GOTHRI",
-                      "count": 2
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "DRALTHI",
-                      "count": 3
-                    }
-                  ]
-                },
-                {
-                  "chance": 40,
-                  "ships": [
-                    {
-                      "ship": "GOTHRI",
-                      "count": 4
-                    }
-                  ]
-                }
-              ]
+              "dest": "gamma"
             },
             {
               "id": "hidden",
@@ -5228,7 +5448,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "DRALTHI",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "GOTHRI",
+                      "count": 3
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -8130,7 +8370,36 @@
               "asteroids": true,
               "type": "point",
               "description": "Asteroid Field",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 2
+                    }
+                  ]
+                },
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 40,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
@@ -8606,7 +8875,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 4
+                    }
+                  ]
+                },
+                {
+                  "chance": 70,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 3
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -9190,7 +9479,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TUG",
+                      "count": 1
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "skybox": [
@@ -9530,7 +9839,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "MERCHANT",
+                      "count": 2
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -9740,7 +10069,27 @@
               "asteroids": true,
               "type": "point",
               "description": "Asteroid Field",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 2
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "DEMON",
+                      "count": 1
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -10984,7 +11333,18 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 100,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "skybox": [
@@ -11469,7 +11829,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 3
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "skybox": [
@@ -11928,7 +12308,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 3
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "skybox": [
@@ -12452,7 +12852,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 4
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 3
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "skybox": [
@@ -12604,7 +13024,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 3
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "skybox": [
@@ -12821,7 +13261,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 3
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "skybox": [
@@ -14425,7 +14885,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 3
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "skybox": [
@@ -14666,7 +15146,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 3
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "skybox": [
@@ -14831,7 +15331,27 @@
               "asteroids": false,
               "type": "point",
               "description": "Ambush Point",
-              "dest": null
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 50,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 3
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "skybox": [
