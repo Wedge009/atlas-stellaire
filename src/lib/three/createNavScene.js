@@ -180,7 +180,7 @@ function easeInOutCubic(t) {
 function makeLabel(text, color) {
   const cnv = document.createElement('canvas');
   const ctx = cnv.getContext('2d');
-  const fontSize = 16;
+  const fontSize = 128;
   ctx.font = `${fontSize}px '${LABEL_FONT_FAMILY}', monospace`;
   const w = Math.max(160, ctx.measureText(text).width + 24);
   cnv.width = w;
@@ -194,7 +194,7 @@ function makeLabel(text, color) {
   const tex = new THREE.CanvasTexture(cnv);
   const mat = new THREE.SpriteMaterial({ map: tex, depthTest: true, depthWrite: false, transparent: true });
   const sprite = new THREE.Sprite(mat);
-  sprite.scale.set((cnv.width / cnv.height) * 4, 4, 1);
+  sprite.scale.set((cnv.width / cnv.height) * 2, 2, 1);
   return sprite;
 }
 
