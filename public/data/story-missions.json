@@ -1,0 +1,3414 @@
+{
+  "_source": "Decoded from DATA/MISSIONS/S*M*.IFF in Priv.tre and RF.tre by extract_story_missions.py. Encounters are fixed (not random) and apply only while the mission is active; ships with a trigger are spawned later by the mission script, the rest are present on arrival.",
+  "missions": [
+    {
+      "id": "s0ma",
+      "game": "PRIV",
+      "series": "Sandoval",
+      "mission": "A",
+      "briefing": "Travel to Liverpool refinery in Newcastle system and deliver Sandoval's cargo of Iron.\n\nPays 15000 credits.\n\nReturn to New Detroit to receive pay in exchange for alien artifact.",
+      "pay": 0,
+      "encounters": []
+    },
+    {
+      "id": "s1ma",
+      "game": "PRIV",
+      "series": "Tayla",
+      "mission": "A",
+      "briefing": "Take cargo of plastics from New Detroit to Oakham pirate base in the Pentonville system.\n\nPays 10000 credits.\n\nTayla will be waiting for you there to give you your next mission.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "pentonville",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "pentonville",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "pentonville",
+          "navPoint": "hidden",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s1mb",
+      "game": "PRIV",
+      "series": "Tayla",
+      "mission": "B",
+      "briefing": "Take cargo of Brilliance to Hector mining base in the Troy system.\n\nPays 15000 credits.\n\nReturn to Oakham pirate base in the Pentonville system for Tayla's next mission.",
+      "pay": 15000,
+      "encounters": [
+        {
+          "system": "troy",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "troy",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "pentonville",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "pentonville",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "pentonville",
+          "navPoint": "hidden",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s1mc",
+      "game": "PRIV",
+      "series": "Tayla",
+      "mission": "C",
+      "briefing": "Take a shipment of Brilliance to base New Constantinople.\n\nPays 20000 credits.\n\nReturn to Oakham pirate base in the Pentonville system for Tayla's next mission.",
+      "pay": 20000,
+      "encounters": [
+        {
+          "system": "junction",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "STILETTO",
+              "count": 3
+            },
+            {
+              "ship": "BRDSWORD",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "xxn-1927",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "STILETTO",
+              "count": 3
+            },
+            {
+              "ship": "BRDSWORD",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "new-detroit",
+          "navPoint": "nav-9",
+          "ships": [
+            {
+              "ship": "STILETTO",
+              "count": 3
+            },
+            {
+              "ship": "BRDSWORD",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "newcastle",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "STILETTO",
+              "count": 3
+            },
+            {
+              "ship": "BRDSWORD",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "pentonville",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "pentonville",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "pentonville",
+          "navPoint": "hidden",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s1md",
+      "game": "PRIV",
+      "series": "Tayla",
+      "mission": "D",
+      "briefing": "Take a second shipment of Brilliance to base New Constantinople.\n\nPays 10000 credits.\n\nReturn to Oakham pirate base for payment and more information about the artifact.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "pentonville",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            },
+            {
+              "ship": "FIGHTER",
+              "count": 1,
+              "character": "riord1"
+            }
+          ]
+        },
+        {
+          "system": "pentonville",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 5,
+              "trigger": {
+                "event": "enterNav",
+                "ifAlive": "riord1"
+              }
+            },
+            {
+              "ship": "FIGHTER",
+              "count": 1,
+              "character": "riord1",
+              "trigger": {
+                "event": "enterNav",
+                "ifAlive": "riord1"
+              }
+            },
+            {
+              "ship": "TALPIR",
+              "count": 2,
+              "trigger": {
+                "event": "enterNav",
+                "ifDestroyed": "riord1"
+              }
+            }
+          ]
+        },
+        {
+          "system": "pentonville",
+          "navPoint": "hidden",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s2ma",
+      "game": "PRIV",
+      "series": "Lynch",
+      "mission": "A",
+      "briefing": "Deliver a message to Seelig from Roman Lynch. Seelig is at Nav 2 in the Pentonville system.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "pentonville",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 1,
+              "character": "SEELIG"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s2mb",
+      "game": "PRIV",
+      "series": "Lynch",
+      "mission": "B",
+      "briefing": "Take a shipment of weapons from base New Constantinople to Rikel system, Siva agricultural planet for Lynch.\n\nPays 15000 credits.",
+      "pay": 15000,
+      "encounters": [
+        {
+          "system": "rikel",
+          "navPoint": "nav-1",
+          "firstOf": [
+            {
+              "system": "rikel",
+              "navPoint": "nav-1"
+            },
+            {
+              "system": "rikel",
+              "navPoint": "nav-2"
+            },
+            {
+              "system": "rikel",
+              "navPoint": "nav-5"
+            }
+          ],
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 2
+            },
+            {
+              "ship": "DEMON",
+              "count": 1,
+              "character": "KROIZ"
+            }
+          ]
+        },
+        {
+          "system": "rikel",
+          "navPoint": "nav-2",
+          "firstOf": [
+            {
+              "system": "rikel",
+              "navPoint": "nav-1"
+            },
+            {
+              "system": "rikel",
+              "navPoint": "nav-2"
+            },
+            {
+              "system": "rikel",
+              "navPoint": "nav-5"
+            }
+          ],
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 2
+            },
+            {
+              "ship": "DEMON",
+              "count": 1,
+              "character": "KROIZ"
+            }
+          ]
+        },
+        {
+          "system": "rikel",
+          "navPoint": "nav-5",
+          "firstOf": [
+            {
+              "system": "rikel",
+              "navPoint": "nav-1"
+            },
+            {
+              "system": "rikel",
+              "navPoint": "nav-2"
+            },
+            {
+              "system": "rikel",
+              "navPoint": "nav-5"
+            }
+          ],
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 2
+            },
+            {
+              "ship": "DEMON",
+              "count": 1,
+              "character": "KROIZ"
+            }
+          ]
+        },
+        {
+          "system": "rikel",
+          "navPoint": "hidden-1",
+          "firstOf": [
+            {
+              "system": "rikel",
+              "navPoint": "hidden-1"
+            },
+            {
+              "system": "rikel",
+              "navPoint": "hidden-2"
+            },
+            {
+              "system": "rikel",
+              "navPoint": "hidden-3"
+            }
+          ],
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 5,
+              "trigger": {
+                "event": "enterNav",
+                "ifAlive": "KROIZ"
+              }
+            },
+            {
+              "ship": "DEMON",
+              "count": 1,
+              "character": "KROIZ",
+              "trigger": {
+                "event": "enterNav",
+                "ifAlive": "KROIZ"
+              }
+            }
+          ]
+        },
+        {
+          "system": "rikel",
+          "navPoint": "hidden-2",
+          "firstOf": [
+            {
+              "system": "rikel",
+              "navPoint": "hidden-1"
+            },
+            {
+              "system": "rikel",
+              "navPoint": "hidden-2"
+            },
+            {
+              "system": "rikel",
+              "navPoint": "hidden-3"
+            }
+          ],
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 5,
+              "trigger": {
+                "event": "enterNav",
+                "ifAlive": "KROIZ"
+              }
+            },
+            {
+              "ship": "DEMON",
+              "count": 1,
+              "character": "KROIZ",
+              "trigger": {
+                "event": "enterNav",
+                "ifAlive": "KROIZ"
+              }
+            }
+          ]
+        },
+        {
+          "system": "rikel",
+          "navPoint": "hidden-3",
+          "firstOf": [
+            {
+              "system": "rikel",
+              "navPoint": "hidden-1"
+            },
+            {
+              "system": "rikel",
+              "navPoint": "hidden-2"
+            },
+            {
+              "system": "rikel",
+              "navPoint": "hidden-3"
+            }
+          ],
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 5,
+              "trigger": {
+                "event": "enterNav",
+                "ifAlive": "KROIZ"
+              }
+            },
+            {
+              "ship": "DEMON",
+              "count": 1,
+              "character": "KROIZ",
+              "trigger": {
+                "event": "enterNav",
+                "ifAlive": "KROIZ"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s2mc",
+      "game": "PRIV",
+      "series": "Lynch",
+      "mission": "C",
+      "briefing": "Smuggle Lynch's cousin Regis from New Constantinople to Castor system, Romulous mining base.\n\nPays 30000 credits.",
+      "pay": 30000,
+      "encounters": [
+        {
+          "system": "castor",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "STILETTO",
+              "count": 3,
+              "character": "confed1"
+            },
+            {
+              "ship": "STILETTO",
+              "count": 4,
+              "character": "confed1",
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s2md",
+      "game": "PRIV",
+      "series": "Lynch",
+      "mission": "D",
+      "briefing": "Collect Lynch's researcher from New Castle system, Liverpool refinery base.\n\nPays 30000 credits.",
+      "pay": 0,
+      "encounters": [
+        {
+          "system": "newcastle",
+          "navPoint": "nav-1",
+          "firstOf": [
+            {
+              "system": "newcastle",
+              "navPoint": "nav-1"
+            },
+            {
+              "system": "newcastle",
+              "navPoint": "nav-2"
+            },
+            {
+              "system": "newcastle",
+              "navPoint": "nav-4"
+            },
+            {
+              "system": "newcastle",
+              "navPoint": "nav-5"
+            }
+          ],
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            },
+            {
+              "ship": "TALPIR",
+              "count": 1,
+              "character": "miggs"
+            }
+          ]
+        },
+        {
+          "system": "newcastle",
+          "navPoint": "nav-2",
+          "firstOf": [
+            {
+              "system": "newcastle",
+              "navPoint": "nav-1"
+            },
+            {
+              "system": "newcastle",
+              "navPoint": "nav-2"
+            },
+            {
+              "system": "newcastle",
+              "navPoint": "nav-4"
+            },
+            {
+              "system": "newcastle",
+              "navPoint": "nav-5"
+            }
+          ],
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            },
+            {
+              "ship": "TALPIR",
+              "count": 1,
+              "character": "miggs"
+            }
+          ]
+        },
+        {
+          "system": "newcastle",
+          "navPoint": "nav-4",
+          "firstOf": [
+            {
+              "system": "newcastle",
+              "navPoint": "nav-1"
+            },
+            {
+              "system": "newcastle",
+              "navPoint": "nav-2"
+            },
+            {
+              "system": "newcastle",
+              "navPoint": "nav-4"
+            },
+            {
+              "system": "newcastle",
+              "navPoint": "nav-5"
+            }
+          ],
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            },
+            {
+              "ship": "TALPIR",
+              "count": 1,
+              "character": "miggs"
+            }
+          ]
+        },
+        {
+          "system": "newcastle",
+          "navPoint": "nav-5",
+          "firstOf": [
+            {
+              "system": "newcastle",
+              "navPoint": "nav-1"
+            },
+            {
+              "system": "newcastle",
+              "navPoint": "nav-2"
+            },
+            {
+              "system": "newcastle",
+              "navPoint": "nav-4"
+            },
+            {
+              "system": "newcastle",
+              "navPoint": "nav-5"
+            }
+          ],
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            },
+            {
+              "ship": "TALPIR",
+              "count": 1,
+              "character": "miggs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s3ma",
+      "game": "PRIV",
+      "series": "Masterson",
+      "mission": "A",
+      "briefing": "Meet with Hunter Toth's ship at Oxford system, Nav 3 and escort him safely to Oxford.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "oxford",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "DRAYMAN",
+              "count": 1,
+              "character": "toth"
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 2,
+              "character": "RETRO1",
+              "trigger": {
+                "character": "toth",
+                "event": "dialogueEnd"
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "character": "RETRO1",
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s3mb",
+      "game": "PRIV",
+      "series": "Masterson",
+      "mission": "B",
+      "briefing": "Search Oxford system for the pirate ship Rhombus and destroy it.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "oxford",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            },
+            {
+              "ship": "MERCHANT",
+              "count": 1,
+              "character": "rhombus"
+            },
+            {
+              "ship": "TALPIR",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
+            },
+            {
+              "ship": "TALPIR",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 4
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s3mc",
+      "game": "PRIV",
+      "series": "Masterson",
+      "mission": "C",
+      "briefing": "Meet with the ship Vulcan's Forge, at Oxford system, Nav 3, and escort it safely to Oxford.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "oxford",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "DRAYMAN",
+              "count": 1,
+              "character": "forge"
+            },
+            {
+              "ship": "DEMON",
+              "count": 4
+            },
+            {
+              "ship": "DEMON",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            }
+          ]
+        },
+        {
+          "system": "oxford",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "GLADIUS",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s3md",
+      "game": "PRIV",
+      "series": "Masterson",
+      "mission": "D",
+      "briefing": "Meet with the University supply ship at Oxford system, Nav 1 and escort it safely to Oxford.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "oxford",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "DRAYMAN",
+              "count": 1
+            },
+            {
+              "ship": "TALPIR",
+              "count": 3
+            },
+            {
+              "ship": "TALPIR",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s4ma",
+      "game": "PRIV",
+      "series": "Murphy",
+      "mission": "A",
+      "briefing": "Intercept reinforcements at Palan system, Nav 1 and destroy them.\n\nPays 15000 credits.",
+      "pay": 15000,
+      "encounters": [
+        {
+          "system": "palan",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 4
+            },
+            {
+              "ship": "DEMON",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 4
+              }
+            },
+            {
+              "ship": "DEMON",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 7
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s4mb",
+      "game": "PRIV",
+      "series": "Murphy",
+      "mission": "B",
+      "briefing": "Locate and intercept patrol at Nav 1 or Nav 2 in Palan system. Engage and destroy the patrol.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "palan",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 4
+            },
+            {
+              "ship": "FIGHTER",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            },
+            {
+              "ship": "FIGHTER",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 4
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s4mc",
+      "game": "PRIV",
+      "series": "Murphy",
+      "mission": "C",
+      "briefing": "Attack the remaining blockade at Palan system, Nav 4.\n\nBreak through and land on planet Palan and meet Dr. Monkhouse there in the bar.\n\nPays 15000 credits.",
+      "pay": 15000,
+      "encounters": [
+        {
+          "system": "palan",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 2
+            },
+            {
+              "ship": "DEMON",
+              "count": 4
+            },
+            {
+              "ship": "DEMON",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
+            },
+            {
+              "ship": "DEMON",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 4
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s4md",
+      "game": "PRIV",
+      "series": "Murphy",
+      "mission": "D",
+      "briefing": "Transport Dr. Monkhouse to Basra refinery.\n\nAfter landing on Basra, meet Dr. Monkhouse in the bar for his analysis of the artifact.\n\nPays 5000 credits.",
+      "pay": 5000,
+      "encounters": [
+        {
+          "system": "palan",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "GOTHRI",
+              "count": 1,
+              "character": "KIL1"
+            },
+            {
+              "ship": "DRALTHI",
+              "count": 3
+            },
+            {
+              "ship": "GOTHRI",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s5ma",
+      "game": "PRIV",
+      "series": "Cross",
+      "mission": "A",
+      "briefing": "Travel to Delta system and map sector by hitting 4 nav points pre- programmed into your ships nav computer.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "delta",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "delta",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 4
+            },
+            {
+              "ship": "TALPIR",
+              "count": 4,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s5mb",
+      "game": "PRIV",
+      "series": "Cross",
+      "mission": "B",
+      "briefing": "Go to system Delta and jump to the uncharted system designated Beta. Hit all the nav points entered in your nav computer.\n\nIf you can, find Captain Garrovick.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "beta",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "FIGHTER",
+              "count": 1,
+              "character": "garvick"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s5mc",
+      "game": "PRIV",
+      "series": "Cross",
+      "mission": "C",
+      "briefing": "Pass through Beta system and jump into the uncharted Gamma system. Fly the loop pattern in your nav computer, hitting each nav point in sequence.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "gamma",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "DRALTHI",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "gamma",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "DRALTHI",
+              "count": 3
+            },
+            {
+              "ship": "GOTHRI",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            },
+            {
+              "ship": "DRALTHI",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 5
+              }
+            }
+          ]
+        },
+        {
+          "system": "gamma",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "GOTHRI",
+              "count": 3
+            },
+            {
+              "ship": "GOTHRI",
+              "count": 1,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            },
+            {
+              "ship": "KAMEKH",
+              "count": 1,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s5md",
+      "game": "PRIV",
+      "series": "Cross",
+      "mission": "D",
+      "briefing": "Map newly discov- ered system Delta Prime.Jump to Delta Prime from Gamma system. Hit the nav point programmed into your nav computer.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": []
+    },
+    {
+      "id": "s7ma",
+      "game": "PRIV",
+      "series": "Terrell",
+      "mission": "A",
+      "briefing": "Travel to Perry Naval Base and meet with Admiral Terrel to discuss the mysterious series of disappearing and destroyed ships that have been found in the wake of your movements.",
+      "pay": 0,
+      "encounters": [
+        {
+          "system": "ragnarok",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 1,
+              "character": "retro2"
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 4
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 6
+              }
+            }
+          ]
+        },
+        {
+          "system": "nitir",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 1,
+              "character": "retro2"
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 4
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 6
+              }
+            }
+          ]
+        },
+        {
+          "system": "midgard",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 1,
+              "character": "retro2"
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 4
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 6
+              }
+            }
+          ]
+        },
+        {
+          "system": "newcastle",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 1,
+              "character": "retro2"
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 4
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 6
+              }
+            }
+          ]
+        },
+        {
+          "system": "new-detroit",
+          "navPoint": "nav-8",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 1,
+              "character": "retro2"
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 4
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 6
+              }
+            }
+          ]
+        },
+        {
+          "system": "surtur",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 1,
+              "character": "retro2"
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 4
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 6
+              }
+            }
+          ]
+        },
+        {
+          "system": "tingerhoff",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 1,
+              "character": "retro2"
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 4
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 6
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s7mb",
+      "game": "PRIV",
+      "series": "Terrell",
+      "mission": "B",
+      "briefing": "Travel to Blockade Point Tango, Nav 1, meet with Commodore Reismann there, and draw the suspected Kilrathi marauder into a Confederation ambush.\n\nPays 30000 credits.",
+      "pay": 30000,
+      "encounters": [
+        {
+          "system": "blockade-point-tango",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "FRIGATE",
+              "count": 1,
+              "character": "reis"
+            },
+            {
+              "ship": "FRIGATE",
+              "count": 1
+            },
+            {
+              "ship": "BRDSWORD",
+              "count": 2
+            },
+            {
+              "ship": "DRONE",
+              "count": 1,
+              "character": "SDRONE",
+              "trigger": {
+                "character": "reis",
+                "event": "dialogueEnd"
+              }
+            }
+          ]
+        },
+        {
+          "system": "nitir",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "SCOUT",
+              "count": 1,
+              "character": "SSCOUT"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s8ma",
+      "game": "RF",
+      "series": "Tayla",
+      "mission": "A",
+      "briefing": "Take cargo of personal goods from Oakham pirate base to Tuck's in the Sherwood system.\n\nPays 10000 credits.\n\nTayla will be waiting for you there to give you your next mission.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "pentonville",
+          "navPoint": "hidden",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "pentonville",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "pentonville",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-8",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "junction",
+          "navPoint": "nav-6",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s8mb",
+      "game": "RF",
+      "series": "Tayla",
+      "mission": "B",
+      "briefing": "Take cargo of Brilliance from Tuck's to Saratov mining base in the Prasepe system.\n\nPays 20000 credits.",
+      "pay": 20000,
+      "encounters": [
+        {
+          "system": "new-caledonia",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-8",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-6",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-7",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "new-caledonia",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s8mc",
+      "game": "RF",
+      "series": "Tayla",
+      "mission": "C",
+      "briefing": "Take load of Brilliance from Tuck's to Speke in Junction system.\n\nPays 30000 credits.",
+      "pay": 30000,
+      "encounters": [
+        {
+          "system": "capella",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "junction",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "junction",
+          "navPoint": "nav-8",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "junction",
+          "navPoint": "nav-7",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "junction",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "regallis",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-8",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-6",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-7",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "nexus",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "troy",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s8md",
+      "game": "RF",
+      "series": "Tayla",
+      "mission": "D",
+      "briefing": "Deliver Brilliance from Tuck's to Basque in Pyrennes System.\n\nPays 40000 credits.",
+      "pay": 40000,
+      "encounters": [
+        {
+          "system": "freyja",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "pyrenees",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "pyrenees",
+          "navPoint": "nav-6",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "pyrenees",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "regallis",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-8",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-6",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-7",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "sherwood",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "troy",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s9ma",
+      "game": "RF",
+      "series": "Murphy",
+      "mission": "A",
+      "briefing": "Patrol 44-P-1M system for pirate and Retro activity.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "44-p-1m",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "44-p-1m",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "44-p-1m",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s9mb",
+      "game": "RF",
+      "series": "Murphy",
+      "mission": "B",
+      "briefing": "Take cargo of construction and ore supplies to Liverpool in the Newcastle system.\n\nPays 20000 credits.",
+      "pay": 20000,
+      "encounters": [
+        {
+          "system": "newcastle",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 3
+            },
+            {
+              "ship": "DEMON",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
+            }
+          ]
+        },
+        {
+          "system": "new-constantinople",
+          "navPoint": "nav-7",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s9mc",
+      "game": "RF",
+      "series": "Murphy",
+      "mission": "C",
+      "briefing": "Take cargo of generic and luxury foods to New Detroit in the New Detroit system.\n\nPays 30000 credits.",
+      "pay": 30000,
+      "encounters": [
+        {
+          "system": "new-constantinople",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "new-detroit",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "new-detroit",
+          "navPoint": "nav-9",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s9md",
+      "game": "RF",
+      "series": "Murphy",
+      "mission": "D",
+      "briefing": "Patrol the Metsor system eliminating any hostile presence in the system.\n\nPays 50000 credits.",
+      "pay": 50000,
+      "encounters": [
+        {
+          "system": "metsor",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 4
+            },
+            {
+              "ship": "TALPIR",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            }
+          ]
+        },
+        {
+          "system": "metsor",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 4
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 6
+              }
+            }
+          ]
+        },
+        {
+          "system": "xxn-1927",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "newcastle",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s10ma",
+      "game": "RF",
+      "series": "Goodin",
+      "mission": "A",
+      "briefing": "Defend Nitir, an agricultural base in the Nitir system.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "nitir",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "GOTHRI",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s10mb",
+      "game": "RF",
+      "series": "Goodin",
+      "mission": "B",
+      "briefing": "Defend Charon, a mining base in the Hyades System from Kilrathi attacks.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "hyades",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "GOTHRI",
+              "count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s10mc",
+      "game": "RF",
+      "series": "Goodin",
+      "mission": "C",
+      "briefing": "Patrol New Caledonia system for Kilrathi presence.\n\n Pays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "new-caledonia",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "DRALTHI",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "system": "new-caledonia",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "new-caledonia",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "new-caledonia",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s10md",
+      "game": "RF",
+      "series": "Goodin",
+      "mission": "D",
+      "briefing": "Patrol the Regallis system for Kilrathi presence.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "capella",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "DRALTHI",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "regallis",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "DRALTHI",
+              "count": 2
+            },
+            {
+              "ship": "GOTHRI",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "system": "regallis",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "regallis",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "regallis",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s11ma",
+      "game": "RF",
+      "series": "Masterson",
+      "mission": "A",
+      "briefing": "Take cargo of research materials from Oxford to base Edom in the New Constantinople system.\n\nPays 10000 credits.\n\nReturn to Masterson at Oxford for next mission.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "oxford",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "GLADIUS",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "oxford",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "GLADIUS",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "oxford",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "saxtogue",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "xxn-1927",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s11mb",
+      "game": "RF",
+      "series": "Masterson",
+      "mission": "B",
+      "briefing": "Patrol Oxford system and destroy all pirates and Retros.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "oxford",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 2
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 1
+              }
+            }
+          ]
+        },
+        {
+          "system": "oxford",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 1
+            },
+            {
+              "ship": "MERCHANT",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "system": "oxford",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "oxford",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s11mc",
+      "game": "RF",
+      "series": "Masterson",
+      "mission": "C",
+      "briefing": "Take cargo of rare books from Oxford to base Burton in the  Junction system.\n\nPays 10000 credits.\n\nReturn to Masterson at Oxford for next mission.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "saxtogue",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "xxn-1927",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "119ce",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "junction",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s11md",
+      "game": "RF",
+      "series": "Masterson",
+      "mission": "D",
+      "briefing": "Meet with the equipment transport at Oxford system, Nav 4, and escort it safely to jump point at Oxford Nav 1.\n\nPays 10000 credits.",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "oxford",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "DRAYMAN",
+              "count": 1
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "oxford",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 1,
+              "trigger": {
+                "event": "kills",
+                "kills": 4
+              }
+            },
+            {
+              "ship": "GLADIUS",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s11me",
+      "game": "RF",
+      "series": "Masterson",
+      "mission": "E",
+      "briefing": "Take cargo of artwork from Oxford to Perry Naval Base in the Perry system.\n\nPays 10000 credits.\n\nReturn to Masterson at Oxford",
+      "pay": 10000,
+      "encounters": [
+        {
+          "system": "oxford",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "oxford",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "oxford",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALMIL",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "saxtogue",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "xxn-1927",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "new-detroit",
+          "navPoint": "nav-8",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "newcastle",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "perry",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "perry",
+          "navPoint": "nav-6",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s12ma",
+      "game": "RF",
+      "series": "Monte",
+      "mission": "A",
+      "briefing": "Transport Monte to New Detroit base.\n\nAfter landing on New Detroit, meet Monte in the bar for further information.",
+      "pay": 0,
+      "encounters": [
+        {
+          "system": "nexus",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "nexus",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "nexus",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 1
+            },
+            {
+              "ship": "GOTHRI",
+              "count": 1
+            },
+            {
+              "ship": "DRALTHI",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "system": "new-constantinople",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "perry",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s12mb1",
+      "game": "RF",
+      "series": "Monte",
+      "mission": "B1",
+      "briefing": "Retrieve documents for Monte.\nFly to Drake base in the Capella system.\n\nSee Contact in the bar on Drake base for further information.",
+      "pay": 0,
+      "encounters": [
+        {
+          "system": "capella",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "nexus",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "new-detroit",
+          "navPoint": "nav-8",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "new-detroit",
+          "navPoint": "nav-9",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s12mb2",
+      "game": "RF",
+      "series": "Monte",
+      "mission": "B2",
+      "briefing": "Deliver documents to Monte at New Detroit base\nin New Detroit system.\n\nSee Contact in the bar on Drake base\nfor further information.",
+      "pay": 0,
+      "encounters": [
+        {
+          "system": "capella",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "nexus",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "capella",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s12mc",
+      "game": "RF",
+      "series": "Monte",
+      "mission": "C",
+      "briefing": "Intercept Retro Patrol at Nexus system, Nav 4 and destroy them.\n\nPays 5000 credits.",
+      "pay": 5000,
+      "encounters": [
+        {
+          "system": "nexus",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 4
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 3
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 7
+              }
+            }
+          ]
+        },
+        {
+          "system": "tingerhoff",
+          "navPoint": "nav-6",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "junction",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s12md",
+      "game": "RF",
+      "series": "Monte",
+      "mission": "D",
+      "briefing": "Bounty offered for the eradication of Menesch from Gemini Sector.\n Search Troy and surrounding systems.",
+      "pay": 0,
+      "encounters": [
+        {
+          "system": "regallis",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "FIGHTER",
+              "count": 1,
+              "character": "MENESCH"
+            },
+            {
+              "ship": "SALTHI",
+              "count": 3,
+              "trigger": {
+                "character": "MENESCH",
+                "event": "dialogueEnd"
+              }
+            },
+            {
+              "ship": "SALTHI",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
+            },
+            {
+              "ship": "SALTHI",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 4
+              }
+            },
+            {
+              "ship": "SALTHI",
+              "count": 1,
+              "trigger": {
+                "event": "kills",
+                "kills": 6
+              }
+            }
+          ]
+        },
+        {
+          "system": "freyja",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "FIGHTER",
+              "count": 1,
+              "character": "MENESCH",
+              "trigger": {
+                "character": "MENESCH",
+                "event": "departed"
+              }
+            },
+            {
+              "ship": "SALTHI",
+              "count": 3
+            },
+            {
+              "ship": "SALTHI",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
+            }
+          ]
+        },
+        {
+          "system": "regallis",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "regallis",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "pender-s-star",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "war",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "war",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "pyrenees",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "pyrenees",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "regallis",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "troy",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "DEMON",
+              "count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s13ma",
+      "game": "RF",
+      "series": "Terrell",
+      "mission": "A",
+      "briefing": "Travel to Blockade Point Alpha, Nav 1, meet with Commodore Uhler, and wait for further instructions. \n\nPays 20000 credits.",
+      "pay": 20000,
+      "encounters": [
+        {
+          "system": "blockade-point-alpha",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "FRIGATE",
+              "count": 1,
+              "character": "comodor"
+            },
+            {
+              "ship": "STILETTO",
+              "count": 2
+            },
+            {
+              "ship": "BRDSWORD",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "system": "blockade-point-alpha",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "GOTHRI",
+              "count": 1,
+              "character": "kahl"
+            },
+            {
+              "ship": "DRALTHI",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "blockade-point-alpha",
+          "navPoint": "nav-5",
+          "ships": [
+            {
+              "ship": "GOTHRI",
+              "count": 2
+            },
+            {
+              "ship": "DRALTHI",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
+            },
+            {
+              "ship": "GOTHRI",
+              "count": 3,
+              "trigger": {
+                "event": "kills",
+                "kills": 5
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s13mb",
+      "game": "RF",
+      "series": "Terrell",
+      "mission": "B",
+      "briefing": "Patrol the Death, Pestilence and War systems, and destroy any Retro presence.\n\n Pays 20000 credits.\n\nReturn to Admiral Terral at Perry Naval Base.",
+      "pay": 20000,
+      "encounters": [
+        {
+          "system": "death",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 2
+            },
+            {
+              "ship": "SALTHI",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "death",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 1
+            },
+            {
+              "ship": "SALTHI",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "pestilence",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "pestilence",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "pestilence",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "system": "war",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "system": "war",
+          "navPoint": "nav-2",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "system": "troy",
+          "navPoint": "nav-7",
+          "firstOf": [
+            {
+              "system": "famine",
+              "navPoint": "nav-1"
+            },
+            {
+              "system": "troy",
+              "navPoint": "nav-7"
+            }
+          ],
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 1,
+              "character": "pir13b",
+              "trigger": {
+                "event": "enterNav"
+              }
+            }
+          ]
+        },
+        {
+          "system": "famine",
+          "navPoint": "nav-1",
+          "firstOf": [
+            {
+              "system": "famine",
+              "navPoint": "nav-1"
+            },
+            {
+              "system": "troy",
+              "navPoint": "nav-7"
+            }
+          ],
+          "ships": [
+            {
+              "ship": "TALPIR",
+              "count": 1,
+              "character": "pir13b",
+              "trigger": {
+                "event": "enterNav"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s14ma",
+      "game": "RF",
+      "series": "Informant",
+      "mission": "A",
+      "briefing": "Bounty offered for the eradication of Jones from Gemini Sector.\n\nSearch Valhalla for jump to Eden.\nProceed to Retro base in Eden.",
+      "pay": 0,
+      "encounters": [
+        {
+          "system": "valhalla",
+          "navPoint": "nav-4",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 4
+            },
+            {
+              "ship": "SALTHI",
+              "count": 1,
+              "trigger": {
+                "event": "kills",
+                "kills": 1
+              }
+            },
+            {
+              "ship": "SALTHI",
+              "count": 1,
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
+            }
+          ]
+        },
+        {
+          "system": "telar",
+          "navPoint": "nav-3",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 2
+            },
+            {
+              "ship": "SALTHI",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "eden",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 3,
+              "character": "elite"
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 1,
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
+            },
+            {
+              "ship": "SALTHI",
+              "count": 1,
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
+            }
+          ]
+        },
+        {
+          "system": "17-ar",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "SALTHI",
+              "count": 2,
+              "character": "elite",
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 2
+            },
+            {
+              "ship": "SALTHI",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "system": "j900",
+          "navPoint": "nav-1",
+          "ships": [
+            {
+              "ship": "TALRELIG",
+              "count": 2
+            },
+            {
+              "ship": "SALTHI",
+              "count": 2
+            },
+            {
+              "ship": "SALTHI",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s14mb",
+      "game": "RF",
+      "series": "Informant",
+      "mission": "B",
+      "briefing": "Bounty offered for the eradication of Jones from Gemini Sector.Locate Jones in Eden system.\n\nPays 80000 credits.",
+      "pay": 80000,
+      "encounters": [
+        {
+          "system": "eden",
+          "navPoint": "hidden-5",
+          "ships": [
+            {
+              "ship": "FIGHTER",
+              "count": 1,
+              "character": "JONES",
+              "trigger": {
+                "event": "enterNav"
+              }
+            },
+            {
+              "ship": "SALTHI",
+              "count": 2,
+              "character": "elite",
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
+            },
+            {
+              "ship": "SALTHI",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 6
+              }
+            },
+            {
+              "ship": "SALTHI",
+              "count": 2,
+              "trigger": {
+                "event": "enterNav"
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 1,
+              "trigger": {
+                "event": "enterNav"
+              }
+            },
+            {
+              "ship": "TALRELIG",
+              "count": 1,
+              "character": "elite",
+              "trigger": {
+                "event": "kills",
+                "kills": 4
+              }
+            },
+            {
+              "ship": "SALTHI",
+              "count": 1,
+              "trigger": {
+                "event": "kills",
+                "kills": 4
+              }
+            },
+            {
+              "ship": "SALTHI",
+              "count": 2,
+              "character": "elite",
+              "trigger": {
+                "event": "kills",
+                "kills": 8
+              }
+            },
+            {
+              "ship": "SALTHI",
+              "count": 1,
+              "character": "elite",
+              "trigger": {
+                "character": "JONES",
+                "event": "destroyed"
+              }
+            },
+            {
+              "ship": "SALTHI",
+              "count": 2,
+              "character": "elite",
+              "trigger": {
+                "event": "kills",
+                "kills": 10
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
