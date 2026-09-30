@@ -27,12 +27,17 @@
   function onWindowClick(e) {
     if (open && root && !root.contains(e.target)) open = false;
   }
+  // Capture phase and stopped while open, for the same reason as Dialog's
+  // Escape handling: the open menu closes first, and a second Escape then
+  // reaches the map underneath (zoom out / unflatten).
   function onWindowKeydown(e) {
-    if (e.key === 'Escape') open = false;
+    if (e.key !== 'Escape' || !open) return;
+    e.stopPropagation();
+    open = false;
   }
 </script>
 
-<svelte:window onclick={onWindowClick} onkeydown={onWindowKeydown} />
+<svelte:window onclick={onWindowClick} onkeydowncapture={onWindowKeydown} />
 
 <div class="settings" bind:this={root}>
   <button

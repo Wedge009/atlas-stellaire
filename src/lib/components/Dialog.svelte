@@ -18,9 +18,18 @@
     children,
   } = $props();
 
+  // Escape is caught in the capture phase and stopped there, so an open
+  // dialogue gets it first and exclusively - otherwise the other window-level
+  // Escape handlers underneath (eg the 3D map zooming out or unflattening, or
+  // the sector map closing its panel) would all fire on the same key press.
+  function handleEscape(e) {
+    if (e.key !== 'Escape') return;
+    e.stopPropagation();
+    onClose?.();
+  }
+
   function handleKeydown(e) {
-    if (e.key === 'Escape') onClose?.();
-    else onKeydown?.(e);
+    if (e.key !== 'Escape') onKeydown?.(e);
   }
 
   function onBackdropClick(e) {
@@ -28,7 +37,7 @@
   }
 </script>
 
-<svelte:window onkeydown={handleKeydown} />
+<svelte:window onkeydowncapture={handleEscape} onkeydown={handleKeydown} />
 
 <div class="backdrop" role="presentation" onclick={onBackdropClick}>
   <div
