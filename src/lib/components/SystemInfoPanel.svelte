@@ -1,6 +1,7 @@
 <script>
   import { systemName } from '../utils/navPoints.js';
   import { shipName } from '../utils/ships.js';
+  import { missionOverrides } from '../stores/storyMission.js';
   import { t } from '../i18n/index.js';
 
   let { data, system, maxHeight, onClose, onGoTo } = $props();
@@ -19,6 +20,13 @@
         system.navPoints.flatMap((np) => (np.encounters ?? []).flatMap((g) => g.ships.map((s) => s.ship)))
       ),
     ]
+      .map(shipName)
+      .sort((a, b) => a.localeCompare(b))
+  );
+
+  // Ships the active story mission fixes at any nav point in this system.
+  let missionShips = $derived(
+    [...new Set([...($missionOverrides.get(system.id)?.values() ?? [])].flat().map((s) => s.ship))]
       .map(shipName)
       .sort((a, b) => a.localeCompare(b))
   );
@@ -55,6 +63,13 @@
     <div class="section">
       <div class="section-title">{$t('common.shipEncounters')}</div>
       <div class="row muted">{encounterShips.join(', ')}</div>
+    </div>
+  {/if}
+
+  {#if missionShips.length}
+    <div class="section">
+      <div class="section-title">{$t('infoPanel.missionEncounter')}</div>
+      <div class="row muted">{missionShips.join(', ')}</div>
     </div>
   {/if}
 

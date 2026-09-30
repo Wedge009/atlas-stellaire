@@ -17,6 +17,7 @@ export default {
   'nav.collapseQuadrant': 'Collapse {name}',
 
   'common.close': 'Close',
+  'common.apply': 'Apply',
   'common.none': 'None',
   'common.about': 'About',
   'common.language': 'Language',
@@ -28,6 +29,7 @@ export default {
   'common.geminiSector': 'Gemini Sector',
   'common.shipEncounters': 'Ship encounters',
   'common.commodities': 'Commodities',
+  'common.storyMission': 'Story mission',
 
   'about.summary': 'A nostalgic revisit of the Gemini sector from Wing Commander: Privateer.',
   'about.version': 'Version {version} · {commit}',
@@ -69,6 +71,7 @@ export default {
   'infoPanel.mercenariesGuild': 'Mercenaries Guild',
   'infoPanel.shipDealer': 'Ship Dealer',
   'infoPanel.encounterProbability': 'Encounter Probability',
+  'infoPanel.missionEncounter': 'Mission Encounter',
   'infoPanel.zoom': 'Zoom',
   'infoPanel.travel': 'Travel',
   'infoPanel.zoomUnavailable': 'Zoom is only available in the free 3D view',
@@ -78,6 +81,12 @@ export default {
   'commoditiesDialog.low': 'Low',
   'commoditiesDialog.high': 'High',
   'commoditiesDialog.soldHereNote': 'Highlighted rows are sold at this base.',
+
+  'storyMissionDialog.mission': 'Mission',
+  'storyMissionDialog.selectMission': 'Select a mission…',
+  'storyMissionDialog.briefing': 'Briefing',
+  'storyMissionDialog.activeMission': 'Active Mission: {mission}',
+  'storyMissionDialog.clear': 'Clear',
 
   'journeyPanel.titlePrefix': 'Journey:',
   'journeyPanel.legOfJumps': 'Leg {current} of {total} jumps',
@@ -121,5 +130,4 @@ export default {
   'app.loadingSectorData': 'Loading sector data…',
 
   'language.selectLabel': 'Select language',
-  'language.apply': 'Apply',
 };

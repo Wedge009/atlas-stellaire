@@ -29,7 +29,7 @@
     // reset selection whenever the system changes so no stale node leaks in
     system.id;
     selectedNode.set(null);
-    rollForSystem(system.navPoints);
+    rollForSystem(system.id, system.navPoints);
   });
 
   let visiblePoints = $derived(
@@ -96,6 +96,7 @@
   >
     <InfoPanel
       {data}
+      systemId={system.id}
       zoomAvailable={$viewMode === '3d' && !mapLoading && !$viewAligned}
       zoomedId={$viewMode === '3d' ? mapFocused?.id : null}
       locked={animationLocked}

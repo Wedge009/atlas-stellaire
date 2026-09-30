@@ -6,6 +6,7 @@ export default {
   'nav.collapseQuadrant': '{name} einklappen',
 
   'common.close': 'Schließen',
+  'common.apply': 'Anwenden',
   'common.none': 'Keine',
   'common.about': 'Über',
   'common.language': 'Sprache',
@@ -17,6 +18,7 @@ export default {
   'common.geminiSector': 'Gemini-Sektor',
   'common.shipEncounters': 'Raumschiffbegegnungen',
   'common.commodities': 'Handelswaren',
+  'common.storyMission': 'Storymission',
 
   'about.summary': 'Eine nostalgische Rückkehr in den Gemini-Sektor aus Wing Commander: Privateer.',
   'about.version': 'Version {version} · {commit}',
@@ -55,6 +57,7 @@ export default {
   'infoPanel.mercenariesGuild': 'Söldnergilde',
   'infoPanel.shipDealer': 'Schiffshändler',
   'infoPanel.encounterProbability': 'Begegnungswahrscheinlichkeit',
+  'infoPanel.missionEncounter': 'Missionsbegegnung',
   'infoPanel.zoom': 'Zoomen',
   'infoPanel.travel': 'Reisen',
   'infoPanel.zoomUnavailable': 'Zoomen ist nur in der freien 3D-Ansicht verfügbar',
@@ -64,6 +67,12 @@ export default {
   'commoditiesDialog.low': 'Min.',
   'commoditiesDialog.high': 'Max.',
   'commoditiesDialog.soldHereNote': 'Hervorgehobene Handelswaren werden an dieser Basis verkauft.',
+
+  'storyMissionDialog.mission': 'Mission',
+  'storyMissionDialog.selectMission': 'Mission auswählen…',
+  'storyMissionDialog.briefing': 'Einsatzbesprechung',
+  'storyMissionDialog.activeMission': 'Aktive Mission: {mission}',
+  'storyMissionDialog.clear': 'Zurücksetzen',
 
   'journeyPanel.titlePrefix': 'Reise:',
   'journeyPanel.legOfJumps': 'Sprung {current} von {total} Sprüngen',
@@ -107,5 +116,4 @@ export default {
   'app.loadingSectorData': 'Sektordaten werden geladen…',
 
   'language.selectLabel': 'Sprache auswählen',
-  'language.apply': 'Anwenden',
 };

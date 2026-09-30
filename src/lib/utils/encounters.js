@@ -11,9 +11,13 @@ export function rollEncounters(navPoint, rng = Math.random) {
 
   let roll = rng() * total;
   const winner = groups.find((g) => (roll -= g.chance) < 0) ?? groups[groups.length - 1];
+  return expandShips(winner.ships);
+}
 
+// Expands [{ship, count}] into one entry per ship instance.
+export function expandShips(groupShips) {
   const ships = [];
-  for (const { ship, count } of winner.ships) {
+  for (const { ship, count } of groupShips) {
     for (let i = 0; i < count; i++) {
       ships.push({ ship, instanceIndex: ships.length });
     }

@@ -5,11 +5,15 @@
   import { sortedEncounterGroups } from '../utils/encounters.js';
   import { shipName } from '../utils/ships.js';
   import { hasCommodityData } from '../data/commodities.js';
+  import { missionOverrides } from '../stores/storyMission.js';
   import CommoditiesDialog from './CommoditiesDialog.svelte';
   import { t } from '../i18n/index.js';
 
   let {
     data,
+    // Nav point IDs are only unique within a system, so this is needed to
+    // look up the active story mission's fixed encounters.
+    systemId,
     // Zoom only works in the free (non-aligned) 3D view - the button stays in
     // place but disabled elsewhere, so the panel's layout doesn't shift.
     zoomAvailable = false,
@@ -22,6 +26,10 @@
   } = $props();
 
   let showCommodities = $state(false);
+
+  // The active story mission's fixed ships here, which replace the regular
+  // encounter table entirely.
+  let missionShips = $derived($selectedNode ? $missionOverrides.get(systemId)?.get($selectedNode.id) : null);
 </script>
 
 {#if $selectedNode}
@@ -47,7 +55,14 @@
             {facilityList.join(' · ')}
           </div>
         {/if}
-        {#if d.encounters?.length}
+        {#if missionShips}
+          <div class="encounters">
+            <div class="mission-title">{$t('infoPanel.missionEncounter')}</div>
+            {#each missionShips as s (s.ship)}
+              <div class="row muted encounter-row">{s.count}× {shipName(s.ship)}</div>
+            {/each}
+          </div>
+        {:else if d.encounters?.length}
           {@const groups = sortedEncounterGroups(d)}
           <details class="encounters">
             <summary>{$t('infoPanel.encounterProbability')}</summary>
@@ -128,7 +143,8 @@
   .info-text { min-width: 0; }
   .row.coords { margin-top: 6px; color: var(--text-dim); }
   .encounters { margin-top: 8px; }
-  .encounters summary { cursor: pointer; color: var(--text-amber); font-size: var(--font-size-body-secondary); }
+  .encounters summary, .mission-title { color: var(--text-amber); font-size: var(--font-size-body-secondary); }
+  .encounters summary { cursor: pointer; }
   .encounter-row { font-size: var(--font-size-small); margin-top: 4px; }
   .actions {
     display: flex;

@@ -6,6 +6,7 @@ export default {
   'nav.collapseQuadrant': 'Réduire {name}',
 
   'common.close': 'Fermer',
+  'common.apply': 'Appliquer',
   'common.none': 'Aucun',
   'common.about': 'À propos',
   'common.language': 'Langue',
@@ -15,6 +16,7 @@ export default {
   'common.view3d': 'Vue 3D',
   'common.quadrant': 'Quadrant {name}',
   'common.geminiSector': 'Secteur Gemini',
+  'common.storyMission': 'Mission scénarisée',
   'common.shipEncounters': 'Rencontres de vaisseaux',
   'common.commodities': 'Marchandises',
 
@@ -55,6 +57,7 @@ export default {
   'infoPanel.mercenariesGuild': 'Guilde des mercenaires',
   'infoPanel.shipDealer': 'Concessionnaire de vaisseaux',
   'infoPanel.encounterProbability': 'Probabilité de rencontre',
+  'infoPanel.missionEncounter': 'Rencontre de mission',
   'infoPanel.zoom': 'Zoom',
   'infoPanel.travel': 'Voyager',
   'infoPanel.zoomUnavailable': 'Le zoom n’est disponible qu’en vue libre 3D',
@@ -64,6 +67,12 @@ export default {
   'commoditiesDialog.low': 'Min',
   'commoditiesDialog.high': 'Max',
   'commoditiesDialog.soldHereNote': 'Les lignes en surbrillance sont vendues à cette base.',
+
+  'storyMissionDialog.mission': 'Mission',
+  'storyMissionDialog.selectMission': 'Choisir une mission…',
+  'storyMissionDialog.briefing': 'Briefing',
+  'storyMissionDialog.activeMission': 'Mission active : {mission}',
+  'storyMissionDialog.clear': 'Effacer',
 
   'journeyPanel.titlePrefix': 'Itinéraire :',
   'journeyPanel.legOfJumps': 'Étape {current} sur {total} sauts',
@@ -107,5 +116,4 @@ export default {
   'app.loadingSectorData': 'Chargement des données de secteur…',
 
   'language.selectLabel': 'Sélectionner la langue',
-  'language.apply': 'Appliquer',
 };

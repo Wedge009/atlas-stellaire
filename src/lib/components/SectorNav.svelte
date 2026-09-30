@@ -1,6 +1,7 @@
 <script>
   import { slide } from 'svelte/transition';
   import { sidebarCollapsed, collapsedQuadrants } from '../stores/ui.js';
+  import { activeMissionId } from '../stores/storyMission.js';
   import { t, availableLocales } from '../i18n/index.js';
 
   let {
@@ -12,6 +13,7 @@
     onShowAbout,
     onShowLanguage,
     onPlotJourney,
+    onStoryMission,
     onSearch,
   } = $props();
 
@@ -47,16 +49,24 @@
           <div class="title">{$t('common.geminiSector')}</div>
           <button
             type="button"
-            class="sector-map-btn primary caps"
+            class="nav-btn primary caps"
             class:active={topView === 'sector'}
             onclick={() => onShowSector?.()}
           >
             {$t('nav.sectorMap')}
           </button>
-          <button type="button" class="plot-journey-btn primary caps" onclick={() => onPlotJourney?.()}>
+          <button type="button" class="nav-btn primary caps" onclick={() => onPlotJourney?.()}>
             {$t('common.plotJourney')}
           </button>
-          <button type="button" class="search-btn primary caps" onclick={() => onSearch?.()}>
+          <button
+            type="button"
+            class="nav-btn primary caps"
+            class:active={$activeMissionId !== null}
+            onclick={() => onStoryMission?.()}
+          >
+            {$t('common.storyMission')}
+          </button>
+          <button type="button" class="nav-btn primary caps" onclick={() => onSearch?.()}>
             {$t('common.search')}
           </button>
         </div>
@@ -96,11 +106,11 @@
         </div>
         <div class="nav-footer">
           {#if availableLocales.length > 1}
-            <button type="button" class="language-btn primary caps" onclick={() => onShowLanguage?.()}>
+            <button type="button" class="nav-btn primary caps" onclick={() => onShowLanguage?.()}>
               {$t('common.language')}
             </button>
           {/if}
-          <button type="button" class="about-btn primary caps" onclick={() => onShowAbout?.()}>{$t('common.about')}</button>
+          <button type="button" class="nav-btn primary caps" onclick={() => onShowAbout?.()}>{$t('common.about')}</button>
         </div>
       </div>
     </div>
@@ -142,7 +152,7 @@
   }
   .nav-header {
     flex: 0 0 auto;
-    padding: 12px 10px 0;
+    padding: 12px 10px 16px;
   }
   .nav-scroll {
     flex: 1;
@@ -154,15 +164,13 @@
     padding: 10px;
     border-top: 1px solid var(--border-red-dim);
   }
-  .language-btn {
-    display: block;
-    width: 100%;
-    margin-bottom: 8px;
-  }
-  .about-btn {
+  /* Header and footer action buttons are all styled alike - full width,
+     stacked with an even gap. */
+  .nav-btn {
     display: block;
     width: 100%;
   }
+  .nav-btn + .nav-btn { margin-top: 8px; }
   .title {
     font-family: var(--font-display);
     font-size: var(--font-size-heading);
@@ -172,21 +180,6 @@
     margin-bottom: 14px;
     letter-spacing: 1px;
     text-transform: uppercase;
-  }
-  .sector-map-btn {
-    display: block;
-    width: 100%;
-    margin-bottom: 8px;
-  }
-  .plot-journey-btn {
-    display: block;
-    width: 100%;
-    margin-bottom: 8px;
-  }
-  .search-btn {
-    display: block;
-    width: 100%;
-    margin-bottom: 16px;
   }
   .quadrant { margin-bottom: 16px; }
   .quadrant-name {

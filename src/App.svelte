@@ -8,11 +8,13 @@
   import LanguageDialog from './lib/components/LanguageDialog.svelte';
   import PlotJourneyDialog from './lib/components/PlotJourneyDialog.svelte';
   import SearchDialog from './lib/components/SearchDialog.svelte';
+  import StoryMissionDialog from './lib/components/StoryMissionDialog.svelte';
   import JourneyPanel from './lib/components/JourneyPanel.svelte';
   import JumpTransition from './lib/components/JumpTransition.svelte';
   import { findSystem } from './lib/utils/navPoints.js';
   import { journey, journeyInputs, plotJourney } from './lib/stores/journey.js';
   import { jumpTransitionEnabled } from './lib/stores/settings.js';
+  import { loadStoryMissions } from './lib/stores/storyMission.js';
   import { lastTopView, lastSystemId, journeyPanelPosition } from './lib/stores/ui.js';
   import { draggable } from './lib/actions/draggable.js';
   import { t, locale } from './lib/i18n/index.js';
@@ -24,6 +26,7 @@
   let showLanguage = $state(false);
   let showPlotJourney = $state(false);
   let showSearch = $state(false);
+  let showStoryMission = $state(false);
   let jumpTarget = $state(null);
   let system = $derived(geminiData ? findSystem(geminiData, selectedSystemId) : null);
 
@@ -42,6 +45,9 @@
   });
 
   onMount(async () => {
+    // Not awaited - the map doesn't need mission data to show, and any
+    // active mission's ships just appear once it arrives.
+    loadStoryMissions();
     const res = await fetch(`${import.meta.env.BASE_URL}data/gemini.json`);
     geminiData = await res.json();
 
@@ -82,6 +88,7 @@
       onShowAbout={() => (showAbout = true)}
       onShowLanguage={() => (showLanguage = true)}
       onPlotJourney={() => (showPlotJourney = true)}
+      onStoryMission={() => (showStoryMission = true)}
       onSearch={() => (showSearch = true)}
     />
     <div class="main-view">
@@ -124,6 +131,9 @@
       currentSystemId={selectedSystemId}
       onClose={() => (showPlotJourney = false)}
     />
+  {/if}
+  {#if showStoryMission}
+    <StoryMissionDialog onClose={() => (showStoryMission = false)} />
   {/if}
   {#if showSearch}
     <SearchDialog data={geminiData} onSelect={goToSystem} onClose={() => (showSearch = false)} />

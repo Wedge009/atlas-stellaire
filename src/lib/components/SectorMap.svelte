@@ -1,6 +1,7 @@
 <script>
   import { sectorSystems, sectorEdges } from '../utils/navPoints.js';
   import { journey } from '../stores/journey.js';
+  import { missionOverrides } from '../stores/storyMission.js';
   import SystemInfoPanel from './SystemInfoPanel.svelte';
   import { t } from '../i18n/index.js';
 
@@ -120,6 +121,7 @@
   {#each systems as s (s.id)}
     {@const isSelected = s.id === selectedSystemId}
     {@const isRefuelStop = refuelSystemIds.has(s.id)}
+    {@const isMissionSystem = $missionOverrides.has(s.id)}
     <g
       class="node-marker"
       transform="translate({s.gx}, {s.gy})"
@@ -133,6 +135,9 @@
         <rect x="-1.5" y="-1.5" width="3" height="3" class="dot dot-base" />
       {:else}
         <circle r="1.3" class="dot" />
+      {/if}
+      {#if isMissionSystem}
+        <circle r="5" class="mission-ring" />
       {/if}
       {#if isRefuelStop}
         <circle r="4" class="refuel-ring" />
@@ -199,6 +204,7 @@
   .route-line { stroke: var(--map-route); stroke-width: 0.6; stroke-dasharray: 1.5 1; opacity: 0.9; }
   .route-arrowhead { fill: var(--map-route); }
   .refuel-ring { fill: none; stroke: var(--sw-base); stroke-width: 0.4; stroke-dasharray: 0.8 0.6; }
+  .mission-ring { fill: none; stroke: var(--grid-red); stroke-width: 0.5; }
   .node-marker, .node-label { cursor: pointer; }
   .dot { fill: var(--sw-base); stroke: none; }
   .dot-base { fill: var(--sw-base); }
