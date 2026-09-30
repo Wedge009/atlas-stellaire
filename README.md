@@ -67,7 +67,12 @@ it contains.
   visible icon).
 - `FORM SCRP` > `FORM PLAY` (nested inside the same per-system block) — a
   `SCEN` (scripted-encounter zone) record per distinct `SPHR` position, in
-  file order, with `SCEN[0]` always a non-point 'default' zone. Byte offset
+  file order, with `SCEN[0]` always a non-point 'default' zone. Byte 1 of
+  each record is that zone's ID and byte 2 the system's ID (its index in
+  `SECTORS.IFF`'s block table). Zone IDs aren't contiguous (eg Pentonville's
+  are 0, 1, 20; 17-AR's 0, 1, 2, 5, 7), and other records refer to a nav
+  point by this zone ID, so it has to be looked up via the `SCEN` list
+  (`SCEN[k]` is nav point `k - 1`) rather than used as an index. Byte offset
   7–8 of each per-point `SCEN` record is a little-endian signed 16-bit value
   that gives the **asteroid field flag**: `-1` (`0xFFFF`) means no asteroid
   field is near that point; any other value is an ID for a shared
@@ -78,9 +83,10 @@ it contains.
 - `CAST` (squadron roster) and `WAND` (46-byte squadron records) chunks give
   each nav point's random-encounter table: which ship(s), how many, and at
   what odds. Each `WAND` record names its own `CAST` slot directly (bytes
-  19–20) and its zone (byte 21, matching `SPHR`/nav-point order) rather than
-  relying on file position, carries the ship's stats-file and sprite-file
-  names (bytes 3–18), a squad size (bytes 35–36), and a cumulative
+  19–20) and its zone ID (byte 21, mapped to a nav point via `SCEN` as above)
+  rather than relying on file position, carries the ship's stats-file and
+  sprite-file names (bytes 3–18), the system ID (bytes 22–23), a squad size
+  (bytes 35–36), and a cumulative
   probability percentage (byte 0) — records sharing a cumulative value in a
   zone are alternative squads spawned together as one group, and a group's
   own weight is its cumulative value minus the previous one seen in that
@@ -104,6 +110,105 @@ it contains.
   all. Stored as each system's `skybox` array in `gemini.json`; the sprite
   images themselves live in `public/assets/skybox/` and are mapped by name in
   `skyboxSprites.js`.
+
+**Story missions** (`DATA\MISSIONS\S<n>M<x>.IFF` — `S0`–`S7` in `PRIV.TRE`,
+`S8`–`S14` in `RF.TRE`; one file per plot mission, series `n` being one
+fixer's run of missions): each is a `FORM MSSN` holding the briefing
+(`TEXT`), the pay (`PAYS`, a 32-bit credit amount) and a `FORM SCRP` built
+from the same `CAST`/`SCEN` machinery as the per-system data above, but with a
+`PART` chunk in place of `WAND`:
+
+- `PART` — fixed 45-byte records, one per ship. Story encounters are fixed,
+  so there are no count or probability fields. Record 0 is always the player.
+  Each record gives the ship's stats-file and sprite-file names (bytes 2–17),
+  its `CAST` slot (bytes 18–19), a zone ID and system ID (bytes 20 and 21,
+  resolved to a nav point via that system's `SCEN` list as above), its
+  position relative to the nav point (bytes 22–33, three 32-bit 24.8
+  fixed-point values), and whether it's present when the player arrives
+  (byte 36 = 1) or is spawned later by the mission's script (byte 36 = 0).
+  One mission can place ships across several systems.
+- `PROG` — the mission's script: a list of numbered blocks of 2-byte
+  (instruction, operand) words, each block ending in `00 00`. Ship records
+  point at blocks for their starting attitude, their behaviour (re-run
+  continuously, eg a conversation stepping through its lines), what happens
+  when they're destroyed, and (for the player) the mission objectives; a
+  zone's `SCEN` record can point at a block to run on entering it.
+  Instructions include spawn/remove ship, attack/form up on a ship,
+  friendly/hostile, switch/case on counters, calls between blocks, and
+  dialogue — `96 NN` speaks line `NN` from the ship's `DATA\AIDS` profile
+  (`FORM PUSR` > `FORM PLOT`), and `95 NN` offers the player a list of
+  replies from the same profile.
+
+Stored separately from `gemini.json` in `public/data/story-missions.json`,
+since these only apply while a mission is active: each mission's
+`encounters` list gives `{system, navPoint, ships}` using `gemini.json`'s
+IDs, where each ship is `{ship, count}`, plus `character` for a
+named pilot or ship (eg `toth`, `MENESCH`) rather than a generic `XXX_YY`
+faction squadron. Each `CAST` name is also the name of an AI profile,
+`DATA\AIDS\<name>.IFF`, whose `INFO` record gives the faction, then pilot
+skill and attitude — the two letters after the underscore (skill D/A/S,
+attitude P/A/F, each 0–2). As with the regular encounters, faction, skill and
+attitude aren't output here, so otherwise identical ships are merged —
+unless they're spawned by different triggers (below).
+
+Ships spawned later by the script carry a `trigger` (ships without one are
+present when the player arrives), found by tracing each
+spawn instruction back through the script to what sets it off:
+
+- `{"event": "kills", "kills": N}` — a wave, arriving at the Nth kill counted
+  by that group's destroyed handlers.
+- `{"event": "enterNav"}` — spawned on (first) entering this nav point.
+- `{"event": "dialogueEnd", "character": X}` — when X's conversation ends.
+- `{"event": "destroyed", "character": X}` — when X is destroyed.
+- `{"event": "departed", "character": X}` — once X has jumped out (Menesch
+  reappearing at Freyja after fleeing Regallis in S12MD).
+
+The game only simulates the current system, so a spawn instruction creates
+the named ship *where its trigger happens*. That matters because the mission
+scripts sometimes name the wrong ship record — including records placed in
+another system. Those still produce a ship (of that record's type) at the
+trigger's nav point, so they're listed there; play-testing confirmed this for
+S9MB's Liverpool reinforcements (which name a New Constantinople Demon) and
+S12MD's Freyja reinforcements (which name Regallis Salthi). The exception is
+S7MB, whose Blockade Point Tango scripts refer to the Steltek drone by the
+Steltek scout's record number: the drone (not the scout) appears there after
+Reismann's briefing, and the scout only ever appears at Nitir. S14MA's
+reinforcement scripts are cross-wired this way throughout, and S13MB's two
+lone pirate Talons each name the other one's record.
+
+Any trigger may add `ifAlive: X` or `ifDestroyed: X` (eg S1MD's Nav 2 has
+either Riordian's wing if he survived, or the usual pirate Talons if not), or
+`ifDeparted: X` (X has jumped out). A ship's 'destroyed' handler also fires
+when it jumps out, so `ifDestroyed` may really mean 'gone'. An `enterNav`
+trigger normally fires at the ship's own nav point; where it's somewhere
+else, `at: {system, navPoint}` says where (eg in S13MB, entering Troy Nav 7
+spawns a Talon at Famine Nav 1, and vice versa).
+
+An encounter may also carry `firstOf`, a list of `{system, navPoint}`: it
+only happens if this is the first of those nav points the player reaches.
+The scripts do this either by having each nav point's trigger disable the
+others, or by having each spawn only while a shared counter is still zero.
+Kroiz waits at whichever Rikel jump point the player enters by (S2MB) and
+ambushes at the first hidden point reached if he survived; Miggs is at the
+first of four Newcastle nav points reached (S2MD); and S13MB's pirate
+messenger (directing the player to Drake in Capella) is at whichever of
+Famine Nav 1 or Troy Nav 7 is reached first — so there's only ever one of
+each.
+
+Ships the script never actually spawns are also left out, with a warning
+from the extraction script — mistakes in the original mission data, such as
+a reinforcement block that's never called, a wave that can't be reached
+because too few ships count towards its kill total, or a script naming the
+wrong ship records.
+
+Ship positions are stored as offsets from their nav point, and every real
+encounter sits within about 34,000 of it (the first group usually around
+15,000 out, later waves a little further). Two kinds of ship are left out of
+the file entirely: ones attached to a zone that doesn't exist in the system
+(eg two Salthi in S14MA), and ones placed implausibly far away because of a
+mistyped co-ordinate (one of S1MD's three 'regular' pirate Talons at
+Pentonville Nav 2 is 74,500 out, well outside the system's roughly ±60,000
+space).
 
 ### Jump transition animation
 
