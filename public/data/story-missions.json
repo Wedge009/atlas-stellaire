@@ -1,12 +1,11 @@
 {
-  "_source": "Decoded from DATA/MISSIONS/S*M*.IFF in Priv.tre and RF.tre by extract_story_missions.py. Encounters are fixed (not random) and apply only while the mission is active; ships with a trigger are spawned later by the mission script, the rest are present on arrival.",
   "missions": [
     {
       "id": "s0ma",
       "game": "PRIV",
       "series": "Sandoval",
       "mission": "A",
-      "briefing": "Travel to Liverpool refinery in Newcastle system and deliver Sandoval's cargo of Iron.\n\nPays 15000 credits.\n\nReturn to New Detroit to receive pay in exchange for alien artifact.",
+      "briefing": "Travel to Liverpool refinery in Newcastle system and deliver Sandoval’s cargo of Iron.\n\nPays 15000 credits.\n\nReturn to New Detroit to receive pay in exchange for alien artifact.",
       "pay": 0,
       "encounters": []
     },
@@ -55,7 +54,7 @@
       "game": "PRIV",
       "series": "Tayla",
       "mission": "B",
-      "briefing": "Take cargo of Brilliance to Hector mining base in the Troy system.\n\nPays 15000 credits.\n\nReturn to Oakham pirate base in the Pentonville system for Tayla's next mission.",
+      "briefing": "Take cargo of Brilliance to Hector mining base in the Troy system.\n\nPays 15000 credits.\n\nReturn to Oakham pirate base in the Pentonville system for Tayla’s next mission.",
       "pay": 15000,
       "encounters": [
         {
@@ -115,7 +114,7 @@
       "game": "PRIV",
       "series": "Tayla",
       "mission": "C",
-      "briefing": "Take a shipment of Brilliance to base New Constantinople.\n\nPays 20000 credits.\n\nReturn to Oakham pirate base in the Pentonville system for Tayla's next mission.",
+      "briefing": "Take a shipment of Brilliance to base New Constantinople.\n\nPays 20000 credits.\n\nReturn to Oakham pirate base in the Pentonville system for Tayla’s next mission.",
       "pay": 20000,
       "encounters": [
         {
@@ -506,7 +505,7 @@
       "game": "PRIV",
       "series": "Lynch",
       "mission": "C",
-      "briefing": "Smuggle Lynch's cousin Regis from New Constantinople to Castor system, Romulous mining base.\n\nPays 30000 credits.",
+      "briefing": "Smuggle Lynch’s cousin Regis from New Constantinople to Castor system, Romulus mining base.\n\nPays 30000 credits.",
       "pay": 30000,
       "encounters": [
         {
@@ -536,7 +535,7 @@
       "game": "PRIV",
       "series": "Lynch",
       "mission": "D",
-      "briefing": "Collect Lynch's researcher from New Castle system, Liverpool refinery base.\n\nPays 30000 credits.",
+      "briefing": "Collect Lynch’s researcher from Newcastle system, Liverpool refinery base.\n\nPays 30000 credits.",
       "pay": 0,
       "encounters": [
         {
@@ -678,7 +677,7 @@
       "game": "PRIV",
       "series": "Masterson",
       "mission": "A",
-      "briefing": "Meet with Hunter Toth's ship at Oxford system, Nav 3 and escort him safely to Oxford.\n\nPays 10000 credits.",
+      "briefing": "Meet with Hunter Toth’s ship at Oxford system, Nav 3 and escort him safely to Oxford.\n\nPays 10000 credits.",
       "pay": 10000,
       "encounters": [
         {
@@ -758,7 +757,7 @@
       "game": "PRIV",
       "series": "Masterson",
       "mission": "C",
-      "briefing": "Meet with the ship Vulcan's Forge, at Oxford system, Nav 3, and escort it safely to Oxford.\n\nPays 10000 credits.",
+      "briefing": "Meet with the ship Vulcan’s Forge, at Oxford system, Nav 3, and escort it safely to Oxford.\n\nPays 10000 credits.",
       "pay": 10000,
       "encounters": [
         {
@@ -905,7 +904,7 @@
       "game": "PRIV",
       "series": "Murphy",
       "mission": "C",
-      "briefing": "Attack the remaining blockade at Palan system, Nav 4.\n\nBreak through and land on planet Palan and meet Dr. Monkhouse there in the bar.\n\nPays 15000 credits.",
+      "briefing": "Attack the remaining blockade at Palan system, Nav 4.\n\nBreak through and land on planet Palan and meet Dr Monkhouse there in the bar.\n\nPays 15000 credits.",
       "pay": 15000,
       "encounters": [
         {
@@ -945,7 +944,7 @@
       "game": "PRIV",
       "series": "Murphy",
       "mission": "D",
-      "briefing": "Transport Dr. Monkhouse to Basra refinery.\n\nAfter landing on Basra, meet Dr. Monkhouse in the bar for his analysis of the artifact.\n\nPays 5000 credits.",
+      "briefing": "Transport Dr Monkhouse to Basra refinery.\n\nAfter landing on Basra, meet Dr Monkhouse in the bar for his analysis of the artifact.\n\nPays 5000 credits.",
       "pay": 5000,
       "encounters": [
         {
@@ -974,7 +973,7 @@
       "game": "PRIV",
       "series": "Cross",
       "mission": "A",
-      "briefing": "Travel to Delta system and map sector by hitting 4 nav points pre- programmed into your ships nav computer.\n\nPays 10000 credits.",
+      "briefing": "Travel to Delta system and map sector by hitting 4 nav points pre-programmed into your ship’s nav computer.\n\nPays 10000 credits.",
       "pay": 10000,
       "encounters": [
         {
@@ -1105,7 +1104,7 @@
       "game": "PRIV",
       "series": "Cross",
       "mission": "D",
-      "briefing": "Map newly discov- ered system Delta Prime.Jump to Delta Prime from Gamma system. Hit the nav point programmed into your nav computer.\n\nPays 10000 credits.",
+      "briefing": "Map newly discovered system Delta Prime. Jump to Delta Prime from Gamma system. Hit the nav point programmed into your nav computer.\n\nPays 10000 credits.",
       "pay": 10000,
       "encounters": []
     },
@@ -1114,7 +1113,7 @@
       "game": "PRIV",
       "series": "Terrell",
       "mission": "A",
-      "briefing": "Travel to Perry Naval Base and meet with Admiral Terrel to discuss the mysterious series of disappearing and destroyed ships that have been found in the wake of your movements.",
+      "briefing": "Travel to Perry Naval Base and meet with Admiral Terrell to discuss the mysterious series of disappearing and destroyed ships that have been found in the wake of your movements.",
       "pay": 0,
       "encounters": [
         {
@@ -1390,7 +1389,7 @@
       "game": "RF",
       "series": "Tayla",
       "mission": "A",
-      "briefing": "Take cargo of personal goods from Oakham pirate base to Tuck's in the Sherwood system.\n\nPays 10000 credits.\n\nTayla will be waiting for you there to give you your next mission.",
+      "briefing": "Take cargo of personal goods from Oakham pirate base to Tuck’s in the Sherwood system.\n\nPays 10000 credits.\n\nTayla will be waiting for you there to give you your next mission.",
       "pay": 10000,
       "encounters": [
         {
@@ -1490,7 +1489,7 @@
       "game": "RF",
       "series": "Tayla",
       "mission": "B",
-      "briefing": "Take cargo of Brilliance from Tuck's to Saratov mining base in the Prasepe system.\n\nPays 20000 credits.",
+      "briefing": "Take cargo of Brilliance from Tuck’s to Saratov mining base in the Prasepe system.\n\nPays 20000 credits.",
       "pay": 20000,
       "encounters": [
         {
@@ -1600,7 +1599,7 @@
       "game": "RF",
       "series": "Tayla",
       "mission": "C",
-      "briefing": "Take load of Brilliance from Tuck's to Speke in Junction system.\n\nPays 30000 credits.",
+      "briefing": "Take load of Brilliance from Tuck’s to Speke in Junction system.\n\nPays 30000 credits.",
       "pay": 30000,
       "encounters": [
         {
@@ -1770,7 +1769,7 @@
       "game": "RF",
       "series": "Tayla",
       "mission": "D",
-      "briefing": "Deliver Brilliance from Tuck's to Basque in Pyrennes System.\n\nPays 40000 credits.",
+      "briefing": "Deliver Brilliance from Tuck’s to Basque in Pyrenees System.\n\nPays 40000 credits.",
       "pay": 40000,
       "encounters": [
         {
@@ -2396,7 +2395,7 @@
       "game": "RF",
       "series": "Masterson",
       "mission": "C",
-      "briefing": "Take cargo of rare books from Oxford to base Burton in the  Junction system.\n\nPays 10000 credits.\n\nReturn to Masterson at Oxford for next mission.",
+      "briefing": "Take cargo of rare books from Oxford to base Burton in the Junction system.\n\nPays 10000 credits.\n\nReturn to Masterson at Oxford for next mission.",
       "pay": 10000,
       "encounters": [
         {
@@ -2714,7 +2713,7 @@
       "game": "RF",
       "series": "Monte",
       "mission": "B2",
-      "briefing": "Deliver documents to Monte at New Detroit base\nin New Detroit system.\n\nSee Contact in the bar on Drake base\nfor further information.",
+      "briefing": "Deliver documents to Monte at New Detroit base in New Detroit system.\n\nSee contact in the bar on Drake base for further information.",
       "pay": 0,
       "encounters": [
         {
@@ -2810,7 +2809,7 @@
       "game": "RF",
       "series": "Monte",
       "mission": "D",
-      "briefing": "Bounty offered for the eradication of Menesch from Gemini Sector.\n Search Troy and surrounding systems.",
+      "briefing": "Bounty offered for the eradication of Menesch from Gemini Sector.\n\nSearch Troy and surrounding systems.",
       "pay": 0,
       "encounters": [
         {
@@ -2980,7 +2979,7 @@
       "game": "RF",
       "series": "Terrell",
       "mission": "A",
-      "briefing": "Travel to Blockade Point Alpha, Nav 1, meet with Commodore Uhler, and wait for further instructions. \n\nPays 20000 credits.",
+      "briefing": "Travel to Blockade Point Alpha, Nav 1, meet with Commodore Uhler, and wait for further instructions.\n\nPays 20000 credits.",
       "pay": 20000,
       "encounters": [
         {
@@ -3050,7 +3049,7 @@
       "game": "RF",
       "series": "Terrell",
       "mission": "B",
-      "briefing": "Patrol the Death, Pestilence and War systems, and destroy any Retro presence.\n\n Pays 20000 credits.\n\nReturn to Admiral Terral at Perry Naval Base.",
+      "briefing": "Patrol the Death, Pestilence and War systems, and destroy any Retro presence.\n\nPays 20000 credits.\n\nReturn to Admiral Terrell at Perry Naval Base.",
       "pay": 20000,
       "encounters": [
         {
@@ -3186,7 +3185,7 @@
       "game": "RF",
       "series": "Informant",
       "mission": "A",
-      "briefing": "Bounty offered for the eradication of Jones from Gemini Sector.\n\nSearch Valhalla for jump to Eden.\nProceed to Retro base in Eden.",
+      "briefing": "Bounty offered for the eradication of Jones from Gemini Sector.\n\nSearch Valhalla for jump to Eden. Proceed to Retro base in Eden.",
       "pay": 0,
       "encounters": [
         {
@@ -3316,7 +3315,7 @@
       "game": "RF",
       "series": "Informant",
       "mission": "B",
-      "briefing": "Bounty offered for the eradication of Jones from Gemini Sector.Locate Jones in Eden system.\n\nPays 80000 credits.",
+      "briefing": "Bounty offered for the eradication of Jones from Gemini Sector. Locate Jones in Eden system.\n\nPays 80000 credits.",
       "pay": 80000,
       "encounters": [
         {
