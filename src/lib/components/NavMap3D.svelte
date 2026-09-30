@@ -14,6 +14,7 @@
   import { encounterRolls } from '../stores/encounters.js';
   import { routeThroughSystem } from '../utils/journey.js';
   import { fontReady } from '../utils/fonts.js';
+  import { systemName } from '../utils/navPoints.js';
   import { t } from '../i18n/index.js';
 
   let {
@@ -45,7 +46,7 @@
   let hintText = $derived(
     focused
       ? [
-          $t('navMap3D.hintInspectingBase', { baseName: focused.baseName }),
+          inspectingText(focused),
           $t('navMap3D.hintDragOrbit'),
           $t('navMap3D.hintScrollZoom'),
           $t('navMap3D.hintEscReturn'),
@@ -56,12 +57,20 @@
             $t('navMap3D.hintDragOrbit'),
             $t('navMap3D.hintScrollZoom'),
             $t('navMap3D.hintClickNode'),
-            $t('navMap3D.hintJumpTravel'),
-            $t('navMap3D.hintBaseInspect'),
+            $t('navMap3D.hintNodeZoom'),
           ].join(' · ')
   );
 
+  function inspectingText(np) {
+    if (np.baseName) return $t('navMap3D.hintInspecting', { name: np.baseName });
+    if (np.dest) return $t('navMap3D.hintInspectingJump', { system: systemName(data, np.dest) });
+    return $t('navMap3D.hintInspecting', { name: np.label });
+  }
+
   onMount(() => {
+    // A fresh scene always starts zoomed out - clear any focus left bound in
+    // the parent from before a 2D<->3D mode switch unmounted the old scene.
+    focused = null;
     // Three.js is loaded lazily so it isn't part of the initial bundle - the
     // sector map and 2D view never need it, and it only pays for itself once
     // a system's 3D view actually mounts.
@@ -80,7 +89,7 @@
         canvas,
         onSelect: (np) => selectedNode.set(np),
         onJump,
-        onFocusBase: handleFocusBase,
+        onFocusNode: toggleFocus,
         data,
         systemId,
         idleRotationEnabled: $idleRotationEnabled,
@@ -187,12 +196,14 @@
   }
 
   // Called from createNavScene's own dblclick handler (ray-casting happens in
-  // the three.js layer, not a Svelte DOM handler) whenever a base is
-  // double-clicked - toggles focus off if it's the currently-focused base,
-  // otherwise focuses it (re-targeting directly if a different base was
-  // already focused).
-  function handleFocusBase(np) {
-    if (!scene || animating) return;
+  // the three.js layer, not a Svelte DOM handler) and from the info panel's
+  // Zoom button, for any nav point type - toggles focus off if it's the
+  // currently-focused point, otherwise focuses it (re-targeting directly if a
+  // different point was already focused). Zooming isn't available in the
+  // flattened aligned view; the scene would silently refuse, leaving
+  // `animating` stuck, so that's guarded here too.
+  export function toggleFocus(np) {
+    if (!scene || animating || aligned) return;
     if (focused?.id === np.id) { exitFocus(); return; }
     animating = true;
     scene.enterFocus(np, () => { focused = np; animating = false; });

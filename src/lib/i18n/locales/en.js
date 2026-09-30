@@ -33,7 +33,7 @@ export default {
   'about.version': 'Version {version} · {commit}',
 
   'settings.button': 'Settings',
-  'settings.waitForAnimation': 'Wait for the alignment animation to finish',
+  'settings.waitForAnimation': 'Wait for the animation to finish',
   'settings.global': 'Global',
   'settings.showHiddenPoints': 'Show hidden points',
   'settings.showGridLines': 'Show grid lines',
@@ -50,16 +50,17 @@ export default {
   'navMap3D.loading': 'Loading 3D engine…',
   'navMap3D.freeView': 'Free view',
   'navMap3D.alignedView': 'Aligned view',
-  'navMap3D.exitBaseFocusFirst': 'Exit base focus first (double-click the base or press Esc)',
+  'navMap3D.exitZoomFirst': 'Zoom out first (Zoom button, double-click or Esc)',
   // Short reusable phrases composed into the hint line at the call site
   // (see NavMap3D.svelte) - 'drag to orbit' and 'click a node' each appear
   // in more than one hint state, so they're only translated once.
-  'navMap3D.hintInspectingBase': 'inspecting {baseName}',
+  'navMap3D.hintInspecting': 'inspecting {name}',
+  'navMap3D.hintInspectingJump': 'inspecting jump to {system}',
   'navMap3D.hintDragOrbit': 'drag to orbit',
   'navMap3D.hintScrollZoom': 'scroll to zoom',
   'navMap3D.hintClickNode': 'click a node',
   'navMap3D.hintJumpTravel': 'double-click a jump point to travel',
-  'navMap3D.hintBaseInspect': 'double-click a base to inspect',
+  'navMap3D.hintNodeZoom': 'double-click a node to zoom in',
   'navMap3D.hintEscReturn': 'double-click or Esc to return',
 
   'infoPanel.jumpTo': 'Jump to {system}',
@@ -68,6 +69,9 @@ export default {
   'infoPanel.mercenariesGuild': 'Mercenaries Guild',
   'infoPanel.shipDealer': 'Ship Dealer',
   'infoPanel.encounterProbability': 'Encounter Probability',
+  'infoPanel.zoom': 'Zoom',
+  'infoPanel.travel': 'Travel',
+  'infoPanel.zoomUnavailable': 'Zoom is only available in the free 3D view',
 
   'commoditiesDialog.title': '{base} Commodities',
   'commoditiesDialog.commodity': 'Commodity',

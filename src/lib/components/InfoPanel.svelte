@@ -8,7 +8,18 @@
   import CommoditiesDialog from './CommoditiesDialog.svelte';
   import { t } from '../i18n/index.js';
 
-  let { data } = $props();
+  let {
+    data,
+    // Zoom only works in the free (non-aligned) 3D view - the button stays in
+    // place but disabled elsewhere, so the panel's layout doesn't shift.
+    zoomAvailable = false,
+    // ID of the nav point the 3D view is currently zoomed in on, if any.
+    zoomedId = null,
+    // true while a 3D alignment/zoom animation is in progress
+    locked = false,
+    onZoom,
+    onTravel,
+  } = $props();
 
   let showCommodities = $state(false);
 </script>
@@ -47,11 +58,37 @@
             {/each}
           </details>
         {/if}
-        {#if d.baseName && hasCommodityData(d.baseType)}
-          <button type="button" class="commodities-btn primary" onclick={() => (showCommodities = true)}>
-            {$t('common.commodities')}
+        <!-- Zoom always comes first so it sits in the same place for every
+             node type. -->
+        <div class="actions">
+          <button
+            type="button"
+            class="primary"
+            class:active={zoomedId === d.id}
+            aria-pressed={zoomedId === d.id}
+            disabled={!zoomAvailable || locked}
+            title={locked ? $t('settings.waitForAnimation') : !zoomAvailable ? $t('infoPanel.zoomUnavailable') : undefined}
+            onclick={() => onZoom?.(d)}
+          >
+            {$t('infoPanel.zoom')}
           </button>
-        {/if}
+          {#if d.baseName && hasCommodityData(d.baseType)}
+            <button type="button" class="primary" onclick={() => (showCommodities = true)}>
+              {$t('common.commodities')}
+            </button>
+          {/if}
+          {#if d.dest}
+            <button
+              type="button"
+              class="primary"
+              disabled={locked}
+              title={locked ? $t('settings.waitForAnimation') : undefined}
+              onclick={() => onTravel?.(d.dest)}
+            >
+              {$t('infoPanel.travel')}
+            </button>
+          {/if}
+        </div>
       </div>
     </div>
   </div>
@@ -93,8 +130,13 @@
   .encounters { margin-top: 8px; }
   .encounters summary { cursor: pointer; color: var(--text-amber); font-size: var(--font-size-body-secondary); }
   .encounter-row { font-size: var(--font-size-small); margin-top: 4px; }
-  .commodities-btn {
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     margin-top: 10px;
+  }
+  .actions button {
     font-size: var(--font-size-button);
     text-transform: uppercase;
   }

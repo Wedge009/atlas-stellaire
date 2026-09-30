@@ -218,7 +218,7 @@ export function createNavScene({
   canvas,
   onSelect,
   onJump,
-  onFocusBase,
+  onFocusNode,
   data,
   systemId,
   idleRotationEnabled = true,
@@ -644,14 +644,14 @@ export function createNavScene({
   // --- orbit camera ---
   // Orbit radius has two clamp ranges depending on whether the camera is
   // circling the whole system (pivot at the origin) or focused in on a
-  // single base (pivot moved to that base's position, see enterFocus below)
+  // single nav point (pivot moved to its position, see enterFocus below)
   // - a base model is only ~4.5 units across, so the system-wide 20-220
   // range would either clip through it or view it from a km away.
   const ORBIT_RADIUS_MIN = 20, ORBIT_RADIUS_MAX = 220;
   const FOCUS_RADIUS_MIN = 6, FOCUS_RADIUS_MAX = 25, FOCUS_RADIUS_DEFAULT = 10;
   let radius = 180, theta = Math.PI / 4, phi = Math.PI / 3.2;
   let savedRadius = radius, savedTheta = theta, savedPhi = phi;
-  // Orbit pivot: the origin for the whole-system view, or a focused base's
+  // Orbit pivot: the origin for the whole-system view, or a focused point's
   // world position while zoomed in on it (see enterFocus/exitFocus). Kept as
   // a live vector (rather than always literally the origin) so the same
   // orbitCameraPosition/lookAt maths serves both.
@@ -752,12 +752,13 @@ export function createNavScene({
     raycaster.setFromCamera(mouse, camera);
     const hits = raycaster.intersectObjects(pointerNodeTargets());
     const np = hits.length ? hits[0].object.userData : null;
-    if (np?.dest) { onJump?.(np.dest); return; }
-    // Bases don't make sense to zoom into from the flattened 2D-aligned
-    // projection (they sit flush on the ground plane there) - the caller
-    // (NavMap3D) also disables the align toggle while focused, this is the
-    // defensive/entry-point half of that same rule.
-    if (np?.baseName && !aligned) onFocusBase?.(np);
+    if (!np) return;
+    // Double-click means zoom in the free 3D view, for every node type
+    // (travel is the info panel's Travel button there). In the flattened
+    // 2D-aligned projection zooming isn't available, so a jump point's
+    // double-click travels instead, matching the pure 2D view.
+    if (aligned) { if (np.dest) onJump?.(np.dest); return; }
+    onFocusNode?.(np);
   }
   function onHoverMove(e) {
     // Plain cursor movement over the canvas (no click, drag, zoom or touch)
@@ -873,12 +874,12 @@ export function createNavScene({
     requestAnimationFrame(step);
   }
 
-  // Zooms in on a single base: moves the orbit pivot from the origin to the
-  // base's own position and dollies the radius down into FOCUS_RADIUS range,
+  // Zooms in on a single nav point (any type): moves the orbit pivot from the
+  // origin to the point's own position and dollies the radius down into FOCUS_RADIUS range,
   // keeping the current theta/phi (viewing angle) throughout rather than
   // animating them too - it reads as 'pushing in on what you're already
   // looking at' instead of snapping to some other angle. Can be called again
-  // with a different base while already focused (re-targets base-to-base
+  // with a different point while already focused (re-targets point-to-point
   // without returning to the system view first); savedRadius is only
   // captured on the first entry so a later exitFocus still restores the
   // original system-wide zoom level.

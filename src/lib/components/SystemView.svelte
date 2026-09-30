@@ -63,7 +63,7 @@
             class="primary caps"
             onclick={() => navMap3D?.toggleAlign()}
             disabled={mapAnimating || !!mapFocused}
-            title={mapFocused ? $t('navMap3D.exitBaseFocusFirst') : undefined}
+            title={mapFocused ? $t('navMap3D.exitZoomFirst') : undefined}
           >
             {$viewAligned ? $t('navMap3D.alignedView') : $t('navMap3D.freeView')}
           </button>
@@ -94,7 +94,14 @@
     class="overlay-info"
     use:draggable={{ positionStore: infoPanelPosition, handle: '.drag-handle' }}
   >
-    <InfoPanel {data} />
+    <InfoPanel
+      {data}
+      zoomAvailable={$viewMode === '3d' && !mapLoading && !$viewAligned}
+      zoomedId={$viewMode === '3d' ? mapFocused?.id : null}
+      locked={animationLocked}
+      onZoom={(np) => navMap3D?.toggleFocus(np)}
+      onTravel={onJump}
+    />
   </div>
   <div
     class="overlay-legend"
