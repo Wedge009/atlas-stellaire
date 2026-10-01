@@ -3,7 +3,7 @@
   import { baseTypeIcon } from '../utils/baseTypes.js';
   import { systemName } from '../utils/navPoints.js';
   import { sortedEncounterGroups } from '../utils/encounters.js';
-  import { shipName } from '../utils/ships.js';
+  import { shipName, shipLabel } from '../utils/ships.js';
   import { hasCommodityData } from '../data/commodities.js';
   import { missionOverrides } from '../stores/storyMission.js';
   import CommoditiesDialog from './CommoditiesDialog.svelte';
@@ -31,8 +31,8 @@
   // encounter table entirely.
   // A named character is a single ship, so reads as eg 'Paradigm: Reismann'
   // without a count.
-  function shipLabel({ ship, count, character }) {
-    return character ? `${shipName(ship)}: ${character}` : `${count}× ${shipName(ship)}`;
+  function missionShipLabel({ ship, count, character }) {
+    return character ? shipLabel(ship, character) : `${count}× ${shipName(ship)}`;
   }
 
   let missionShips = $derived($selectedNode ? $missionOverrides.get(systemId)?.get($selectedNode.id) : null);
@@ -65,7 +65,7 @@
           <div class="encounters">
             <div class="mission-title">{$t('infoPanel.missionEncounter')}</div>
             {#each missionShips as s, i (i)}
-              <div class="row muted encounter-row">{shipLabel(s)}</div>
+              <div class="row muted encounter-row">{missionShipLabel(s)}</div>
             {/each}
           </div>
         {:else if d.encounters?.length}

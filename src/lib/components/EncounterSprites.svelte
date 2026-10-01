@@ -1,6 +1,6 @@
 <script>
   import { shipSpritePath } from '../utils/encounters.js';
-  import { shipName } from '../utils/ships.js';
+  import { shipLabel } from '../utils/ships.js';
   import { spriteSizeFor } from '../utils/encounterLayout.js';
 
   let { ships, onSelect, onJump } = $props();
@@ -68,7 +68,7 @@
       tabindex="-1"
       onkeydown={(e) => e.key === 'Enter' && onSelect?.()}
     >
-      <title>{shipName(s.ship)}</title>
+      <title>{shipLabel(s.ship, s.character)}</title>
       <image
         href={shipSpritePath(s.ship)}
         x={dx - size / 2}

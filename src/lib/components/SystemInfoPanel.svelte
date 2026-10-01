@@ -1,6 +1,6 @@
 <script>
   import { systemName } from '../utils/navPoints.js';
-  import { shipName } from '../utils/ships.js';
+  import { shipName, shipLabel } from '../utils/ships.js';
   import { missionOverrides } from '../stores/storyMission.js';
   import { t } from '../i18n/index.js';
 
@@ -24,10 +24,10 @@
       .sort((a, b) => a.localeCompare(b))
   );
 
-  // Ships the active story mission fixes at any nav point in this system.
+  // Ships the active story mission fixes at any nav point in this system,
+  // with any named characters listed in their own right.
   let missionShips = $derived(
-    [...new Set([...($missionOverrides.get(system.id)?.values() ?? [])].flat().map((s) => s.ship))]
-      .map(shipName)
+    [...new Set([...($missionOverrides.get(system.id)?.values() ?? [])].flat().map((s) => shipLabel(s.ship, s.character)))]
       .sort((a, b) => a.localeCompare(b))
   );
 

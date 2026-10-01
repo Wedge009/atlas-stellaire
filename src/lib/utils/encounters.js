@@ -14,13 +14,14 @@ export function rollEncounters(navPoint, rng = Math.random) {
   return expandShips(winner.ships);
 }
 
-// Expands [{ship, count, speedMultiplier}] into one entry per ship instance
-// (speedMultiplier is only set on some mission ships).
+// Expands [{ship, count, speedMultiplier, character}] into one entry per ship
+// instance (speedMultiplier and character are only set on some mission
+// ships).
 export function expandShips(groupShips) {
   const ships = [];
-  for (const { ship, count, speedMultiplier = 1 } of groupShips) {
+  for (const { ship, count, speedMultiplier = 1, character = null } of groupShips) {
     for (let i = 0; i < count; i++) {
-      ships.push({ ship, speedMultiplier, instanceIndex: ships.length });
+      ships.push({ ship, speedMultiplier, character, instanceIndex: ships.length });
     }
   }
   return ships;

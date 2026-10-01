@@ -86,6 +86,12 @@ export function shipName(shipId) {
   return SHIP_NAMES[shipId] ?? shipId;
 }
 
+// Ship name plus, for a story mission's named character, who it is - eg
+// 'Paradigm: Reismann'.
+export function shipLabel(shipId, character = null) {
+  return character ? `${shipName(shipId)}: ${character}` : shipName(shipId);
+}
+
 export function shipMaxSpeed(shipId) {
   return SHIP_MAX_SPEEDS[shipId];
 }
