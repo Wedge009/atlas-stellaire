@@ -11944,8 +11944,8 @@
               "baseType": "refinery",
               "facilities": {
                 "merchantsGuild": true,
-                "mercenariesGuild": false,
-                "shipDealer": false
+                "mercenariesGuild": true,
+                "shipDealer": true
               },
               "encounters": [
                 {

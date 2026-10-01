@@ -214,6 +214,44 @@ mistyped co-ordinate (one of S1MD's three 'regular' pirate Talons at
 Pentonville Nav 2 is 74,500 out, well outside the system's roughly ±60,000
 space).
 
+**Commodity prices** (`DATA\OPTIONS\COMODTYP.IFF`, one per game): a
+`FORM COMD` holding one `FORM COMM` per commodity, each with an `INFO` ID, a
+`LABL` name and two tables, `COST` and `AVAL`. Each table is 19 signed 16-bit
+values: a base value, then nine (location, modifier) pairs. The location
+keys are base types for the generic bases (1 pleasure, 2 refinery,
+3 mining, 4 agricultural, 5 pirate) and global base IDs (from `BASES.IFF`)
+for the four unique ones (31 New Constantinople, 32 New Detroit, 39 Oxford,
+41 Perry).
+
+- **Price** at a location is base + trunc(modifier × random), with random in
+  [0, 1) and truncation towards zero. A positive modifier gives a range from
+  the base price up to base + modifier − 1. A negative one gives
+  base + modifier + 1 up to the base price. A modifier of 0 gives a fixed
+  price. This is why a price range's far end is always one short of a
+  round figure.
+- **Availability:** a `COST` modifier of −1 (always paired with an `AVAL`
+  of −1) means the commodity isn't traded at that location at all. Otherwise
+  an `AVAL` modifier of −1 means the base buys it but doesn't sell it.
+- **Stock:** a commodity the base sells isn't always in stock. Each time the
+  base loads, it's stocked with a fixed chance of the `AVAL` base value plus
+  its modifier, in per cent and capped at 100 (eg Grain at an agricultural
+  base: 50 + 60, so always; Construction there: 50 − 40 = 10%). The Commodity
+  Exchange lists whatever is stocked in commodity-number order.
+- **Non-trade entries:** entries with a base of 0 that are sold nowhere are
+  mission cargo, not trade goods (Alien Artifact, Mission Cargo, and RF's
+  Documents and Monte).
+
+`src/lib/data/commodities.js` is generated from this file.
+
+**Base facilities** (`DATA\OPTIONS\GAMEFLOW.IFF`, the base-screen logic):
+a `FORM MISS` per location, identified by its global base ID (59 is the
+Steltek derelict), holding a `FORM SCEN` per screen and a `FORM SPRT` per
+mouse-click hot-spot. A hot-spot's `INFO` byte identifies it, and `EFCT` gives
+what it does. The Merchants' Guild is hot-spot `0x3D`, the Mercenaries' Guild
+`0xCB`, and the Ship Dealer `0xC0`/`0xC1`/`0xC9`, which always appear
+together. Populates each base's `facilities` in `gemini.json`; the data is
+identical in both games.
+
 ### Jump transition animation
 
 The full-viewport hyperspace-jump effect played when you use a jump point
