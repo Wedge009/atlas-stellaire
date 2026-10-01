@@ -314,6 +314,21 @@ in ambient `WAND` encounters:
   `src/lib/utils/ships.js`'s `shipSize()` exposes `dim2` per ship; the
   encounter renderer scales each sprite by this value rather than by the
   sprite bitmap's own pixel size.
+- Top speed comes from `DATA\APPEARNC\SKELETON.IFF`, not the per-ship
+  `DATA\TYPES\*TYPE.IFF` stats files. Each sprite file has a one-byte `SKEL`
+  chunk indexing a `FORM SKEL` entry in `SKELETON.IFF` (via its `TABL` of
+  file offsets); hull entries carry a `FORM GUID` > `SHIP` chunk of eight
+  little-endian 32-bit values in 24.8 fixed point (divide by 256). The
+  second is top speed; the others appear to be acceleration, three turn
+  rates and afterburner speed. `ships.js`'s `shipMaxSpeed()` uses these
+  figures.
+- A `TYPES` file can override these with optional `SPEE`/`THRU` chunks, but
+  these are 8.8 fixed-point multipliers (256 = 1x) on the base top speed and
+  acceleration, not absolute values (confirmed from the game's flight code).
+  Only RF uses them: its speed upgrade is 300 (x1.17, eg Centurion 500 →
+  585), and a few mission-specific stats files boost particular ships —
+  `ELITE` (the Salthi in RF's final missions, x1.25), `JONES` (x1.33),
+  `TRNSPORT` (a Drayman, x1.64) and `MENESCH1` (x1.17).
 
 ### Rendering: live projection, not a separate layout
 

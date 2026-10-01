@@ -25,24 +25,27 @@ const SHIP_NAMES = {
 };
 
 // Maximum speed in kps (the in-universe unit of measure used by the game;
-// treat these as relative-only, not tied to any real-world unit). The Talon
-// variants share the base ship's figure since they're just faction skins.
+// treat these as relative-only, not tied to any real-world unit), read from
+// DATA/APPEARNC/SKELETON.IFF: each sprite file's `SKEL` byte indexes a
+// `FORM SKEL` entry whose `GUID > SHIP` chunk holds the hull's flight stats
+// as 24.8 fixed-point values, the second being top speed. These are base
+// figures - a `SPEE` chunk in a ship's TYPES file scales them (256 = 1x), as
+// with RF's speed upgrade (Centurion 500 -> 585) and a few RF mission ships.
+// The Talon skins all index identical entries.
 const SHIP_MAX_SPEEDS = {
   BRDSWORD: 350,
   CLUNKER: 300,
   DEMON: 450,
   DRALTHI: 400,
   DRAYMAN: 200,
-  // No official figure for either Steltek ship - given the top speed in this
-  // table, as befits an advanced race.
-  DRONE: 500,
+  DRONE: 900,
   FIGHTER: 500,
   FRIGATE: 200,
-  GLADIUS: 500,
-  GOTHRI: 400,
-  KAMEKH: 300,
+  GLADIUS: 400,
+  GOTHRI: 450,
+  KAMEKH: 250,
   MERCHANT: 300,
-  SALTHI: 480,
+  SALTHI: 600,
   SCOUT: 500,
   STILETTO: 500,
   TALMIL: 400,
