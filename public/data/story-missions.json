@@ -2181,7 +2181,7 @@
       "game": "RF",
       "series": "Goodin",
       "mission": "C",
-      "briefing": "Patrol New Caledonia system for Kilrathi presence.\n\n Pays 10000 credits.",
+      "briefing": "Patrol New Caledonia system for Kilrathi presence.\n\nPays 10000 credits.",
       "pay": 10000,
       "encounters": [
         {
