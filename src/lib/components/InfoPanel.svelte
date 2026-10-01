@@ -29,6 +29,12 @@
 
   // The active story mission's fixed ships here, which replace the regular
   // encounter table entirely.
+  // A named character is a single ship, so reads as eg 'Paradigm: Reismann'
+  // without a count.
+  function shipLabel({ ship, count, character }) {
+    return character ? `${shipName(ship)}: ${character}` : `${count}× ${shipName(ship)}`;
+  }
+
   let missionShips = $derived($selectedNode ? $missionOverrides.get(systemId)?.get($selectedNode.id) : null);
 </script>
 
@@ -58,8 +64,8 @@
         {#if missionShips}
           <div class="encounters">
             <div class="mission-title">{$t('infoPanel.missionEncounter')}</div>
-            {#each missionShips as s (s.ship)}
-              <div class="row muted encounter-row">{s.count}× {shipName(s.ship)}</div>
+            {#each missionShips as s, i (i)}
+              <div class="row muted encounter-row">{shipLabel(s)}</div>
             {/each}
           </div>
         {:else if d.encounters?.length}

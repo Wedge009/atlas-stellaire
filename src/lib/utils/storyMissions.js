@@ -26,29 +26,33 @@ function presentOnArrival(ship) {
 }
 
 // The fixed encounters a mission puts in place of the regular random ones:
-// systemId -> navPointId -> [{ship, count}], with matching ship codes merged
-// (character names aren't shown yet, so a named Demon and two generic ones
-// read as '3x Demon'). `firstOf` encounters depend on which nav point is
-// reached first, so are skipped for now, as are nav points left with no
-// ships - those keep their regular encounters.
-export function missionEncounters(mission) {
+// systemId -> navPointId -> [{ship, count, character}]. A ship whose CAST
+// name is in `characters` (story-missions.json's name map, eg 'reis' ->
+// 'Reismann') stays its own entry with that friendly name; other ships of
+// the same code are merged, so a generic special-purpose CAST name (eg
+// 'confed1') reads like any other squadron. `firstOf` encounters depend on
+// which nav point is reached first, so are skipped for now, as are nav
+// points left with no ships - those keep their regular encounters (and
+// their system gets no entry at all, so isn't marked on the sector map).
+export function missionEncounters(mission, characters = {}) {
   const bySystem = new Map();
   for (const enc of mission?.encounters ?? []) {
     if (enc.firstOf) continue;
-    const counts = new Map();
+    const navPoints = bySystem.get(enc.system) ?? new Map();
+    // Keyed by ship code plus friendly name, so only otherwise identical
+    // ships merge. No mission lists the same nav point twice today, but
+    // merge rather than overwrite in case a future extraction does.
+    const merged = new Map((navPoints.get(enc.navPoint) ?? []).map((s) => [`${s.ship}|${s.character ?? ''}`, s]));
     for (const ship of enc.ships) {
-      if (presentOnArrival(ship)) counts.set(ship.ship, (counts.get(ship.ship) ?? 0) + ship.count);
+      if (!presentOnArrival(ship)) continue;
+      const character = characters[ship.character] ?? null;
+      const key = `${ship.ship}|${character ?? ''}`;
+      const prev = merged.get(key);
+      merged.set(key, { ship: ship.ship, count: (prev?.count ?? 0) + ship.count, character });
     }
-    if (!counts.size) continue;
-
-    if (!bySystem.has(enc.system)) bySystem.set(enc.system, new Map());
-    const navPoints = bySystem.get(enc.system);
-    // No mission lists the same nav point twice today, but merge rather than
-    // overwrite in case a future extraction does.
-    for (const [ship, count] of navPoints.get(enc.navPoint) ?? []) {
-      counts.set(ship, (counts.get(ship) ?? 0) + count);
-    }
-    navPoints.set(enc.navPoint, [...counts].map(([ship, count]) => ({ ship, count })));
+    if (!merged.size) continue;
+    navPoints.set(enc.navPoint, [...merged.values()]);
+    bySystem.set(enc.system, navPoints);
   }
   return bySystem;
 }
