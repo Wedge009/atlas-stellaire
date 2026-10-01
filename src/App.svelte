@@ -14,7 +14,7 @@
   import { findSystem } from './lib/utils/navPoints.js';
   import { journey, journeyInputs, plotJourney } from './lib/stores/journey.js';
   import { jumpTransitionEnabled } from './lib/stores/settings.js';
-  import { loadStoryMissions } from './lib/stores/storyMission.js';
+  import { loadStoryMissions, sectorData } from './lib/stores/storyMission.js';
   import { lastTopView, lastSystemId, journeyPanelPosition } from './lib/stores/ui.js';
   import { draggable } from './lib/actions/draggable.js';
   import { t, locale } from './lib/i18n/index.js';
@@ -50,6 +50,7 @@
     loadStoryMissions();
     const res = await fetch(`${import.meta.env.BASE_URL}data/gemini.json`);
     geminiData = await res.json();
+    sectorData.set(geminiData);
 
     if (topView === 'system' && !findSystem(geminiData, selectedSystemId)) {
       topView = 'sector';

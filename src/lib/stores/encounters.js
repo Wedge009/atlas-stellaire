@@ -1,6 +1,6 @@
 import { writable, derived } from 'svelte/store';
 import { rollEncounters, expandShips } from '../utils/encounters.js';
-import { missionOverrides } from './storyMission.js';
+import { missionOverrides, firstOfSeed } from './storyMission.js';
 
 // The regular random rolls for the currently-active system only (navPointId
 // -> RolledShip[]). Not persistent - rolls are intentionally ephemeral per
@@ -27,5 +27,7 @@ export function rollForSystem(systemId, navPoints) {
   for (const np of navPoints) {
     if (np.encounters?.length) rolls.set(np.id, rollEncounters(np));
   }
+  // New firstOf pick first, so the new rolls never show with the old pick.
+  firstOfSeed.set(Math.random());
   regularRolls.set({ systemId, rolls });
 }

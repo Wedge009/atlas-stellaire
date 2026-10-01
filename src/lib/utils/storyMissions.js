@@ -1,3 +1,5 @@
+import { findSystem } from './navPoints.js';
+
 // Game titles are proper nouns, so are not translated. Keyed by
 // story-missions.json's `game` field, in tab order.
 export const MISSION_GAMES = [
@@ -51,14 +53,23 @@ function showAs(ship) {
 // Reinforcement waves of a hull already there are left out, but the first
 // wave of each new hull is shown alongside the arrival ships (eg Cross C's
 // Kamekh), to represent what's at the nav point rather than give an exact
-// count. `firstOf` encounters depend on which nav point is reached first,
-// so are skipped for now, as are nav points left with no ships - those keep
-// their regular encounters (and their system gets no entry at all, so isn't
-// marked on the sector map).
-export function missionEncounters(mission, characters = {}, speedMultipliers = {}) {
+// count.
+//
+// A `firstOf` encounter only happens at whichever of its candidate nav
+// points the player reaches first. Where those are all in one system (Kroiz
+// in Lynch B, Miggs in Lynch D), `pickFirstOf` chooses one - see
+// pickFirstOf() below - and the others are left out. Where they're spread
+// over several systems (RF Terrell B's messenger, at Troy or Famine), it's
+// shown at all of them, as which system comes first is up to the player.
+//
+// Nav points left with no ships keep their regular encounters (and a system
+// with none at all gets no entry, so isn't marked on the sector map).
+export function missionEncounters(mission, characters = {}, speedMultipliers = {}, pickFirstOf = (candidates) => candidates[0]) {
   const bySystem = new Map();
   for (const enc of mission?.encounters ?? []) {
-    if (enc.firstOf) continue;
+    if (enc.firstOf && new Set(enc.firstOf.map((c) => c.system)).size === 1) {
+      if (pickFirstOf(enc.firstOf).navPoint !== enc.navPoint) continue;
+    }
     const navPoints = bySystem.get(enc.system) ?? new Map();
     // Keyed by ship code plus friendly name and speed, so only otherwise
     // identical ships merge. No mission lists the same nav point twice today,
@@ -88,4 +99,23 @@ export function missionEncounters(mission, characters = {}, speedMultipliers = {
     bySystem.set(enc.system, navPoints);
   }
   return bySystem;
+}
+
+// Chooses which of a single-system `firstOf` encounter's candidate nav
+// points (all jump points, in practice) the player reaches first. If the
+// plotted journey enters that system, that's the jump point it arrives by;
+// otherwise (no journey, the system isn't on it or is where it starts, or it
+// arrives by a jump point that isn't a candidate) it's a random pick, from a
+// `seed` in [0, 1) that stays fixed for the rest of the visit. Only a
+// system's first appearance in the journey counts.
+export function pickFirstOf(candidates, journey, data, seed) {
+  const systemId = candidates[0].system;
+  const idx = journey?.hops.findIndex((h) => h.systemId === systemId) ?? -1;
+  if (idx > 0 && data) {
+    const prevSystemId = journey.hops[idx - 1].systemId;
+    const entry = findSystem(data, systemId)?.navPoints.find((np) => np.dest === prevSystemId);
+    const arrival = candidates.find((c) => c.navPoint === entry?.id);
+    if (arrival) return arrival;
+  }
+  return candidates[Math.floor(seed * candidates.length)];
 }
