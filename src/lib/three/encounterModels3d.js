@@ -167,7 +167,7 @@ export function createEncounterModels3d({ scene, systemId }) {
       anchors.set(navPointId, anchor);
 
       ships.forEach((s, i) => {
-        const orbit = createOrbitParams({ systemId, navPointId, shipId: s.ship, instanceIndex: s.instanceIndex, shellIndex: i });
+        const orbit = createOrbitParams({ systemId, navPointId, shipId: s.ship, instanceIndex: s.instanceIndex, shellIndex: i, speedMultiplier: s.speedMultiplier });
         const size = spriteSizeFor(s.ship);
 
         // group carries position/orientation/scale every tick; the loaded

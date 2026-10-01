@@ -26,29 +26,32 @@ function presentOnArrival(ship) {
 }
 
 // The fixed encounters a mission puts in place of the regular random ones:
-// systemId -> navPointId -> [{ship, count, character}]. A ship whose CAST
-// name is in `characters` (story-missions.json's name map, eg 'reis' ->
-// 'Reismann') stays its own entry with that friendly name; other ships of
-// the same code are merged, so a generic special-purpose CAST name (eg
-// 'confed1') reads like any other squadron. `firstOf` encounters depend on
+// systemId -> navPointId -> [{ship, count, character, speedMultiplier}]. A
+// ship whose CAST name is in `characters` (story-missions.json's name map, eg
+// 'reis' -> 'Reismann') stays its own entry with that friendly name; other
+// ships of the same code are merged, so a generic special-purpose CAST name
+// (eg 'confed1') reads like any other squadron. Likewise a ship whose stats
+// file is in `speedMultipliers` (eg RF's elite Salthi) stays apart from
+// standard ones of its hull, carrying the factor on its base top speed. `firstOf` encounters depend on
 // which nav point is reached first, so are skipped for now, as are nav
 // points left with no ships - those keep their regular encounters (and
 // their system gets no entry at all, so isn't marked on the sector map).
-export function missionEncounters(mission, characters = {}) {
+export function missionEncounters(mission, characters = {}, speedMultipliers = {}) {
   const bySystem = new Map();
   for (const enc of mission?.encounters ?? []) {
     if (enc.firstOf) continue;
     const navPoints = bySystem.get(enc.system) ?? new Map();
-    // Keyed by ship code plus friendly name, so only otherwise identical
-    // ships merge. No mission lists the same nav point twice today, but
+    // Keyed by ship code plus friendly name and speed, so only otherwise
+    // identical ships merge. No mission lists the same nav point twice today, but
     // merge rather than overwrite in case a future extraction does.
-    const merged = new Map((navPoints.get(enc.navPoint) ?? []).map((s) => [`${s.ship}|${s.character ?? ''}`, s]));
+    const merged = new Map((navPoints.get(enc.navPoint) ?? []).map((s) => [`${s.ship}|${s.character ?? ''}|${s.speedMultiplier ?? 1}`, s]));
     for (const ship of enc.ships) {
       if (!presentOnArrival(ship)) continue;
       const character = characters[ship.character] ?? null;
-      const key = `${ship.ship}|${character ?? ''}`;
+      const speedMultiplier = speedMultipliers[ship.stats] ?? 1;
+      const key = `${ship.ship}|${character ?? ''}|${speedMultiplier}`;
       const prev = merged.get(key);
-      merged.set(key, { ship: ship.ship, count: (prev?.count ?? 0) + ship.count, character });
+      merged.set(key, { ship: ship.ship, count: (prev?.count ?? 0) + ship.count, character, speedMultiplier });
     }
     if (!merged.size) continue;
     navPoints.set(enc.navPoint, [...merged.values()]);

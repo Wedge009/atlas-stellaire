@@ -14,6 +14,12 @@
     "kahl": "Kahl",
     "riord1": "William Riordian"
   },
+  "speedMultipliers": {
+    "ELITE": 1.25,
+    "JONES": 1.328125,
+    "MENESCH1": 1.171875,
+    "TRNSPORT": 1.640625
+  },
   "missions": [
     {
       "id": "s0ma",
@@ -2469,7 +2475,8 @@
           "ships": [
             {
               "ship": "DRAYMAN",
-              "count": 1
+              "count": 1,
+              "stats": "TRNSPORT"
             },
             {
               "ship": "TALRELIG",
@@ -2834,7 +2841,8 @@
             {
               "ship": "FIGHTER",
               "count": 1,
-              "character": "MENESCH"
+              "character": "MENESCH",
+              "stats": "MENESCH1"
             },
             {
               "ship": "SALTHI",
@@ -3258,7 +3266,8 @@
             {
               "ship": "SALTHI",
               "count": 3,
-              "character": "elite"
+              "character": "elite",
+              "stats": "ELITE"
             },
             {
               "ship": "TALRELIG",
@@ -3286,6 +3295,7 @@
               "ship": "SALTHI",
               "count": 2,
               "character": "elite",
+              "stats": "ELITE",
               "trigger": {
                 "event": "kills",
                 "kills": 2
@@ -3341,6 +3351,7 @@
               "ship": "FIGHTER",
               "count": 1,
               "character": "JONES",
+              "stats": "JONES",
               "trigger": {
                 "event": "enterNav"
               }
@@ -3349,6 +3360,7 @@
               "ship": "SALTHI",
               "count": 2,
               "character": "elite",
+              "stats": "ELITE",
               "trigger": {
                 "event": "kills",
                 "kills": 2
@@ -3357,6 +3369,7 @@
             {
               "ship": "SALTHI",
               "count": 2,
+              "stats": "ELITE",
               "trigger": {
                 "event": "kills",
                 "kills": 6
@@ -3365,6 +3378,7 @@
             {
               "ship": "SALTHI",
               "count": 2,
+              "stats": "ELITE",
               "trigger": {
                 "event": "enterNav"
               }
@@ -3388,6 +3402,7 @@
             {
               "ship": "SALTHI",
               "count": 1,
+              "stats": "ELITE",
               "trigger": {
                 "event": "kills",
                 "kills": 4
@@ -3397,6 +3412,7 @@
               "ship": "SALTHI",
               "count": 2,
               "character": "elite",
+              "stats": "ELITE",
               "trigger": {
                 "event": "kills",
                 "kills": 8
@@ -3406,6 +3422,7 @@
               "ship": "SALTHI",
               "count": 1,
               "character": "elite",
+              "stats": "ELITE",
               "trigger": {
                 "character": "JONES",
                 "event": "destroyed"
@@ -3415,6 +3432,7 @@
               "ship": "SALTHI",
               "count": 2,
               "character": "elite",
+              "stats": "ELITE",
               "trigger": {
                 "event": "kills",
                 "kills": 10

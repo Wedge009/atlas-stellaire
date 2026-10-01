@@ -10,6 +10,10 @@ export const storyMissions = writable(/** @type {any[]} */ ([]));
 // named pilots and ships - see missionEncounters().
 export const missionCharacters = writable(/** @type {Record<string, string>} */ ({}));
 
+// Stats file -> top speed multiplier (eg 'ELITE' -> 1.25), for the few
+// mission ships whose stats boost their hull's base speed.
+export const missionSpeedMultipliers = writable(/** @type {Record<string, number>} */ ({}));
+
 // ID of the active story mission, or null. Remembered across a reload.
 export const activeMissionId = persisted('activeStoryMission', /** @type {string | null} */ (null));
 
@@ -21,15 +25,16 @@ export const activeMission = derived(
 // systemId -> navPointId -> [{ship, count}] for the active mission - see
 // missionEncounters(). Empty when no mission is active.
 export const missionOverrides = derived(
-  [activeMission, missionCharacters],
-  ([$mission, $characters]) => missionEncounters($mission, $characters)
+  [activeMission, missionCharacters, missionSpeedMultipliers],
+  ([$mission, $characters, $speedMultipliers]) => missionEncounters($mission, $characters, $speedMultipliers)
 );
 
 export async function loadStoryMissions() {
   try {
     const res = await fetch(`${import.meta.env.BASE_URL}data/story-missions.json`);
-    const { characters, missions } = await res.json();
+    const { characters, speedMultipliers, missions } = await res.json();
     missionCharacters.set(characters ?? {});
+    missionSpeedMultipliers.set(speedMultipliers ?? {});
     storyMissions.set(missions);
     // A reload may follow a data edit that removed or renamed the mission.
     const id = get(activeMissionId);

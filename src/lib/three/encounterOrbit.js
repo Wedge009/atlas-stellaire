@@ -59,8 +59,9 @@ function basisFromNormal(n) {
 // orbit plane (as an orthonormal u/v basis plus its normal, used as the
 // ship's constant 'up'/dorsal reference since it doesn't bank), radius,
 // starting phase and signed angular speed (real per-ship max speed divided
-// by radius, direction randomised per instance).
-export function createOrbitParams({ systemId, navPointId, shipId, instanceIndex, shellIndex }) {
+// by radius, direction randomised per instance). speedMultiplier scales the
+// hull's base top speed, for mission ships with boosted stats.
+export function createOrbitParams({ systemId, navPointId, shipId, instanceIndex, shellIndex, speedMultiplier = 1 }) {
   const seed = hashSeed(`${systemId}:${navPointId}:${shipId}:${instanceIndex}`);
   const rand = mulberry32(seed);
   const radius = ORBIT_BASE_RADIUS + shellIndex * ORBIT_SHELL_STEP;
@@ -72,7 +73,7 @@ export function createOrbitParams({ systemId, navPointId, shipId, instanceIndex,
   const { u, v } = basisFromNormal(planeNormal);
   const phase = rand() * Math.PI * 2;
   const direction = rand() < 0.5 ? 1 : -1;
-  const maxSpeed = shipMaxSpeed(shipId) ?? 300;
+  const maxSpeed = (shipMaxSpeed(shipId) ?? 300) * speedMultiplier;
   const angularSpeed = direction * (maxSpeed * SPEED_SCALE) / radius;
 
   return { u, v, up: planeNormal, radius, phase, angularSpeed };
