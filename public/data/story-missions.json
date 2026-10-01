@@ -1,4 +1,19 @@
 {
+  "characters": {
+    "SEELIG": "Seelig",
+    "toth": "Hunter Toth",
+    "rhombus": "Black Rhombus",
+    "forge": "Vulcan’s Forge",
+    "garvick": "Garrovick",
+    "reis": "Reismann",
+    "comodor": "Uhler",
+    "MENESCH": "Menesch",
+    "JONES": "Mordecai Jones",
+    "miggs": "Miggs",
+    "KROIZ": "Salman Kroiz",
+    "kahl": "Kahl",
+    "riord1": "William Riordian"
+  },
   "missions": [
     {
       "id": "s0ma",

@@ -144,7 +144,11 @@ since these only apply while a mission is active: each mission's
 `encounters` list gives `{system, navPoint, ships}` using `gemini.json`'s
 IDs, where each ship is `{ship, count}`, plus `character` for a
 named pilot or ship (eg `toth`, `MENESCH`) rather than a generic `XXX_YY`
-faction squadron. Each `CAST` name is also the name of an AI profile,
+faction squadron. The top-level `characters` map gives the display name
+for each `character` that is a real named character (eg `toth` → Hunter
+Toth); one with no entry (eg `RETRO1`, `elite`, `SDRONE`) is a generic pilot
+singled out only for its role in the mission. Names are proper nouns, so
+aren't translated. Each `CAST` name is also the name of an AI profile,
 `DATA\AIDS\<name>.IFF`, whose `INFO` record gives the faction, then pilot
 skill and attitude — the two letters after the underscore (skill D/A/S,
 attitude P/A/F, each 0–2). As with the regular encounters, faction, skill and
