@@ -1355,7 +1355,7 @@
       "game": "PRIV",
       "series": "Terrell",
       "mission": "B",
-      "briefing": "Travel to Blockade Point Tango, Nav 1, meet with Commodore Reismann there, and draw the suspected Kilrathi marauder into a Confederation ambush.\n\nPays 30000 credits.",
+      "briefing": "Travel to Blockade Point Tango, Nav 3, meet with Commodore Reismann there, and draw the suspected Kilrathi marauder into a Confederation ambush.\n\nPays 30000 credits.",
       "pay": 30000,
       "encounters": [
         {
