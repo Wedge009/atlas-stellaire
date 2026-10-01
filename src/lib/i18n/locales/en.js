@@ -80,7 +80,8 @@ export default {
   'commoditiesDialog.commodity': 'Commodity',
   'commoditiesDialog.low': 'Low',
   'commoditiesDialog.high': 'High',
-  'commoditiesDialog.soldHereNote': 'Highlighted rows are sold at this base.',
+  'commoditiesDialog.stock': 'In Stock',
+  'commoditiesDialog.soldHereNote': 'Highlighted rows are sold at this base. In Stock is the chance each is available at any one time.',
 
   'storyMissionDialog.mission': 'Mission',
   'storyMissionDialog.selectMission': 'Select a mission…',

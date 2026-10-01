@@ -16,16 +16,17 @@
 
   // Not persisted (unlike the rule-set tab) - it's a transient viewing
   // preference, reset each time the dialogue is reopened.
-  let sortColumn = $state(null); // 'name' | 'low' | 'high' | null (source order)
+  let sortColumn = $state(null); // 'name' | 'low' | 'high' | 'stock' | null (source order)
   let sortDirection = $state('asc');
 
   let sortedItems = $derived(
     sortColumn
       ? [...items].sort((a, b) => {
           const dir = sortDirection === 'asc' ? 1 : -1;
+          // `stock` is only set on rows sold here; the rest sort below 0%
           return sortColumn === 'name'
             ? a.name.localeCompare(b.name) * dir
-            : (a[sortColumn] - b[sortColumn]) * dir;
+            : ((a[sortColumn] ?? -1) - (b[sortColumn] ?? -1)) * dir;
         })
       : items
   );
@@ -40,7 +41,7 @@
   }
 </script>
 
-<Dialog title={$t('commoditiesDialog.title', { base: baseLabel })} label={$t('common.commodities')} {onClose} fillWidth>
+<Dialog title={$t('commoditiesDialog.title', { base: baseLabel })} label={$t('common.commodities')} {onClose} fillWidth maxWidth="560px">
   <div class="tabs" role="tablist">
     {#each RULESETS as ruleset (ruleset.id)}
       <button
@@ -78,6 +79,12 @@
               <span class="sort-arrow" class:visible={sortColumn === 'high'}>{sortDirection === 'asc' ? '▲' : '▼'}</span>
             </button>
           </th>
+          <th class="col-price">
+            <button type="button" class="sort-btn" onclick={() => toggleSort('stock')}>
+              {$t('commoditiesDialog.stock')}
+              <span class="sort-arrow" class:visible={sortColumn === 'stock'}>{sortDirection === 'asc' ? '▲' : '▼'}</span>
+            </button>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -86,6 +93,7 @@
             <td class="col-name">{item.name}</td>
             <td class="col-price">{item.low}</td>
             <td class="col-price">{item.high}</td>
+            <td class="col-price">{item.sold ? `${item.stock}%` : '–'}</td>
           </tr>
         {/each}
       </tbody>
@@ -147,6 +155,8 @@
     font-weight: normal;
     padding: 6px 10px;
     cursor: pointer;
+    /* keep the sort arrow beside its label rather than wrapping below it */
+    white-space: nowrap;
   }
   .sort-btn:hover { color: var(--text-emphasis); }
   .col-price .sort-btn { text-align: right; }

@@ -66,7 +66,8 @@ export default {
   'commoditiesDialog.commodity': 'Handelsware',
   'commoditiesDialog.low': 'Min.',
   'commoditiesDialog.high': 'Max.',
-  'commoditiesDialog.soldHereNote': 'Hervorgehobene Handelswaren werden an dieser Basis verkauft.',
+  'commoditiesDialog.stock': 'Vorrätig',
+  'commoditiesDialog.soldHereNote': 'Hervorgehobene Handelswaren werden an dieser Basis verkauft. Vorrätig gibt an, wie wahrscheinlich jede zu einem gegebenen Zeitpunkt erhältlich ist.',
 
   'storyMissionDialog.mission': 'Mission',
   'storyMissionDialog.selectMission': 'Mission auswählen…',

@@ -66,7 +66,8 @@ export default {
   'commoditiesDialog.commodity': 'Marchandise',
   'commoditiesDialog.low': 'Min',
   'commoditiesDialog.high': 'Max',
-  'commoditiesDialog.soldHereNote': 'Les lignes en surbrillance sont vendues à cette base.',
+  'commoditiesDialog.stock': 'En stock',
+  'commoditiesDialog.soldHereNote': 'Les lignes en surbrillance sont vendues à cette base. En stock indique la probabilité que chacune soit disponible à un moment donné.',
 
   'storyMissionDialog.mission': 'Mission',
   'storyMissionDialog.selectMission': 'Choisir une mission…',
