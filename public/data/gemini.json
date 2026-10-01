@@ -39,7 +39,7 @@
                   "ships": [
                     {
                       "ship": "GOTHRI",
-                      "count": 3
+                      "count": 2
                     },
                     {
                       "ship": "KAMEKH",
@@ -84,41 +84,19 @@
               "dest": null,
               "encounters": [
                 {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "STILETTO",
-                      "count": 3
-                    },
-                    {
-                      "ship": "FRIGATE",
-                      "count": 1
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
+                  "chance": 50,
                   "ships": [
                     {
                       "ship": "GOTHRI",
-                      "count": 4
+                      "count": 2
                     }
                   ]
                 },
                 {
-                  "chance": 30,
+                  "chance": 50,
                   "ships": [
                     {
                       "ship": "DRALTHI",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 10,
-                  "ships": [
-                    {
-                      "ship": "TALRELIG",
                       "count": 3
                     }
                   ]
@@ -138,10 +116,10 @@
               "dest": null,
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 35,
                   "ships": [
                     {
-                      "ship": "STILETTO",
+                      "ship": "GOTHRI",
                       "count": 3
                     }
                   ]
@@ -150,30 +128,30 @@
                   "chance": 30,
                   "ships": [
                     {
-                      "ship": "DRALTHI",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 30,
-                  "ships": [
-                    {
-                      "ship": "GOTHRI",
-                      "count": 4
-                    }
-                  ]
-                },
-                {
-                  "chance": 10,
-                  "ships": [
-                    {
                       "ship": "STILETTO",
-                      "count": 2
+                      "count": 1
                     },
                     {
+                      "ship": "GOTHRI",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 34,
+                  "ships": [
+                    {
                       "ship": "DRALTHI",
-                      "count": 2
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 1,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 3
                     }
                   ]
                 }
@@ -201,7 +179,49 @@
               "asteroids": false,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "tr-pakh"
+              "dest": "tr-pakh",
+              "encounters": [
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "STILETTO",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "DRALTHI",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "GOTHRI",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 10,
+                  "ships": [
+                    {
+                      "ship": "STILETTO",
+                      "count": 2
+                    },
+                    {
+                      "ship": "DRALTHI",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
             },
             {
               "id": "hidden-1",
@@ -1623,7 +1643,7 @@
               "dest": "perry",
               "encounters": [
                 {
-                  "chance": 25,
+                  "chance": 35,
                   "ships": [
                     {
                       "ship": "GOTHRI",
@@ -1632,7 +1652,7 @@
                   ]
                 },
                 {
-                  "chance": 25,
+                  "chance": 30,
                   "ships": [
                     {
                       "ship": "GOTHRI",
@@ -1645,7 +1665,7 @@
                   ]
                 },
                 {
-                  "chance": 25,
+                  "chance": 10,
                   "ships": [
                     {
                       "ship": "DEMON",
@@ -1685,7 +1705,7 @@
               "dest": "blockade-point-tango",
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 20,
                   "ships": [
                     {
                       "ship": "TALMIL",
@@ -1694,11 +1714,11 @@
                   ]
                 },
                 {
-                  "chance": 30,
+                  "chance": 40,
                   "ships": [
                     {
                       "ship": "GOTHRI",
-                      "count": 2
+                      "count": 3
                     },
                     {
                       "ship": "DRAYMAN",
@@ -1707,7 +1727,7 @@
                   ]
                 },
                 {
-                  "chance": 30,
+                  "chance": 20,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -1720,7 +1740,7 @@
                   ]
                 },
                 {
-                  "chance": 10,
+                  "chance": 20,
                   "ships": [
                     {
                       "ship": "TALRELIG",
@@ -1805,7 +1825,7 @@
               "dest": "cmf-a",
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 15,
                   "ships": [
                     {
                       "ship": "TALMIL",
@@ -1814,24 +1834,24 @@
                   ]
                 },
                 {
-                  "chance": 40,
+                  "chance": 45,
                   "ships": [
                     {
                       "ship": "TALMIL",
-                      "count": 2
+                      "count": 1
                     },
                     {
                       "ship": "DRALTHI",
-                      "count": 2
+                      "count": 3
                     }
                   ]
                 },
                 {
-                  "chance": 30,
+                  "chance": 40,
                   "ships": [
                     {
                       "ship": "DRALTHI",
-                      "count": 2
+                      "count": 3
                     }
                   ]
                 }
@@ -1857,7 +1877,7 @@
               },
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 10,
                   "ships": [
                     {
                       "ship": "TUG",
@@ -1883,7 +1903,7 @@
                   ]
                 },
                 {
-                  "chance": 40,
+                  "chance": 50,
                   "ships": [
                     {
                       "ship": "TALMIL",
@@ -1896,7 +1916,7 @@
                   ]
                 },
                 {
-                  "chance": 10,
+                  "chance": 20,
                   "ships": [
                     {
                       "ship": "TALRELIG",
@@ -2570,7 +2590,7 @@
               "dest": "new-detroit",
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 15,
                   "ships": [
                     {
                       "ship": "STILETTO",
@@ -2579,7 +2599,7 @@
                   ]
                 },
                 {
-                  "chance": 20,
+                  "chance": 15,
                   "ships": [
                     {
                       "ship": "BRDSWORD",
@@ -2592,7 +2612,7 @@
                   ]
                 },
                 {
-                  "chance": 20,
+                  "chance": 10,
                   "ships": [
                     {
                       "ship": "STILETTO",
@@ -2618,7 +2638,7 @@
                   ]
                 },
                 {
-                  "chance": 10,
+                  "chance": 40,
                   "ships": [
                     {
                       "ship": "TALRELIG",
@@ -2641,7 +2661,7 @@
               "dest": "midgard",
               "encounters": [
                 {
-                  "chance": 40,
+                  "chance": 20,
                   "ships": [
                     {
                       "ship": "DRAYMAN",
@@ -2650,7 +2670,7 @@
                   ]
                 },
                 {
-                  "chance": 30,
+                  "chance": 20,
                   "ships": [
                     {
                       "ship": "TUG",
@@ -2663,7 +2683,7 @@
                   ]
                 },
                 {
-                  "chance": 20,
+                  "chance": 50,
                   "ships": [
                     {
                       "ship": "FIGHTER",
@@ -2671,7 +2691,7 @@
                     },
                     {
                       "ship": "TALRELIG",
-                      "count": 2
+                      "count": 3
                     }
                   ]
                 },
@@ -2762,7 +2782,7 @@
                   ]
                 },
                 {
-                  "chance": 40,
+                  "chance": 10,
                   "ships": [
                     {
                       "ship": "GLADIUS",
@@ -2771,7 +2791,7 @@
                   ]
                 },
                 {
-                  "chance": 20,
+                  "chance": 50,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -2794,7 +2814,7 @@
               "dest": "44-p-1m",
               "encounters": [
                 {
-                  "chance": 40,
+                  "chance": 30,
                   "ships": [
                     {
                       "ship": "GLADIUS",
@@ -2803,7 +2823,7 @@
                   ]
                 },
                 {
-                  "chance": 40,
+                  "chance": 30,
                   "ships": [
                     {
                       "ship": "STILETTO",
@@ -2812,7 +2832,7 @@
                   ]
                 },
                 {
-                  "chance": 20,
+                  "chance": 40,
                   "ships": [
                     {
                       "ship": "TALRELIG",
@@ -4251,11 +4271,38 @@
               },
               "encounters": [
                 {
-                  "chance": 100,
+                  "chance": 20,
                   "ships": [
                     {
                       "ship": "TALPIR",
                       "count": 4
+                    }
+                  ]
+                },
+                {
+                  "chance": 40,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 4
+                    }
+                  ]
+                },
+                {
+                  "chance": 10,
+                  "ships": [
+                    {
+                      "ship": "TALPIR",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 3
                     }
                   ]
                 }
@@ -4717,7 +4764,7 @@
               "dest": "pestilence",
               "encounters": [
                 {
-                  "chance": 40,
+                  "chance": 15,
                   "ships": [
                     {
                       "ship": "TALMIL",
@@ -4726,7 +4773,7 @@
                   ]
                 },
                 {
-                  "chance": 40,
+                  "chance": 15,
                   "ships": [
                     {
                       "ship": "GLADIUS",
@@ -4735,7 +4782,7 @@
                   ]
                 },
                 {
-                  "chance": 20,
+                  "chance": 70,
                   "ships": [
                     {
                       "ship": "TALRELIG",
@@ -4758,7 +4805,7 @@
               "dest": null,
               "encounters": [
                 {
-                  "chance": 75,
+                  "chance": 25,
                   "ships": [
                     {
                       "ship": "GLADIUS",
@@ -4767,15 +4814,20 @@
                   ]
                 },
                 {
-                  "chance": 25,
+                  "chance": 55,
                   "ships": [
                     {
                       "ship": "TALPIR",
-                      "count": 2
-                    },
+                      "count": 4
+                    }
+                  ]
+                },
+                {
+                  "chance": 20,
+                  "ships": [
                     {
                       "ship": "TALRELIG",
-                      "count": 2
+                      "count": 3
                     }
                   ]
                 }
@@ -4798,16 +4850,16 @@
                   "ships": [
                     {
                       "ship": "DRAYMAN",
-                      "count": 2
+                      "count": 1
                     },
                     {
                       "ship": "TALPIR",
-                      "count": 2
+                      "count": 3
                     }
                   ]
                 },
                 {
-                  "chance": 30,
+                  "chance": 40,
                   "ships": [
                     {
                       "ship": "MERCHANT",
@@ -4815,12 +4867,12 @@
                     },
                     {
                       "ship": "TALRELIG",
-                      "count": 2
+                      "count": 3
                     }
                   ]
                 },
                 {
-                  "chance": 20,
+                  "chance": 10,
                   "ships": [
                     {
                       "ship": "GLADIUS",
@@ -6705,7 +6757,7 @@
               "dest": "death",
               "encounters": [
                 {
-                  "chance": 25,
+                  "chance": 10,
                   "ships": [
                     {
                       "ship": "GLADIUS",
@@ -6718,20 +6770,20 @@
                   ]
                 },
                 {
-                  "chance": 25,
+                  "chance": 40,
                   "ships": [
                     {
                       "ship": "TALPIR",
-                      "count": 2
+                      "count": 3
                     },
                     {
                       "ship": "GLADIUS",
-                      "count": 2
+                      "count": 1
                     }
                   ]
                 },
                 {
-                  "chance": 25,
+                  "chance": 10,
                   "ships": [
                     {
                       "ship": "DEMON",
@@ -6744,7 +6796,7 @@
                   ]
                 },
                 {
-                  "chance": 25,
+                  "chance": 40,
                   "ships": [
                     {
                       "ship": "TALRELIG",
@@ -6780,7 +6832,7 @@
                   ]
                 },
                 {
-                  "chance": 20,
+                  "chance": 5,
                   "ships": [
                     {
                       "ship": "GLADIUS",
@@ -6793,7 +6845,7 @@
                   ]
                 },
                 {
-                  "chance": 20,
+                  "chance": 2,
                   "ships": [
                     {
                       "ship": "DRAYMAN",
@@ -6802,12 +6854,17 @@
                   ]
                 },
                 {
-                  "chance": 20,
+                  "chance": 1,
                   "ships": [
                     {
                       "ship": "DRAYMAN",
                       "count": 2
-                    },
+                    }
+                  ]
+                },
+                {
+                  "chance": 2,
+                  "ships": [
                     {
                       "ship": "GLADIUS",
                       "count": 2
@@ -6815,7 +6872,7 @@
                   ]
                 },
                 {
-                  "chance": 10,
+                  "chance": 60,
                   "ships": [
                     {
                       "ship": "TALRELIG",
@@ -6842,8 +6899,13 @@
                   "ships": [
                     {
                       "ship": "DEMON",
-                      "count": 2
-                    },
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 5,
+                  "ships": [
                     {
                       "ship": "TALMIL",
                       "count": 2
@@ -6851,7 +6913,7 @@
                   ]
                 },
                 {
-                  "chance": 30,
+                  "chance": 5,
                   "ships": [
                     {
                       "ship": "GLADIUS",
@@ -6864,12 +6926,12 @@
                   "ships": [
                     {
                       "ship": "TALPIR",
-                      "count": 3
+                      "count": 4
                     }
                   ]
                 },
                 {
-                  "chance": 10,
+                  "chance": 30,
                   "ships": [
                     {
                       "ship": "TALRELIG",
@@ -7829,7 +7891,7 @@
               },
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 10,
                   "ships": [
                     {
                       "ship": "TUG",
@@ -7838,7 +7900,7 @@
                   ]
                 },
                 {
-                  "chance": 30,
+                  "chance": 10,
                   "ships": [
                     {
                       "ship": "DRAYMAN",
@@ -7860,7 +7922,7 @@
                   ]
                 },
                 {
-                  "chance": 10,
+                  "chance": 50,
                   "ships": [
                     {
                       "ship": "TALRELIG",
@@ -7883,7 +7945,7 @@
               "dest": null,
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 10,
                   "ships": [
                     {
                       "ship": "GLADIUS",
@@ -7892,7 +7954,7 @@
                   ]
                 },
                 {
-                  "chance": 30,
+                  "chance": 10,
                   "ships": [
                     {
                       "ship": "TALPIR",
@@ -7901,7 +7963,7 @@
                   ]
                 },
                 {
-                  "chance": 30,
+                  "chance": 40,
                   "ships": [
                     {
                       "ship": "GLADIUS",
@@ -7914,7 +7976,7 @@
                   ]
                 },
                 {
-                  "chance": 10,
+                  "chance": 40,
                   "ships": [
                     {
                       "ship": "TALRELIG",
@@ -7937,7 +7999,7 @@
               "dest": "telar",
               "encounters": [
                 {
-                  "chance": 30,
+                  "chance": 10,
                   "ships": [
                     {
                       "ship": "GLADIUS",
@@ -7946,7 +8008,7 @@
                   ]
                 },
                 {
-                  "chance": 30,
+                  "chance": 20,
                   "ships": [
                     {
                       "ship": "GLADIUS",
@@ -7972,7 +8034,7 @@
                   ]
                 },
                 {
-                  "chance": 10,
+                  "chance": 40,
                   "ships": [
                     {
                       "ship": "TALRELIG",
@@ -8018,17 +8080,17 @@
                   "chance": 30,
                   "ships": [
                     {
-                      "ship": "GLADIUS",
+                      "ship": "DEMON",
                       "count": 1
                     }
                   ]
                 },
                 {
-                  "chance": 30,
+                  "chance": 10,
                   "ships": [
                     {
                       "ship": "TALPIR",
-                      "count": 1
+                      "count": 3
                     }
                   ]
                 },
@@ -8037,7 +8099,7 @@
                   "ships": [
                     {
                       "ship": "GLADIUS",
-                      "count": 2
+                      "count": 1
                     },
                     {
                       "ship": "TALPIR",
@@ -8046,7 +8108,7 @@
                   ]
                 },
                 {
-                  "chance": 10,
+                  "chance": 30,
                   "ships": [
                     {
                       "ship": "TALRELIG",
@@ -8149,7 +8211,7 @@
                   ]
                 },
                 {
-                  "chance": 30,
+                  "chance": 10,
                   "ships": [
                     {
                       "ship": "DRAYMAN",
@@ -8162,7 +8224,7 @@
                   ]
                 },
                 {
-                  "chance": 10,
+                  "chance": 30,
                   "ships": [
                     {
                       "ship": "TALRELIG",
