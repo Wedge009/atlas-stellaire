@@ -38,6 +38,8 @@ export default {
   'systemView.systemLabel': 'Système : {name}',
   'systemView.view2d': 'Vue 2D',
 
+  'gameToggle.title': 'Basculer entre Privateer et Righteous Fire',
+
   'navMap3D.loading': 'Chargement du moteur 3D…',
   'navMap3D.freeView': 'Vue libre',
   'navMap3D.alignedView': 'Vue alignée',
@@ -81,6 +83,7 @@ export default {
   'journeyPanel.refuelAt': 'Ravitaillement : {names}',
   'journeyPanel.clearJourney': 'Effacer l’itinéraire',
   'journey.noRouteExists': 'Il n’existe aucun itinéraire de saut entre ces systèmes.',
+  'journey.systemNotInGame': '{system} n’existe pas dans ce jeu.',
   'journey.noLandableBase': 'Aucune base à portée de saut entre {from} et {to}.',
 
   'plotJourneyDialog.fromQuadrant': 'Du quadrant (facultatif)',

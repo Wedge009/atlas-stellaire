@@ -5,6 +5,7 @@ import { skyboxSpriteTexture } from '../utils/skyboxSprites.js';
 import { createEncounterSprites3d } from './encounterSprites3d.js';
 import { createEncounterModels3d } from './encounterModels3d.js';
 import { getGLTFLoader } from './gltfLoader.js';
+import { createFader } from './fader.js';
 import { LABEL_FONT_FAMILY } from '../utils/fonts.js';
 
 // The ambient ship-encounter ships can render as either the original 2D
@@ -319,8 +320,14 @@ export function createNavScene({
   scene.add(new THREE.AmbientLight(0x223344, 1.2));
 
   let nodes = [];
+  // Nodes fading out (see setPoints), no longer in `nodes` but still shown
+  // until their fade ends.
+  let leavingNodes = new Set();
   let nodeGroup = new THREE.Group();
   scene.add(nodeGroup);
+
+  // Nav points and encounter ships that come or go fade - see fader.js.
+  const fader = createFader();
 
   // Ambient ship-encounter renderers: added straight to `scene`, not
   // nodeGroup, so their own orbit motion isn't compounded by the per-node
@@ -330,8 +337,8 @@ export function createNavScene({
   // matching encounterModeOn is ever given ships to show - see
   // applyEncounterMode.
   const encounterRenderers = {
-    sprites: ENCOUNTER_RENDERER_FACTORIES.sprites({ scene, systemId }),
-    models: ENCOUNTER_RENDERER_FACTORIES.models({ scene, systemId }),
+    sprites: ENCOUNTER_RENDERER_FACTORIES.sprites({ scene, systemId, fader }),
+    models: ENCOUNTER_RENDERER_FACTORIES.models({ scene, systemId, fader }),
   };
   let encounterModeOn = encounterMode;
   let lastEncounterRolls = null;
@@ -363,26 +370,42 @@ export function createNavScene({
   let routeLineGroup = new THREE.Group();
   scene.add(routeLineGroup);
 
+  // Every scene object making up one nav point's node.
+  function nodeObjects(n) {
+    return [n.mesh, n.dropLine, n.spoke, n.label, n.asteroidRing, n.routeBeacon].filter(Boolean);
+  }
+
+  function disposeRouteBeacon(n) {
+    nodeGroup.remove(n.routeBeacon);
+    n.routeBeacon.geometry.dispose();
+    n.routeBeacon.material.dispose();
+    n.routeBeacon = null;
+  }
+
+  function disposeNode(n) {
+    disposeNodeMesh(n.mesh);
+    n.dropLine.geometry.dispose();
+    n.dropMat.dispose();
+    n.spoke.geometry.dispose();
+    n.spokeMat.dispose();
+    n.label.material.map.dispose();
+    n.label.material.dispose();
+    if (n.asteroidRing) {
+      n.asteroidRing.geometry.dispose();
+      n.asteroidRing.material.dispose();
+    }
+    if (n.routeBeacon) disposeRouteBeacon(n);
+    for (const object of nodeObjects(n)) nodeGroup.remove(object);
+  }
+
   function clearNodes() {
-    for (const n of nodes) {
-      disposeNodeMesh(n.mesh);
-      n.dropLine.geometry.dispose();
-      n.dropMat.dispose();
-      n.spoke.geometry.dispose();
-      n.spokeMat.dispose();
-      n.label.material.map.dispose();
-      n.label.material.dispose();
-      if (n.asteroidRing) {
-        n.asteroidRing.geometry.dispose();
-        n.asteroidRing.material.dispose();
-      }
-      if (n.routeBeacon) {
-        n.routeBeacon.geometry.dispose();
-        n.routeBeacon.material.dispose();
-      }
+    for (const n of [...nodes, ...leavingNodes]) {
+      fader.cancel(n);
+      disposeNode(n);
     }
     nodeGroup.clear();
     nodes = [];
+    leavingNodes = new Set();
     jumpMaterials = [];
   }
 
@@ -456,179 +479,236 @@ export function createNavScene({
   // run again.
   let lastNavPoints = [], lastRouteHighlightIds = new Set(), lastRouteSegments = [];
 
-  function setPoints(navPoints, routeHighlightIds = new Set(), routeSegments = []) {
+  function labelText(np) {
+    return np.label + (np.dest
+      ? `: ${translateFn('infoPanel.jumpTo', { system: systemName(data, np.dest) })}`
+      : (np.baseName ? `: ${np.baseName}` : ''));
+  }
+
+  // Everything a node's look depends on: a nav point with the same key (eg
+  // the same point in the other game, with only its encounters different)
+  // keeps its node.
+  function nodeKey(np) {
+    return JSON.stringify([np.id, np.x, np.y, np.z, styleForNavPoint(np), labelText(np), !!np.asteroids, np.baseType ?? null]);
+  }
+
+  // Builds one nav point's node and adds its objects to the scene, in
+  // whatever layout (orbit vs flat-aligned) is currently active, since
+  // `setPoints` can be re-invoked (eg the hidden-points toggle) while
+  // already aligned - it must not silently snap back to the 3D layout.
+  function buildNode(np) {
+    const initialOpacity = aligned ? 0.12 : 1;
+    const flat = resolveFlatPosition(np);
+    const style = styleForNavPoint(np);
+    const pos3d = new THREE.Vector3(np.x * SCALE, np.y * SCALE, np.z * SCALE);
+    const pos2d = new THREE.Vector3(((flat.sx - 50) / 50) * FLAT_SPAN, 0, ((flat.sy - 50) / 50) * FLAT_SPAN);
+    const initialPos = aligned ? pos2d : pos3d;
+
+    const modelTemplate = (baseModelsOn && np.baseType) ? loadBaseModelTemplate(np.baseType) : null;
+    let jumpMaterial = null;
+
+    let mesh;
+    if (modelTemplate) {
+      // Starts as an empty group at the right position/userData so
+      // ray-casting and disposal work immediately - the actual model gets
+      // added as a child once the (cached, shared) load resolves.
+      mesh = new THREE.Group();
+      modelTemplate.then((template) => {
+        const instance = template.clone(true);
+        // Object3D.clone() only deep-clones the node hierarchy - materials
+        // and geometry are shared by reference from the cached template,
+        // so two nodes using the same model (eg two refinery bases in one
+        // system) would otherwise dim/undim each other. Give this instance
+        // its own material copies.
+        instance.traverse((child) => {
+          if (child.material) child.material = child.material.clone();
+        });
+        if (style.dimmed) {
+          instance.traverse((child) => {
+            if (child.material) { child.material.transparent = true; child.material.opacity = 0.5; }
+          });
+        }
+        // The node's current nav point - see setPoints, which can swap
+        // it for the same point in the other game while this loads.
+        stampUserData(instance, mesh.userData);
+        mesh.add(instance);
+      });
+    } else if (style.shape === 'sphere' && jumpPointStyleOn === 'sprites') {
+      // The original-Privateer jump sphere ('Jump points: Sprites'),
+      // independent of the 'Bases' model toggle - unlike Gemini Gold's orb
+      // below, this doesn't need a loaded model file to compare against.
+      // The real JUMP.IFF frames are a face-on 2D sprite
+      // (that's how the original 3Space engine drew it too). A camera-facing
+      // THREE.Sprite always shows the frame face-on regardless of view angle,
+      // matching how it actually rendered. Normal alpha blending, not
+      // additive - the (feathered) sparse undrawn pixels are real transparency,
+      // not a glow to add on top of a dark back-drop. But the drawn pixels
+      // themselves are still fully opaque per-frame (this VGA-era format
+      // has no real per-pixel alpha gradient beyond the mask) - baseOpacity
+      // caps the whole sprite well under 1 so it still reads as translucent
+      // rather than a solid disc.
+      const baseOpacity = 0.35;
+      const material = new THREE.SpriteMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: style.dimmed ? baseOpacity * 0.5 : baseOpacity,
+        depthWrite: false,
+        fog: false,
+      });
+      jumpMaterial = material;
+      loadOriginalJumpFrameTextures().then((textures) => {
+        material.map = textures[0];
+        material.needsUpdate = true;
+      });
+      mesh = new THREE.Sprite(material);
+      // Sized to roughly the same on-screen footprint as the 1.6-radius
+      // sphere it replaces (diameter 3.2), corrected for the source
+      // frames' own non-square 89x73 aspect ratio so the sprite isn't
+      // squashed into an oval.
+      mesh.scale.set(3.2 * (89 / 73), 3.2, 1);
+    } else if (style.shape === 'sphere' && jumpPointStyleOn === 'models') {
+      // Gemini Gold's jump-point look ('Jump points: Models'): an
+      // additively-blended animated orb rather than the plain lit sphere
+      // below. White base colour so the frame texture's own blue reads
+      // unmodified, matching the real asset rather than re-tinting it
+      // through style.color. Independent of the 'Bases' model toggle -
+      // this no longer uses baseModelsOn even though both are Gemini Gold
+      // texture sources.
+      const material = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: style.dimmed ? 0.5 : 1,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        fog: false,
+      });
+      jumpMaterial = material;
+      loadJumpFrameTextures().then((textures) => {
+        material.map = textures[0];
+        material.needsUpdate = true;
+      });
+      mesh = new THREE.Mesh(new THREE.SphereGeometry(1.6, 16, 16), material);
+    } else {
+      let geometry;
+      if (style.shape === 'box') geometry = new THREE.BoxGeometry(2.6, 2.6, 2.6);
+      else if (style.shape === 'dot') geometry = new THREE.SphereGeometry(1.0, 14, 14);
+      else geometry = new THREE.SphereGeometry(1.6, 16, 16);
+
+      const material = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(style.color),
+        emissive: new THREE.Color(style.emissive),
+        roughness: 0.5,
+        transparent: style.dimmed,
+        opacity: style.dimmed ? 0.5 : 1,
+      });
+      mesh = new THREE.Mesh(geometry, material);
+    }
+    mesh.position.copy(initialPos);
+    mesh.userData = np;
+    nodeGroup.add(mesh);
+
+    const dropGeo = new THREE.BufferGeometry().setFromPoints([initialPos.clone(), new THREE.Vector3(initialPos.x, 0, initialPos.z)]);
+    const dropMat = new THREE.LineDashedMaterial({ color: 0x335566, dashSize: 0.8, gapSize: 0.6, transparent: true, opacity: initialOpacity });
+    const dropLine = new THREE.Line(dropGeo, dropMat);
+    dropLine.computeLineDistances();
+    dropLine.visible = gridLinesOn;
+    nodeGroup.add(dropLine);
+
+    const spokeGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), initialPos.clone()]);
+    const spokeMat = new THREE.LineBasicMaterial({ color: 0x2266aa, transparent: true, opacity: initialOpacity * 0.5 });
+    const spoke = new THREE.Line(spokeGeo, spokeMat);
+    spoke.visible = gridLinesOn;
+    nodeGroup.add(spoke);
+
+    const label = makeLabel(labelText(np), '#a8e8ff');
+    label.position.copy(initialPos).add(new THREE.Vector3(0, 2.8, 0));
+    label.userData = np;
+    nodeGroup.add(label);
+
+    let asteroidRing = null;
+    if (np.asteroids) {
+      // A real model's footprint (BASE_MODEL_TARGET_SIZE-normalised, ~4.5
+      // units across) is much wider than the plain placeholder box/sphere
+      // the ring was originally sized for - widen it so the ring clears the
+      // model instead of cutting through it.
+      const [ringInner, ringOuter] = modelTemplate ? [3.2, 3.8] : [2.0, 2.5];
+      const ringGeo = new THREE.RingGeometry(ringInner, ringOuter, 24);
+      const ringMat = new THREE.MeshBasicMaterial({ color: 0xa0522d, transparent: true, opacity: 0.6, side: THREE.DoubleSide });
+      asteroidRing = new THREE.Mesh(ringGeo, ringMat);
+      asteroidRing.rotation.x = -Math.PI / 2;
+      asteroidRing.position.copy(initialPos);
+      nodeGroup.add(asteroidRing);
+    }
+
+
+    return { np, key: nodeKey(np), mesh, dropLine, dropMat, spoke, spokeMat, label, asteroidRing, routeBeacon: null, jumpMaterial, pos3d, pos2d };
+  }
+
+  // Adds or removes a node's route beacon to match whether it's on the
+  // plotted journey.
+  function setRouteBeacon(n, on) {
+    if (!on) {
+      if (n.routeBeacon) disposeRouteBeacon(n);
+      return;
+    }
+    if (n.routeBeacon) return;
+    // The route marker is a vertical beacon rather than a ring, so it can't
+    // be mistaken for the (also amber-ish) flat asteroid ring lying on the
+    // ground plane - and being a cylinder aligned on its own spin axis, the
+    // idle rotation below doesn't make it visibly "turn" the way a ring
+    // would.
+    const beaconGeo = new THREE.CylinderGeometry(0.15, 0.15, ROUTE_BEACON_HEIGHT, 8);
+    const beaconMat = new THREE.MeshBasicMaterial({ color: 0xffee66, transparent: true, opacity: 0.9, fog: false });
+    n.routeBeacon = new THREE.Mesh(beaconGeo, beaconMat);
+    n.routeBeacon.position.copy(n.mesh.position).add(new THREE.Vector3(0, ROUTE_BEACON_HEIGHT / 2, 0));
+    nodeGroup.add(n.routeBeacon);
+  }
+
+  // Whether the first set of points has been shown - only later changes fade.
+  let pointsShown = false;
+
+  // Shows `navPoints`, keeping the node of any point whose look is the same
+  // (see nodeKey) and fading the rest in or out. `rebuild` starts afresh
+  // with no fades instead, for a change to every node's look (models, jump
+  // point style, language).
+  function setPoints(navPoints, routeHighlightIds = new Set(), routeSegments = [], { rebuild = false } = {}) {
     lastNavPoints = navPoints;
     lastRouteHighlightIds = routeHighlightIds;
     lastRouteSegments = routeSegments;
-    clearNodes();
-    // Nodes must be built in whatever layout (orbit vs flat-aligned) is
-    // currently active, since `setPoints` can be re-invoked (eg the
-    // hidden-points toggle, or a redundant re-run right after mount) while
-    // already aligned - it must not silently snap back to the 3D layout.
-    const initialOpacity = aligned ? 0.12 : 1;
-    for (const np of navPoints) {
-      const flat = resolveFlatPosition(np);
-      const style = styleForNavPoint(np);
-      const pos3d = new THREE.Vector3(np.x * SCALE, np.y * SCALE, np.z * SCALE);
-      const pos2d = new THREE.Vector3(((flat.sx - 50) / 50) * FLAT_SPAN, 0, ((flat.sy - 50) / 50) * FLAT_SPAN);
-      const initialPos = aligned ? pos2d : pos3d;
+    const animate = pointsShown && !rebuild;
+    if (!animate) clearNodes();
+    pointsShown = true;
 
-      const modelTemplate = (baseModelsOn && np.baseType) ? loadBaseModelTemplate(np.baseType) : null;
-
-      let mesh;
-      if (modelTemplate) {
-        // Starts as an empty group at the right position/userData so
-        // ray-casting and disposal work immediately - the actual model gets
-        // added as a child once the (cached, shared) load resolves.
-        mesh = new THREE.Group();
-        modelTemplate.then((template) => {
-          const instance = template.clone(true);
-          // Object3D.clone() only deep-clones the node hierarchy - materials
-          // and geometry are shared by reference from the cached template,
-          // so two nodes using the same model (eg two refinery bases in one
-          // system) would otherwise dim/undim each other. Give this instance
-          // its own material copies.
-          instance.traverse((child) => {
-            if (child.material) child.material = child.material.clone();
-          });
-          if (style.dimmed) {
-            instance.traverse((child) => {
-              if (child.material) { child.material.transparent = true; child.material.opacity = 0.5; }
-            });
-          }
-          stampUserData(instance, np);
-          mesh.add(instance);
-        });
-      } else if (style.shape === 'sphere' && jumpPointStyleOn === 'sprites') {
-        // The original-Privateer jump sphere ('Jump points: Sprites'),
-        // independent of the 'Bases' model toggle - unlike Gemini Gold's orb
-        // below, this doesn't need a loaded model file to compare against.
-        // The real JUMP.IFF frames are a face-on 2D sprite
-        // (that's how the original 3Space engine drew it too). A camera-facing
-        // THREE.Sprite always shows the frame face-on regardless of view angle,
-        // matching how it actually rendered. Normal alpha blending, not
-        // additive - the (feathered) sparse undrawn pixels are real transparency,
-        // not a glow to add on top of a dark back-drop. But the drawn pixels
-        // themselves are still fully opaque per-frame (this VGA-era format
-        // has no real per-pixel alpha gradient beyond the mask) - baseOpacity
-        // caps the whole sprite well under 1 so it still reads as translucent
-        // rather than a solid disc.
-        const baseOpacity = 0.35;
-        const material = new THREE.SpriteMaterial({
-          color: 0xffffff,
-          transparent: true,
-          opacity: style.dimmed ? baseOpacity * 0.5 : baseOpacity,
-          depthWrite: false,
-          fog: false,
-        });
-        jumpMaterials.push(material);
-        loadOriginalJumpFrameTextures().then((textures) => {
-          material.map = textures[0];
-          material.needsUpdate = true;
-        });
-        mesh = new THREE.Sprite(material);
-        // Sized to roughly the same on-screen footprint as the 1.6-radius
-        // sphere it replaces (diameter 3.2), corrected for the source
-        // frames' own non-square 89x73 aspect ratio so the sprite isn't
-        // squashed into an oval.
-        mesh.scale.set(3.2 * (89 / 73), 3.2, 1);
-      } else if (style.shape === 'sphere' && jumpPointStyleOn === 'models') {
-        // Gemini Gold's jump-point look ('Jump points: Models'): an
-        // additively-blended animated orb rather than the plain lit sphere
-        // below. White base colour so the frame texture's own blue reads
-        // unmodified, matching the real asset rather than re-tinting it
-        // through style.color. Independent of the 'Bases' model toggle -
-        // this no longer uses baseModelsOn even though both are Gemini Gold
-        // texture sources.
-        const material = new THREE.MeshBasicMaterial({
-          color: 0xffffff,
-          transparent: true,
-          opacity: style.dimmed ? 0.5 : 1,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-          fog: false,
-        });
-        jumpMaterials.push(material);
-        loadJumpFrameTextures().then((textures) => {
-          material.map = textures[0];
-          material.needsUpdate = true;
-        });
-        mesh = new THREE.Mesh(new THREE.SphereGeometry(1.6, 16, 16), material);
-      } else {
-        let geometry;
-        if (style.shape === 'box') geometry = new THREE.BoxGeometry(2.6, 2.6, 2.6);
-        else if (style.shape === 'dot') geometry = new THREE.SphereGeometry(1.0, 14, 14);
-        else geometry = new THREE.SphereGeometry(1.6, 16, 16);
-
-        const material = new THREE.MeshStandardMaterial({
-          color: new THREE.Color(style.color),
-          emissive: new THREE.Color(style.emissive),
-          roughness: 0.5,
-          transparent: style.dimmed,
-          opacity: style.dimmed ? 0.5 : 1,
-        });
-        mesh = new THREE.Mesh(geometry, material);
+    const existing = new Map(nodes.map((n) => [n.key, n]));
+    nodes = navPoints.map((np) => {
+      const key = nodeKey(np);
+      let n = existing.get(key);
+      if (n) {
+        existing.delete(key);
+        n.np = np;
+        n.mesh.traverse((child) => { child.userData = np; });
+        n.label.userData = np;
+        setRouteBeacon(n, routeHighlightIds.has(np.id));
+        return n;
       }
-      mesh.position.copy(initialPos);
-      mesh.userData = np;
-      nodeGroup.add(mesh);
-
-      const dropGeo = new THREE.BufferGeometry().setFromPoints([initialPos.clone(), new THREE.Vector3(initialPos.x, 0, initialPos.z)]);
-      const dropMat = new THREE.LineDashedMaterial({ color: 0x335566, dashSize: 0.8, gapSize: 0.6, transparent: true, opacity: initialOpacity });
-      const dropLine = new THREE.Line(dropGeo, dropMat);
-      dropLine.computeLineDistances();
-      dropLine.visible = gridLinesOn;
-      nodeGroup.add(dropLine);
-
-      const spokeGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), initialPos.clone()]);
-      const spokeMat = new THREE.LineBasicMaterial({ color: 0x2266aa, transparent: true, opacity: initialOpacity * 0.5 });
-      const spoke = new THREE.Line(spokeGeo, spokeMat);
-      spoke.visible = gridLinesOn;
-      nodeGroup.add(spoke);
-
-      const labelText = np.label + (np.dest
-        ? `: ${translateFn('infoPanel.jumpTo', { system: systemName(data, np.dest) })}`
-        : (np.baseName ? `: ${np.baseName}` : ''));
-      const label = makeLabel(labelText, '#a8e8ff');
-      label.position.copy(initialPos).add(new THREE.Vector3(0, 2.8, 0));
-      label.userData = np;
-      nodeGroup.add(label);
-
-      let asteroidRing = null;
-      if (np.asteroids) {
-        // A real model's footprint (BASE_MODEL_TARGET_SIZE-normalised, ~4.5
-        // units across) is much wider than the plain placeholder box/sphere
-        // the ring was originally sized for - widen it so the ring clears the
-        // model instead of cutting through it.
-        const [ringInner, ringOuter] = modelTemplate ? [3.2, 3.8] : [2.0, 2.5];
-        const ringGeo = new THREE.RingGeometry(ringInner, ringOuter, 24);
-        const ringMat = new THREE.MeshBasicMaterial({ color: 0xa0522d, transparent: true, opacity: 0.6, side: THREE.DoubleSide });
-        asteroidRing = new THREE.Mesh(ringGeo, ringMat);
-        asteroidRing.rotation.x = -Math.PI / 2;
-        asteroidRing.position.copy(initialPos);
-        nodeGroup.add(asteroidRing);
-      }
-
-      // The route marker is a vertical beacon rather than a ring, so it can't
-      // be mistaken for the (also amber-ish) flat asteroid ring lying on the
-      // ground plane - and being a cylinder aligned on its own spin axis, the
-      // idle rotation below doesn't make it visibly "turn" the way a ring
-      // would.
-      let routeBeacon = null;
-      if (routeHighlightIds.has(np.id)) {
-        const beaconGeo = new THREE.CylinderGeometry(0.15, 0.15, ROUTE_BEACON_HEIGHT, 8);
-        const beaconMat = new THREE.MeshBasicMaterial({ color: 0xffee66, transparent: true, opacity: 0.9, fog: false });
-        routeBeacon = new THREE.Mesh(beaconGeo, beaconMat);
-        routeBeacon.position.copy(initialPos).add(new THREE.Vector3(0, ROUTE_BEACON_HEIGHT / 2, 0));
-        nodeGroup.add(routeBeacon);
-      }
-
-      nodes.push({ np, mesh, dropLine, dropMat, spoke, spokeMat, label, asteroidRing, routeBeacon, pos3d, pos2d });
+      n = buildNode(np);
+      setRouteBeacon(n, routeHighlightIds.has(np.id));
+      if (animate) fader.fade(n, nodeObjects(n), 0, 1);
+      return n;
+    });
+    for (const n of existing.values()) {
+      if (n.routeBeacon) disposeRouteBeacon(n);
+      leavingNodes.add(n);
+      fader.fade(n, nodeObjects(n), 1, 0, () => {
+        leavingNodes.delete(n);
+        disposeNode(n);
+      });
     }
+    jumpMaterials = [...nodes, ...leavingNodes].map((n) => n.jumpMaterial).filter(Boolean);
 
     buildRouteLines(routeSegments);
     const activeRenderer = encounterRenderers[encounterModeOn];
-    if (lastEncounterRolls && activeRenderer) activeRenderer.setEncounterShips(lastEncounterRolls, nodes);
+    if (lastEncounterRolls && activeRenderer) activeRenderer.setEncounterShips(lastEncounterRolls, nodes, { animate });
   }
 
   function updateAuxLines(n) {
@@ -965,6 +1045,7 @@ export function createNavScene({
     }
     encounterRenderers.sprites.tick(camera);
     encounterRenderers.models.tick(camera);
+    fader.tick();
     renderer.render(scene, camera);
   }
   tick();
@@ -994,6 +1075,10 @@ export function createNavScene({
   }
 
   return {
+    // The sector as the current game sees it - nodes built after this (eg
+    // the Eden jump points, on switching to Righteous Fire) name their jump
+    // destinations from it.
+    setData: (d) => { data = d; },
     setPoints,
     animateToAligned,
     animateToOrbit,
@@ -1016,17 +1101,20 @@ export function createNavScene({
     },
     setBaseModelsEnabled: (v) => {
       baseModelsOn = v;
-      setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments);
+      setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments, { rebuild: true });
     },
     setJumpPointStyle: (v) => {
       jumpPointStyleOn = v;
       lastJumpFrameIdx = -1;
-      setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments);
+      setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments, { rebuild: true });
     },
+    // Later rolls (a game switch, a story mission) fade in and out where
+    // they differ; the first set just appears.
     setEncounterShips: (rollsMap) => {
+      const animate = lastEncounterRolls !== null;
       lastEncounterRolls = rollsMap;
       const activeRenderer = encounterRenderers[encounterModeOn];
-      activeRenderer?.setEncounterShips(rollsMap, nodes);
+      activeRenderer?.setEncounterShips(rollsMap, nodes, { animate });
     },
     setEncounterMode: (mode) => {
       encounterModeOn = mode;
@@ -1037,7 +1125,7 @@ export function createNavScene({
     // re-bake them with the new translation (see NavMap3D.svelte).
     setTranslate: (fn) => {
       translateFn = fn;
-      setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments);
+      setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments, { rebuild: true });
     },
   };
 }

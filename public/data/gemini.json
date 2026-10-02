@@ -15,6 +15,7 @@
           "navPoints": [
             {
               "id": "nav-1",
+              "game": "RF",
               "label": "Nav 1",
               "x": 40000,
               "y": 10000,
@@ -73,6 +74,7 @@
             },
             {
               "id": "nav-2",
+              "game": "RF",
               "label": "Nav 2",
               "x": 0,
               "y": 40000,
@@ -105,6 +107,7 @@
             },
             {
               "id": "nav-3",
+              "game": "RF",
               "label": "Nav 3",
               "x": -50000,
               "y": 0,
@@ -159,6 +162,7 @@
             },
             {
               "id": "nav-4",
+              "game": "RF",
               "label": "Nav 4",
               "x": 0,
               "y": -50000,
@@ -171,6 +175,7 @@
             },
             {
               "id": "nav-5",
+              "game": "RF",
               "label": "Nav 5",
               "x": 40000,
               "y": -15000,
@@ -225,6 +230,7 @@
             },
             {
               "id": "hidden-1",
+              "game": "RF",
               "label": "Hidden 1",
               "x": 40000,
               "y": -9000,
@@ -237,6 +243,7 @@
             },
             {
               "id": "hidden-2",
+              "game": "RF",
               "label": "Hidden 2",
               "x": 2000,
               "y": -52000,
@@ -246,6 +253,175 @@
               "type": "point",
               "description": "",
               "dest": null
+            },
+            {
+              "id": "nav-1",
+              "game": "PRIV",
+              "label": "Nav 1",
+              "x": 30000,
+              "y": 10000,
+              "z": 20000,
+              "visibleOnMap": true,
+              "asteroids": false,
+              "type": "jump",
+              "description": "Jump Point",
+              "dest": "ragnarok",
+              "encounters": [
+                {
+                  "chance": 25,
+                  "ships": [
+                    {
+                      "ship": "BRDSWORD",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 25,
+                  "ships": [
+                    {
+                      "ship": "GOTHRI",
+                      "count": 3
+                    },
+                    {
+                      "ship": "KAMEKH",
+                      "count": 1
+                    }
+                  ]
+                },
+                {
+                  "chance": 25,
+                  "ships": [
+                    {
+                      "ship": "STILETTO",
+                      "count": 1
+                    },
+                    {
+                      "ship": "GOTHRI",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 25,
+                  "ships": [
+                    {
+                      "ship": "STILETTO",
+                      "count": 4
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "nav-2",
+              "game": "PRIV",
+              "label": "Nav 2",
+              "x": 0,
+              "y": -10000,
+              "z": 0,
+              "visibleOnMap": true,
+              "asteroids": true,
+              "type": "point",
+              "description": "Asteroid Field",
+              "dest": null,
+              "encounters": [
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "STILETTO",
+                      "count": 3
+                    },
+                    {
+                      "ship": "FRIGATE",
+                      "count": 1
+                    }
+                  ]
+                },
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "GOTHRI",
+                      "count": 4
+                    }
+                  ]
+                },
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "DRALTHI",
+                      "count": 4
+                    }
+                  ]
+                },
+                {
+                  "chance": 10,
+                  "ships": [
+                    {
+                      "ship": "TALRELIG",
+                      "count": 3
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "nav-3",
+              "game": "PRIV",
+              "label": "Nav 3",
+              "x": -30000,
+              "y": -30000,
+              "z": -20000,
+              "visibleOnMap": true,
+              "asteroids": false,
+              "type": "jump",
+              "description": "Jump Point",
+              "dest": "tr-pakh",
+              "encounters": [
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "STILETTO",
+                      "count": 3
+                    }
+                  ]
+                },
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "DRALTHI",
+                      "count": 4
+                    }
+                  ]
+                },
+                {
+                  "chance": 30,
+                  "ships": [
+                    {
+                      "ship": "GOTHRI",
+                      "count": 4
+                    }
+                  ]
+                },
+                {
+                  "chance": 10,
+                  "ships": [
+                    {
+                      "ship": "STILETTO",
+                      "count": 2
+                    },
+                    {
+                      "ship": "DRALTHI",
+                      "count": 2
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -1690,7 +1866,59 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 25,
+                    "ships": [
+                      {
+                        "ship": "GOTHRI",
+                        "count": 4
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 25,
+                    "ships": [
+                      {
+                        "ship": "GOTHRI",
+                        "count": 3
+                      },
+                      {
+                        "ship": "TALMIL",
+                        "count": 1
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 25,
+                    "ships": [
+                      {
+                        "ship": "DEMON",
+                        "count": 1
+                      },
+                      {
+                        "ship": "TALPIR",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 25,
+                    "ships": [
+                      {
+                        "ship": "TALMIL",
+                        "count": 3
+                      },
+                      {
+                        "ship": "MERCHANT",
+                        "count": 1
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "nav-2",
@@ -1748,7 +1976,55 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "TALMIL",
+                        "count": 4
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "GOTHRI",
+                        "count": 2
+                      },
+                      {
+                        "ship": "DRAYMAN",
+                        "count": 1
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "TALPIR",
+                        "count": 3
+                      },
+                      {
+                        "ship": "DEMON",
+                        "count": 1
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 10,
+                    "ships": [
+                      {
+                        "ship": "TALRELIG",
+                        "count": 3
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "nav-3",
@@ -1855,7 +2131,42 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "TALMIL",
+                        "count": 4
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 40,
+                    "ships": [
+                      {
+                        "ship": "TALMIL",
+                        "count": 2
+                      },
+                      {
+                        "ship": "DRALTHI",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "DRALTHI",
+                        "count": 2
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "nav-5",
@@ -1924,7 +2235,59 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "TUG",
+                        "count": 1
+                      },
+                      {
+                        "ship": "DRAYMAN",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 20,
+                    "ships": [
+                      {
+                        "ship": "TALMIL",
+                        "count": 3
+                      },
+                      {
+                        "ship": "DRAYMAN",
+                        "count": 1
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 40,
+                    "ships": [
+                      {
+                        "ship": "TALMIL",
+                        "count": 2
+                      },
+                      {
+                        "ship": "GOTHRI",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 10,
+                    "ships": [
+                      {
+                        "ship": "TALRELIG",
+                        "count": 4
+                      }
+                    ]
+                  }
+                ]
+              }
             }
           ]
         },
@@ -2646,7 +3009,68 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "STILETTO",
+                        "count": 4
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 20,
+                    "ships": [
+                      {
+                        "ship": "BRDSWORD",
+                        "count": 3
+                      },
+                      {
+                        "ship": "DEMON",
+                        "count": 1
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 20,
+                    "ships": [
+                      {
+                        "ship": "STILETTO",
+                        "count": 3
+                      },
+                      {
+                        "ship": "FRIGATE",
+                        "count": 1
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 20,
+                    "ships": [
+                      {
+                        "ship": "MERCHANT",
+                        "count": 1
+                      },
+                      {
+                        "ship": "FIGHTER",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 10,
+                    "ships": [
+                      {
+                        "ship": "TALRELIG",
+                        "count": 3
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "nav-2",
@@ -2704,7 +3128,55 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 40,
+                    "ships": [
+                      {
+                        "ship": "DRAYMAN",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "TUG",
+                        "count": 1
+                      },
+                      {
+                        "ship": "MERCHANT",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 20,
+                    "ships": [
+                      {
+                        "ship": "FIGHTER",
+                        "count": 1
+                      },
+                      {
+                        "ship": "TALRELIG",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 10,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 4
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "nav-3",
@@ -2799,7 +3271,42 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 40,
+                    "ships": [
+                      {
+                        "ship": "DRAYMAN",
+                        "count": 1
+                      },
+                      {
+                        "ship": "STILETTO",
+                        "count": 3
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 40,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 4
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 20,
+                    "ships": [
+                      {
+                        "ship": "TALPIR",
+                        "count": 3
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "nav-5",
@@ -2840,7 +3347,38 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 40,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 4
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 40,
+                    "ships": [
+                      {
+                        "ship": "STILETTO",
+                        "count": 4
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 20,
+                    "ships": [
+                      {
+                        "ship": "TALRELIG",
+                        "count": 4
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "hidden-1",
@@ -2940,6 +3478,7 @@
             },
             {
               "id": "hidden-4",
+              "game": "RF",
               "label": "Hidden 4",
               "x": 25000,
               "y": 0,
@@ -4306,7 +4845,20 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 100,
+                    "ships": [
+                      {
+                        "ship": "TALPIR",
+                        "count": 4
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "nav-3",
@@ -4790,7 +5342,38 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 40,
+                    "ships": [
+                      {
+                        "ship": "TALMIL",
+                        "count": 3
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 40,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 4
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 20,
+                    "ships": [
+                      {
+                        "ship": "TALRELIG",
+                        "count": 4
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "nav-2",
@@ -4831,7 +5414,33 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 75,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 3
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 25,
+                    "ships": [
+                      {
+                        "ship": "TALPIR",
+                        "count": 2
+                      },
+                      {
+                        "ship": "TALRELIG",
+                        "count": 2
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "nav-3",
@@ -4880,7 +5489,46 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 50,
+                    "ships": [
+                      {
+                        "ship": "DRAYMAN",
+                        "count": 2
+                      },
+                      {
+                        "ship": "TALPIR",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "MERCHANT",
+                        "count": 1
+                      },
+                      {
+                        "ship": "TALRELIG",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 20,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 3
+                      }
+                    ]
+                  }
+                ]
+              }
             }
           ]
         },
@@ -5012,6 +5660,7 @@
             },
             {
               "id": "hidden",
+              "game": "PRIV",
               "label": "Hidden",
               "x": -10000,
               "y": -11000,
@@ -5033,6 +5682,7 @@
         },
         {
           "id": "eden",
+          "game": "RF",
           "name": "Eden",
           "qx": -49,
           "qy": -50,
@@ -6804,7 +7454,59 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 25,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 2
+                      },
+                      {
+                        "ship": "TALMIL",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 25,
+                    "ships": [
+                      {
+                        "ship": "TALPIR",
+                        "count": 2
+                      },
+                      {
+                        "ship": "GLADIUS",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 25,
+                    "ships": [
+                      {
+                        "ship": "DEMON",
+                        "count": 3
+                      },
+                      {
+                        "ship": "MERCHANT",
+                        "count": 1
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 25,
+                    "ships": [
+                      {
+                        "ship": "TALRELIG",
+                        "count": 4
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "nav-2",
@@ -6880,7 +7582,68 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "TUG",
+                        "count": 1
+                      },
+                      {
+                        "ship": "TALPIR",
+                        "count": 3
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 20,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 2
+                      },
+                      {
+                        "ship": "TALMIL",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 20,
+                    "ships": [
+                      {
+                        "ship": "DRAYMAN",
+                        "count": 1
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 20,
+                    "ships": [
+                      {
+                        "ship": "DRAYMAN",
+                        "count": 2
+                      },
+                      {
+                        "ship": "GLADIUS",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 10,
+                    "ships": [
+                      {
+                        "ship": "TALRELIG",
+                        "count": 4
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "nav-3",
@@ -6939,7 +7702,51 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "DEMON",
+                        "count": 2
+                      },
+                      {
+                        "ship": "TALMIL",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 3
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "TALPIR",
+                        "count": 3
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 10,
+                    "ships": [
+                      {
+                        "ship": "TALRELIG",
+                        "count": 4
+                      }
+                    ]
+                  }
+                ]
+              }
             }
           ]
         },
@@ -7235,6 +8042,7 @@
             },
             {
               "id": "hidden",
+              "game": "RF",
               "label": "Hidden",
               "x": -50000,
               "y": 21000,
@@ -7930,7 +8738,51 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "TUG",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "DRAYMAN",
+                        "count": 2
+                      },
+                      {
+                        "ship": "TALPIR",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "TALPIR",
+                        "count": 3
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 10,
+                    "ships": [
+                      {
+                        "ship": "TALRELIG",
+                        "count": 4
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "nav-2",
@@ -7984,7 +8836,51 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 4
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "TALPIR",
+                        "count": 3
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 1
+                      },
+                      {
+                        "ship": "TALPIR",
+                        "count": 3
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 10,
+                    "ships": [
+                      {
+                        "ship": "TALRELIG",
+                        "count": 2
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "nav-3",
@@ -8042,10 +8938,59 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 4
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 2
+                      },
+                      {
+                        "ship": "TALPIR",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "TALMIL",
+                        "count": 2
+                      },
+                      {
+                        "ship": "GLADIUS",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 10,
+                    "ships": [
+                      {
+                        "ship": "TALRELIG",
+                        "count": 4
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "nav-4",
+              "game": "RF",
               "label": "Nav 4",
               "x": -40000,
               "y": 0,
@@ -8116,7 +9061,51 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 1
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "TALPIR",
+                        "count": 1
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 2
+                      },
+                      {
+                        "ship": "TALPIR",
+                        "count": 3
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 10,
+                    "ships": [
+                      {
+                        "ship": "TALRELIG",
+                        "count": 4
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
               "id": "nav-2",
@@ -8232,7 +9221,59 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "privateer": {
+                "encounters": [
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "GLADIUS",
+                        "count": 2
+                      },
+                      {
+                        "ship": "TALPIR",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "DRAYMAN",
+                        "count": 1
+                      },
+                      {
+                        "ship": "TALPIR",
+                        "count": 2
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 30,
+                    "ships": [
+                      {
+                        "ship": "DRAYMAN",
+                        "count": 1
+                      },
+                      {
+                        "ship": "GLADIUS",
+                        "count": 3
+                      }
+                    ]
+                  },
+                  {
+                    "chance": 10,
+                    "ships": [
+                      {
+                        "ship": "TALRELIG",
+                        "count": 4
+                      }
+                    ]
+                  }
+                ]
+              }
             }
           ]
         },

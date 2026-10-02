@@ -1,20 +1,15 @@
 <script>
   import Dialog from './Dialog.svelte';
+  import GameTabs from './GameTabs.svelte';
   import { commoditiesForBase } from '../data/commodities.js';
-  import { lastCommoditiesRuleset } from '../stores/commodities.js';
+  import { game } from '../stores/game.js';
   import { t } from '../i18n/index.js';
 
   let { baseType, baseLabel, onClose } = $props();
 
-  // Game titles are proper nouns, so are not translated.
-  const RULESETS = [
-    { id: 'privateer', label: 'Privateer' },
-    { id: 'righteousFire', label: 'Righteous Fire' },
-  ];
+  let items = $derived(commoditiesForBase($game, baseType) ?? []);
 
-  let items = $derived(commoditiesForBase($lastCommoditiesRuleset, baseType) ?? []);
-
-  // Not persisted (unlike the rule-set tab) - it's a transient viewing
+  // Not persisted (unlike the game) - it's a transient viewing
   // preference, reset each time the dialogue is reopened.
   let sortColumn = $state(null); // 'name' | 'low' | 'high' | 'stock' | null (source order)
   let sortDirection = $state('asc');
@@ -42,20 +37,7 @@
 </script>
 
 <Dialog title={$t('commoditiesDialog.title', { base: baseLabel })} label={$t('common.commodities')} {onClose} fillWidth maxWidth="560px">
-  <div class="tabs" role="tablist">
-    {#each RULESETS as ruleset (ruleset.id)}
-      <button
-        type="button"
-        role="tab"
-        aria-selected={$lastCommoditiesRuleset === ruleset.id}
-        class="tab"
-        class:active={$lastCommoditiesRuleset === ruleset.id}
-        onclick={() => lastCommoditiesRuleset.set(ruleset.id)}
-      >
-        {ruleset.label}
-      </button>
-    {/each}
-  </div>
+  <GameTabs />
 
   <div class="table-wrap">
     <table>
@@ -104,27 +86,6 @@
 </Dialog>
 
 <style>
-  .tabs {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 12px;
-  }
-  .tab {
-    flex: 1;
-    font-family: var(--font-body);
-    font-size: var(--font-size-body-secondary);
-    border: 1px solid var(--border-cyan);
-    color: var(--text-cyan);
-    padding: 6px 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .tab:hover { color: var(--text-emphasis); }
-  .tab.active {
-    color: var(--text-emphasis);
-    background: var(--highlight-selected);
-    box-shadow: var(--glow-cyan);
-  }
   .table-wrap {
     max-height: 360px;
     overflow-y: auto;

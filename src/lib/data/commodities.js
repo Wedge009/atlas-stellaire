@@ -698,13 +698,13 @@ const COMMODITIES = {
   },
 };
 
-export const RULESETS = ['privateer', 'righteousFire'];
+export const RULESETS = { PRIV: 'privateer', RF: 'righteousFire' };
 
-// Returns the commodity list for a base type under a rule-set, or null if
-// that base type isn't part of the trade economy (eg story-only bases
-// like the Steltek Derelict or Gaea).
-export function commoditiesForBase(ruleset, baseType) {
-  return COMMODITIES[ruleset]?.[baseType] ?? null;
+// Returns the commodity list for a base type in a game (see utils/games.js),
+// or null if that base type isn't part of the trade economy (eg story-only
+// bases like the Steltek Derelict or Gaea).
+export function commoditiesForBase(gameId, baseType) {
+  return COMMODITIES[RULESETS[gameId]]?.[baseType] ?? null;
 }
 
 export function hasCommodityData(baseType) {

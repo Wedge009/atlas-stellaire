@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { spriteSizeFor } from '../utils/encounterLayout.js';
 import { getGLTFLoader } from './gltfLoader.js';
 import { createOrbitParams, orbitStateAt } from './encounterOrbit.js';
+import { createEncounterGroups } from './encounterGroups.js';
 
 // Real-3D-model alternative to encounterSprites3d.js's rotation-based
 // sprites - a parallel implementation, not a replacement (see
@@ -136,37 +137,22 @@ export function orientationQuaternion(worldForward, worldUp, localForward, local
   outQuat.setFromRotationMatrix(tmpRotMatrix);
 }
 
-export function createEncounterModels3d({ scene, systemId }) {
+export function createEncounterModels3d({ scene, systemId, fader }) {
   let visible = true;
-  let entries = []; // one per ship instance
-  let anchors = new Map(); // navPointId -> THREE.Group
-
   const startTime = performance.now();
 
-  function disposeAll() {
-    for (const entry of entries) disposeInstance(entry.group);
-    for (const anchor of anchors.values()) scene.remove(anchor);
-    anchors.clear();
-    entries = [];
-  }
-
-  function setEncounterShips(rollsMap, nodes) {
-    disposeAll();
-    if (!rollsMap) return;
-
-    for (const [navPointId, ships] of rollsMap) {
-      if (!ships?.length) continue;
-      const node = nodes.find((n) => n.np.id === navPointId);
-      if (!node) continue;
-
+  // One group per nav point with ships, each with one entry per ship
+  // instance - see encounterGroups.js.
+  const groups = createEncounterGroups({
+    fader,
+    build(navPointId, ships, node) {
       const anchor = new THREE.Group();
       anchor.position.copy(node.mesh.position);
       anchor.visible = visible;
       anchor.userData = { node };
       scene.add(anchor);
-      anchors.set(navPointId, anchor);
 
-      ships.forEach((s, i) => {
+      const entries = ships.map((s, i) => {
         const orbit = createOrbitParams({ systemId, navPointId, shipId: s.ship, instanceIndex: s.instanceIndex, shellIndex: i, speedMultiplier: s.speedMultiplier });
         const size = spriteSizeFor(s.ship);
 
@@ -178,25 +164,35 @@ export function createEncounterModels3d({ scene, systemId }) {
         anchor.add(group);
 
         const entry = { group, anchor, orbit, up: orbit.up, localForward: null, localUp: null };
-        entries.push(entry);
 
         loadShipModelTemplate(s.ship)?.then(({ template, localForward, localUp }) => {
           const instance = template.clone(true);
           // Object3D.clone() only deep-clones the node hierarchy - materials
           // are shared by reference from the cached template, so two
           // instances of the same ship would otherwise share one material
-          // (harmless today with no per-instance dimming/tinting, but cheap
-          // to keep isolated in case that changes).
+          // (and a fade - see fader.js - would fade every instance at once).
           instance.traverse((child) => {
             if (child.material) child.material = child.material.clone();
           });
+          // The node's current nav point, which a game switch can replace
+          // while the model loads (see encounterGroups.js).
           stampUserData(instance, node.np);
           group.add(instance);
           entry.localForward = localForward;
           entry.localUp = localUp;
         });
+        return entry;
       });
-    }
+      return { anchor, entries };
+    },
+    dispose({ anchor, entries }) {
+      for (const entry of entries) disposeInstance(entry.group);
+      scene.remove(anchor);
+    },
+  });
+
+  function setEncounterShips(rollsMap, nodes, { animate = false } = {}) {
+    groups.update(rollsMap, nodes, animate);
   }
 
   const tmpPosition = new THREE.Vector3();
@@ -204,35 +200,36 @@ export function createEncounterModels3d({ scene, systemId }) {
   const tmpQuat = new THREE.Quaternion();
 
   function tick() {
-    if (!visible || !entries.length) return;
+    if (!visible) return;
     const t = (performance.now() - startTime) / 1000;
 
-    // Anchors track their node's live position every tick (align/orbit
-    // flight animation, or the per-frame idle spin) since they're siblings
-    // of nodeGroup, not children of it.
-    for (const anchor of anchors.values()) anchor.position.copy(anchor.userData.node.mesh.position);
-
-    for (const entry of entries) {
-      orbitStateAt(entry.orbit, t, tmpPosition, tmpForward);
-      entry.group.position.copy(tmpPosition);
-      if (entry.localForward) {
-        orientationQuaternion(tmpForward, entry.up, entry.localForward, entry.localUp, tmpQuat);
-        entry.group.quaternion.copy(tmpQuat);
+    for (const { anchor, entries } of groups.all()) {
+      // Anchors track their node's live position every tick (align/orbit
+      // flight animation, or the per-frame idle spin) since they're siblings
+      // of nodeGroup, not children of it.
+      anchor.position.copy(anchor.userData.node.mesh.position);
+      for (const entry of entries) {
+        orbitStateAt(entry.orbit, t, tmpPosition, tmpForward);
+        entry.group.position.copy(tmpPosition);
+        if (entry.localForward) {
+          orientationQuaternion(tmpForward, entry.up, entry.localForward, entry.localUp, tmpQuat);
+          entry.group.quaternion.copy(tmpQuat);
+        }
       }
     }
   }
 
   function setVisible(v) {
     visible = v;
-    for (const anchor of anchors.values()) anchor.visible = v;
+    for (const { anchor } of groups.all()) anchor.visible = v;
   }
 
   function getPickableObjects() {
-    return entries.map((e) => e.group);
+    return [...groups.current()].flatMap(({ entries }) => entries.map((e) => e.group));
   }
 
   function dispose() {
-    disposeAll();
+    groups.disposeAll();
   }
 
   return { setEncounterShips, tick, setVisible, getPickableObjects, dispose };

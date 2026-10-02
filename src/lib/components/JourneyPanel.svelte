@@ -5,8 +5,13 @@
 
   let { data, selectedSystemId = null } = $props();
 
-  let fromName = $derived(findSystem(data, $journey?.fromSystemId)?.name ?? $journey?.fromSystemId);
-  let toName = $derived(findSystem(data, $journey?.toSystemId)?.name ?? $journey?.toSystemId);
+  // A system only the other game has is still named (see resolveSector).
+  let fromName = $derived(nameOf($journey?.fromSystemId));
+  let toName = $derived(nameOf($journey?.toSystemId));
+  function nameOf(id) {
+    return findSystem(data, id)?.name ?? data.otherGameSystems?.[id] ?? id;
+  }
+
   let totalJumps = $derived($journey ? $journey.hops.length - 1 : 0);
   let refuelStopNames = $derived(
     $journey
@@ -40,7 +45,9 @@
         {toName}
       </span>
     </div>
-    {#if currentHopIndex !== -1}
+    {#if !$journey.hops.length}
+      <!-- No route: the warning below says why -->
+    {:else if currentHopIndex !== -1}
       <div class="row">{$t('journeyPanel.legOfJumps', { current: currentHopIndex, total: totalJumps })}</div>
     {:else}
       <div class="row muted">{$t('journeyPanel.offRoute', { total: totalJumps })}</div>

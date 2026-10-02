@@ -111,6 +111,28 @@ it contains.
   images themselves live in `public/assets/skybox/` and are mapped by name in
   `skyboxSprites.js`.
 
+**Game differences**: `gemini.json` is Righteous Fire's map, with the base
+game's differences marked in place rather than kept as a second copy, and
+the app shows whichever game is selected (`resolveSector` in
+`src/lib/utils/games.js`):
+
+- `game: "RF"` or `game: "PRIV"` on a system or nav point means it's only in
+  that game; without it, it's in both. RF-only: Eden (and Gaea), the jumps to
+  it (Valhalla Nav 4, Rikel Hidden 4), Regallis's hidden point and Blockade
+  Point Alpha's redesigned layout. PRIV-only: Delta Prime's Derelict (RF's
+  `SECTORS.IFF` has no base there) and Blockade Point Alpha's original 3 points.
+- `privateer: {encounters: [...]}` on a nav point in both games holds the
+  base game's encounter table where RF changed it (Capella, Death, Nitir,
+  Pestilence, Rikel, Valhalla and War; an empty list means none).
+- Nav point IDs are unique within each game's view rather than across the
+  file: Blockade Point Alpha's PRIV points reuse `nav-1` to `nav-3`. Each
+  view keeps that game's `SPHR`/`SCEN` order, so zone IDs still map to nav
+  points by position.
+
+Everything else in `gemini.json` is the same in both games: base positions
+and facilities, the sky-boxes and the rest of the map. Ship stats and
+sprites are too, apart from RF's additions.
+
 **Story missions** (`DATA\MISSIONS\S<n>M<x>.IFF` — `S0`–`S7` in `PRIV.TRE`,
 `S8`–`S14` in `RF.TRE`; one file per plot mission, series `n` being one
 fixer's run of missions): each is a `FORM MSSN` holding the briefing

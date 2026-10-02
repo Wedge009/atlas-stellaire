@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { spriteSizeFor } from '../utils/encounterLayout.js';
 import { loadShipFrames } from './shipSpriteFrames.js';
 import { createOrbitParams, orbitStateAt } from './encounterOrbit.js';
+import { createEncounterGroups } from './encounterGroups.js';
 
 // Reproduces the original engine's rotation-sprite scheme for a full 3D
 // orientation: each ship flies a real nose-first circular orbit around its
@@ -124,40 +125,22 @@ export function resolveShipSprite(viewDir, forward, up, screenRight, screenUp) {
   return { frameIndex: picked.frameIndex, flip: picked.flip, rotation };
 }
 
-export function createEncounterSprites3d({ scene, systemId }) {
+export function createEncounterSprites3d({ scene, systemId, fader }) {
   let visible = true;
-  let entries = []; // one per ship sprite instance
-  let anchors = new Map(); // navPointId -> THREE.Group
   const startTime = performance.now();
 
-  function disposeAll() {
-    for (const anchor of anchors.values()) {
-      anchor.traverse((child) => {
-        if (child.isSprite) child.material.dispose();
-      });
-      scene.remove(anchor);
-    }
-    anchors.clear();
-    entries = [];
-  }
-
-  function setEncounterShips(rollsMap, nodes) {
-    disposeAll();
-    if (!rollsMap) return;
-
-    for (const [navPointId, ships] of rollsMap) {
-      if (!ships?.length) continue;
-      const node = nodes.find((n) => n.np.id === navPointId);
-      if (!node) continue;
-
+  // One group per nav point with ships, each with one entry per ship sprite
+  // instance - see encounterGroups.js.
+  const groups = createEncounterGroups({
+    fader,
+    build(navPointId, ships, node) {
       const anchor = new THREE.Group();
       anchor.position.copy(node.mesh.position);
       anchor.visible = visible;
       anchor.userData = { node };
       scene.add(anchor);
-      anchors.set(navPointId, anchor);
 
-      ships.forEach((s, i) => {
+      const entries = ships.map((s, i) => {
         const orbit = createOrbitParams({ systemId, navPointId, shipId: s.ship, instanceIndex: s.instanceIndex, shellIndex: i, speedMultiplier: s.speedMultiplier });
         const size = spriteSizeFor(s.ship);
 
@@ -175,10 +158,21 @@ export function createEncounterSprites3d({ scene, systemId }) {
           sprite, material, anchor, orbit, up: orbit.up,
           frames: null, lastFrameIndex: -1, lastFlip: false,
         };
-        entries.push(entry);
         loadShipFrames(s.ship).then((frames) => { entry.frames = frames; });
+        return entry;
       });
-    }
+      return { anchor, entries };
+    },
+    dispose({ anchor }) {
+      anchor.traverse((child) => {
+        if (child.isSprite) child.material.dispose();
+      });
+      scene.remove(anchor);
+    },
+  });
+
+  function setEncounterShips(rollsMap, nodes, { animate = false } = {}) {
+    groups.update(rollsMap, nodes, animate);
   }
 
   const tmpWorldPos = new THREE.Vector3();
@@ -188,50 +182,53 @@ export function createEncounterSprites3d({ scene, systemId }) {
   const tmpUp = new THREE.Vector3();
 
   function tick(camera) {
-    if (!visible || !entries.length) return;
+    if (!visible) return;
     const t = (performance.now() - startTime) / 1000;
     computeScreenBasis(camera, tmpRight, tmpUp);
 
-    // Anchors track their node's live position every tick (align/orbit flight
-    // animation, or the per-frame idle spin) since they're siblings of
-    // nodeGroup, not children of it.
-    for (const anchor of anchors.values()) anchor.position.copy(anchor.userData.node.mesh.position);
-
-    for (const entry of entries) {
-      orbitStateAt(entry.orbit, t, entry.sprite.position, tmpForward);
-
-      if (!entry.frames) continue; // stay untextured (white) until loaded
-
-      // sprite.position is anchor-local; the anchor sits at the node's world
-      // position with no rotation/scale of its own, so world position is a
-      // plain add.
-      tmpWorldPos.copy(entry.anchor.position).add(entry.sprite.position);
-      tmpViewDir.copy(camera.position).sub(tmpWorldPos).normalize();
-
-      const resolved = resolveShipSprite(tmpViewDir, tmpForward, entry.up, tmpRight, tmpUp);
-      if (!resolved) continue; // hold whatever the sprite last showed
-
-      if (resolved.frameIndex !== entry.lastFrameIndex || resolved.flip !== entry.lastFlip) {
-        entry.lastFrameIndex = resolved.frameIndex;
-        entry.lastFlip = resolved.flip;
-        entry.material.map = (resolved.flip ? entry.frames.flipped : entry.frames.textures)[resolved.frameIndex];
-        entry.material.needsUpdate = true;
-      }
-      if (resolved.rotation !== null) entry.sprite.material.rotation = resolved.rotation;
+    for (const { anchor, entries } of groups.all()) {
+      // Anchors track their node's live position every tick (align/orbit
+      // flight animation, or the per-frame idle spin) since they're siblings
+      // of nodeGroup, not children of it.
+      anchor.position.copy(anchor.userData.node.mesh.position);
+      for (const entry of entries) tickEntry(entry, t, camera);
     }
+  }
+
+  function tickEntry(entry, t, camera) {
+    orbitStateAt(entry.orbit, t, entry.sprite.position, tmpForward);
+
+    if (!entry.frames) return; // stay untextured (white) until loaded
+
+    // sprite.position is anchor-local; the anchor sits at the node's world
+    // position with no rotation/scale of its own, so world position is a
+    // plain add.
+    tmpWorldPos.copy(entry.anchor.position).add(entry.sprite.position);
+    tmpViewDir.copy(camera.position).sub(tmpWorldPos).normalize();
+
+    const resolved = resolveShipSprite(tmpViewDir, tmpForward, entry.up, tmpRight, tmpUp);
+    if (!resolved) return; // hold whatever the sprite last showed
+
+    if (resolved.frameIndex !== entry.lastFrameIndex || resolved.flip !== entry.lastFlip) {
+      entry.lastFrameIndex = resolved.frameIndex;
+      entry.lastFlip = resolved.flip;
+      entry.material.map = (resolved.flip ? entry.frames.flipped : entry.frames.textures)[resolved.frameIndex];
+      entry.material.needsUpdate = true;
+    }
+    if (resolved.rotation !== null) entry.sprite.material.rotation = resolved.rotation;
   }
 
   function setVisible(v) {
     visible = v;
-    for (const anchor of anchors.values()) anchor.visible = v;
+    for (const { anchor } of groups.all()) anchor.visible = v;
   }
 
   function getPickableObjects() {
-    return entries.map((e) => e.sprite);
+    return [...groups.current()].flatMap(({ entries }) => entries.map((e) => e.sprite));
   }
 
   function dispose() {
-    disposeAll();
+    groups.disposeAll();
   }
 
   return { setEncounterShips, tick, setVisible, getPickableObjects, dispose };

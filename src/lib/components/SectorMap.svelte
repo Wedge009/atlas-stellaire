@@ -1,4 +1,5 @@
 <script>
+  import { fade } from 'svelte/transition';
   import { sectorSystems, sectorEdges } from '../utils/navPoints.js';
   import { journey } from '../stores/journey.js';
   import { missionOverrides } from '../stores/storyMission.js';
@@ -36,6 +37,12 @@
   );
 
   const gridLines = [10, 20, 30, 40, 50, 60, 70, 80, 90];
+
+  // Systems (and their jumps) only one game has - Eden - fade in and out on
+  // switching game, as does a system's base marker where its base is only in
+  // one game (Delta Prime). Transitions are local, so nothing fades on first showing
+  // the map, only when an item comes or goes.
+  const gameFade = { duration: 300 };
 
   function hasBase(system) {
     return system.navPoints.some((np) => np.type === 'base');
@@ -113,7 +120,7 @@
   {/each}
 
   {#each edges as e (e.a.id + '|' + e.b.id)}
-    <line x1={e.a.gx} y1={e.a.gy} x2={e.b.gx} y2={e.b.gy} class="edge" />
+    <line x1={e.a.gx} y1={e.a.gy} x2={e.b.gx} y2={e.b.gy} class="edge" transition:fade={gameFade} />
   {/each}
 
   <!-- Markers first, so the route line draws over them; labels are drawn
@@ -125,16 +132,19 @@
     <g
       class="node-marker"
       transform="translate({s.gx}, {s.gy})"
+      transition:fade={gameFade}
       onclick={(e) => openPanel(s, e)}
       ondblclick={() => goTo(s)}
       role="button"
       tabindex="0"
       onkeydown={(e) => e.key === 'Enter' && goTo(s)}
     >
+      <!-- Cross-fades where a base is only in one game (Delta Prime's
+           Derelict) -->
       {#if hasBase(s)}
-        <rect x="-1.5" y="-1.5" width="3" height="3" class="dot dot-base" />
+        <rect x="-1.5" y="-1.5" width="3" height="3" class="dot dot-base" transition:fade={gameFade} />
       {:else}
-        <circle r="1.3" class="dot" />
+        <circle r="1.3" class="dot" transition:fade={gameFade} />
       {/if}
       {#if isMissionSystem}
         <circle r="5" class="mission-ring" />
@@ -156,6 +166,7 @@
     <g
       class="node-label"
       transform="translate({s.gx}, {s.gy})"
+      transition:fade={gameFade}
       onclick={(e) => openPanel(s, e)}
       ondblclick={() => goTo(s)}
       role="button"

@@ -1,13 +1,17 @@
 <script>
+  import { untrack } from 'svelte';
+  import { get } from 'svelte/store';
   import NavMap2D from './NavMap2D.svelte';
   import NavMap3D from './NavMap3D.svelte';
   import InfoPanel from './InfoPanel.svelte';
   import Legend from './Legend.svelte';
   import SettingsPanel from './SettingsPanel.svelte';
+  import GameToggle from './GameToggle.svelte';
   import { selectedNode } from '../stores/selection.js';
   import { showHidden } from '../stores/settings.js';
   import { viewMode, viewAligned } from '../stores/view.js';
   import { rollForSystem } from '../stores/encounters.js';
+  import { gameSwitchLocked } from '../stores/game.js';
   import { infoPanelPosition, legendPanelPosition } from '../stores/ui.js';
   import { draggable } from '../actions/draggable.js';
   import { t } from '../i18n/index.js';
@@ -23,13 +27,40 @@
   // or rebuilding a toggled setting's effect (eg the node meshes) mid-flight would
   // fight the running animation. Once it settles into either end state (including
   // the aligned 2D projection), both are safe again.
+  // The game switch too, since it rebuilds the nav points.
   let animationLocked = $derived($viewMode === '3d' && mapAnimating);
 
   $effect(() => {
+    gameSwitchLocked.set(animationLocked);
+    return () => gameSwitchLocked.set(false);
+  });
+
+  // Only changes value on moving to another system - unlike `system`
+  // itself, which is a new object on switching game too.
+  let systemId = $derived(system.id);
+
+  $effect(() => {
     // reset selection whenever the system changes so no stale node leaks in
-    system.id;
-    selectedNode.set(null);
-    rollForSystem(system.id, system.navPoints);
+    systemId;
+    untrack(() => selectedNode.set(null));
+  });
+
+  // Whether this visit's encounters have been rolled yet. SystemView is
+  // remounted per system (see App.svelte), so this is per visit.
+  let rolled = false;
+
+  $effect(() => {
+    // New nav points - a new system, or this one in the other game: roll
+    // its encounters (only re-rolling what the game switch changed), and
+    // keep the selection on the same point where it still exists, so its
+    // info (eg the base's commodities) stays open.
+    const navPoints = system.navPoints;
+    untrack(() => {
+      rollForSystem(system.id, navPoints, { keepUnchanged: rolled });
+      rolled = true;
+      const selected = get(selectedNode);
+      if (selected) selectedNode.set(navPoints.find((np) => np.id === selected.id) ?? null);
+    });
   });
 
   let visiblePoints = $derived(
@@ -45,6 +76,7 @@
     </div>
     <div class="hud-controls">
       <div class="hud-controls-row">
+        <GameToggle />
         <button
           type="button"
           class="primary caps"

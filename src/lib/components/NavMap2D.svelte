@@ -1,4 +1,5 @@
 <script>
+  import { fade } from 'svelte/transition';
   import { resolveFlatPosition, styleForNavPoint, navPointLabel } from '../utils/navPoints.js';
   import { selectedNode } from '../stores/selection.js';
   import { journey } from '../stores/journey.js';
@@ -10,13 +11,29 @@
 
   let { points, data, onJump, systemId = null } = $props();
 
+  // Keyed by position as well as ID: nav point IDs are only unique within
+  // one game's view, and Blockade Point Alpha's `nav-1` is somewhere else in
+  // each game - so a moved point fades out and back in at its new spot.
   let display = $derived(
     points.map((np) => ({
       np,
+      key: `${np.id}@${np.x},${np.y},${np.z}`,
       flat: resolveFlatPosition(np),
       style: styleForNavPoint(np),
     }))
   );
+
+  // Nav points and encounters that come or go (switching game, the hidden
+  // points setting) fade, like the sector map's. Transitions are local, so
+  // nothing fades when the map first shows.
+  const nodeFade = { duration: 300 };
+
+  // An encounter's ships, as a key that only changes when the ships do - so
+  // a new roll fades in, but an identical one (eg the same roll after a game
+  // switch, or a mission's re-derived ships) stays put.
+  function shipsKey(ships) {
+    return ships.map((s) => `${s.ship}/${s.character ?? ''}`).join(',');
+  }
 
   // Which navPoint(s) in this system to highlight for the plotted journey,
   // and which point-to-point segments to draw as an arrow through it - see
@@ -62,11 +79,12 @@
 
   <!-- Markers first, so the route arrow draws over them; labels are drawn
        last (after the route arrow) so nav point names stay legible on top. -->
-  {#each display as d (d.np.id)}
+  {#each display as d (d.key)}
     {@const isSelected = $selectedNode?.id === d.np.id}
     <g
       class="node-marker"
       transform="translate({d.flat.sx}, {d.flat.sy})"
+      transition:fade={nodeFade}
       onclick={() => select(d.np)}
       ondblclick={() => jump(d.np)}
       role="button"
@@ -91,13 +109,19 @@
   {/each}
 
   {#if $encounterMode !== 'none'}
-    {#each display as d (d.np.id)}
-      {@const ships = $encounterRolls.get(d.np.id)}
-      {#if ships?.length}
-        <g transform="translate({d.flat.sx}, {d.flat.sy})">
-          <EncounterSprites {ships} onSelect={() => select(d.np)} onJump={() => jump(d.np)} />
-        </g>
-      {/if}
+    <!-- The outer group fades with its nav point, the inner one when the
+         roll changes (local transitions only run for their own block). -->
+    {#each display as d (d.key)}
+      {@const ships = $encounterRolls.get(d.np.id) ?? []}
+      <g transform="translate({d.flat.sx}, {d.flat.sy})" transition:fade={nodeFade}>
+        {#key shipsKey(ships)}
+          <g transition:fade={nodeFade}>
+            {#if ships.length}
+              <EncounterSprites {ships} onSelect={() => select(d.np)} onJump={() => jump(d.np)} />
+            {/if}
+          </g>
+        {/key}
+      </g>
     {/each}
   {/if}
 
@@ -112,10 +136,11 @@
     />
   {/each}
 
-  {#each display as d (d.np.id)}
+  {#each display as d (d.key)}
     <g
       class="node-label"
       transform="translate({d.flat.sx}, {d.flat.sy})"
+      transition:fade={nodeFade}
       onclick={() => select(d.np)}
       ondblclick={() => jump(d.np)}
       role="button"

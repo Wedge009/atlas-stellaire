@@ -1,5 +1,5 @@
 <script>
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy, untrack } from 'svelte';
   import { selectedNode } from '../stores/selection.js';
   import { journey } from '../stores/journey.js';
   import { legendCollapsed } from '../stores/ui.js';
@@ -127,11 +127,31 @@
 
   $effect(() => {
     // re-run whenever `points` or the route info changes (system switch,
-    // hidden-toggle, or a journey plotted/advanced while this system is open)
+    // hidden-toggle, game switch, or a journey plotted/advanced while this
+    // system is open)
     const current = points;
     const highlightIds = routeHighlightIds;
     const segments = routeInfo.segments;
-    if (scene) scene.setPoints(current, highlightIds, segments);
+    // The current game's sector, for naming jump destinations in labels -
+    // read here so it's always up to date before the points it goes with.
+    const sector = data;
+    if (scene) {
+      scene.setData(sector);
+      scene.setPoints(current, highlightIds, segments);
+    }
+  });
+
+  $effect(() => {
+    // A zoomed-in point that's gone or moved (hidden points turned off, or
+    // a switch to the other game) zooms back out; otherwise it follows the
+    // point's new data.
+    const current = points;
+    untrack(() => {
+      if (!focused || animating) return;
+      const same = current.find((np) => np.id === focused.id);
+      if (same && same.x === focused.x && same.y === focused.y && same.z === focused.z) focused = same;
+      else exitFocus();
+    });
   });
 
   $effect(() => {

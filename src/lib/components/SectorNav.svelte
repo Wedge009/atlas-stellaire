@@ -88,7 +88,9 @@
               {#if !$collapsedQuadrants.includes(quadrant.id)}
                 <ul>
                   {#each quadrant.systems as system (system.id)}
-                    <li>
+                    <!-- Slides in or out when a system is only in one game
+                         (Eden) and the game switches -->
+                    <li transition:slide={{ duration: 300 }}>
                       <button
                         type="button"
                         class="system-btn"

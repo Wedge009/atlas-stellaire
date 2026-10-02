@@ -1,16 +1,5 @@
 import { findSystem } from './navPoints.js';
 
-// Game titles are proper nouns, so are not translated. Keyed by
-// story-missions.json's `game` field, in tab order.
-export const MISSION_GAMES = [
-  { id: 'PRIV', label: 'Privateer' },
-  { id: 'RF', label: 'Righteous Fire' },
-];
-
-export function gameLabel(gameId) {
-  return MISSION_GAMES.find((g) => g.id === gameId)?.label ?? gameId;
-}
-
 // Fixer's series name plus mission letter, eg 'Tayla B'.
 export function missionName(mission) {
   return `${mission.series} ${mission.mission}`;

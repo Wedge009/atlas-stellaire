@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, untrack } from 'svelte';
   import { get } from 'svelte/store';
   import SectorNav from './lib/components/SectorNav.svelte';
   import SystemView from './lib/components/SystemView.svelte';
@@ -11,7 +11,10 @@
   import StoryMissionDialog from './lib/components/StoryMissionDialog.svelte';
   import JourneyPanel from './lib/components/JourneyPanel.svelte';
   import JumpTransition from './lib/components/JumpTransition.svelte';
+  import GameToggle from './lib/components/GameToggle.svelte';
   import { findSystem } from './lib/utils/navPoints.js';
+  import { resolveSector } from './lib/utils/games.js';
+  import { game } from './lib/stores/game.js';
   import { journey, journeyInputs, plotJourney } from './lib/stores/journey.js';
   import { jumpTransitionEnabled } from './lib/stores/settings.js';
   import { loadStoryMissions, sectorData } from './lib/stores/storyMission.js';
@@ -19,7 +22,10 @@
   import { draggable } from './lib/actions/draggable.js';
   import { t, locale } from './lib/i18n/index.js';
 
-  let geminiData = $state(null);
+  // gemini.json as loaded, covering both games, and as the current game
+  // sees it - see resolveSector. Everything else only ever gets the latter.
+  let rawSectorData = $state.raw(null);
+  let geminiData = $derived(rawSectorData ? resolveSector(rawSectorData, $game) : null);
   let selectedSystemId = $state(get(lastSystemId));
   let topView = $state(get(lastTopView)); // 'system' | 'sector'
   let showAbout = $state(false);
@@ -49,16 +55,24 @@
     // active mission's ships just appear once it arrives.
     loadStoryMissions();
     const res = await fetch(`${import.meta.env.BASE_URL}data/gemini.json`);
-    geminiData = await res.json();
-    sectorData.set(geminiData);
+    rawSectorData = await res.json();
+  });
 
-    if (topView === 'system' && !findSystem(geminiData, selectedSystemId)) {
-      topView = 'sector';
-      selectedSystemId = null;
-    }
-
-    const savedJourney = get(journeyInputs);
-    if (savedJourney) plotJourney(geminiData, savedJourney);
+  // On loading, and on every game switch: the system being viewed may not
+  // exist in this game (Eden is Righteous Fire's), and a journey is
+  // re-plotted from its remembered inputs, the same as after a reload.
+  $effect(() => {
+    const data = geminiData;
+    if (!data) return;
+    untrack(() => {
+      sectorData.set(data);
+      if (topView === 'system' && !findSystem(data, selectedSystemId)) {
+        topView = 'sector';
+        selectedSystemId = null;
+      }
+      const savedJourney = get(journeyInputs);
+      if (savedJourney) plotJourney(data, savedJourney);
+    });
   });
 
   function goToSystem(id) {
@@ -95,6 +109,8 @@
     <div class="main-view">
       {#if topView === 'sector'}
         <SectorMap data={geminiData} {selectedSystemId} onSelect={goToSystem} />
+        <!-- The system view has its own, among its other HUD controls -->
+        <div class="sector-controls"><GameToggle /></div>
       {:else if system}
         {#key system.id}
           <SystemView {system} data={geminiData} onJump={handleJump} />
@@ -151,6 +167,12 @@
     flex: 1;
     position: relative;
     overflow: hidden;
+  }
+  .sector-controls {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    z-index: 10;
   }
   .journey-overlay {
     position: absolute;

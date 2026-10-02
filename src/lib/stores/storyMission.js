@@ -1,6 +1,7 @@
 import { writable, derived, get } from 'svelte/store';
 import { persisted } from './persisted.js';
 import { journey } from './journey.js';
+import { game } from './game.js';
 import { missionEncounters, pickFirstOf } from '../utils/storyMissions.js';
 
 // Every story mission from story-missions.json, in file (ID) order. Empty
@@ -15,7 +16,8 @@ export const missionCharacters = writable(/** @type {Record<string, string>} */ 
 // mission ships whose stats boost their hull's base speed.
 export const missionSpeedMultipliers = writable(/** @type {Record<string, number>} */ ({}));
 
-// The sector data (gemini.json), set once loaded - needed to work out which
+// The sector data (gemini.json, resolved for the current game - see
+// resolveSector), set once loaded - needed to work out which
 // jump point a plotted journey enters a system by. See pickFirstOf().
 export const sectorData = writable(/** @type {any} */ (null));
 
@@ -32,6 +34,13 @@ export const activeMission = derived(
   [storyMissions, activeMissionId],
   ([$missions, $id]) => $missions.find((m) => m.id === $id) ?? null
 );
+
+// An active mission belongs to the game being shown: switching game clears
+// one from the other game. (A mission can only be activated in its own game,
+// as the dialogue's tabs are the application-wide game.)
+derived([activeMission, game], (pair) => pair).subscribe(([$mission, $game]) => {
+  if ($mission && $mission.game !== $game) activeMissionId.set(null);
+});
 
 // systemId -> navPointId -> [{ship, count}] for the active mission - see
 // missionEncounters(). Empty when no mission is active. Follows the plotted
