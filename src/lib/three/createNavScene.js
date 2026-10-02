@@ -245,7 +245,6 @@ export function createNavScene({
   let jumpTextures = null;
   let originalJumpTextures = null;
   let jumpAnimStartTime = performance.now();
-  let lastJumpFrameIdx = -1;
   loadJumpFrameTextures().then((textures) => { jumpTextures = textures; });
   loadOriginalJumpFrameTextures().then((textures) => { originalJumpTextures = textures; });
   let gridLinesOn = gridLinesEnabled;
@@ -436,9 +435,14 @@ export function createNavScene({
       fader.cancel(n);
       disposeNode(n);
     }
+    for (const m of leavingMeshes) {
+      fader.cancel(m);
+      disposeMeshParts(m);
+    }
     nodeGroup.clear();
     nodes = [];
     leavingNodes = new Set();
+    leavingMeshes = new Set();
     jumpMaterials = [];
   }
 
@@ -522,21 +526,24 @@ export function createNavScene({
   // the same point in the other game, with only its encounters different)
   // keeps its node.
   function nodeKey(np) {
-    return JSON.stringify([np.id, np.x, np.y, np.z, styleForNavPoint(np), labelText(np), !!np.asteroids, np.baseType ?? null]);
+    return JSON.stringify([np.id, np.x, np.y, np.z, styleForNavPoint(np), labelText(np), !!np.asteroids, np.baseType ?? null, meshKey(np)]);
   }
 
-  // Builds one nav point's node and adds its objects to the scene, in
-  // whatever layout (orbit vs flat-aligned) is currently active, since
-  // `setPoints` can be re-invoked (eg the hidden-points toggle) while
-  // already aligned - it must not silently snap back to the 3D layout.
-  function buildNode(np) {
-    const initialOpacity = aligned ? 0.12 : 1;
-    const flat = resolveFlatPosition(np);
+  // The parts of a node's look that the base model and jump point style
+  // settings change, as a key - see restyleNodes.
+  function meshKey(np) {
     const style = styleForNavPoint(np);
-    const pos3d = new THREE.Vector3(np.x * SCALE, np.y * SCALE, np.z * SCALE);
-    const pos2d = new THREE.Vector3(((flat.sx - 50) / 50) * FLAT_SPAN, 0, ((flat.sy - 50) / 50) * FLAT_SPAN);
-    const initialPos = aligned ? pos2d : pos3d;
+    return JSON.stringify([
+      baseModelsOn && !!np.baseType && !!BASE_MODEL_PATHS[np.baseType],
+      style.shape === 'sphere' ? jumpPointStyleOn : null,
+    ]);
+  }
 
+  // Builds a node's mesh (placeholder, base model or jump point) and its
+  // asteroid ring - sized to clear a base model - at `initialPos`, adding
+  // both to the scene.
+  function buildMesh(np, initialPos) {
+    const style = styleForNavPoint(np);
     const modelTemplate = (baseModelsOn && np.baseType) ? loadBaseModelTemplate(np.baseType) : null;
     let jumpMaterial = null;
 
@@ -588,6 +595,7 @@ export function createNavScene({
         depthWrite: false,
         fog: false,
       });
+      material.userData.jumpStyle = 'sprites';
       jumpMaterial = material;
       loadOriginalJumpFrameTextures().then((textures) => {
         material.map = textures[0];
@@ -615,6 +623,7 @@ export function createNavScene({
         depthWrite: false,
         fog: false,
       });
+      material.userData.jumpStyle = 'models';
       jumpMaterial = material;
       loadJumpFrameTextures().then((textures) => {
         material.map = textures[0];
@@ -640,6 +649,41 @@ export function createNavScene({
     mesh.userData = np;
     nodeGroup.add(mesh);
 
+    let asteroidRing = null;
+    if (np.asteroids) {
+      // A real model's footprint (BASE_MODEL_TARGET_SIZE-normalised, ~4.5
+      // units across) is much wider than the plain placeholder box/sphere
+      // the ring was originally sized for - widen it so the ring clears the
+      // model instead of cutting through it.
+      const [ringInner, ringOuter] = modelTemplate ? [3.2, 3.8] : [2.0, 2.5];
+      const ringGeo = new THREE.RingGeometry(ringInner, ringOuter, 24);
+      const ringMat = new THREE.MeshBasicMaterial({ color: 0xa0522d, transparent: true, opacity: 0.6, side: THREE.DoubleSide });
+      asteroidRing = new THREE.Mesh(ringGeo, ringMat);
+      asteroidRing.rotation.x = -Math.PI / 2;
+      asteroidRing.position.copy(initialPos);
+      nodeGroup.add(asteroidRing);
+    }
+
+    // What the node's look is still waiting on (its model, or its jump
+    // point's frames), for whenReady.
+    const loaded = modelTemplate
+      ?? (jumpMaterial ? (jumpPointStyleOn === 'sprites' ? loadOriginalJumpFrameTextures() : loadJumpFrameTextures()) : null);
+    return { mesh, asteroidRing, jumpMaterial, loaded, meshKey: meshKey(np) };
+  }
+
+  // Builds one nav point's node and adds its objects to the scene, in
+  // whatever layout (orbit vs flat-aligned) is currently active, since
+  // `setPoints` can be re-invoked (eg the hidden-points toggle) while
+  // already aligned - it must not silently snap back to the 3D layout.
+  function buildNode(np) {
+    const initialOpacity = aligned ? 0.12 : 1;
+    const flat = resolveFlatPosition(np);
+    const pos3d = new THREE.Vector3(np.x * SCALE, np.y * SCALE, np.z * SCALE);
+    const pos2d = new THREE.Vector3(((flat.sx - 50) / 50) * FLAT_SPAN, 0, ((flat.sy - 50) / 50) * FLAT_SPAN);
+    const initialPos = aligned ? pos2d : pos3d;
+
+    const { mesh, asteroidRing, jumpMaterial, loaded, meshKey: builtMeshKey } = buildMesh(np, initialPos);
+
     const dropGeo = new THREE.BufferGeometry().setFromPoints([initialPos.clone(), new THREE.Vector3(initialPos.x, 0, initialPos.z)]);
     const dropMat = new THREE.LineDashedMaterial({ color: 0x335566, dashSize: 0.8, gapSize: 0.6, transparent: true, opacity: initialOpacity });
     const dropLine = new THREE.Line(dropGeo, dropMat);
@@ -658,27 +702,7 @@ export function createNavScene({
     label.userData = np;
     nodeGroup.add(label);
 
-    let asteroidRing = null;
-    if (np.asteroids) {
-      // A real model's footprint (BASE_MODEL_TARGET_SIZE-normalised, ~4.5
-      // units across) is much wider than the plain placeholder box/sphere
-      // the ring was originally sized for - widen it so the ring clears the
-      // model instead of cutting through it.
-      const [ringInner, ringOuter] = modelTemplate ? [3.2, 3.8] : [2.0, 2.5];
-      const ringGeo = new THREE.RingGeometry(ringInner, ringOuter, 24);
-      const ringMat = new THREE.MeshBasicMaterial({ color: 0xa0522d, transparent: true, opacity: 0.6, side: THREE.DoubleSide });
-      asteroidRing = new THREE.Mesh(ringGeo, ringMat);
-      asteroidRing.rotation.x = -Math.PI / 2;
-      asteroidRing.position.copy(initialPos);
-      nodeGroup.add(asteroidRing);
-    }
-
-
-    // What the node's look is still waiting on (its model, or its jump
-    // point's frames), for whenReady.
-    const loaded = modelTemplate
-      ?? (jumpMaterial ? (jumpPointStyleOn === 'sprites' ? loadOriginalJumpFrameTextures() : loadJumpFrameTextures()) : null);
-    return { np, key: nodeKey(np), mesh, dropLine, dropMat, spoke, spokeMat, label, asteroidRing, routeBeacon: null, jumpMaterial, loaded, pos3d, pos2d };
+    return { np, key: nodeKey(np), meshKey: builtMeshKey, mesh, dropLine, dropMat, spoke, spokeMat, label, asteroidRing, routeBeacon: null, jumpMaterial, loaded, pos3d, pos2d };
   }
 
   // Adds or removes a node's route beacon to match whether it's on the
@@ -701,6 +725,102 @@ export function createNavScene({
     nodeGroup.add(n.routeBeacon);
   }
 
+  // --- base model / jump point style changes ---
+  // Only the affected nodes' meshes (and asteroid rings, which are sized to
+  // clear a base model) are swapped, not whole nodes, so labels and lines
+  // stay put. Like the ship style cross-fade, the new meshes are built
+  // invisible, and fade in over the old ones once their models have loaded
+  // and their shaders are compiled. A newer change, or setPoints, abandons
+  // swaps still waiting.
+  let pendingSwaps = []; // [{ n, built }], held invisible
+  let leavingMeshes = new Set(); // old meshes fading out
+  let restyleRun = 0;
+
+  function meshParts(m) {
+    return [m.mesh, m.asteroidRing].filter(Boolean);
+  }
+
+  function disposeMeshParts(m) {
+    disposeNodeMesh(m.mesh);
+    nodeGroup.remove(m.mesh);
+    if (m.asteroidRing) {
+      m.asteroidRing.geometry.dispose();
+      m.asteroidRing.material.dispose();
+      nodeGroup.remove(m.asteroidRing);
+    }
+  }
+
+  function refreshJumpMaterials() {
+    jumpMaterials = [...nodes, ...leavingNodes, ...leavingMeshes, ...pendingSwaps.map((p) => p.built)]
+      .map((m) => m.jumpMaterial)
+      .filter(Boolean);
+  }
+
+  function cancelPendingSwaps() {
+    restyleRun++;
+    for (const { built } of pendingSwaps) {
+      fader.cancel(built);
+      disposeMeshParts(built);
+    }
+    pendingSwaps = [];
+  }
+
+  async function restyleNodes() {
+    cancelPendingSwaps();
+    const thisRun = restyleRun;
+    pendingSwaps = nodes
+      .filter((n) => n.meshKey !== meshKey(n.np))
+      .map((n) => {
+        const built = buildMesh(n.np, n.mesh.position);
+        // An asteroid ring the same size as before (eg a jump point's, on
+        // changing jump point style) stays as it is rather than fading
+        // across to an identical one.
+        const ringSize = (m) => m.asteroidRing?.geometry.parameters.innerRadius;
+        const keepRing = n.asteroidRing && ringSize(built) === ringSize(n);
+        if (keepRing) {
+          built.asteroidRing.geometry.dispose();
+          built.asteroidRing.material.dispose();
+          nodeGroup.remove(built.asteroidRing);
+          built.asteroidRing = null;
+        }
+        fader.hold(built, meshParts(built));
+        return { n, built, keepRing };
+      });
+    refreshJumpMaterials();
+    if (!pendingSwaps.length) return;
+
+    await Promise.allSettled(pendingSwaps.map(({ built }) => built.loaded));
+    if (thisRun !== restyleRun || disposed) return;
+    await renderer.compileAsync(scene, camera);
+    if (thisRun !== restyleRun || disposed) return;
+
+    const swaps = pendingSwaps;
+    pendingSwaps = [];
+    for (const { n, built, keepRing } of swaps) {
+      const old = { mesh: n.mesh, asteroidRing: keepRing ? null : n.asteroidRing, jumpMaterial: n.jumpMaterial };
+      // Wherever the node is now (it may have moved, eg the align flight).
+      built.mesh.position.copy(old.mesh.position);
+      built.mesh.rotation.y = old.mesh.rotation.y;
+      built.asteroidRing?.position.copy(old.mesh.position);
+      Object.assign(n, {
+        mesh: built.mesh,
+        asteroidRing: keepRing ? n.asteroidRing : built.asteroidRing,
+        jumpMaterial: built.jumpMaterial,
+        loaded: built.loaded,
+        meshKey: built.meshKey,
+        key: nodeKey(n.np),
+      });
+      fader.fade(built, meshParts(built), 0, 1);
+      leavingMeshes.add(old);
+      fader.fade(old, meshParts(old), 1, 0, () => {
+        leavingMeshes.delete(old);
+        disposeMeshParts(old);
+        refreshJumpMaterials();
+      });
+    }
+    refreshJumpMaterials();
+  }
+
   // Whether the first set of points has been shown - only later changes fade.
   let pointsShown = false;
 
@@ -713,6 +833,9 @@ export function createNavScene({
     lastRouteHighlightIds = routeHighlightIds;
     lastRouteSegments = routeSegments;
     const animate = pointsShown && !rebuild;
+    // Pending style swaps belong to the old nodes; a node whose style has
+    // changed since is rebuilt below instead (nodeKey includes it).
+    cancelPendingSwaps();
     if (!animate) clearNodes();
     pointsShown = true;
 
@@ -741,7 +864,7 @@ export function createNavScene({
         disposeNode(n);
       });
     }
-    jumpMaterials = [...nodes, ...leavingNodes].map((n) => n.jumpMaterial).filter(Boolean);
+    refreshJumpMaterials();
 
     buildRouteLines(routeSegments);
     const activeRenderer = encounterRenderers[encounterModeOn];
@@ -1090,18 +1213,18 @@ export function createNavScene({
     rafId = requestAnimationFrame(tick);
     if (!animating) nodeGroup.children.forEach((c) => { if (c instanceof THREE.Mesh || c instanceof THREE.Group) c.rotation.y += NODE_IDLE_SPIN_SPEED; });
     if (jumpMaterials.length) {
-      // jumpMaterials is only ever populated by one of the two jump-point
-      // branches in setPoints (mutually exclusive on jumpPointStyleOn), so
-      // every entry always agrees on which texture set/sequence applies.
-      const spriteStyle = jumpPointStyleOn === 'sprites';
-      const textures = spriteStyle ? originalJumpTextures : jumpTextures;
-      const sequence = spriteStyle ? ORIGINAL_JUMP_FRAME_SEQUENCE : JUMP_FRAME_SEQUENCE;
-      if (textures) {
-        const step = Math.floor((performance.now() - jumpAnimStartTime) / JUMP_FRAME_INTERVAL_MS) % sequence.length;
-        if (step !== lastJumpFrameIdx) {
-          lastJumpFrameIdx = step;
-          const texture = textures[sequence[step]];
-          for (const mat of jumpMaterials) { mat.map = texture; mat.needsUpdate = true; }
+      // Each material animates in its own style: while the jump point
+      // style cross-fades (see restyleNodes), both kinds are on show.
+      const elapsed = performance.now() - jumpAnimStartTime;
+      for (const mat of jumpMaterials) {
+        const spriteStyle = mat.userData.jumpStyle === 'sprites';
+        const textures = spriteStyle ? originalJumpTextures : jumpTextures;
+        if (!textures) continue;
+        const sequence = spriteStyle ? ORIGINAL_JUMP_FRAME_SEQUENCE : JUMP_FRAME_SEQUENCE;
+        const texture = textures[sequence[Math.floor(elapsed / JUMP_FRAME_INTERVAL_MS) % sequence.length]];
+        if (mat.map !== texture) {
+          if (!mat.map) mat.needsUpdate = true;
+          mat.map = texture;
         }
       }
     }
@@ -1173,13 +1296,14 @@ export function createNavScene({
       fadeVisible('grid', [grid, ...nodes.flatMap((n) => [n.dropLine, n.spoke])], v);
     },
     setBaseModelsEnabled: (v) => {
+      if (v === baseModelsOn) return;
       baseModelsOn = v;
-      setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments, { rebuild: true });
+      restyleNodes();
     },
     setJumpPointStyle: (v) => {
+      if (v === jumpPointStyleOn) return;
       jumpPointStyleOn = v;
-      lastJumpFrameIdx = -1;
-      setPoints(lastNavPoints, lastRouteHighlightIds, lastRouteSegments, { rebuild: true });
+      restyleNodes();
     },
     // Later rolls (a game switch, a story mission) fade in and out where
     // they differ; the first set just appears.
