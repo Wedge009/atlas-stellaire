@@ -1055,9 +1055,8 @@ export function createNavScene({
       camera.lookAt(0, 0, 0);
       if (t < 1) requestAnimationFrame(step);
       else {
-        // Reset the idle spin so a box-shaped node's on-screen orientation
-        // is always the same in the aligned view, however long it spun for.
-        nodes.forEach((n) => n.mesh.rotation.set(0, 0, 0));
+        // Nodes keep their idle-spin rotation (it carries on in the aligned
+        // view) - resetting it here only showed as a sudden snap.
         animating = false; interactionLocked = false; aligned = true; onDone && onDone();
       }
     }
