@@ -9,6 +9,7 @@
     baseModelStyle,
     jumpPointStyle,
   } from '../stores/settings.js';
+  import { viewMode } from '../stores/view.js';
   import { t } from '../i18n/index.js';
 
   // The whole menu is locked shut while the 3D<->2D alignment flight
@@ -19,6 +20,11 @@
 
   let open = $state(false);
   let root;
+
+  // The 2D map only has sprites, so it doesn't offer models, and shows a
+  // remembered 'models' as sprites - the setting itself is left alone, so
+  // the 3D view keeps models unless sprites are picked here.
+  let encounterChoice = $derived($viewMode === '2d' && $encounterMode === 'models' ? 'sprites' : $encounterMode);
 
   $effect(() => {
     if (locked) open = false;
@@ -72,10 +78,12 @@
       </label>
       <label class="select-row">
         <span>{$t('common.shipEncounters')}</span>
-        <select value={$encounterMode} onchange={(e) => encounterMode.set(e.currentTarget.value)}>
+        <select value={encounterChoice} onchange={(e) => encounterMode.set(e.currentTarget.value)}>
           <option value="none">{$t('common.none')}</option>
           <option value="sprites">{$t('settings.sprites')}</option>
-          <option value="models">{$t('settings.models')}</option>
+          {#if $viewMode !== '2d'}
+            <option value="models">{$t('settings.models')}</option>
+          {/if}
         </select>
       </label>
 
