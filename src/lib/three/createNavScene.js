@@ -10,8 +10,8 @@ import { LABEL_FONT_FAMILY } from '../utils/fonts.js';
 
 // The ambient ship-encounter ships can render as either the original 2D
 // sprites or real orbiting 3D ship models (the 'Ship encounters' setting) -
-// both factories share the same five-function interface (setEncounterShips/
-// tick/setVisible/getPickableObjects/dispose), keyed here by the same
+// both factories share the same interface (setEncounterShips/tick/
+// setVisible/getPickableObjects/whenLoaded/dispose), keyed here by the same
 // 'sprites'/'models' strings the setting uses. Both are always instantiated
 // (cheap - neither loads any asset until setEncounterShips actually gives
 // it ships to show), and only the active one is ever populated - see
@@ -286,6 +286,8 @@ export function createNavScene({
   scene.add(backdropGroup);
   const textureLoader = new THREE.TextureLoader();
   const skybox = findSystem(data, systemId)?.skybox ?? [];
+  // Each sky-box sprite's load, for whenReady.
+  const backdropLoads = [];
   for (const obj of skybox) {
     const iconPath = skyboxSpriteTexture(obj.name);
     if (!iconPath) continue;
@@ -294,7 +296,7 @@ export function createNavScene({
     sprite.visible = false;
     sprite.position.copy(direction.multiplyScalar(BACKDROP_RADIUS));
     backdropGroup.add(sprite);
-    textureLoader.load(iconPath, (texture) => {
+    backdropLoads.push(textureLoader.loadAsync(iconPath).then((texture) => {
       texture.magFilter = THREE.NearestFilter;
       texture.minFilter = THREE.NearestFilter;
       texture.colorSpace = THREE.SRGBColorSpace;
@@ -306,7 +308,7 @@ export function createNavScene({
       const aspect = texture.image.width / texture.image.height;
       sprite.scale.set(BACKDROP_SIZE * aspect, BACKDROP_SIZE, 1);
       sprite.visible = true;
-    });
+    }));
   }
 
   const grid = new THREE.GridHelper(160, 16, 0x992222, 0x551515);
@@ -642,7 +644,11 @@ export function createNavScene({
     }
 
 
-    return { np, key: nodeKey(np), mesh, dropLine, dropMat, spoke, spokeMat, label, asteroidRing, routeBeacon: null, jumpMaterial, pos3d, pos2d };
+    // What the node's look is still waiting on (its model, or its jump
+    // point's frames), for whenReady.
+    const loaded = modelTemplate
+      ?? (jumpMaterial ? (jumpPointStyleOn === 'sprites' ? loadOriginalJumpFrameTextures() : loadJumpFrameTextures()) : null);
+    return { np, key: nodeKey(np), mesh, dropLine, dropMat, spoke, spokeMat, label, asteroidRing, routeBeacon: null, jumpMaterial, loaded, pos3d, pos2d };
   }
 
   // Adds or removes a node's route beacon to match whether it's on the
@@ -1017,6 +1023,24 @@ export function createNavScene({
     renderer.setSize(width, height);
   }
 
+  // Settles once the scene looks as it will: the models, textures and ships
+  // it's waiting on have loaded (and been added - their own handlers were
+  // queued first), their shaders are compiled, and a couple of frames have
+  // been drawn. That's the slow part of a new scene, which would otherwise
+  // happen in its first frames on screen.
+  async function whenReady() {
+    await Promise.allSettled([
+      ...nodes.map((n) => n.loaded),
+      ...backdropLoads,
+      encounterRenderers[encounterModeOn]?.whenLoaded(),
+    ]);
+    if (disposed) return;
+    await renderer.compileAsync(scene, camera);
+    if (disposed) return;
+    renderer.render(scene, camera);
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  }
+
   // Shows or hides `objects` (the grid lines, the sky-box) with a fade - the
   // settings that turn them on or off. Turning one back on mid-fade picks up
   // from where the fade had got to.
@@ -1065,7 +1089,9 @@ export function createNavScene({
   }
   tick();
 
+  let disposed = false;
   function dispose() {
+    disposed = true;
     cancelAnimationFrame(rafId);
     clearNodes();
     clearRouteLines();
@@ -1090,6 +1116,7 @@ export function createNavScene({
   }
 
   return {
+    whenReady,
     // The sector as the current game sees it - nodes built after this (eg
     // the Eden jump points, on switching to Righteous Fire) name their jump
     // destinations from it.

@@ -158,7 +158,7 @@ export function createEncounterSprites3d({ scene, systemId, fader }) {
           sprite, material, anchor, orbit, up: orbit.up,
           frames: null, lastFrameIndex: -1, lastFlip: false,
         };
-        loadShipFrames(s.ship).then((frames) => { entry.frames = frames; });
+        entry.loaded = loadShipFrames(s.ship).then((frames) => { entry.frames = frames; });
         return entry;
       });
       return { anchor, entries };
@@ -218,6 +218,11 @@ export function createEncounterSprites3d({ scene, systemId, fader }) {
     if (resolved.rotation !== null) entry.sprite.material.rotation = resolved.rotation;
   }
 
+  // Settles once every current ship's frames have loaded.
+  function whenLoaded() {
+    return Promise.allSettled([...groups.all()].flatMap(({ entries }) => entries.map((e) => e.loaded)));
+  }
+
   function setVisible(v) {
     visible = v;
     for (const { anchor } of groups.all()) anchor.visible = v;
@@ -231,5 +236,5 @@ export function createEncounterSprites3d({ scene, systemId, fader }) {
     groups.disposeAll();
   }
 
-  return { setEncounterShips, tick, setVisible, getPickableObjects, dispose };
+  return { setEncounterShips, tick, setVisible, getPickableObjects, whenLoaded, dispose };
 }

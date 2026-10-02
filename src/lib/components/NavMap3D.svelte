@@ -71,6 +71,9 @@
     // A fresh scene always starts zoomed out - clear any focus left bound in
     // the parent from before a 2D<->3D mode switch unmounted the old scene.
     focused = null;
+    // Likewise loading, which the parent waits on to cross-fade from the 2D
+    // map (see SystemView) - it's still false from any earlier scene.
+    loading = true;
     // Three.js is loaded lazily so it isn't part of the initial bundle - the
     // sector map and 2D view never need it, and it only pays for itself once
     // a system's 3D view actually mounts.
@@ -102,7 +105,6 @@
       });
       scene.setPoints(points, routeHighlightIds, routeInfo.segments);
       scene.setEncounterShips($encounterRolls);
-      loading = false;
       resize();
       resizeObserver = new ResizeObserver(resize);
       resizeObserver.observe(container);
@@ -110,6 +112,14 @@
       // If the caller remembers an aligned view (eg from before a system
       // switch), snap straight to it with no flight animation.
       if (aligned) scene.setAlignedInstant();
+
+      // Only report loaded once the scene has settled (models in, shaders
+      // compiled, first frames drawn): the cross-fade from the 2D map (see
+      // SystemView) starts then, and would otherwise run its course while
+      // the browser is busy with that work, showing as a jump instead.
+      await scene.whenReady();
+      if (destroyed) return;
+      loading = false;
     })();
   });
 

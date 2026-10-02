@@ -165,7 +165,7 @@ export function createEncounterModels3d({ scene, systemId, fader }) {
 
         const entry = { group, anchor, orbit, up: orbit.up, localForward: null, localUp: null };
 
-        loadShipModelTemplate(s.ship)?.then(({ template, localForward, localUp }) => {
+        entry.loaded = loadShipModelTemplate(s.ship)?.then(({ template, localForward, localUp }) => {
           const instance = template.clone(true);
           // Object3D.clone() only deep-clones the node hierarchy - materials
           // are shared by reference from the cached template, so two
@@ -219,6 +219,11 @@ export function createEncounterModels3d({ scene, systemId, fader }) {
     }
   }
 
+  // Settles once every current ship's model has loaded.
+  function whenLoaded() {
+    return Promise.allSettled([...groups.all()].flatMap(({ entries }) => entries.map((e) => e.loaded)));
+  }
+
   function setVisible(v) {
     visible = v;
     for (const { anchor } of groups.all()) anchor.visible = v;
@@ -232,5 +237,5 @@ export function createEncounterModels3d({ scene, systemId, fader }) {
     groups.disposeAll();
   }
 
-  return { setEncounterShips, tick, setVisible, getPickableObjects, dispose };
+  return { setEncounterShips, tick, setVisible, getPickableObjects, whenLoaded, dispose };
 }

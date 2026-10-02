@@ -1,6 +1,7 @@
 <script>
   import { untrack } from 'svelte';
   import { get } from 'svelte/store';
+  import { fade } from 'svelte/transition';
   import NavMap2D from './NavMap2D.svelte';
   import NavMap3D from './NavMap3D.svelte';
   import InfoPanel from './InfoPanel.svelte';
@@ -58,6 +59,47 @@
     });
   });
 
+  // 2D <-> 3D cross-fades: both views are shown for the switch, the 3D one
+  // on top. Into 3D, the 2D map stays up until the scene has loaded (on the
+  // first load of a session that takes a moment), then the scene fades in
+  // over it (the .view-layer CSS transition) and the map goes. Out of 3D,
+  // the scene fades out over the map.
+  const VIEW_FADE_MS = 300;
+  let show2d = $state(get(viewMode) === '2d');
+  let show3d = $state(get(viewMode) === '3d');
+  // The 3D scene's fade-out, during which switching back isn't offered (it
+  // would revive the leaving scene, which never reports loading again).
+  let leaving3d = $state(false);
+  let viewSwitching = $derived((show2d && show3d) || leaving3d);
+
+  $effect(() => {
+    const mode = $viewMode;
+    untrack(() => {
+      if (mode === '2d') {
+        show2d = true;
+        if (show3d) {
+          show3d = false;
+          leaving3d = true;
+          setTimeout(() => (leaving3d = false), VIEW_FADE_MS);
+        }
+      } else if (!show3d) {
+        // Set before the new scene's first render, which would otherwise
+        // show it at once over the 2D map with the last scene's value.
+        mapLoading = true;
+        show3d = true;
+      }
+    });
+  });
+
+  // The 2D map goes once the scene's fade-in has actually finished - a
+  // timer started on loading can run out first, since the fade can start
+  // late while the browser finishes building the scene.
+  function onLayer3dFaded(e) {
+    if (e.target === e.currentTarget && e.propertyName === 'opacity' && $viewMode === '3d' && !mapLoading) {
+      show2d = false;
+    }
+  }
+
   let visiblePoints = $derived(
     system.navPoints.filter((np) => np.visibleOnMap || $showHidden)
   );
@@ -77,8 +119,8 @@
         <button
           type="button"
           class="primary caps"
-          disabled={animationLocked}
-          title={animationLocked ? $t('settings.waitForAnimation') : undefined}
+          disabled={animationLocked || viewSwitching}
+          title={animationLocked || viewSwitching ? $t('settings.waitForAnimation') : undefined}
           onclick={() => ($viewMode = $viewMode === '2d' ? '3d' : '2d')}
         >
           {$viewMode === '2d' ? $t('systemView.view2d') : $t('common.view3d')}
@@ -102,20 +144,32 @@
   </div>
 
   <div class="viewport">
-    {#if $viewMode === '2d'}
-      <NavMap2D points={visiblePoints} {data} {onJump} systemId={system.id} />
-    {:else}
-      <NavMap3D
-        bind:this={navMap3D}
-        points={visiblePoints}
-        bind:aligned={$viewAligned}
-        bind:animating={mapAnimating}
-        bind:loading={mapLoading}
-        bind:focused={mapFocused}
-        {data}
-        {onJump}
-        systemId={system.id}
-      />
+    {#if show2d}
+      <div class="view-layer">
+        <NavMap2D points={visiblePoints} {data} {onJump} systemId={system.id} />
+      </div>
+    {/if}
+    {#if show3d}
+      <!-- Hidden only while loading over the 2D map; with nothing beneath
+           (opening a system in 3D), its loading message shows as before. -->
+      <div
+        class="view-layer"
+        class:hidden={mapLoading && show2d}
+        out:fade={{ duration: VIEW_FADE_MS }}
+        ontransitionend={onLayer3dFaded}
+      >
+        <NavMap3D
+          bind:this={navMap3D}
+          points={visiblePoints}
+          bind:aligned={$viewAligned}
+          bind:animating={mapAnimating}
+          bind:loading={mapLoading}
+          bind:focused={mapFocused}
+          {data}
+          {onJump}
+          systemId={system.id}
+        />
+      </div>
     {/if}
   </div>
 
@@ -191,6 +245,15 @@
   .viewport {
     position: absolute;
     inset: 0;
+  }
+  .view-layer {
+    position: absolute;
+    inset: 0;
+    transition: opacity 300ms linear;
+  }
+  .view-layer.hidden {
+    opacity: 0;
+    pointer-events: none;
   }
   .overlay-info {
     position: absolute;
