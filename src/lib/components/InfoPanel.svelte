@@ -6,7 +6,9 @@
   import { shipName, shipLabel } from '../utils/ships.js';
   import { hasCommodityData } from '../data/commodities.js';
   import { missionOverrides } from '../stores/storyMission.js';
+  import { encountersExpanded } from '../stores/ui.js';
   import CommoditiesDialog from './CommoditiesDialog.svelte';
+  import { fadeSlide } from '../utils/transitions.js';
   import { t } from '../i18n/index.js';
 
   let {
@@ -36,6 +38,11 @@
   }
 
   let missionShips = $derived($selectedNode ? $missionOverrides.get(systemId)?.get($selectedNode.id) : null);
+
+  // The encounter rows, as keys that change only when they do (eg switching
+  // game where RF changed the table), so the rows can fade across.
+  let missionShipsKey = $derived(JSON.stringify(missionShips ?? null));
+  let encountersKey = $derived(JSON.stringify($selectedNode?.encounters ?? null));
 </script>
 
 {#if $selectedNode}
@@ -61,24 +68,39 @@
             {facilityList.join(' · ')}
           </div>
         {/if}
-        {#if missionShips}
-          <div class="encounters">
-            <div class="mission-title">{$t('infoPanel.missionEncounter')}</div>
-            {#each missionShips as s, i (i)}
-              <div class="row muted encounter-row">{missionShipLabel(s)}</div>
-            {/each}
-          </div>
-        {:else if d.encounters?.length}
-          {@const groups = sortedEncounterGroups(d)}
-          <details class="encounters">
-            <summary>{$t('infoPanel.encounterProbability')}</summary>
-            {#each groups as g}
-              <div class="row muted encounter-row">
-                {Math.round(g.chance)}% — {g.ships.map((s) => `${s.count}× ${shipName(s.ship)}`).join(' + ')}
-              </div>
-            {/each}
-          </details>
-        {/if}
+        <!-- For the same point, a change in its encounters fades: just the
+             rows when the table changes (so a collapsed section shows no
+             change), the whole section when it appears, goes, or switches
+             between the regular table and a story mission's ships. Local
+             transitions, so selecting another point (rebuilding the outer
+             key block) changes the panel at once. -->
+        {#key d.id}
+          {#if missionShips}
+            <div class="encounters" transition:fadeSlide={{ duration: 300 }}>
+              <div class="mission-title">{$t('infoPanel.missionEncounter')}</div>
+              {#key missionShipsKey}
+                <div transition:fadeSlide={{ duration: 300 }}>
+                  {#each missionShips as s, i (i)}
+                    <div class="row muted encounter-row">{missionShipLabel(s)}</div>
+                  {/each}
+                </div>
+              {/key}
+            </div>
+          {:else if d.encounters?.length}
+            <details class="encounters" bind:open={$encountersExpanded} transition:fadeSlide={{ duration: 300 }}>
+              <summary>{$t('infoPanel.encounterProbability')}</summary>
+              {#key encountersKey}
+                <div transition:fadeSlide={{ duration: 300 }}>
+                  {#each sortedEncounterGroups(d) as g}
+                    <div class="row muted encounter-row">
+                      {Math.round(g.chance)}% — {g.ships.map((s) => `${s.count}× ${shipName(s.ship)}`).join(' + ')}
+                    </div>
+                  {/each}
+                </div>
+              {/key}
+            </details>
+          {/if}
+        {/key}
         <!-- Zoom always comes first so it sits in the same place for every
              node type. -->
         <div class="actions">

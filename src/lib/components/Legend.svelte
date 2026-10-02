@@ -1,17 +1,12 @@
 <script>
-  import { fade, slide } from 'svelte/transition';
   import { t } from '../i18n/index.js';
   import { legendCollapsed } from '../stores/ui.js';
+  import { fadeSlide } from '../utils/transitions.js';
 
   let { showHidden = false } = $props();
 
   // The hidden points' row fades in and out with the points themselves (see
   // NavMap2D/createNavScene), sliding so the panel's height follows smoothly.
-  function fadeSlide(node, params) {
-    const s = slide(node, params);
-    const f = fade(node, params);
-    return { duration: params.duration, css: (t, u) => `${s.css(t, u)};${f.css(t, u)}` };
-  }
 </script>
 
 <div class="legend">

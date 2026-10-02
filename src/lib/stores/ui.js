@@ -12,6 +12,9 @@ export const sidebarCollapsed = persisted('sidebarCollapsed', window.innerWidth 
 // longer translation.
 export const legendCollapsed = persisted('legendCollapsed', window.innerWidth < 768);
 
+// Whether the Info Panel's 'Encounter Probability' section is expanded.
+export const encountersExpanded = persisted('encountersExpanded', false);
+
 // IDs of quadrants whose system list is collapsed in the side-bar. Absent
 // from this array means expanded (the default).
 export const collapsedQuadrants = persisted('collapsedQuadrants', /** @type {string[]} */ ([]));
