@@ -177,6 +177,10 @@ attitude P/A/F, each 0–2). As with the regular encounters, faction, skill and
 attitude aren't output here, so otherwise identical ships are merged —
 unless they're spawned by different triggers (below).
 
+A mission's `SCEN` list can also name a nav point with no ships. That still
+replaces the nav point's regular encounters while the mission is active, so
+it's left empty: these come out as encounters with `ships: []`.
+
 Ships spawned later by the script carry a `trigger` (ships without one are
 present when the player arrives), found by tracing each
 spawn instruction back through the script to what sets it off:

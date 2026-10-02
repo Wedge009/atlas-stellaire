@@ -60,6 +60,7 @@ export default {
   'infoPanel.shipDealer': 'Concessionnaire de vaisseaux',
   'infoPanel.encounterProbability': 'Probabilité de rencontre',
   'infoPanel.missionEncounter': 'Rencontre de mission',
+  'infoPanel.missionCleared': 'Aucun vaisseau tant que la mission est en cours',
   'infoPanel.zoom': 'Zoom',
   'infoPanel.travel': 'Voyager',
   'infoPanel.zoomUnavailable': 'Le zoom n’est disponible qu’en vue libre 3D',

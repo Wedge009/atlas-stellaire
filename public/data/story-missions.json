@@ -730,6 +730,11 @@
               }
             }
           ]
+        },
+        {
+          "system": "oxford",
+          "navPoint": "nav-4",
+          "ships": []
         }
       ]
     },
@@ -771,6 +776,11 @@
               }
             }
           ]
+        },
+        {
+          "system": "oxford",
+          "navPoint": "nav-4",
+          "ships": []
         }
       ]
     },
@@ -846,6 +856,11 @@
               }
             }
           ]
+        },
+        {
+          "system": "oxford",
+          "navPoint": "nav-4",
+          "ships": []
         }
       ]
     },
@@ -987,6 +1002,16 @@
               "count": 2
             }
           ]
+        },
+        {
+          "system": "palan",
+          "navPoint": "nav-2",
+          "ships": []
+        },
+        {
+          "system": "palan",
+          "navPoint": "nav-5",
+          "ships": []
         }
       ]
     },
@@ -1025,6 +1050,16 @@
               }
             }
           ]
+        },
+        {
+          "system": "delta",
+          "navPoint": "nav-1",
+          "ships": []
+        },
+        {
+          "system": "delta",
+          "navPoint": "nav-4",
+          "ships": []
         }
       ]
     },
@@ -1046,6 +1081,21 @@
               "character": "garvick"
             }
           ]
+        },
+        {
+          "system": "beta",
+          "navPoint": "nav-1",
+          "ships": []
+        },
+        {
+          "system": "beta",
+          "navPoint": "nav-2",
+          "ships": []
+        },
+        {
+          "system": "beta",
+          "navPoint": "nav-4",
+          "ships": []
         }
       ]
     },
@@ -1128,7 +1178,13 @@
       "mission": "D",
       "briefing": "Map newly discovered system Delta Prime. Jump to Delta Prime from Gamma system. Hit the nav point programmed into your nav computer.\n\nPays 10000 credits.",
       "pay": 10000,
-      "encounters": []
+      "encounters": [
+        {
+          "system": "delta-prime",
+          "navPoint": "nav-1",
+          "ships": []
+        }
+      ]
     },
     {
       "id": "s7ma",
@@ -1403,6 +1459,21 @@
               "character": "SSCOUT"
             }
           ]
+        },
+        {
+          "system": "blockade-point-tango",
+          "navPoint": "nav-5",
+          "ships": []
+        },
+        {
+          "system": "blockade-point-tango",
+          "navPoint": "nav-4",
+          "ships": []
+        },
+        {
+          "system": "blockade-point-tango",
+          "navPoint": "nav-1",
+          "ships": []
         }
       ]
     },
@@ -3333,6 +3404,26 @@
               }
             }
           ]
+        },
+        {
+          "system": "valhalla",
+          "navPoint": "nav-1",
+          "ships": []
+        },
+        {
+          "system": "valhalla",
+          "navPoint": "nav-2",
+          "ships": []
+        },
+        {
+          "system": "valhalla",
+          "navPoint": "nav-3",
+          "ships": []
+        },
+        {
+          "system": "eden",
+          "navPoint": "nav-2",
+          "ships": []
         }
       ]
     },
@@ -3440,6 +3531,16 @@
               }
             }
           ]
+        },
+        {
+          "system": "eden",
+          "navPoint": "nav-2",
+          "ships": []
+        },
+        {
+          "system": "eden",
+          "navPoint": "hidden-4",
+          "ships": []
         }
       ]
     }

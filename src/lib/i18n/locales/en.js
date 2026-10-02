@@ -74,6 +74,7 @@ export default {
   'infoPanel.shipDealer': 'Ship Dealer',
   'infoPanel.encounterProbability': 'Encounter Probability',
   'infoPanel.missionEncounter': 'Mission Encounter',
+  'infoPanel.missionCleared': 'No ships while the mission is active',
   'infoPanel.zoom': 'Zoom',
   'infoPanel.travel': 'Travel',
   'infoPanel.zoomUnavailable': 'Zoom is only available in the free 3D view',

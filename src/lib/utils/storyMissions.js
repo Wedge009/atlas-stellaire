@@ -51,8 +51,11 @@ function showAs(ship) {
 // over several systems (RF Terrell B's messenger, at Troy or Famine), it's
 // shown at all of them, as which system comes first is up to the player.
 //
-// Nav points left with no ships keep their regular encounters (and a system
-// with none at all gets no entry, so isn't marked on the sector map).
+// An encounter with no ships at all is a nav point the mission clears of its
+// regular encounters (eg Gaea in RF Informant A), so it maps to an empty
+// list. Nav points whose ships are all left out above keep their regular
+// encounters (and a system with no ships to show isn't marked on the sector
+// map - see missionSystemIds()).
 export function missionEncounters(mission, characters = {}, speedMultipliers = {}, pickFirstOf = (candidates) => candidates[0]) {
   const bySystem = new Map();
   for (const enc of mission?.encounters ?? []) {
@@ -60,6 +63,11 @@ export function missionEncounters(mission, characters = {}, speedMultipliers = {
       if (pickFirstOf(enc.firstOf).navPoint !== enc.navPoint) continue;
     }
     const navPoints = bySystem.get(enc.system) ?? new Map();
+    if (!enc.ships.length) {
+      if (!navPoints.has(enc.navPoint)) navPoints.set(enc.navPoint, []);
+      bySystem.set(enc.system, navPoints);
+      continue;
+    }
     // Keyed by ship code plus friendly name and speed, so only otherwise
     // identical ships merge. No mission lists the same nav point twice today,
     // but merge rather than overwrite in case a future extraction does.
@@ -88,6 +96,12 @@ export function missionEncounters(mission, characters = {}, speedMultipliers = {
     bySystem.set(enc.system, navPoints);
   }
   return bySystem;
+}
+
+// IDs of the systems where missionEncounters() places ships, for the sector
+// map's mission marker - a system the mission only clears isn't one.
+export function missionSystemIds(overrides) {
+  return new Set([...overrides].filter(([, navPoints]) => [...navPoints.values()].some((ships) => ships.length)).map(([id]) => id));
 }
 
 // Chooses which of a single-system `firstOf` encounter's candidate nav

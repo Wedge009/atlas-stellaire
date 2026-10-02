@@ -3,6 +3,7 @@
   import { sectorSystems, sectorEdges } from '../utils/navPoints.js';
   import { journey } from '../stores/journey.js';
   import { missionOverrides } from '../stores/storyMission.js';
+  import { missionSystemIds } from '../utils/storyMissions.js';
   import SystemInfoPanel from './SystemInfoPanel.svelte';
   import { t } from '../i18n/index.js';
 
@@ -15,6 +16,7 @@
   let systems = $derived(sectorSystems(data));
   let edges = $derived(sectorEdges(data));
   let systemsById = $derived(new Map(systems.map((s) => [s.id, s])));
+  let missionSystems = $derived(missionSystemIds($missionOverrides));
 
   // Consecutive system-pairs along the plotted journey, in travel order, so
   // each segment can be drawn as a directional arrow on top of the plain
@@ -128,7 +130,7 @@
   {#each systems as s (s.id)}
     {@const isSelected = s.id === selectedSystemId}
     {@const isRefuelStop = refuelSystemIds.has(s.id)}
-    {@const isMissionSystem = $missionOverrides.has(s.id)}
+    {@const isMissionSystem = missionSystems.has(s.id)}
     <g
       class="node-marker"
       transform="translate({s.gx}, {s.gy})"

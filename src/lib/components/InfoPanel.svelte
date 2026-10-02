@@ -82,6 +82,8 @@
                 <div transition:fadeSlide={{ duration: 300 }}>
                   {#each missionShips as s, i (i)}
                     <div class="row muted encounter-row">{missionShipLabel(s)}</div>
+                  {:else}
+                    <div class="row muted encounter-row">{$t('infoPanel.missionCleared')}</div>
                   {/each}
                 </div>
               {/key}
