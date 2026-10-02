@@ -1,5 +1,6 @@
 <script>
   import { onMount, untrack } from 'svelte';
+  import { fade } from 'svelte/transition';
   import { get } from 'svelte/store';
   import SectorNav from './lib/components/SectorNav.svelte';
   import SystemView from './lib/components/SystemView.svelte';
@@ -112,9 +113,14 @@
         <!-- The system view has its own, among its other HUD controls -->
         <div class="sector-controls"><GameToggle /></div>
       {:else if system}
-        {#key system.id}
-          <SystemView {system} data={geminiData} onJump={handleJump} />
-        {/key}
+        <!-- Returning to the sector map cross-fades: the system view fades
+             out over it. Moving between systems doesn't (the key block is
+             inside), where the new system's points fade in instead. -->
+        <div class="system-layer" out:fade={{ duration: 300 }}>
+          {#key system.id}
+            <SystemView {system} data={geminiData} onJump={handleJump} />
+          {/key}
+        </div>
       {/if}
       {#if jumpTarget !== null}
         {#key jumpTarget}
@@ -167,6 +173,10 @@
     flex: 1;
     position: relative;
     overflow: hidden;
+  }
+  .system-layer {
+    position: absolute;
+    inset: 0;
   }
   .sector-controls {
     position: absolute;
