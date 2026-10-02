@@ -6,8 +6,9 @@
 // dimmed hidden point or a translucent jump sprite fades to its usual look,
 // not to full opacity. Materials are found by traversing the objects every
 // frame, so a base or ship model that finishes loading mid-fade joins in
-// (its usual opacity noted the first time it's seen). A finished fade-in
-// puts every material back exactly as it was.
+// (its usual opacity noted the first time it's seen). A finished fade puts
+// every material back exactly as it was - after a fade-out, once its onDone
+// has hidden or freed the objects.
 export const FADE_MS = 300;
 
 export function createFader() {
@@ -78,8 +79,11 @@ export function createFader() {
       apply(f, value);
       if (now - f.start < FADE_MS) continue;
       fades.delete(key);
-      if (f.to === 1) restore(f);
+      // A finished fade-out's objects are hidden or freed by onDone, so
+      // putting their materials back as they were readies anything that's
+      // shown again later (eg the grid lines) for its next fade.
       f.onDone?.();
+      restore(f);
     }
   }
 

@@ -24,7 +24,7 @@
   );
 
   // Nav points and encounters that come or go (switching game, the hidden
-  // points setting) fade, like the sector map's. Transitions are local, so
+  // points setting), and the grid lines, fade, like the sector map's. Transitions are local, so
   // nothing fades when the map first shows.
   const nodeFade = { duration: 300 };
 
@@ -69,12 +69,14 @@
   </defs>
   <rect x="0" y="0" width="100" height="100" fill="#000" />
   {#if $showGridLines}
-    {#each gridLines as g}
-      <line x1={g} y1="0" x2={g} y2="100" class="grid" />
-      <line x1="0" y1={g} x2="100" y2={g} class="grid" />
-    {/each}
-    <line x1="50" y1="0" x2="50" y2="100" class="grid-center" />
-    <line x1="0" y1="50" x2="100" y2="50" class="grid-center" />
+    <g transition:fade={nodeFade}>
+      {#each gridLines as g}
+        <line x1={g} y1="0" x2={g} y2="100" class="grid" />
+        <line x1="0" y1={g} x2="100" y2={g} class="grid" />
+      {/each}
+      <line x1="50" y1="0" x2="50" y2="100" class="grid-center" />
+      <line x1="0" y1="50" x2="100" y2="50" class="grid-center" />
+    </g>
   {/if}
 
   <!-- Markers first, so the route arrow draws over them; labels are drawn

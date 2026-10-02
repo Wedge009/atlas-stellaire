@@ -281,7 +281,8 @@ export function createNavScene({
   scene.add(makeStars(1200, 900));
 
   const backdropGroup = new THREE.Group();
-  backdropGroup.visible = skyboxEnabled;
+  let skyboxOn = skyboxEnabled;
+  backdropGroup.visible = skyboxOn;
   scene.add(backdropGroup);
   const textureLoader = new THREE.TextureLoader();
   const skybox = findSystem(data, systemId)?.skybox ?? [];
@@ -1016,6 +1017,20 @@ export function createNavScene({
     renderer.setSize(width, height);
   }
 
+  // Shows or hides `objects` (the grid lines, the sky-box) with a fade - the
+  // settings that turn them on or off. Turning one back on mid-fade picks up
+  // from where the fade had got to.
+  function fadeVisible(key, objects, show) {
+    if (show) {
+      for (const object of objects) object.visible = true;
+      fader.fade(key, objects, 0, 1);
+    } else {
+      fader.fade(key, objects, 1, 0, () => {
+        for (const object of objects) object.visible = false;
+      });
+    }
+  }
+
   let rafId = null;
   function tick() {
     rafId = requestAnimationFrame(tick);
@@ -1090,14 +1105,15 @@ export function createNavScene({
     isAligned: () => aligned,
     isFocused: () => focused,
     setIdleRotationEnabled: (v) => { idleRotationOn = v; },
-    setSkyboxEnabled: (v) => { backdropGroup.visible = v; },
+    setSkyboxEnabled: (v) => {
+      if (v === skyboxOn) return;
+      skyboxOn = v;
+      fadeVisible('skybox', [backdropGroup], v);
+    },
     setGridLinesEnabled: (v) => {
+      if (v === gridLinesOn) return;
       gridLinesOn = v;
-      grid.visible = v;
-      for (const n of nodes) {
-        n.dropLine.visible = v;
-        n.spoke.visible = v;
-      }
+      fadeVisible('grid', [grid, ...nodes.flatMap((n) => [n.dropLine, n.spoke])], v);
     },
     setBaseModelsEnabled: (v) => {
       baseModelsOn = v;
