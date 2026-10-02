@@ -35,29 +35,24 @@
     return () => gameSwitchLocked.set(false);
   });
 
-  // Only changes value on moving to another system - unlike `system`
-  // itself, which is a new object on switching game too.
-  let systemId = $derived(system.id);
+  // A new system starts with nothing selected, so no stale node leaks in -
+  // before the first render, like the encounter rolls below.
+  selectedNode.set(null);
+
+  // This visit's encounters are rolled before the first render - an effect
+  // runs after it, which briefly showed the previous system's ships at any
+  // nav point with the same ID. SystemView is remounted per system (see
+  // App.svelte), so this runs once per visit.
+  untrack(() => rollForSystem(system.id, system.navPoints));
 
   $effect(() => {
-    // reset selection whenever the system changes so no stale node leaks in
-    systemId;
-    untrack(() => selectedNode.set(null));
-  });
-
-  // Whether this visit's encounters have been rolled yet. SystemView is
-  // remounted per system (see App.svelte), so this is per visit.
-  let rolled = false;
-
-  $effect(() => {
-    // New nav points - a new system, or this one in the other game: roll
-    // its encounters (only re-rolling what the game switch changed), and
+    // New nav points - this system in the other game (the first run is just
+    // the ones rolled above): roll only what the game switch changed, and
     // keep the selection on the same point where it still exists, so its
     // info (eg the base's commodities) stays open.
     const navPoints = system.navPoints;
     untrack(() => {
-      rollForSystem(system.id, navPoints, { keepUnchanged: rolled });
-      rolled = true;
+      rollForSystem(system.id, navPoints, { keepUnchanged: true });
       const selected = get(selectedNode);
       if (selected) selectedNode.set(navPoints.find((np) => np.id === selected.id) ?? null);
     });
