@@ -77,6 +77,8 @@
     <div class="hud-controls">
       <div class="hud-controls-row">
         <GameToggle />
+      </div>
+      <div class="hud-controls-row">
         <button
           type="button"
           class="primary caps"
