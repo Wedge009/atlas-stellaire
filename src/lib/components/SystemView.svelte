@@ -165,6 +165,7 @@
           bind:animating={mapAnimating}
           bind:loading={mapLoading}
           bind:focused={mapFocused}
+          fadeIn={!show2d}
           {data}
           {onJump}
           systemId={system.id}

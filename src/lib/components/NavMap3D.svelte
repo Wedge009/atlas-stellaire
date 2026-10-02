@@ -23,6 +23,9 @@
     animating = $bindable(false),
     loading = $bindable(true),
     focused = $bindable(null),
+    // Fade the scene in once it's ready, as on arriving in a system. Off when
+    // the parent fades it in itself (the 2D -> 3D cross-fade, see SystemView).
+    fadeIn = true,
     data,
     onJump,
     systemId,
@@ -86,6 +89,10 @@
       const [{ createNavScene }] = await Promise.all([
         import('../three/createNavScene.js'),
         fontReady,
+        // Let the browser paint this view (the loading message) first -
+        // building the scene holds it up, which otherwise left the previous
+        // system frozen on screen until the new one was ready.
+        new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve))),
       ]);
       if (destroyed) return;
       scene = createNavScene({
@@ -255,7 +262,7 @@
 <svelte:window onkeydown={onWindowKeyDown} />
 
 <div class="navmap3d" bind:this={container}>
-  <canvas bind:this={canvas}></canvas>
+  <canvas bind:this={canvas} class:fading-in={fadeIn && loading}></canvas>
   {#if loading}
     <div class="loading">{$t('navMap3D.loading')}</div>
   {:else}
@@ -276,6 +283,9 @@
     cursor: grab;
   }
   canvas:active { cursor: grabbing; }
+  /* Hidden until the scene's ready (see whenReady), then faded in. */
+  canvas { transition: opacity 300ms linear; }
+  canvas.fading-in { opacity: 0; }
   .hint {
     position: absolute;
     bottom: 12px;
