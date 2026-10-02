@@ -70,10 +70,6 @@
         />
         <span>{$t('settings.jumpTransition')}</span>
       </label>
-      <label class="checkbox-row">
-        <input type="checkbox" checked={$skyboxEnabled} onchange={() => skyboxEnabled.update((v) => !v)} />
-        <span>{$t('settings.backgroundSprites')}</span>
-      </label>
       <label class="select-row">
         <span>{$t('common.shipEncounters')}</span>
         <select value={$encounterMode} onchange={(e) => encounterMode.set(e.currentTarget.value)}>
@@ -85,6 +81,10 @@
 
       <div class="group-label">{$t('common.view3d')}</div>
 
+      <label class="checkbox-row">
+        <input type="checkbox" checked={$skyboxEnabled} onchange={() => skyboxEnabled.update((v) => !v)} />
+        <span>{$t('settings.backgroundSprites')}</span>
+      </label>
       <label class="checkbox-row">
         <input
           type="checkbox"
