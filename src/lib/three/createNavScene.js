@@ -10,7 +10,7 @@ import { LABEL_FONT_FAMILY } from '../utils/fonts.js';
 
 // The ambient ship-encounter ships can render as either the original 2D
 // sprites or real orbiting 3D ship models (the 'Ship encounters' setting) -
-// both factories share the same interface (setEncounterShips/tick/
+// both factories share the same interface (setEncounterShips/reveal/tick/
 // setVisible/getPickableObjects/whenLoaded/dispose), keyed here by the same
 // 'sprites'/'models' strings the setting uses. Both are always instantiated
 // (cheap - neither loads any asset until setEncounterShips actually gives
@@ -357,6 +357,36 @@ export function createNavScene({
     }
   }
   applyEncounterMode();
+
+  // Switching between sprites and models (or to/from none) cross-fades: the
+  // new style's ships are built invisible, and once they've loaded and their
+  // shaders are compiled they fade in as the old ones fade out - so the
+  // models never pop in after the sprites have gone. A newer switch abandons
+  // an older one still waiting.
+  let encounterModeSwitch = 0;
+  function setEncounterMode(mode) {
+    if (mode === encounterModeOn) return;
+    const outgoing = encounterRenderers[encounterModeOn];
+    const incoming = encounterRenderers[mode];
+    encounterModeOn = mode;
+    const thisSwitch = ++encounterModeSwitch;
+    if (incoming) {
+      incoming.setVisible(true);
+      incoming.setEncounterShips(lastEncounterRolls, nodes, { hold: true });
+    }
+    (async () => {
+      if (incoming) {
+        await incoming.whenLoaded();
+        if (thisSwitch !== encounterModeSwitch || disposed) return;
+        await renderer.compileAsync(scene, camera);
+        if (thisSwitch !== encounterModeSwitch || disposed) return;
+        incoming.reveal();
+      }
+      // Left showing once its ships have faded out and gone - empty, and
+      // shown again if its style is picked again.
+      outgoing?.setEncounterShips(null, nodes, { animate: true });
+    })();
+  }
 
   // Every jump-point orb's material, tracked separately from `nodes` so
   // tick() can swap their shared `.map` each animation frame without having
@@ -1159,10 +1189,7 @@ export function createNavScene({
       const activeRenderer = encounterRenderers[encounterModeOn];
       activeRenderer?.setEncounterShips(rollsMap, nodes, { animate });
     },
-    setEncounterMode: (mode) => {
-      encounterModeOn = mode;
-      applyEncounterMode();
-    },
+    setEncounterMode,
     // Labels are canvas textures baked once per node in setPoints, not
     // reactive mark-up - a locale change needs an explicit rebuild to
     // re-bake them with the new translation (see NavMap3D.svelte).

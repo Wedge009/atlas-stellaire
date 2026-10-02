@@ -19,6 +19,7 @@ function shipsKey(ships) {
 export function createEncounterGroups({ fader, build, dispose }) {
   let groups = new Map(); // navPointId -> { anchor, entries, node, key }
   let leaving = new Set(); // groups fading out, still shown and ticking
+  let held = new Set(); // new groups kept invisible until reveal()
 
   function remove(group, animate) {
     if (!animate) {
@@ -33,7 +34,9 @@ export function createEncounterGroups({ fader, build, dispose }) {
     });
   }
 
-  function update(rollsMap, nodes, animate = false) {
+  // `hold` builds new groups invisible, for reveal() to fade in later (eg
+  // once their models have loaded).
+  function update(rollsMap, nodes, animate = false, hold = false) {
     const next = new Map();
     for (const [navPointId, ships] of rollsMap ?? []) {
       if (!ships?.length) continue;
@@ -52,11 +55,25 @@ export function createEncounterGroups({ fader, build, dispose }) {
         continue;
       }
       const group = { ...build(navPointId, ships, node), node, key };
-      if (animate) fader.fade(group, [group.anchor], 0, 1);
+      if (hold) {
+        fader.hold(group, [group.anchor]);
+        held.add(group);
+      } else if (animate) {
+        fader.fade(group, [group.anchor], 0, 1);
+      }
       next.set(navPointId, group);
     }
-    for (const old of groups.values()) remove(old, animate);
+    for (const old of groups.values()) {
+      held.delete(old);
+      remove(old, animate);
+    }
     groups = next;
+  }
+
+  // Fades in the groups update() held back.
+  function reveal() {
+    for (const group of held) fader.fade(group, [group.anchor], 0, 1);
+    held = new Set();
   }
 
   // Every group on show, leaving ones included (they still fly while fading).
@@ -77,7 +94,8 @@ export function createEncounterGroups({ fader, build, dispose }) {
     }
     groups = new Map();
     leaving = new Set();
+    held = new Set();
   }
 
-  return { update, all, current, disposeAll };
+  return { update, reveal, all, current, disposeAll };
 }

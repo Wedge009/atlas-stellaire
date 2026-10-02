@@ -12,7 +12,7 @@
 export const FADE_MS = 300;
 
 export function createFader() {
-  // key -> { objects, from, to, start, bases: Map(material -> {opacity, transparent}), onDone }
+  // key -> { objects, from, to, start, duration, bases: Map(material -> {opacity, transparent}), onDone }
   const fades = new Map();
 
   function forEachMaterial(objects, fn) {
@@ -50,7 +50,7 @@ export function createFader() {
   }
 
   function currentValue(f, now) {
-    const t = Math.min((now - f.start) / FADE_MS, 1);
+    const t = Math.min((now - f.start) / f.duration, 1);
     return f.from + (f.to - f.from) * t;
   }
 
@@ -58,7 +58,7 @@ export function createFader() {
   // `from` to `to` (0 = invisible, 1 = their usual look), then calls
   // `onDone`. A key already fading carries on from where it's got to, so a
   // fade-in cut short by a fade-out never jumps back to fully visible.
-  function fade(key, objects, from, to, onDone = null) {
+  function fade(key, objects, from, to, onDone = null, duration = FADE_MS) {
     const now = performance.now();
     const existing = fades.get(key);
     const f = {
@@ -66,6 +66,7 @@ export function createFader() {
       from: existing ? currentValue(existing, now) : from,
       to,
       start: now,
+      duration,
       bases: existing ? existing.bases : new Map(),
       onDone,
     };
@@ -77,7 +78,7 @@ export function createFader() {
     for (const [key, f] of fades) {
       const value = currentValue(f, now);
       apply(f, value);
-      if (now - f.start < FADE_MS) continue;
+      if (now - f.start < f.duration) continue;
       fades.delete(key);
       // A finished fade-out's objects are hidden or freed by onDone, so
       // putting their materials back as they were readies anything that's
@@ -85,6 +86,12 @@ export function createFader() {
       f.onDone?.();
       restore(f);
     }
+  }
+
+  // Keeps `objects` invisible (including models still loading) until a
+  // fade() of the same key brings them in.
+  function hold(key, objects) {
+    fade(key, objects, 0, 0, null, Infinity);
   }
 
   // Ends `key`'s fade at once: back to its usual look, without its onDone.
@@ -99,5 +106,5 @@ export function createFader() {
     return fades.has(key);
   }
 
-  return { fade, tick, cancel, isFading };
+  return { fade, hold, tick, cancel, isFading };
 }

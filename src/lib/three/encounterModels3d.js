@@ -191,8 +191,9 @@ export function createEncounterModels3d({ scene, systemId, fader }) {
     },
   });
 
-  function setEncounterShips(rollsMap, nodes, { animate = false } = {}) {
-    groups.update(rollsMap, nodes, animate);
+  // `hold` keeps new ships invisible until reveal() (see encounterGroups.js).
+  function setEncounterShips(rollsMap, nodes, { animate = false, hold = false } = {}) {
+    groups.update(rollsMap, nodes, animate, hold);
   }
 
   const tmpPosition = new THREE.Vector3();
@@ -237,5 +238,5 @@ export function createEncounterModels3d({ scene, systemId, fader }) {
     groups.disposeAll();
   }
 
-  return { setEncounterShips, tick, setVisible, getPickableObjects, whenLoaded, dispose };
+  return { setEncounterShips, reveal: groups.reveal, tick, setVisible, getPickableObjects, whenLoaded, dispose };
 }
