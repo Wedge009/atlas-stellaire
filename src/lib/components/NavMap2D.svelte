@@ -24,8 +24,10 @@
   );
 
   // Nav points and encounters that come or go (switching game, the hidden
-  // points setting), and the grid lines, fade, like the sector map's. Transitions are local, so
-  // nothing fades when the map first shows.
+  // points setting), and the grid lines, fade, like the sector map's. The
+  // nav points, their ships and the route arrow also fade in when a system
+  // opens (`|global` intros), but vanish at once on leaving it (local
+  // outros), since the whole view is replaced then.
   const nodeFade = { duration: 300 };
 
   // An encounter's ships, as a key that only changes when the ships do - so
@@ -86,7 +88,7 @@
     <g
       class="node-marker"
       transform="translate({d.flat.sx}, {d.flat.sy})"
-      transition:fade={nodeFade}
+      in:fade|global={nodeFade} out:fade={nodeFade}
       onclick={() => select(d.np)}
       ondblclick={() => jump(d.np)}
       role="button"
@@ -115,7 +117,7 @@
          roll changes (local transitions only run for their own block). -->
     {#each display as d (d.key)}
       {@const ships = $encounterRolls.get(d.np.id) ?? []}
-      <g transform="translate({d.flat.sx}, {d.flat.sy})" transition:fade={nodeFade}>
+      <g transform="translate({d.flat.sx}, {d.flat.sy})" in:fade|global={nodeFade} out:fade={nodeFade}>
         {#key shipsKey(ships)}
           <g transition:fade={nodeFade}>
             {#if ships.length}
@@ -135,6 +137,7 @@
       y2={seg.to.sy}
       class="route-line"
       marker-end="url(#navmap2d-route-arrow)"
+      in:fade|global={nodeFade}
     />
   {/each}
 
@@ -142,7 +145,7 @@
     <g
       class="node-label"
       transform="translate({d.flat.sx}, {d.flat.sy})"
-      transition:fade={nodeFade}
+      in:fade|global={nodeFade} out:fade={nodeFade}
       onclick={() => select(d.np)}
       ondblclick={() => jump(d.np)}
       role="button"
