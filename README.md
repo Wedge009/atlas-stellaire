@@ -143,7 +143,8 @@ from the same `CAST`/`SCEN` machinery as the per-system data above, but with a
 - `PART` — fixed 45-byte records, one per ship. Story encounters are fixed,
   so there are no count or probability fields. Record 0 is always the player.
   Each record gives the ship's stats-file and sprite-file names (bytes 2–17),
-  its `CAST` slot (bytes 18–19), a zone ID and system ID (bytes 20 and 21,
+  its `CAST` slot (bytes 18–19, which is also the ship's number in the
+  script — see below), a zone ID and system ID (bytes 20 and 21,
   resolved to a nav point via that system's `SCEN` list as above), its
   position relative to the nav point (bytes 22–33, three 32-bit 24.8
   fixed-point values), and whether it's present when the player arrives
@@ -190,29 +191,18 @@ spawn instruction back through the script to what sets it off:
 - `{"event": "enterNav"}` — spawned on (first) entering this nav point.
 - `{"event": "dialogueEnd", "character": X}` — when X's conversation ends.
 - `{"event": "destroyed", "character": X}` — when X is destroyed.
-- `{"event": "departed", "character": X}` — once X has jumped out (Menesch
-  reappearing at Freyja after fleeing Regallis in S12MD).
 
-The game only simulates the current system, so a spawn instruction creates
-the named ship *where its trigger happens*. That matters because the mission
-scripts sometimes name the wrong ship record — including records placed in
-another system. Those still produce a ship (of that record's type) at the
-trigger's nav point, so they're listed there; play-testing confirmed this for
-S9MB's Liverpool reinforcements (which name a New Constantinople Demon) and
-S12MD's Freyja reinforcements (which name Regallis Salthi). The exception is
-S7MB, whose Blockade Point Tango scripts refer to the Steltek drone by the
-Steltek scout's record number: the drone (not the scout) appears there after
-Reismann's briefing, and the scout only ever appears at Nitir. S14MA's
-reinforcement scripts are cross-wired this way throughout, and S13MB's two
-lone pirate Talons each name the other one's record.
+The script refers to a ship by its `CAST` slot number, not by the position
+of its `PART` record. The two usually match, but in 16 missions the records
+are stored in a different order; S14MA, for instance, stores its systems'
+ships Valhalla, Eden, Telar, 17-AR, J900 but numbers them Telar 1–6, 17-AR
+7–12, J900 13–18, Valhalla 19–24, Eden 25–32. Every mission's
+reinforcements come from its own system.
 
 Any trigger may add `ifAlive: X` or `ifDestroyed: X` (eg S1MD's Nav 2 has
 either Riordian's wing if he survived, or the usual pirate Talons if not), or
 `ifDeparted: X` (X has jumped out). A ship's 'destroyed' handler also fires
-when it jumps out, so `ifDestroyed` may really mean 'gone'. An `enterNav`
-trigger normally fires at the ship's own nav point; where it's somewhere
-else, `at: {system, navPoint}` says where (eg in S13MB, entering Troy Nav 7
-spawns a Talon at Famine Nav 1, and vice versa).
+when it jumps out, so `ifDestroyed` may really mean 'gone'.
 
 An encounter may also carry `firstOf`, a list of `{system, navPoint}`: it
 only happens if this is the first of those nav points the player reaches.
@@ -227,15 +217,17 @@ each.
 
 Ships the script never actually spawns are also left out, with a warning
 from the extraction script — mistakes in the original mission data, such as
-a reinforcement block that's never called, a wave that can't be reached
-because too few ships count towards its kill total, or a script naming the
-wrong ship records.
+a reinforcement block that's never called or ships no spawn instruction
+names. S12MD's second Freyja wave is left out too: it depends on a call
+instruction whose condition isn't decoded, and it doesn't arrive in the
+game.
 
 Ship positions are stored as offsets from their nav point, and every real
 encounter sits within about 34,000 of it (the first group usually around
 15,000 out, later waves a little further). Two kinds of ship are left out of
 the file entirely: ones attached to a zone that doesn't exist in the system
-(eg two Salthi in S14MA), and ones placed implausibly far away because of a
+(eg two of S14MA's elite Salthi at Eden, which fly in to Nav 1 from far
+off), and ones placed implausibly far away because of a
 mistyped co-ordinate (one of S1MD's three 'regular' pirate Talons at
 Pentonville Nav 2 is 74,500 out, well outside the system's roughly ±60,000
 space).

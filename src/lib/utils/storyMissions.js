@@ -9,24 +9,25 @@ export function missionName(mission) {
 // map, not a play-through simulation, so it shows what's there in general
 // rather than every ship that will ever spawn:
 // - 'arrival' - no trigger, or one that fires as soon as the player gets
-//   there or always happens anyway: a conversation ending (dialogueEnd),
-//   entering the nav point (enterNav), or a character jumping in after
-//   fleeing elsewhere (departed - Menesch at Freyja in RF Monte D)
-// - 'wave' - a reinforcement wave (kills), only shown if it brings a new
-//   hull type - see missionEncounters()
-// - null - not shown: spawns on a character's destruction (more of the
-//   same in practice), or conditional on a character surviving. Where a
+//   there or always happens anyway: a conversation ending (dialogueEnd) or
+//   entering the nav point (enterNav - eg Menesch at Freyja in RF Monte D,
+//   once he's fled Regallis)
+// - 'wave' - a reinforcement wave (kills), or a ship that turns up when a
+//   character is destroyed (destroyed - eg the lone Talon after Jones in RF
+//   Informant B), only shown if it brings a new hull type - see
+//   missionEncounters()
+// - null - not shown: conditional on a character surviving. Where a
 //   spawn depends on an earlier fight, the character is assumed to have
 //   been destroyed (or to have otherwise gone), eg Riordian's wing never
 //   shows at Pentonville Nav 2 in Tayla D, just the pirates that take its
 //   place.
-const ARRIVAL_EVENTS = new Set(['dialogueEnd', 'enterNav', 'departed']);
+const ARRIVAL_EVENTS = new Set(['dialogueEnd', 'enterNav']);
 
 function showAs(ship) {
   const trigger = ship.trigger;
   if (!trigger) return 'arrival';
   if (trigger.ifAlive) return null;
-  if (trigger.event === 'kills') return 'wave';
+  if (trigger.event === 'kills' || trigger.event === 'destroyed') return 'wave';
   return ARRIVAL_EVENTS.has(trigger.event) ? 'arrival' : null;
 }
 
@@ -42,7 +43,8 @@ function showAs(ship) {
 // Reinforcement waves of a hull already there are left out, but the first
 // wave of each new hull is shown alongside the arrival ships (eg Cross C's
 // Kamekh), to represent what's at the nav point rather than give an exact
-// count.
+// count. Kill waves count as earlier than ones on a character's
+// destruction.
 //
 // A `firstOf` encounter only happens at whichever of its candidate nav
 // points the player reaches first. Where those are all in one system (Kroiz
@@ -84,7 +86,7 @@ export function missionEncounters(mission, characters = {}, speedMultipliers = {
       if (showAs(ship) === 'arrival') add(ship);
     }
     const hulls = new Set([...merged.values()].map((s) => s.ship));
-    const waves = enc.ships.filter((ship) => showAs(ship) === 'wave').sort((a, b) => a.trigger.kills - b.trigger.kills);
+    const waves = enc.ships.filter((ship) => showAs(ship) === 'wave').sort((a, b) => (a.trigger.kills ?? Infinity) - (b.trigger.kills ?? Infinity));
     for (const ship of waves) {
       if (hulls.has(ship.ship)) continue;
       hulls.add(ship.ship);

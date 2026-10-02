@@ -2942,7 +2942,7 @@
             },
             {
               "ship": "SALTHI",
-              "count": 1,
+              "count": 2,
               "trigger": {
                 "event": "kills",
                 "kills": 6
@@ -2959,8 +2959,8 @@
               "count": 1,
               "character": "MENESCH",
               "trigger": {
-                "character": "MENESCH",
-                "event": "departed"
+                "event": "enterNav",
+                "ifDeparted": "MENESCH"
               }
             },
             {
@@ -3314,20 +3314,20 @@
           "navPoint": "nav-3",
           "ships": [
             {
-              "ship": "SALTHI",
-              "count": 2,
-              "trigger": {
-                "event": "kills",
-                "kills": 2
-              }
-            },
-            {
               "ship": "TALRELIG",
               "count": 2
             },
             {
               "ship": "SALTHI",
               "count": 2
+            },
+            {
+              "ship": "SALTHI",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
             }
           ]
         },
@@ -3342,28 +3342,6 @@
               "stats": "ELITE"
             },
             {
-              "ship": "TALRELIG",
-              "count": 1,
-              "trigger": {
-                "event": "kills",
-                "kills": 2
-              }
-            },
-            {
-              "ship": "SALTHI",
-              "count": 1,
-              "trigger": {
-                "event": "kills",
-                "kills": 2
-              }
-            }
-          ]
-        },
-        {
-          "system": "17-ar",
-          "navPoint": "nav-1",
-          "ships": [
-            {
               "ship": "SALTHI",
               "count": 2,
               "character": "elite",
@@ -3374,12 +3352,36 @@
               }
             },
             {
+              "ship": "SALTHI",
+              "count": 1,
+              "character": "elite",
+              "stats": "ELITE",
+              "trigger": {
+                "event": "kills",
+                "kills": 4
+              }
+            }
+          ]
+        },
+        {
+          "system": "17-ar",
+          "navPoint": "nav-1",
+          "ships": [
+            {
               "ship": "TALRELIG",
               "count": 2
             },
             {
               "ship": "SALTHI",
               "count": 2
+            },
+            {
+              "ship": "SALTHI",
+              "count": 2,
+              "trigger": {
+                "event": "kills",
+                "kills": 2
+              }
             }
           ]
         },
@@ -3454,6 +3456,14 @@
               "character": "elite",
               "stats": "ELITE",
               "trigger": {
+                "event": "enterNav"
+              }
+            },
+            {
+              "ship": "SALTHI",
+              "count": 2,
+              "stats": "ELITE",
+              "trigger": {
                 "event": "kills",
                 "kills": 2
               }
@@ -3468,32 +3478,25 @@
               }
             },
             {
+              "ship": "TALRELIG",
+              "count": 1,
+              "trigger": {
+                "character": "JONES",
+                "event": "destroyed"
+              }
+            },
+            {
               "ship": "SALTHI",
-              "count": 2,
+              "count": 1,
               "stats": "ELITE",
               "trigger": {
                 "event": "enterNav"
               }
             },
             {
-              "ship": "TALRELIG",
-              "count": 1,
-              "trigger": {
-                "event": "enterNav"
-              }
-            },
-            {
-              "ship": "TALRELIG",
-              "count": 1,
-              "character": "elite",
-              "trigger": {
-                "event": "kills",
-                "kills": 4
-              }
-            },
-            {
               "ship": "SALTHI",
-              "count": 1,
+              "count": 2,
+              "character": "elite",
               "stats": "ELITE",
               "trigger": {
                 "event": "kills",
@@ -3508,16 +3511,6 @@
               "trigger": {
                 "event": "kills",
                 "kills": 8
-              }
-            },
-            {
-              "ship": "SALTHI",
-              "count": 1,
-              "character": "elite",
-              "stats": "ELITE",
-              "trigger": {
-                "character": "JONES",
-                "event": "destroyed"
               }
             },
             {
