@@ -1,8 +1,17 @@
 <script>
+  import { fade, slide } from 'svelte/transition';
   import { t } from '../i18n/index.js';
   import { legendCollapsed } from '../stores/ui.js';
 
   let { showHidden = false } = $props();
+
+  // The hidden points' row fades in and out with the points themselves (see
+  // NavMap2D/createNavScene), sliding so the panel's height follows smoothly.
+  function fadeSlide(node, params) {
+    const s = slide(node, params);
+    const f = fade(node, params);
+    return { duration: params.duration, css: (t, u) => `${s.css(t, u)};${f.css(t, u)}` };
+  }
 </script>
 
 <div class="legend">
@@ -22,7 +31,7 @@
     <div><span class="sw sw-base"></span>{$t('legend.basePlanet')}</div>
     <div><span class="sw sw-point"></span>{$t('legend.navPoint')}</div>
     {#if showHidden}
-      <div><span class="sw sw-unknown"></span>{$t('legend.hiddenUnknown')}</div>
+      <div transition:fadeSlide={{ duration: 300 }}><span class="sw sw-unknown"></span>{$t('legend.hiddenUnknown')}</div>
     {/if}
     <div><span class="sw sw-asteroid"></span>{$t('legend.asteroidsPresent')}</div>
   {/if}
