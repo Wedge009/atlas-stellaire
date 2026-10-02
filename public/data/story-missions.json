@@ -818,12 +818,7 @@
         {
           "system": "oxford",
           "navPoint": "nav-4",
-          "ships": [
-            {
-              "ship": "GLADIUS",
-              "count": 2
-            }
-          ]
+          "ships": []
         }
       ]
     },
@@ -2001,7 +1996,7 @@
           "ships": [
             {
               "ship": "SALTHI",
-              "count": 4
+              "count": 2
             }
           ]
         }
@@ -2099,7 +2094,7 @@
           "ships": [
             {
               "ship": "TALRELIG",
-              "count": 4
+              "count": 3
             }
           ]
         },
@@ -2117,7 +2112,7 @@
             },
             {
               "ship": "TALRELIG",
-              "count": 4
+              "count": 3
             }
           ]
         },
@@ -2127,7 +2122,7 @@
           "ships": [
             {
               "ship": "TALRELIG",
-              "count": 4
+              "count": 3
             }
           ]
         }
@@ -2147,7 +2142,7 @@
           "ships": [
             {
               "ship": "TALPIR",
-              "count": 4
+              "count": 3
             },
             {
               "ship": "TALPIR",
@@ -2165,7 +2160,7 @@
           "ships": [
             {
               "ship": "TALRELIG",
-              "count": 4
+              "count": 3
             },
             {
               "ship": "TALRELIG",
@@ -2578,7 +2573,7 @@
             },
             {
               "ship": "GLADIUS",
-              "count": 2
+              "count": 1
             }
           ]
         }
@@ -3088,7 +3083,7 @@
             },
             {
               "ship": "STILETTO",
-              "count": 2
+              "count": 1
             },
             {
               "ship": "BRDSWORD",
@@ -3192,16 +3187,6 @@
             {
               "ship": "SALTHI",
               "count": 3
-            }
-          ]
-        },
-        {
-          "system": "pestilence",
-          "navPoint": "nav-3",
-          "ships": [
-            {
-              "ship": "SALTHI",
-              "count": 1
             }
           ]
         },

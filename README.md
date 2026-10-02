@@ -150,6 +150,12 @@ from the same `CAST`/`SCEN` machinery as the per-system data above, but with a
   fixed-point values), and whether it's present when the player arrives
   (byte 36 = 1) or is spawned later by the mission's script (byte 36 = 0).
   One mission can place ships across several systems.
+- `SCEN` — one record per mission zone: a zone ID and system ID, the script
+  blocks to run on entering it, then a list of `PART` record numbers. A ship
+  no zone lists isn't in the game at all (eg the 4th Talon of several groups
+  in S9MC and S9MD). A ship is usually listed under its own zone, but not
+  always: S11MD lists its Retro reinforcements under Nav 4, where the fight
+  is, while they arrive from Nav 1, the zone their records give.
 - `PROG` — the mission's script: a list of numbered blocks of 2-byte
   (instruction, operand) words, each block ending in `00 00`. Ship records
   point at blocks for their starting attitude, their behaviour (re-run
