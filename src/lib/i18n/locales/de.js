@@ -48,9 +48,9 @@ export default {
   'navMap3D.hintInspectingJump': 'Sprungpunkt nach {system} wird untersucht',
   'navMap3D.hintDragOrbit': 'Ziehen, um die Ansicht zu rotieren',
   'navMap3D.hintScrollZoom': 'Scrollen zum Zoomen',
-  'navMap3D.hintClickNode': 'Auf einen Knoten klicken',
+  'navMap3D.hintClickPoint': 'Auf einen Punkt klicken',
   'navMap3D.hintJumpTravel': 'Doppelklick auf einen Sprungpunkt zum Reisen',
-  'navMap3D.hintNodeZoom': 'Doppelklick auf einen Knoten zum Heranzoomen',
+  'navMap3D.hintPointZoom': 'Doppelklick auf einen Punkt zum Heranzoomen',
   'navMap3D.hintEscReturn': 'Doppelklick oder Esc zum Zurückkehren',
 
   'infoPanel.jumpTo': 'Zu {system} springen',

@@ -48,9 +48,9 @@ export default {
   'navMap3D.hintInspectingJump': 'inspecter le point de saut vers {system}',
   'navMap3D.hintDragOrbit': 'faites glisser pour faire pivoter la vue',
   'navMap3D.hintScrollZoom': 'faites défiler pour zoomer',
-  'navMap3D.hintClickNode': 'cliquez sur un nœud',
+  'navMap3D.hintClickPoint': 'cliquez sur un point',
   'navMap3D.hintJumpTravel': 'double-cliquez sur un point de saut pour voyager',
-  'navMap3D.hintNodeZoom': 'double-cliquez sur un nœud pour zoomer',
+  'navMap3D.hintPointZoom': 'double-cliquez sur un point pour zoomer',
   'navMap3D.hintEscReturn': 'double-cliquez ou Échap pour revenir',
 
   'infoPanel.jumpTo': 'Saut vers {system}',

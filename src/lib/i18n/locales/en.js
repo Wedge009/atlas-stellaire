@@ -56,15 +56,15 @@ export default {
   'navMap3D.alignedView': 'Aligned view',
   'navMap3D.exitZoomFirst': 'Zoom out first (Zoom button, double-click or Esc)',
   // Short reusable phrases composed into the hint line at the call site
-  // (see NavMap3D.svelte) - 'drag to orbit' and 'click a node' each appear
+  // (see NavMap3D.svelte) - 'drag to orbit' and 'click a point' each appear
   // in more than one hint state, so they're only translated once.
   'navMap3D.hintInspecting': 'inspecting {name}',
   'navMap3D.hintInspectingJump': 'inspecting jump to {system}',
   'navMap3D.hintDragOrbit': 'drag to orbit',
   'navMap3D.hintScrollZoom': 'scroll to zoom',
-  'navMap3D.hintClickNode': 'click a node',
+  'navMap3D.hintClickPoint': 'click a point',
   'navMap3D.hintJumpTravel': 'double-click a jump point to travel',
-  'navMap3D.hintNodeZoom': 'double-click a node to zoom in',
+  'navMap3D.hintPointZoom': 'double-click a point to zoom in',
   'navMap3D.hintEscReturn': 'double-click or Esc to return',
 
   'infoPanel.jumpTo': 'Jump to {system}',

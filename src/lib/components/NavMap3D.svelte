@@ -55,12 +55,12 @@
           $t('navMap3D.hintEscReturn'),
         ].join(' · ')
       : aligned
-        ? [$t('navMap3D.hintClickNode'), $t('navMap3D.hintJumpTravel')].join(' · ')
+        ? [$t('navMap3D.hintClickPoint'), $t('navMap3D.hintJumpTravel')].join(' · ')
         : [
             $t('navMap3D.hintDragOrbit'),
             $t('navMap3D.hintScrollZoom'),
-            $t('navMap3D.hintClickNode'),
-            $t('navMap3D.hintNodeZoom'),
+            $t('navMap3D.hintClickPoint'),
+            $t('navMap3D.hintPointZoom'),
           ].join(' · ')
   );
 
