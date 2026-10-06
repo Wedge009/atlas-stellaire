@@ -88,19 +88,25 @@ it contains.
   what odds. Each `WAND` record names its own `CAST` slot directly (bytes
   19–20) and its zone ID (byte 21, mapped to a nav point via `SCEN` as above)
   rather than relying on file position, carries the ship's stats-file and
-  sprite-file names (bytes 3–18), the system ID (bytes 22–23), a squad size
-  (bytes 35–36), and a cumulative
+  sprite-file names (bytes 3–18), the system ID (bytes 22–23), the squad's
+  (X, Y, Z) offset from the nav point (signed 24-bit values at bytes 24–26,
+  28–30 and 32–34), a squad size (bytes 35–36), and a cumulative
   probability percentage (byte 0) — records sharing a cumulative value in a
   zone are alternative squads spawned together as one group, and a group's
   own weight is its cumulative value minus the previous one seen in that
-  zone. Populates each nav point's `encounters` array in `gemini.json`
+  zone. Each zone's weights add up to exactly 100, apart from two zones
+  whose weights reach only 99. About half of all squads sit 5,700–6,400
+  from the nav point and most of the rest around 8,500, mostly level with
+  it. The map doesn't use these offsets, as it isn't to scale. Populates
+  each nav point's `encounters` array in `gemini.json`
   (omitted where a nav point has no encounter table) as `{chance, ships:
   [{ship, count}]}`; `ship` is the internal sprite file name as-is (eg
   `STILETTO`, or `TALPIR`/`TALMIL`/`TALRELIG` for the three Talon faction
   skins) — `src/lib/utils/ships.js` maps these to friendly display names.
-  The game data also distinguishes groups by pilot skill and personality,
-  which isn't modelled here, so groups with an identical ship composition at
-  the same nav point are merged into one with their chances summed.
+  Each `CAST` slot names the squad's AI profile, eg `PIR_AF` (see the story
+  missions below), which sets its faction, pilot skill and attitude. These
+  aren't output, so groups with an identical ship composition at the same
+  nav point are merged into one with their chances summed.
 - `OJMP` chunk — the same record layout as `JUMP`, for jumps the game opens
   from a story mission's route list (the player's objectives: `D0`, `E0` or
   `E1` followed by a system ID), with the destination system's ID in byte
@@ -194,10 +200,13 @@ Toth); one with no entry (eg `RETRO1`, `elite`, `SDRONE`) is a generic pilot
 singled out only for its role in the mission. Names are proper nouns, so
 aren't translated. Each `CAST` name is also the name of an AI profile,
 `DATA\AIDS\<name>.IFF`, whose `INFO` record gives the faction, then pilot
-skill and attitude — the two letters after the underscore (skill D/A/S,
-attitude P/A/F, each 0–2). As with the regular encounters, faction, skill and
-attitude aren't output here, so otherwise identical ships are merged —
-unless they're spawned by different triggers (below).
+skill and attitude, each 0 (lowest) to 2. A generic profile's name is the
+faction, then those two as letters (skill D/A/S, attitude P/A/F), eg
+`PIR_AF`. Three Kilrathi profiles have a higher skill than their names
+say: `KIL_DA` and `KIL_AF` are skill 2, and `KIL_DF` skill 1. As with the
+regular encounters, faction, skill and attitude aren't output here, so
+otherwise identical ships are merged — unless they're spawned by different
+triggers (below).
 
 A mission's `SCEN` list can also name a nav point with no ships. That still
 replaces the nav point's regular encounters while the mission is active, so
