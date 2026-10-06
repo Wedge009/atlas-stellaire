@@ -464,9 +464,11 @@ export function createNavScene({
   function buildRouteLines(routeSegments) {
     clearRouteLines();
     for (const seg of routeSegments) {
-      const fromNode = nodes.find((n) => n.np.id === seg.fromId);
+      // A null fromId is the system's centre (see routeThroughSystem), which
+      // is the origin in both the 3D and flat layouts.
+      const fromNode = seg.fromId === null ? null : nodes.find((n) => n.np.id === seg.fromId);
       const toNode = nodes.find((n) => n.np.id === seg.toId);
-      if (!fromNode || !toNode) continue;
+      if ((seg.fromId !== null && !fromNode) || !toNode) continue;
 
       const lineGeo = new THREE.BufferGeometry();
       const lineMat = new THREE.LineDashedMaterial({ color: 0xffcc55, dashSize: 1.2, gapSize: 0.8, transparent: true, opacity: 0.9, fog: false });
@@ -491,7 +493,7 @@ export function createNavScene({
 
   function updateRouteLines() {
     for (const r of routeLines) {
-      const fromPos = r.fromNode.mesh.position;
+      const fromPos = r.fromNode?.mesh.position ?? ORIGIN;
       const toPos = r.toNode.mesh.position;
       r.line.geometry.setFromPoints([fromPos.clone(), toPos.clone()]);
       r.line.computeLineDistances();

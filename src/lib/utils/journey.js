@@ -2,9 +2,11 @@
 
 import { flattenSystems } from './navPoints.js';
 
-// Builds a directed jump graph: systemId -> [{ toId, viaNavPointId, hazard }].
-// `viaNavPointId` is the id (unique only within its own system) of the jump
-// navPoint used to leave. `hazard` is 1 if either end of the jump - the
+// Builds a directed jump graph: systemId -> [{ toId, viaNavPointId,
+// entryNavPointId, hazard }]. `viaNavPointId` is the id (unique only within
+// its own system) of the jump navPoint used to leave, and `entryNavPointId`
+// that of its reciprocal in the destination system, where the ship arrives
+// (null if there's none - see SYSTEM_CENTRE). `hazard` is 1 if either end of the jump - the
 // departure point or its reciprocal arrival point in the destination system -
 // has asteroids present, used purely as a tie-break between equally-short
 // routes.
@@ -20,7 +22,7 @@ function buildGraph(data) {
       if (!dest || dest.id === s.id) continue;
       const reciprocal = dest.navPoints.find((rnp) => rnp.dest === s.id);
       const hazard = np.asteroids || reciprocal?.asteroids ? 1 : 0;
-      graph.get(s.id).push({ toId: dest.id, viaNavPointId: np.id, hazard });
+      graph.get(s.id).push({ toId: dest.id, viaNavPointId: np.id, entryNavPointId: reciprocal?.id ?? null, hazard });
     }
   }
   return { graph, byId };
@@ -61,7 +63,7 @@ export function findRoute(data, fromSystemId, toSystemId) {
       const existing = best.get(edge.toId);
       if (!existing || costLess(newCost, existing)) {
         best.set(edge.toId, newCost);
-        prev.set(edge.toId, { systemId: id, viaNavPointId: edge.viaNavPointId });
+        prev.set(edge.toId, { systemId: id, viaNavPointId: edge.viaNavPointId, entryNavPointId: edge.entryNavPointId });
         frontier.push({ id: edge.toId, cost: newCost });
       }
     }
@@ -73,12 +75,18 @@ export function findRoute(data, fromSystemId, toSystemId) {
   let cur = toSystemId;
   while (cur !== fromSystemId) {
     const p = prev.get(cur);
-    hops.unshift({ systemId: cur, viaNavPointId: p.viaNavPointId });
+    hops.unshift({ systemId: cur, viaNavPointId: p.viaNavPointId, entryNavPointId: p.entryNavPointId });
     cur = p.systemId;
   }
-  hops.unshift({ systemId: fromSystemId, viaNavPointId: null });
+  hops.unshift({ systemId: fromSystemId, viaNavPointId: null, entryNavPointId: null });
   return hops;
 }
+
+// Where a journey enters a system with no jump point back to where it came
+// from: its centre. Eden's jump to Valhalla, before Righteous Fire's
+// Informant A puts Valhalla's own jump point to Eden in space, arrives at
+// Valhalla's (0, 0, 0) - see README.md, `OJMP`.
+const SYSTEM_CENTRE = { x: 0, y: 0, z: 0 };
 
 function distance2(a, b) {
   return (a.x - b.x) ** 2 + (a.y - b.y) ** 2 + (a.z - b.z) ** 2;
@@ -87,8 +95,8 @@ function distance2(a, b) {
 // Picks which base to land at when a system has more than one: the nearest
 // to wherever the ship enters the system from, since that's the point it'll
 // actually be flying from. Falls back to the first base if there's no entry
-// point to measure from (shouldn't happen for a mid-route stop, but keeps
-// this defensible stand-alone).
+// point to measure from (not the case for a mid-route stop, but keeps this
+// defensible stand-alone).
 function nearestBase(system, entryPoint) {
   const bases = system.navPoints.filter((np) => np.type === 'base');
   if (bases.length <= 1 || !entryPoint) return bases[0] ?? null;
@@ -126,7 +134,7 @@ export function withRefuelStops(hops, data, tankJumps = 6) {
 
     if (stopIndex !== null) {
       const stopSystem = byId.get(result[stopIndex].systemId);
-      const entryPoint = stopSystem.navPoints.find((np) => np.dest === result[stopIndex - 1].systemId);
+      const entryPoint = stopSystem.navPoints.find((np) => np.id === result[stopIndex].entryNavPointId) ?? SYSTEM_CENTRE;
       result[stopIndex].refuelStop = true;
       result[stopIndex].refuelNavPointId = nearestBase(stopSystem, entryPoint)?.id ?? null;
       lastRefuelIndex = stopIndex;
@@ -152,6 +160,10 @@ export function withRefuelStops(hops, data, tankJumps = 6) {
 // this is a stop, the final destination point) and which point-to-point
 // segments to draw as an arrow through the system: entry point -> refuel
 // base -> exit point, or straight entry -> exit if it isn't a refuel stop.
+// A segment's `fromId` is null for an entry at the system's centre (no jump
+// point back - see SYSTEM_CENTRE), which the views draw from (0, 0, 0). An
+// entry point that exists but isn't shown (a hidden point, with hidden
+// points off) draws no arrival segment.
 // Shared by the 2D and 3D system views so they stay in sync.
 export function routeThroughSystem(/** @type {any} */ journey, /** @type {string} */ systemId, /** @type {any[]} */ points) {
   const empty = { leaveViaId: null, refuelId: null, targetId: null, segments: [] };
@@ -169,16 +181,16 @@ export function routeThroughSystem(/** @type {any} */ journey, /** @type {string
   // leave-via highlight above.
   const segments = [];
   if (idx > 0) {
-    const prevSystemId = journey.hops[idx - 1].systemId;
-    const entryPoint = points.find((p) => p.dest === prevSystemId);
+    const entryId = hop.entryNavPointId;
+    const entryShown = entryId === null || points.some((p) => p.id === entryId);
     const exitId = leaveViaId ?? targetId;
     const exitPoint = exitId ? points.find((p) => p.id === exitId) : null;
     const viaPoint = refuelId ? points.find((p) => p.id === refuelId) : null;
-    if (entryPoint && viaPoint && exitPoint) {
-      segments.push({ fromId: entryPoint.id, toId: viaPoint.id });
+    if (entryShown && viaPoint && exitPoint) {
+      segments.push({ fromId: entryId, toId: viaPoint.id });
       segments.push({ fromId: viaPoint.id, toId: exitPoint.id });
-    } else if (entryPoint && exitPoint) {
-      segments.push({ fromId: entryPoint.id, toId: exitPoint.id });
+    } else if (entryShown && exitPoint) {
+      segments.push({ fromId: entryId, toId: exitPoint.id });
     }
   }
 

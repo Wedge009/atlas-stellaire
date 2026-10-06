@@ -43,7 +43,7 @@
   let routeInfo = $derived(routeThroughSystem($journey, systemId, points));
   let routeArrow = $derived(
     routeInfo.segments.map((seg) => ({
-      from: resolveFlatPosition(points.find((p) => p.id === seg.fromId)),
+      from: resolveFlatPosition(seg.fromId === null ? { x: 0, y: 0 } : points.find((p) => p.id === seg.fromId)),
       to: resolveFlatPosition(points.find((p) => p.id === seg.toId)),
     }))
   );
