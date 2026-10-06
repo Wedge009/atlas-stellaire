@@ -81,8 +81,8 @@ it contains.
   the most rocks that can be out at once (2–7). Every zone with a field in a
   system shares the same 'field off' block, so the shared index doesn't mean a
   shared belt: each zone's field is its own, sized by that zone's `SPHR`
-  radius. Whether a zone has a field populates each nav point's `asteroids`
-  boolean in `gemini.json`.
+  radius. Each nav point's `asteroids` in `gemini.json` is its zone's `n`,
+  or 0 for no field.
 - `CAST` (squadron roster) and `WAND` (46-byte squadron records) chunks give
   each nav point's random-encounter table: which ship(s), how many, and at
   what odds. Each `WAND` record names its own `CAST` slot directly (bytes

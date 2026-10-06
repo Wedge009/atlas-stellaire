@@ -58,6 +58,9 @@
         <div class="name">{d.label}{#if d.dest}: {$t('infoPanel.jumpTo', { system: systemName(data, d.dest) })}{/if}</div>
         <div class="row">{d.description}</div>
         <div class="row coords">{$t('infoPanel.coords', { x: d.x, y: d.y, z: d.z })}</div>
+        {#if d.asteroids}
+          <div class="row muted">{$t('infoPanel.asteroidField', { count: d.asteroids })}</div>
+        {/if}
         {#if d.baseName && d.facilities}
           {@const facilityList = [
             d.facilities.merchantsGuild ? $t('infoPanel.merchantsGuild') : null,

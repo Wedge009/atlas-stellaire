@@ -72,6 +72,7 @@ export default {
   'infoPanel.merchantsGuild': 'Merchants Guild',
   'infoPanel.mercenariesGuild': 'Mercenaries Guild',
   'infoPanel.shipDealer': 'Ship Dealer',
+  'infoPanel.asteroidField': 'Asteroid field: up to {count} asteroids at a time',
   'infoPanel.encounterProbability': 'Encounter Probability',
   'infoPanel.missionEncounter': 'Mission Encounter',
   'infoPanel.missionCleared': 'No ships while the mission is active',

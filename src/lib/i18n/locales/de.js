@@ -58,6 +58,7 @@ export default {
   'infoPanel.merchantsGuild': 'Händlergilde',
   'infoPanel.mercenariesGuild': 'Söldnergilde',
   'infoPanel.shipDealer': 'Schiffshändler',
+  'infoPanel.asteroidField': 'Asteroidenfeld: bis zu {count} Asteroiden gleichzeitig',
   'infoPanel.encounterProbability': 'Begegnungswahrscheinlichkeit',
   'infoPanel.missionEncounter': 'Missionsbegegnung',
   'infoPanel.missionCleared': 'Keine Schiffsbegegnungen während der Mission',

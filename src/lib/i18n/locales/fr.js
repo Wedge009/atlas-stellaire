@@ -58,6 +58,7 @@ export default {
   'infoPanel.merchantsGuild': 'Guilde des marchands',
   'infoPanel.mercenariesGuild': 'Guilde des mercenaires',
   'infoPanel.shipDealer': 'Concessionnaire de vaisseaux',
+  'infoPanel.asteroidField': 'Champ d’astéroïdes : jusqu’à {count} astéroïdes à la fois',
   'infoPanel.encounterProbability': 'Probabilité de rencontre',
   'infoPanel.missionEncounter': 'Rencontre de mission',
   'infoPanel.missionCleared': 'Aucun vaisseau tant que la mission est en cours',
