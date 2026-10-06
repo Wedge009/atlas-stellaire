@@ -72,14 +72,17 @@ it contains.
   `SECTORS.IFF`'s block table). Zone IDs aren't contiguous (eg Pentonville's
   are 0, 1, 20; 17-AR's 0, 1, 2, 5, 7), and other records refer to a nav
   point by this zone ID, so it has to be looked up via the `SCEN` list
-  (`SCEN[k]` is nav point `k - 1`) rather than used as an index. Byte offset
-  7–8 of each per-point `SCEN` record is a little-endian signed 16-bit value
-  that gives the **asteroid field flag**: `-1` (`0xFFFF`) means no asteroid
-  field is near that point; any other value is an ID for a shared
-  asteroid-field object in the system, and points sharing the same ID sit in
-  the same physical field (eg Rikel's Nav 1, 2, 4, 5 and Hidden 3 all
-  reference field `5` — one belt spans near all five). Populates each nav
-  point's `asteroids` boolean in `gemini.json`.
+  (`SCEN[k]` is nav point `k - 1`) rather than used as an index. Bytes 3–4
+  and 7–8 of each per-point `SCEN` record are little-endian signed 16-bit
+  indices of the system's `PROG` script blocks to run when the zone is
+  activated and deactivated (`-1`, `0xFFFF`, for none). A zone with an
+  **asteroid field** has a deactivate block, the system's 'field off' block
+  `C1 00`, and its activate block is a 'field on' block `C2 n`, where `n` is
+  the most rocks that can be out at once (2–7). Every zone with a field in a
+  system shares the same 'field off' block, so the shared index doesn't mean a
+  shared belt: each zone's field is its own, sized by that zone's `SPHR`
+  radius. Whether a zone has a field populates each nav point's `asteroids`
+  boolean in `gemini.json`.
 - `CAST` (squadron roster) and `WAND` (46-byte squadron records) chunks give
   each nav point's random-encounter table: which ship(s), how many, and at
   what odds. Each `WAND` record names its own `CAST` slot directly (bytes
