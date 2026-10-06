@@ -5,13 +5,13 @@ export function missionName(mission) {
   return `${mission.series} ${mission.mission}`;
 }
 
-// Returns whether a story-hidden system (gemini.json's `revealedBy`, the
-// mission that reveals it) is still hidden, given the active mission. A
-// system stays revealed once revealed, so it's hidden only while a mission
-// before its own is active; with no mission active, the story is taken as
-// complete. `missions` is in story order - the base game's, then Righteous
-// Fire's - so in Righteous Fire the base game's are always revealed.
-export function storyHidden(missions, activeMission) {
+// Returns whether a story-locked jump point (gemini.json's `unlockedBy`, the
+// mission that opens it) is still shut, given the active mission. A jump
+// stays open once opened, so it's shut only while a mission before its own
+// is active; with no mission active, the story is taken as complete.
+// `missions` is in story order - the base game's, then Righteous Fire's - so
+// in Righteous Fire the base game's are always open.
+export function storyLocked(missions, activeMission) {
   const order = new Map(missions.map((m, i) => [m.id, i]));
   const active = activeMission ? order.get(activeMission.id) : undefined;
   return (/** @type {string | undefined} */ missionId) =>

@@ -4739,10 +4739,10 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "unlockedBy": "s5mc"
             }
-          ],
-          "revealedBy": "s5mb"
+          ]
         },
         {
           "id": "capella",
@@ -5637,10 +5637,10 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "unlockedBy": "s5mb"
             }
-          ],
-          "revealedBy": "s5ma"
+          ]
         },
         {
           "id": "delta-prime",
@@ -5680,8 +5680,7 @@
                 "shipDealer": false
               }
             }
-          ],
-          "revealedBy": "s5md"
+          ]
         },
         {
           "id": "eden",
@@ -5820,8 +5819,7 @@
               "y": 900,
               "z": 400
             }
-          ],
-          "revealedBy": "s14ma"
+          ]
         },
         {
           "id": "famine",
@@ -6142,7 +6140,8 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "unlockedBy": "s5md"
             },
             {
               "id": "hidden",
@@ -6176,8 +6175,7 @@
                 }
               ]
             }
-          ],
-          "revealedBy": "s5mc"
+          ]
         },
         {
           "id": "j900",
@@ -8199,7 +8197,8 @@
               "asteroids": 4,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "delta"
+              "dest": "delta",
+              "unlockedBy": "s5ma"
             }
           ]
         },
@@ -9004,7 +9003,8 @@
               "asteroids": 0,
               "type": "jump",
               "description": "Jump Point",
-              "dest": "eden"
+              "dest": "eden",
+              "unlockedBy": "s14ma"
             }
           ]
         },

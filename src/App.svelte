@@ -18,7 +18,7 @@
   import { game } from './lib/stores/game.js';
   import { journey, journeyInputs, plotJourney } from './lib/stores/journey.js';
   import { jumpTransitionEnabled } from './lib/stores/settings.js';
-  import { loadStoryMissions, sectorData, hiddenByStory } from './lib/stores/storyMission.js';
+  import { loadStoryMissions, sectorData, lockedByStory } from './lib/stores/storyMission.js';
   import { lastTopView, lastSystemId, journeyPanelPosition } from './lib/stores/ui.js';
   import { draggable } from './lib/actions/draggable.js';
   import { t, locale } from './lib/i18n/index.js';
@@ -27,7 +27,7 @@
   // sees it at the active story mission - see resolveSector. Everything else
   // only ever gets the latter.
   let rawSectorData = $state.raw(null);
-  let geminiData = $derived(rawSectorData ? resolveSector(rawSectorData, $game, $hiddenByStory) : null);
+  let geminiData = $derived(rawSectorData ? resolveSector(rawSectorData, $game, $lockedByStory) : null);
   let selectedSystemId = $state(get(lastSystemId));
   let topView = $state(get(lastTopView)); // 'system' | 'sector'
   let showAbout = $state(false);

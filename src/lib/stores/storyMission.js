@@ -2,7 +2,7 @@ import { writable, derived, get } from 'svelte/store';
 import { persisted } from './persisted.js';
 import { journey } from './journey.js';
 import { game } from './game.js';
-import { missionEncounters, pickFirstOf, storyHidden } from '../utils/storyMissions.js';
+import { missionEncounters, pickFirstOf, storyLocked } from '../utils/storyMissions.js';
 
 // Every story mission from story-missions.json, in file (ID) order. Empty
 // until loadStoryMissions() resolves.
@@ -42,9 +42,9 @@ derived([activeMission, game], (pair) => pair).subscribe(([$mission, $game]) => 
   if ($mission && $mission.game !== $game) activeMissionId.set(null);
 });
 
-// (missionId) => whether a system that mission reveals is still hidden, for
-// the active mission - see storyHidden().
-export const hiddenByStory = derived([storyMissions, activeMission], ([$missions, $mission]) => storyHidden($missions, $mission));
+// (missionId) => whether a jump point that mission opens is still shut, for
+// the active mission - see storyLocked().
+export const lockedByStory = derived([storyMissions, activeMission], ([$missions, $mission]) => storyLocked($missions, $mission));
 
 // systemId -> navPointId -> [{ship, count}] for the active mission - see
 // missionEncounters(). Empty when no mission is active. Follows the plotted
