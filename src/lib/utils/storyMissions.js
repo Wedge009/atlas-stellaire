@@ -5,6 +5,19 @@ export function missionName(mission) {
   return `${mission.series} ${mission.mission}`;
 }
 
+// Returns whether a story-hidden system (gemini.json's `revealedBy`, the
+// mission that reveals it) is still hidden, given the active mission. A
+// system stays revealed once revealed, so it's hidden only while a mission
+// before its own is active; with no mission active, the story is taken as
+// complete. `missions` is in story order - the base game's, then Righteous
+// Fire's - so in Righteous Fire the base game's are always revealed.
+export function storyHidden(missions, activeMission) {
+  const order = new Map(missions.map((m, i) => [m.id, i]));
+  const active = activeMission ? order.get(activeMission.id) : undefined;
+  return (/** @type {string | undefined} */ missionId) =>
+    active !== undefined && missionId !== undefined && active < (order.get(missionId) ?? -1);
+}
+
 // Where a mission ship goes in the map's picture of a nav point. This is a
 // map, not a play-through simulation, so it shows what's there in general
 // rather than every ship that will ever spawn:

@@ -85,6 +85,7 @@ export default {
   'journeyPanel.clearJourney': 'Reise löschen',
   'journey.noRouteExists': 'Es existiert keine Sprungroute zwischen diesen Systemen.',
   'journey.systemNotInGame': '{system} gibt es in diesem Spiel nicht.',
+  'journey.systemNotRevealed': '{system} ist an diesem Punkt der Geschichte noch nicht auf der Karte.',
   'journey.noLandableBase': 'Zwischen {from} und {to} befindet sich keine anfliegbare Basis innerhalb der Sprungreichweite.',
 
   'plotJourneyDialog.fromQuadrant': 'Ausgangsquadrant (optional)',

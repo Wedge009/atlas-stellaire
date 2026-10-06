@@ -99,6 +99,7 @@ export default {
   'journeyPanel.clearJourney': 'Clear journey',
   'journey.noRouteExists': 'No jump route exists between these systems.',
   'journey.systemNotInGame': '{system} isn’t in this game.',
+  'journey.systemNotRevealed': '{system} isn’t on the map yet at this point in the story.',
   'journey.noLandableBase': 'No base within jump range between {from} and {to}.',
 
   'plotJourneyDialog.fromQuadrant': 'From quadrant (optional)',

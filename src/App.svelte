@@ -18,15 +18,16 @@
   import { game } from './lib/stores/game.js';
   import { journey, journeyInputs, plotJourney } from './lib/stores/journey.js';
   import { jumpTransitionEnabled } from './lib/stores/settings.js';
-  import { loadStoryMissions, sectorData } from './lib/stores/storyMission.js';
+  import { loadStoryMissions, sectorData, hiddenByStory } from './lib/stores/storyMission.js';
   import { lastTopView, lastSystemId, journeyPanelPosition } from './lib/stores/ui.js';
   import { draggable } from './lib/actions/draggable.js';
   import { t, locale } from './lib/i18n/index.js';
 
   // gemini.json as loaded, covering both games, and as the current game
-  // sees it - see resolveSector. Everything else only ever gets the latter.
+  // sees it at the active story mission - see resolveSector. Everything else
+  // only ever gets the latter.
   let rawSectorData = $state.raw(null);
-  let geminiData = $derived(rawSectorData ? resolveSector(rawSectorData, $game) : null);
+  let geminiData = $derived(rawSectorData ? resolveSector(rawSectorData, $game, $hiddenByStory) : null);
   let selectedSystemId = $state(get(lastSystemId));
   let topView = $state(get(lastTopView)); // 'system' | 'sector'
   let showAbout = $state(false);
@@ -59,9 +60,10 @@
     rawSectorData = await res.json();
   });
 
-  // On loading, and on every game switch: the system being viewed may not
-  // exist in this game (Eden is Righteous Fire's), and a journey is
-  // re-plotted from its remembered inputs, the same as after a reload.
+  // On loading, and on every game or story mission switch: the system being
+  // viewed may not exist in this game (Eden is Righteous Fire's) or yet in the
+  // story (Delta before Cross A), and a journey is re-plotted from its
+  // remembered inputs, the same as after a reload.
   $effect(() => {
     const data = geminiData;
     if (!data) return;

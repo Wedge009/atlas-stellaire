@@ -5,11 +5,12 @@
 
   let { data, selectedSystemId = null } = $props();
 
-  // A system only the other game has is still named (see resolveSector).
+  // A system only the other game has, or not yet revealed by the story, is
+  // still named (see resolveSector).
   let fromName = $derived(nameOf($journey?.fromSystemId));
   let toName = $derived(nameOf($journey?.toSystemId));
   function nameOf(id) {
-    return findSystem(data, id)?.name ?? data.otherGameSystems?.[id] ?? id;
+    return findSystem(data, id)?.name ?? data.otherGameSystems?.[id] ?? data.hiddenSystems?.[id] ?? id;
   }
 
   let totalJumps = $derived($journey ? $journey.hops.length - 1 : 0);

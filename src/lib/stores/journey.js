@@ -36,8 +36,10 @@ export function plotJourney(data, inputs) {
 
   const route = findRoute(data, fromSystemId, toSystemId);
   if (!route) {
-    // An end of the journey in a system only the other game has
+    // An end of the journey in a system only the other game has, or not yet
+    // revealed by the story
     const missing = [fromSystemId, toSystemId].find((id) => data.otherGameSystems?.[id]);
+    const hidden = [fromSystemId, toSystemId].find((id) => data.hiddenSystems?.[id]);
     journey.set({
       fromSystemId,
       toSystemId,
@@ -47,7 +49,9 @@ export function plotJourney(data, inputs) {
       warnings: [
         missing
           ? { messageKey: 'journey.systemNotInGame', params: { system: data.otherGameSystems[missing] } }
-          : { messageKey: 'journey.noRouteExists' },
+          : hidden
+            ? { messageKey: 'journey.systemNotRevealed', params: { system: data.hiddenSystems[hidden] } }
+            : { messageKey: 'journey.noRouteExists' },
       ],
     });
     return;

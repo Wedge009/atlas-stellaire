@@ -101,6 +101,18 @@ it contains.
   The game data also distinguishes groups by pilot skill and personality,
   which isn't modelled here, so groups with an identical ship composition at
   the same nav point are merged into one with their chances summed.
+- `OJMP` chunk — the same record layout as `JUMP`, for jumps the game opens
+  from a story mission's route list (the player's objectives: `D0`, `E0` or
+  `E1` followed by a system ID), with the destination system's ID in byte
+  45. Each destination is a system kept off the sector map until that
+  mission, and it stays on the map afterwards. In both games, Cross's
+  missions reveal Delta (A), Beta (B), Gamma (C) and Delta Prime (D).
+  Righteous Fire's Informant A reveals Eden. Each is stored as the system's
+  `revealedBy` in `gemini.json`, the revealing mission's ID in
+  `story-missions.json`. While a story mission before that one is active,
+  the app leaves the system out, with every jump point into it (including
+  Rikel's to Eden, an ordinary `JUMP`). With no mission active, the story is
+  taken as complete.
 - `TABLE.DAT` — a 69×69 (Privateer) shortest-path matrix between all systems,
   used to independently verify the jump network.
 - `FORM GLXY` > `FORM SUNS` (nested inside the same per-system block) — fixed

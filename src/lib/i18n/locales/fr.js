@@ -85,6 +85,7 @@ export default {
   'journeyPanel.clearJourney': 'Effacer l’itinéraire',
   'journey.noRouteExists': 'Il n’existe aucun itinéraire de saut entre ces systèmes.',
   'journey.systemNotInGame': '{system} n’existe pas dans ce jeu.',
+  'journey.systemNotRevealed': '{system} n’apparaît pas encore sur la carte à ce stade de l’histoire.',
   'journey.noLandableBase': 'Aucune base à portée de saut entre {from} et {to}.',
 
   'plotJourneyDialog.fromQuadrant': 'Du quadrant (facultatif)',

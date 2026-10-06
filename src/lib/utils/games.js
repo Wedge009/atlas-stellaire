@@ -21,23 +21,33 @@ export function gameLabel(gameId) {
 // markup existed, so nothing downstream needs to know about it. Systems
 // left out are listed in `otherGameSystems` (id -> name), so a remembered
 // journey to one can still be named.
-export function resolveSector(raw, gameId) {
+//
+// A system with `revealedBy` (a story-missions.json mission ID) is also left
+// out while `isHidden(revealedBy)` - before that mission in the story (see
+// storyHidden()) - along with every jump point into it. These are listed in
+// `hiddenSystems` (id -> name).
+export function resolveSector(raw, gameId, isHidden = () => false) {
   const otherGameSystems = {};
+  const hiddenSystems = {};
+  for (const { systems } of raw.quadrants) {
+    for (const { game, revealedBy, ...system } of systems) {
+      if (game && game !== gameId) otherGameSystems[system.id] = system.name;
+      else if (revealedBy && isHidden(revealedBy)) hiddenSystems[system.id] = system.name;
+    }
+  }
   const quadrants = raw.quadrants.map(({ systems, ...quadrant }) => ({
     ...quadrant,
-    systems: systems.flatMap(({ game, navPoints, ...system }) => {
-      if (game && game !== gameId) {
-        otherGameSystems[system.id] = system.name;
-        return [];
-      }
-      return [{ ...system, navPoints: navPoints.flatMap((np) => resolveNavPoint(np, gameId)) }];
+    systems: systems.flatMap(({ game, revealedBy, navPoints, ...system }) => {
+      if (otherGameSystems[system.id] || hiddenSystems[system.id]) return [];
+      return [{ ...system, navPoints: navPoints.flatMap((np) => resolveNavPoint(np, gameId, hiddenSystems)) }];
     }),
   }));
-  return { ...raw, quadrants, otherGameSystems };
+  return { ...raw, quadrants, otherGameSystems, hiddenSystems };
 }
 
-function resolveNavPoint({ game, privateer, ...navPoint }, gameId) {
+function resolveNavPoint({ game, privateer, ...navPoint }, gameId, hiddenSystems) {
   if (game && game !== gameId) return [];
+  if (navPoint.dest && hiddenSystems[navPoint.dest]) return [];
   if (gameId !== 'PRIV' || !privateer) return [navPoint];
   const resolved = { ...navPoint, ...privateer };
   // An empty override list means no encounters in the base game.

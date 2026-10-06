@@ -4741,7 +4741,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "revealedBy": "s5mb"
         },
         {
           "id": "capella",
@@ -5638,7 +5639,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "revealedBy": "s5ma"
         },
         {
           "id": "delta-prime",
@@ -5678,7 +5680,8 @@
                 "shipDealer": false
               }
             }
-          ]
+          ],
+          "revealedBy": "s5md"
         },
         {
           "id": "eden",
@@ -5817,7 +5820,8 @@
               "y": 900,
               "z": 400
             }
-          ]
+          ],
+          "revealedBy": "s14ma"
         },
         {
           "id": "famine",
@@ -6172,7 +6176,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "revealedBy": "s5mc"
         },
         {
           "id": "j900",
