@@ -3,8 +3,9 @@ import { persisted } from '../stores/persisted.js';
 import de from './locales/de.js';
 import en from './locales/en.js';
 import fr from './locales/fr.js';
+import vi from './locales/vi.js';
 
-const dictionaries = { de, en, fr };
+const dictionaries = { de, en, fr, vi };
 
 // Add a locale by dropping a new dictionary file next to en.js, registering
 // it above, and adding an entry here - the Language button (see
@@ -12,7 +13,8 @@ const dictionaries = { de, en, fr };
 export const availableLocales = [
   { code: 'de', label: 'Deutsch' },
   { code: 'en', label: 'English' },
-  { code: 'fr', label: 'français' }
+  { code: 'fr', label: 'français' },
+  { code: 'vi', label: 'Tiếng Việt' }
 ];
 
 export const locale = persisted('locale', 'en');
