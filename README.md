@@ -327,7 +327,10 @@ data, not a recreation:
   a control byte that's either a further literal copy or a single repeated
   byte.
 - `JUMP.PAK` contains two such 42-frame tables — 320×70 and 320×60 — stacked
-  to build each full frame, then encoded as WebP (80ms/frame).
+  to build each full frame, then encoded as a lossless WebP that plays once.
+  Six frames repeat the one before, leaving 36. Each frame's time (about
+  57–71ms, ending on a white frame held 324ms) was measured from a capture of
+  the game running at 486DX2/66 speed, where its frame limiter governs.
 
 ### Base sprite images
 
