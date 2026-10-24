@@ -1,6 +1,6 @@
 <script>
   import { selectedNode } from '../stores/selection.js';
-  import { baseTypeIcon } from '../utils/baseTypes.js';
+  import { baseTypeIcon, baseTypeIconPixelAspect } from '../utils/baseTypes.js';
   import { systemName } from '../utils/navPoints.js';
   import { sortedEncounterGroups } from '../utils/encounters.js';
   import { shipName, shipLabel } from '../utils/ships.js';
@@ -43,6 +43,26 @@
   // game where RF changed the table), so the rows can fade across.
   let missionShipsKey = $derived(JSON.stringify(missionShips ?? null));
   let encountersKey = $derived(JSON.stringify($selectedNode?.encounters ?? null));
+
+  // Most base icons are VGA art drawn for 4:3's taller pixels (see
+  // baseTypeIconPixelAspect), so once an icon loads, it's sized to that
+  // stretched shape within the 6rem box. Keyed by src so a newly selected
+  // base's icon isn't drawn with the previous one's shape while it loads.
+  let iconShape = $state(null);
+
+  function onIconLoad(event, pixelAspect) {
+    const img = event.currentTarget;
+    iconShape = { src: img.getAttribute('src'), ratio: img.naturalWidth / (img.naturalHeight * pixelAspect) };
+  }
+
+  function iconStyle(src) {
+    if (iconShape?.src !== src) return '';
+    const { ratio } = iconShape;
+    // fill rather than the default contain, which would keep the square-pixel
+    // shape inside the box.
+    const size = ratio >= 1 ? `height: ${6 / ratio}rem` : `width: ${6 * ratio}rem`;
+    return `${size}; object-fit: fill`;
+  }
 </script>
 
 {#if $selectedNode}
@@ -52,7 +72,7 @@
     <div class="drag-handle" aria-hidden="true"><span class="grip"></span></div>
     <div class="info-body">
       {#if icon}
-        <img class="base-icon" src={icon} alt={d.baseType} />
+        <img class="base-icon" src={icon} alt={d.baseType} style={iconStyle(icon)} onload={(event) => onIconLoad(event, baseTypeIconPixelAspect(d.baseType))} />
       {/if}
       <div class="info-text">
         <div class="name">{d.label}{#if d.dest}: {$t('infoPanel.jumpTo', { system: systemName(data, d.dest) })}{/if}</div>

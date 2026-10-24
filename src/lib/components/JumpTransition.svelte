@@ -71,6 +71,7 @@
     opacity: 0;
     transition: opacity var(--fade-ms) linear;
     pointer-events: none;
+    overflow: hidden;
   }
   .jump-transition.visible {
     opacity: 1;
@@ -80,5 +81,7 @@
     height: 100%;
     object-fit: cover;
     image-rendering: pixelated;
+    /* 320x200 VGA was shown on a 4:3 screen, so pixels were 1.2x taller than wide. */
+    transform: scaleY(1.2);
   }
 </style>

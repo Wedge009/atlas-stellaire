@@ -103,6 +103,10 @@ function disposeNodeMesh(mesh) {
   });
 }
 
+// The game's sprites are 320x200 VGA art, shown on a 4:3 screen where each
+// pixel was 1.2x taller than wide.
+const VGA_PIXEL_ASPECT = 1.2;
+
 // Gemini Gold's jump-point animation: a 7-frame sequence played as a
 // ping-pong loop (1..7 then back down to 2) at 150ms/frame. Neither the
 // individual JPEGs nor a static fall-back have any alpha channel or radial
@@ -305,7 +309,7 @@ export function createNavScene({
       // visible.
       sprite.material = new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false, fog: false });
       const aspect = texture.image.width / texture.image.height;
-      sprite.scale.set(BACKDROP_SIZE * aspect, BACKDROP_SIZE, 1);
+      sprite.scale.set(BACKDROP_SIZE * aspect, BACKDROP_SIZE * VGA_PIXEL_ASPECT, 1);
       sprite.visible = true;
     }));
   }
@@ -605,10 +609,10 @@ export function createNavScene({
       });
       mesh = new THREE.Sprite(material);
       // Sized to roughly the same on-screen footprint as the 1.6-radius
-      // sphere it replaces (diameter 3.2), corrected for the source
-      // frames' own non-square 89x73 aspect ratio so the sprite isn't
-      // squashed into an oval.
-      mesh.scale.set(3.2 * (89 / 73), 3.2, 1);
+      // sphere it replaces (diameter 3.2). The source frames are 89x73,
+      // drawn for VGA's taller pixels, so the width is narrowed by
+      // VGA_PIXEL_ASPECT to show them round rather than as a wide oval.
+      mesh.scale.set(3.2 * (89 / 73) / VGA_PIXEL_ASPECT, 3.2, 1);
     } else if (style.shape === 'sphere' && jumpPointStyleOn === 'models') {
       // Gemini Gold's jump-point look ('Jump points: Models'): an
       // additively-blended animated orb rather than the plain lit sphere
